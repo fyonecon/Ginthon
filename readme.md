@@ -1,5 +1,6 @@
 
-# Ginthon
+# Ginthon是用Python写的稳定服务的多功能程序壳子。
+代码习惯基于Golang。
 
 ### Python教程
 

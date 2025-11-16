@@ -1,4 +1,5 @@
-# 主入口
+# Ginthon主入口
+# 代码习惯基于Golang。
 
 import multiprocessing
 
