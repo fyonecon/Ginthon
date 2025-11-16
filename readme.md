@@ -22,7 +22,7 @@ https://jishuzhan.net/article/1963161837455327233
 2. 初始化依赖：
 > pip install -r requirements.txt
 
-### 导出项目依赖：
+### 导出项目依赖（🔥）：
 > pip freeze > requirements.txt
 
 ### 升级pip
@@ -52,8 +52,11 @@ https://jishuzhan.net/article/1963161837455327233
 
 #### 服务或框架
 > pip3 install flask
+> 
 > pip3 install pywebview
+> 
 > pip3 install schedule
+> 
 
 #### 读写office文件
 >pip3 install xlrd
