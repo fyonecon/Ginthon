@@ -4,7 +4,7 @@
 
 代码目前只在Git^hu^b上发布（防^爬说明20251116）。
 
-地址github·com#fyonecon#purehome 。
+框架地址：https://github.com/fyonecon/Ginthon 
 
 
 ### Python教程
