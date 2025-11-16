@@ -2,6 +2,11 @@
 # Ginthon是用Python写的稳定服务的多功能程序壳子。
 代码习惯基于Golang。
 
+代码目前只在Git^hu^b上发布（防^爬说明20251116）。
+
+地址github·com#fyonecon#purehome 。
+
+
 ### Python教程
 
 Python3:
