@@ -4,7 +4,8 @@ import platform
 import sys
 import socket
 
-from common.global_data import GlobalData
+#
+CONFIG = {}
 
 # 检查端口是否被占用
 def check_port_occupied(host="127.0.0.1", port=9100, timeout=2):
@@ -22,8 +23,11 @@ def check_port_occupied(host="127.0.0.1", port=9100, timeout=2):
         return False
 
 # 检测系统，硬性条件
-def check_sys(tag):
+def check_sys(config, tag):
     print("SYS Checking...", tag)
+    # 读取配置信息
+    global CONFIG
+    CONFIG = config
     # 至少物理双核
     cpu_count = psutil.cpu_count(logical=False)
     # 至少1GB RAM
@@ -32,8 +36,9 @@ def check_sys(tag):
     # 最小Python版本
     _python_version = platform.python_version()
     # 判断端口是否被占用
-    flask_port = GlobalData["flask"]["port"]
+    flask_port = CONFIG["flask"]["port"]
     flask_port_state = check_port_occupied('127.0.0.1', flask_port, timeout=2)
     #
     print("✅SYS=>", "\n", [str(cpu_count)+" Cores", str(total_ram)+" GB", _python_version, flask_port_state], "\n")
-    return cpu_count >= GlobalData["min_cpu_cores"] and total_ram >= GlobalData["min_ram"] and sys.version_info >= GlobalData["min_python_version"] and (not flask_port_state)
+    return cpu_count >= CONFIG["min_cpu_cores"] and total_ram >= CONFIG["min_ram"] and sys.version_info >= CONFIG["min_python_version"] and (not flask_port_state)
+    pass

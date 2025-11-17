@@ -4,7 +4,9 @@ import time
 from bootstrap.run_pywebview import run_pywebview
 from common.func import get_time_ms, get_date
 from common.time_interval import time_interval
-from common.global_data import GlobalData
+
+#
+CONFIG = {}
 
 # 周期服务
 def start_time_interval():
@@ -24,7 +26,11 @@ def start_pywebview():
     pass
 
 # 启动服务
-def run_services():
+def run_services(config):
+    # 读取配置信息
+    global CONFIG
+    CONFIG = config
+    #
     time.sleep(2)
     print("✅服务=>", "\n", get_date("%Y-%m-%d %H:%M:%S"), "\n")
 
