@@ -33,6 +33,6 @@ def init_config():
     }
     return CONFIG
 
-# 读取
+# 读取（同线程才可读取值，否则读为空）
 def read_config():
     return CONFIG
