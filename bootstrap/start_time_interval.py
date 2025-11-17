@@ -3,7 +3,7 @@ import time
 from common.func import get_time_ms, get_date
 
 # 周期任务，最少5s，最大365天
-def time_interval(timeout_s, call_func, tag=""):
+def do_time_interval(timeout_s, call_func, tag="", config=None):
     # 默认值，s
     min_timer = 5
     max_timer = 365*24*60*60
@@ -22,8 +22,8 @@ def time_interval(timeout_s, call_func, tag=""):
     pass
 
 # 调用
-    # 开启周期任务
-    def do_timer1():
-        print("do_timer=1=", get_date("%Y-%m-%d %H:%M:%S"))
-        pass
-    time_interval(10, do_timer1, "test")
+# 开启周期任务
+# def do_timer1():
+#     print("do_timer=1=", get_date("%Y-%m-%d %H:%M:%S"))
+#     pass
+# do_time_interval(10, do_timer1, "test")

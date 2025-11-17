@@ -159,7 +159,7 @@ def run_flask(config):
     global CONFIG
     CONFIG = config
     #
-    # print("✅Flask=>", "\n", "http://127.0.0.1:"+str(CONFIG["flask"]["port"])+"/api", "\n")
+    print("✅ Flask => ", "http://127.0.0.1:" + str(CONFIG["flask"]["port"])+"/api")
     #
     FLASK = Flask(__name__)
     # 必要路由
