@@ -32,7 +32,7 @@ def run_services(config):
     CONFIG = config
     #
     time.sleep(2)
-    print("✅服务=>", "\n", get_date("%Y-%m-%d %H:%M:%S"), "\n")
+    # print("✅服务=>", "\n", get_date("%Y-%m-%d %H:%M:%S"), "\n")
 
     # 创建线程
     t1 = threading.Thread(target=start_time_interval)

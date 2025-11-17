@@ -24,7 +24,7 @@ def check_port_occupied(host="127.0.0.1", port=9100, timeout=2):
 
 # 检测系统，硬性条件
 def check_sys(config, tag):
-    print("SYS Checking...", tag)
+    # print("SYS Checking...", tag)
     # 读取配置信息
     global CONFIG
     CONFIG = config
@@ -39,6 +39,5 @@ def check_sys(config, tag):
     flask_port = CONFIG["flask"]["port"]
     flask_port_state = check_port_occupied('127.0.0.1', flask_port, timeout=2)
     #
-    print("✅SYS=>", "\n", [str(cpu_count)+" Cores", str(total_ram)+" GB", _python_version, flask_port_state], "\n")
+    # print("✅SYS=>", "\n", [str(cpu_count)+" Cores", str(total_ram)+" GB", _python_version, flask_port_state], "\n")
     return cpu_count >= CONFIG["min_cpu_cores"] and total_ram >= CONFIG["min_ram"] and sys.version_info >= CONFIG["min_python_version"] and (not flask_port_state)
-    pass

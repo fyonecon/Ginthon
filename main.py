@@ -34,7 +34,7 @@ def ginthon(config):
 
 # 读取配置文件+系统参数检测
 def init_sys(config):
-    print("🧐"+config["app_name"]+"=>", "\n", "v"+config["app_version"], config["author"], "\n", config["docs"]+"init_sys", "\n")
+    print("🧐"+config["app_name"]+" => ", "\n", "v"+config["app_version"], config["author"], config["docs"]+"init_sys", "\n")
     check_sys_state = check_sys(config, "1")
     if check_sys_state:
         ginthon(config)
@@ -44,7 +44,6 @@ def init_sys(config):
 
 # main
 if __name__ == "__main__":
-    print("\n")
     init_sys(init_config())
     print("\n")
     pass
