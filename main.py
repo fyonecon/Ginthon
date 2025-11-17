@@ -39,8 +39,7 @@ def ginthon():
     process2.start()
     process3.start()
     # 检测所有进程
-    processes = (process1, process2, process3) # 顺序和容量都不可变
-    watch_processes(processes)
+    watch_processes(process1.pid, process2.pid, process3.pid)
     # 等待进程完成
     process1.join()
     process2.join()

@@ -24,6 +24,10 @@ def init_config():
             "port": TOML["flask"]["port"],  # 服务端口 9100
             "debug": TOML["flask"]["debug"],  # True False
         },
+        "pywebview": {
+            "ssl": TOML["pywebview"]["ssl"],  #
+            "debug": TOML["pywebview"]["debug"],  # True False
+        },
         "mysql1": {
             "ipv4": TOML["mysql1"]["ipv4"],  # ip:port
             "db_name": TOML["mysql1"]["db_name"],

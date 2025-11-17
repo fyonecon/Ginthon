@@ -15,7 +15,9 @@ def must_routes(FLASK):
             "methods": ["GET", "POST", "OPTIONS"],
             "status_code": 200
         }
-        html_data = f'<html><body><p>{CONFIG["app_name"]} v{CONFIG["app_version"]}</p></body></html>'
+        html_data = '''
+            <html><meta charset="UTF-8"><body><p id="info">YES</p><script>function show_info() {let info = ["UserAgent：Ginthon", !!window.localStorage, !!window.indexedDB, navigator.webdriver,window.navigator.userAgent, window.location.href]; document.getElementById("info").innerHTML = info; console.log(info);}show_info();</script></body></html>
+        '''
         response_data = flask_request_html(request, route_data, html_data)
         return response_data
 

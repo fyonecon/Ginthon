@@ -12,6 +12,10 @@ debug = false # true false
 port = 9100
 debug = false # true false
 
+[pywebview]
+ssl = false
+debug = false # true false
+
 [mysql1]
 ipv4 = "127.0.0.1:3306" # ip:port
 db_name = "test_db"
