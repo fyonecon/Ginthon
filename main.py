@@ -5,7 +5,7 @@ import multiprocessing
 
 from bootstrap.check_sys import check_sys
 from bootstrap.run_flask import run_flask
-from bootstrap.run_service import run_service
+from bootstrap.run_services import run_services
 from common.global_data import GlobalData
 
 
@@ -15,15 +15,15 @@ def init_flask():
     pass
 
 # 启动后台服务
-def init_service():
-    run_service()
+def init_services():
+    run_services()
     pass
 
 #
 def ginthon():
     # 创建【多核多进程」任务
     process1 = multiprocessing.Process(target=init_flask)
-    process2 = multiprocessing.Process(target=init_service)
+    process2 = multiprocessing.Process(target=init_services)
     # 启动进程
     process1.start()
     process2.start()
