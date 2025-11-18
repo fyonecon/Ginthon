@@ -3,7 +3,7 @@ import time
 import threading
 
 from time import sleep
-from bootstrap.start_time_interval import do_time_interval
+from common.time_interval import do_time_interval
 
 # 杀掉特定pid进程
 def kill_pid_process(pid, timeout=6):

@@ -2,7 +2,7 @@ import threading
 from time import sleep
 
 from common.func import get_date
-from bootstrap.start_time_interval import do_time_interval
+from common.time_interval import do_time_interval
 
 #
 CONFIG = {}
