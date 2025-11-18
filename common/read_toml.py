@@ -9,5 +9,5 @@ def read_toml_config(file_path, tag):
     with open(file_path, "rb") as f:
         config_data = tomllib.load(f)
     #
-    print_log("config.toml = ", tag, config_data)
+    print_log("🔴 config.toml = ", tag)
     return config_data

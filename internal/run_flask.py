@@ -2,6 +2,8 @@ from flask import Flask, jsonify
 from app.flask.routes import custom_routes_api, custom_routes_file
 from flask import make_response, request
 
+from common.config import get_config
+
 #
 CONFIG = {}
 
@@ -73,8 +75,8 @@ def flask_request_html(_request, route_data, back_data):
     # 返回数据
     response = make_response(back_data)
     # 自定义请求头
-    response.headers["author"] = CONFIG["author"]
-    response.headers["app_name"] = CONFIG["app_name"]
+    response.headers["author"] = CONFIG["app"]["author"]
+    response.headers["app_name"] = CONFIG["app"]["app_name"]
     # 拦截请求方法
     if method in methods:  # OK
         reg_code = status_code
@@ -95,8 +97,8 @@ def flask_request_api(_request, route_data, back_data):
     # 返回数据
     response = make_response(jsonify(back_data))
     # 自定义请求头
-    response.headers["author"] = CONFIG["author"]
-    response.headers["app_name"] = CONFIG["app_name"]
+    response.headers["author"] = CONFIG["app"]["author"]
+    response.headers["app_name"] = CONFIG["app"]["app_name"]
     # 拦截请求方法
     if method in methods: # OK
         reg_code = status_code
@@ -117,8 +119,8 @@ def flask_request_file(_request, route_data, back_data):
 def flask_response(response, way, status_code=200, filename="-", filetype=""):
     #
     response.status_code = status_code
-    response.headers["author"] = CONFIG["author"]
-    response.headers["app_name"] = CONFIG["app_name"]
+    response.headers["author"] = CONFIG["app"]["author"]
+    response.headers["app_name"] = CONFIG["app"]["app_name"]
     #
     if way == "html": # html
         response.headers["Content-Type"] = "text/html; charset=utf-8"
@@ -156,10 +158,10 @@ def flask_response(response, way, status_code=200, filename="-", filetype=""):
     pass
 
 # 启动Flask服务
-def run_flask(config):
+def run_flask():
     # 读取配置信息
     global CONFIG
-    CONFIG = config
+    CONFIG = get_config("run_flask")
     #
     print("✅ Flask => ", "http://127.0.0.1:" + str(CONFIG["flask"]["port"])+"/api")
     #

@@ -3,13 +3,15 @@ app_name = "Ginthon"
 app_version = "1.0.0"
 app_class = "ginthon_"
 author = "fyonecon"
+github = "https://github.com/fyonecon/Ginthon"
+docs = "http://datathink.top/#route=ginthon&ap="
 
 [sys]
 log_path = "storage/log/" # /结尾
 debug = false # true false
 
 [flask]
-port = 9100
+port = 9100 # 9100
 debug = false # true false
 
 [pywebview]

@@ -4,6 +4,8 @@ import platform
 import sys
 import socket
 
+from common.config import get_config
+
 #
 CONFIG = {}
 
@@ -23,12 +25,10 @@ def check_port_occupied(host="127.0.0.1", port=9100, timeout=2):
         return False
 
 # 检测系统，硬性条件
-def run_check_sys(config, tag):
+def run_check_sys():
     # 读取配置信息
     global CONFIG
-    CONFIG = config
-    #
-    print("SYS Checking...", tag)
+    CONFIG = get_config("run_check_sys")
     # 至少物理双核
     cpu_count = psutil.cpu_count(logical=False)
     # 至少1GB RAM
@@ -40,11 +40,18 @@ def run_check_sys(config, tag):
     flask_port = CONFIG["flask"]["port"]
     flask_port_state = check_port_occupied('127.0.0.1', flask_port, timeout=2)
     if flask_port_state:
-        flask_port_txt = "❌ 端口被占用：" + str(flask_port)
+        flask_port_txt = "端口被占用：" + str(flask_port)
         pass
     else:
-        flask_port_txt = "✅ 端口可用：" + str(flask_port)
+        flask_port_txt = "端口可用"
         pass
     #
-    print("✅ 系统基础状态 => ", [str(cpu_count)+" Cores", str(total_ram)+" GB", _python_version, flask_port_txt])
-    return cpu_count >= CONFIG["min_cpu_cores"] and total_ram >= CONFIG["min_ram"] and sys.version_info >= CONFIG["min_python_version"] and (not flask_port_state)
+    state = cpu_count >= CONFIG["check"]["min_cpu_cores"] and total_ram >= CONFIG["check"]["min_ram"] and sys.version_info >= CONFIG["check"]["min_python_version"] and (not flask_port_state)
+    if state:
+        msg = "✅ 系统基础状态 => "
+        pass
+    else:
+        msg = "❌ 系统基础状态 => "
+        pass
+    print(msg, [str(cpu_count) + " Cores", str(total_ram) + " GB", _python_version, flask_port_txt])
+    return state

@@ -1,30 +1,32 @@
 import threading
-from time import sleep
 
+from time import sleep
+from common.config import get_config
 from common.func import get_date, print_log
 from common.time_interval import do_time_interval
 
 #
 CONFIG = {}
+process_pids = {"test": "0"}
 
 # 周期服务
 def start_time_interval():
     tag = "run_service_1"
     print_log("🚩周期服务：", "tag="+tag)
     def do_timer1():
-        print_log("do_timer=1=", get_date("%Y-%m-%d %H:%M:%S"))
+        print("do_timer=1=", get_date("%Y-%m-%d %H:%M:%S"))
         pass
     do_time_interval(10, do_timer1, tag, CONFIG)
 
     pass
 
 # 启动服务
-def run_services(config):
+def run_services():
     print("✅ 后台服务 => ", get_date("%Y-%m-%d %H:%M:%S"))
 
     # 读取配置信息
     global CONFIG
-    CONFIG = config
+    CONFIG = get_config("run_services")
     #
     sleep(2)
 

@@ -12,7 +12,7 @@ def test(txt):
 
 # 打印控制台信息
 def print_log(*args):
-    debud = False
+    debud = False # True False
     if debud:
         print(args)
     else:
