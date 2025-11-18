@@ -10,6 +10,15 @@ def test(txt):
     print("公用函数test()：" + txt)
     return txt
 
+# 打印控制台信息
+def print_log(*args):
+    debud = False
+    if debud:
+        print(args)
+    else:
+        pass
+    pass
+
 # 时间日期
 def get_date(format="%Y-%m-%d %H:%M:%S %p %A %B"):
     return datetime.now(utc).strftime(format)

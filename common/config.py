@@ -20,6 +20,7 @@ def init_config():
         "min_cpu_cores": 2,  # 物理核心数
         "min_ram": 1,  # GB
         "min_python_version": (3, 12),  # 默认 (3, 12)
+        "debug": True,
         "flask": {
             "port": TOML["flask"]["port"],  # 服务端口 9100
             "debug": TOML["flask"]["debug"],  # True False

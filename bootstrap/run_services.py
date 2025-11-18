@@ -1,7 +1,7 @@
 import threading
 from time import sleep
 
-from common.func import get_date
+from common.func import get_date, print_log
 from common.time_interval import do_time_interval
 
 #
@@ -10,9 +10,9 @@ CONFIG = {}
 # 周期服务
 def start_time_interval():
     tag = "run_service_1"
-    print("🚩周期服务：", "tag="+tag)
+    print_log("🚩周期服务：", "tag="+tag)
     def do_timer1():
-        print("do_timer=1=", get_date("%Y-%m-%d %H:%M:%S"))
+        print_log("do_timer=1=", get_date("%Y-%m-%d %H:%M:%S"))
         pass
     do_time_interval(10, do_timer1, tag, CONFIG)
 
