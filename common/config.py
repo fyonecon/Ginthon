@@ -6,7 +6,7 @@ from common.read_toml import read_toml_config
 # 初始化
 def get_config(tag):
     # 读取toml配置信息
-    file_path = root_path()+"storage/toml/config.toml"
+    file_path = root_path()+"common/config.toml"
     if not has_file(file_path):
         print("❌ 配置文件不存在：", [file_path, "config.toml"])
         sys.exit(-1) # 不能存在就立即退出程序

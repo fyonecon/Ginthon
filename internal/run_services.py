@@ -60,7 +60,7 @@ def services_for_time_interval():
         services_for_watch_processes()
         #
         pass
-    do_time_interval(10, do_timer1, tag, CONFIG)
+    do_time_interval(6, do_timer1, tag, CONFIG)
     pass
 
 # 启动服务
