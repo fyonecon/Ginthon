@@ -18,7 +18,7 @@ def must_routes(FLASK):
             "status_code": 200
         }
         html_data = '''
-            <html><meta charset="UTF-8"><body><p id="info">YES</p><script>function show_info() {let info = ["UserAgent：Ginthon", !!window.localStorage, !!window.indexedDB, navigator.webdriver,window.navigator.userAgent, window.location.href]; document.getElementById("info").innerHTML = info; console.log(info);}show_info();</script></body></html>
+            <html><meta charset="UTF-8"><body><p id="info" style="color:grey;">YES</p><script>function show_info() {let info = [window.location.host, !!window.localStorage, !!window.indexedDB, navigator.webdriver, navigator.languages, window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light", "✅", window.navigator.userAgent]; document.getElementById("info").innerHTML = info; console.log(info);}show_info();</script></body></html>
         '''
         response_data = flask_request_html(request, route_data, html_data)
         return response_data
