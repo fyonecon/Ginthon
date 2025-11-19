@@ -1,7 +1,7 @@
 import multiprocessing
 
+from common.txt_data import txt_write
 from internal.run_pywebview import run_pywebview
-from internal.watch_processes import watch_processes
 from common.config import get_config
 from internal.run_check_sys import run_check_sys
 from internal.run_flask import run_flask
@@ -32,10 +32,10 @@ def ginthon():
     process1.start()
     process2.start()
     process3.start()
-    # 多文件共享值
-    # set_txt_log()
-    # 检测所有进程
-    watch_processes(process1.pid, process2.pid, process3.pid)
+    # 多文件共享值（写入文件）
+    txt_filename = "running/process_pids.cache"
+    txt_content = str(process1.pid)+"#@"+str(process2.pid)+"#@"+str(process3.pid)
+    txt_write(txt_filename, txt_content)
     # 等待进程完成
     process1.join()
     process2.join()
