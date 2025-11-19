@@ -1,4 +1,3 @@
-from time import sleep
 
 import psutil
 import threading
