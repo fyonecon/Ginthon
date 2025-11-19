@@ -35,12 +35,12 @@ https://jishuzhan.net/article/1963161837455327233
 > 删除.venv文件夹，重新初始化项目即可（pip install -r requirements.txt）
 
 ### 运行项目
-> python internal.py
+> python ginthon.py
 
 3. 打包成安装程序（win、mac、linux）
 > （手动删除/dist/ 和 /build/ 文件夹）
 > 
-> pyinstaller internal.py
+> pyinstaller ginthon.py
 
 ### 常用pip安装库
 如果遇到网络忙或者下载错误，多试几次，不需要更换镜像源（使用官方源即可）。
