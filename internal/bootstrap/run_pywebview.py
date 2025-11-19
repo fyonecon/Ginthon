@@ -1,7 +1,7 @@
 import webview
 
 from internal.common.config import get_config
-from internal.common.func import root_path, has_file
+from internal.common.func import main_path, has_file
 from internal.common.view_auth import make_view_auth
 from internal.app.pywebview.window_events import on_closed,on_closing,on_shown,on_loaded,on_minimized,on_maximized,on_restored,on_resized,on_moved,current_window,on_before_load,on_before_show,on_initialized
 
@@ -19,7 +19,7 @@ def run_pywebview():
     view_auth = make_view_auth(url, CONFIG)
     print("✅ 视窗服务 => ", "URL=" + url)
     #
-    icon = root_path()+"/storage/appicon.png" # app图标
+    icon = CONFIG["sys"]["icon"]
     global WINDOW
     window = webview.create_window(
         title=CONFIG["app"]["app_name"],

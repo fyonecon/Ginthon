@@ -15,7 +15,7 @@ process_pids_txt = None
 def services_for_watch_processes():
     # pids值只获取一次，除非为空
     global process_pids_txt
-    txt_filename = "running/process_pids.cache"
+    txt_filename = "process_pids.cache"
     #
     pid1 = 0
     pid2 = 0

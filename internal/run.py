@@ -33,7 +33,7 @@ def ginthon():
     process2.start()
     process3.start()
     # 多文件共享值（参数写入到文件）
-    txt_filename = "running/process_pids.cache"
+    txt_filename = "process_pids.cache"
     txt_content = str(process1.pid)+"#@"+str(process2.pid)+"#@"+str(process3.pid)
     txt_write(txt_filename, txt_content)
     # 等待进程完成

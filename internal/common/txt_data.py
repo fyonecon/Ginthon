@@ -1,8 +1,11 @@
 import os.path
 
-from internal.common.func import root_path
+from internal.common.func import cache_path
+from internal.common.config import get_config
 
-txt_path = root_path()+"storage/" # /结尾
+#
+_cache_path = cache_path() + "/" + get_config("func")["sys"]["cache_path_main_dir"] # 结尾无/
+txt_path = _cache_path+"/running/" # /结尾
 
 # 写txt文件
 # txt_filename文件格式：xxx.txt。model:"w"覆盖，"a"尾部追加（\n）

@@ -1,7 +1,12 @@
 # 公用函数
 import os
+import sys
+import tomllib
 
 from datetime import datetime, timezone, timedelta
+from pathlib import Path
+
+from internal.common.config import get_config
 
 # 时区
 utc = timezone(timedelta(hours=8))
@@ -32,8 +37,8 @@ def get_time_ms():
 def get_time_s():
     return datetime.now(utc).microsecond // 1000 // 1000
 
-# 获取当前main的绝对
-def root_path():
+# 获取当前main的绝对路径
+def main_path():
     return os.getcwd() + "/"
 
 # 验证当前路径的文件是否存在
@@ -57,11 +62,62 @@ def has_dir(full_dirpath):
             return False
 
 # 创建文件夹（只能在main.py目录或子目录创建）,dirpath开头和结尾都不带 /
-def create_dir(dirpath):
-    root_path = root_path()
-    full_path = root_path+dirpath
+# 只能创建1级子文件夹
+def create_dir_level_1(dirpath):
+    _cache_path = cache_path() + "/" + get_config("func")["sys"]["cache_path_main_dir"] # 结尾无/
+    # 没有主文件就直接创建
+    if not has_dir(_cache_path):
+        os.mkdir(_cache_path)
+        pass
+    # 创建子文件夹
+    full_path = _cache_path+"/"+dirpath
+    # print("create_dir_level_1=", _cache_path, full_path)
     if not has_dir(full_path): # 不存在
         os.mkdir(full_path)
-        return True
+        return True, full_path
     else: # 已存在
-        return True
+        return True, full_path
+
+# 读取系统配置文件
+def read_toml_config(file_path, tag):
+    # 读取toml配置文件
+    if has_file(file_path):
+        with open(file_path, "rb") as f:
+            config_data = tomllib.load(f)
+        return config_data
+        pass
+    else:
+        return ""
+    pass
+
+# 获取系统类型: win mac linux
+def get_platform():
+    # 判断具体系统类型
+    if sys.platform.startswith('win'):
+        return "win"
+    elif sys.platform.startswith('linux'):
+        return "linux"
+    elif sys.platform.startswith('darwin'):
+        return "mac"
+    # elif sys.platform.startswith('cygwin'):
+    #     return "cygwin"
+    else: # 其他平台
+        return sys.platform
+
+# 获取当前平台存储程序缓存的路径
+def cache_path():
+    p = get_platform()
+    if p == "win":
+        localappdata = os.environ.get("LOCALAPPDATA", "")
+        local_path = Path(localappdata)
+        local_cache = local_path / "Cache",
+        return str(local_cache)
+    elif p == "linux":
+        xdg_cache_home = Path(os.environ.get('XDG_CACHE_HOME', Path.home() / '.cache'))
+        return str(xdg_cache_home)
+    elif p == "mac":
+        user_cache_dir = Path.home() / "Library" / "Caches"
+        return str(user_cache_dir)
+    else: # 其他平台
+        return ""
+

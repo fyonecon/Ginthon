@@ -2,7 +2,7 @@
 # 初始化
 def get_config(tag):
     # # 读取toml配置信息
-    # file_path = root_path()+"common/config.toml"
+    # file_path = main_path()+"common/config.toml"
     # if not has_file(file_path):
     #     print("❌ 配置文件不存在：", [file_path, "config.toml"])
     #     sys.exit(-1) # 不能存在就立即退出程序
@@ -56,6 +56,8 @@ def get_config(tag):
             "docs": "http://datathink.top/#route=ginthon&ap=",
         },
         "sys": {
+            "icon": "./frontend/launcher.png", # app图标
+            "cache_path_main_dir": "top.datathink.Ginthon", # 缓存主目录名，默认 top.datathink.Ginthon
             "debug": False,  # True False
         },
         "check": {
