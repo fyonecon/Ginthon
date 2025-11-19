@@ -1,6 +1,6 @@
 import os.path
 
-from common.func import root_path
+from internal.common.func import root_path
 
 txt_path = root_path()+"storage/" # /结尾
 

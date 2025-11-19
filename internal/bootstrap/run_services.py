@@ -1,11 +1,11 @@
 import threading
 
 from time import sleep
-from common.config import get_config
-from common.func import get_date, print_log
-from common.time_interval import do_time_interval
-from common.txt_data import txt_read, txt_remove
-from internal.watch_processes import watch_processes
+from internal.common.config import get_config
+from internal.common.func import get_date, print_log
+from internal.common.time_interval import do_time_interval
+from internal.common.txt_data import txt_read, txt_remove
+from internal.bootstrap.watch_processes import watch_processes
 
 #
 CONFIG = {}

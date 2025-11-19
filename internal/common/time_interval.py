@@ -1,6 +1,6 @@
 import schedule
 import time
-from common.func import get_time_ms, get_date
+from internal.common.func import get_time_ms, get_date
 
 # 周期任务，最少5s，最大365天
 def do_time_interval(timeout_s, call_func, tag="", config=None):

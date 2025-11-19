@@ -1,11 +1,11 @@
 import multiprocessing
 
-from common.txt_data import txt_write
-from internal.run_pywebview import run_pywebview
-from common.config import get_config
-from internal.run_check_sys import run_check_sys
-from internal.run_flask import run_flask
-from internal.run_services import run_services
+from internal.common.txt_data import txt_write
+from internal.bootstrap.run_pywebview import run_pywebview
+from internal.common.config import get_config
+from internal.bootstrap.run_check_sys import run_check_sys
+from internal.bootstrap.run_flask import run_flask
+from internal.bootstrap.run_services import run_services
 
 # 启动后台服务
 def init_services():

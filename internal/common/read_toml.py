@@ -1,6 +1,6 @@
 import tomllib
 
-from common.func import print_log
+from internal.common.func import print_log
 
 
 # 读取系统配置文件

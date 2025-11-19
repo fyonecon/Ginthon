@@ -1,7 +1,7 @@
 # Ginthon主入口
 # 代码习惯基于Golang。
 
-from bootstrap.run import run
+from internal.run import run
 
 # main
 if __name__ == "__main__":

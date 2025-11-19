@@ -25,14 +25,22 @@ https://jishuzhan.net/article/1963161837455327233
 > （删除老.venv，有就删除）-- 设置 -- Python -- Interpreter -- Add Interpreter -- Add local interpreter -- Generate New -- 创建新的.venv即可。
 
 
-2. 初始化依赖：
+2. 初始化项目依赖：
 > pip install -r requirements.txt
 
-### 导出项目依赖（🔥）：
+### 导出或更新项目所有依赖（🔥）：
 > pip freeze > requirements.txt
 
-### 升级pip
-> pip install --upgrade pip
+### 清除不必要的项目依赖
+> 删除.venv文件夹，重新初始化项目即可（pip install -r requirements.txt）
+
+### 运行项目
+> python internal.py
+
+3. 打包成安装程序（win、mac、linux）
+> （手动删除/dist/ 和 /build/ 文件夹）
+> 
+> pyinstaller internal.py
 
 ### 常用pip安装库
 如果遇到网络忙或者下载错误，多试几次，不需要更换镜像源（使用官方源即可）。
@@ -55,6 +63,8 @@ https://jishuzhan.net/article/1963161837455327233
 > 
 >pip3 install Playwright
 >
+> pip3 install pyinstaller
+> 
 
 #### 服务或框架
 > pip3 install flask
