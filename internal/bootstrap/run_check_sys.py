@@ -7,7 +7,6 @@ import psutil
 
 from internal.common.config import get_config
 from internal.common.func import has_dir, create_dir_level_1
-from internal.test_func import test_func
 
 #
 CONFIG = {}
@@ -61,10 +60,6 @@ def run_check_sys():
     else:
         msg = "❌ 系统基础状态 => "
         pass
-    #
-    test_func({
-        "CONFIG": CONFIG,
-    })
     #
     print(msg, [str(cpu_count) + " Cores", str(total_ram) + " GB", _python_version, flask_port_txt])
     return state

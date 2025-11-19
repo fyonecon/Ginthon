@@ -18,8 +18,8 @@ def test(txt):
 
 # 打印控制台信息
 def print_log(*args):
-    debud = False # True False
-    if debud:
+    debug = True # True False
+    if debug:
         print(args)
     else:
         pass
