@@ -1,10 +1,12 @@
 
-import psutil
 import platform
-import sys
 import socket
+import sys
+
+import psutil
 
 from common.config import get_config
+from common.func import root_path, has_dir, create_dir
 
 #
 CONFIG = {}
@@ -26,9 +28,26 @@ def check_port_occupied(host="127.0.0.1", port=9100, timeout=2):
 
 # 检测系统，硬性条件
 def run_check_sys():
+    # 创建必要文件夹及检查必要目录是否存在
+    _root_path = root_path()
+    #
+    must_dir_storage = "storage"
+    if not has_dir(_root_path + must_dir_storage):
+        create_dir(_root_path + must_dir_storage)
+        pass
+    must_dir_running = "storage/running"
+    if not has_dir(_root_path + must_dir_running):
+        create_dir(_root_path + must_dir_running)
+        pass
+    must_dir_log = "storage/log"
+    if not has_dir(_root_path + must_dir_log):
+        create_dir(_root_path + must_dir_log)
+        pass
+
     # 读取配置信息
     global CONFIG
     CONFIG = get_config("run_check_sys")
+
     # 至少物理双核
     cpu_count = psutil.cpu_count(logical=False)
     # 至少1GB RAM

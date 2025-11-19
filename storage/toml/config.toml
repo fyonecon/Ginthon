@@ -15,7 +15,7 @@ port = 9100 # 9100
 debug = false # true false
 
 [pywebview]
-ssl = false
+ssl = false # true false
 debug = false # true false
 
 [mysql1]

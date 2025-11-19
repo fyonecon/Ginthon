@@ -1,4 +1,5 @@
 # 公用函数
+import os
 
 from datetime import datetime, timezone, timedelta
 
@@ -30,3 +31,37 @@ def get_time_ms():
 # 获取秒时间
 def get_time_s():
     return datetime.now(utc).microsecond // 1000 // 1000
+
+# 获取当前main的绝对
+def root_path():
+    return os.getcwd() + "/"
+
+# 验证当前路径的文件是否存在
+def has_file(full_filepath):
+    if os.path.exists(full_filepath): # 存在文件或文件夹
+        if os.path.isfile(full_filepath): # 是文件
+            return True
+        else:
+            return False
+    else:
+        return False
+
+# 验证当前目录是否存在
+def has_dir(full_dirpath):
+    if os.path.isfile(full_dirpath):  # 是文件
+        return False
+    else:
+        if os.path.exists(full_dirpath): # 存在文件或文件夹
+            return True
+        else:
+            return False
+
+# 创建文件夹（只能在main.py目录或子目录创建）,dirpath开头和结尾都不带 /
+def create_dir(dirpath):
+    root_path = root_path()
+    full_path = root_path+dirpath
+    if not has_dir(full_path): # 不存在
+        os.mkdir(full_path)
+        return True
+    else: # 已存在
+        return True

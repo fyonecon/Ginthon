@@ -1,6 +1,8 @@
 import os.path
 
-txt_path = "./storage/" # /结尾
+from common.func import root_path
+
+txt_path = root_path()+"storage/" # /结尾
 
 # 写txt文件
 # txt_filename文件格式：xxx.txt。model:"w"覆盖，"a"尾部追加（\n）
