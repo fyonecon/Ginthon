@@ -5,7 +5,6 @@ import tomllib
 
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
-
 from internal.common.config import get_config
 
 # 时区
@@ -18,7 +17,7 @@ def test(txt):
 
 # 打印控制台信息
 def print_log(*args):
-    debug = True # True False
+    debug = get_config("func")["sys"]["debug"] # True False
     if debug:
         print(args)
     else:

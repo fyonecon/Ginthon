@@ -1,11 +1,14 @@
+import sys
+
 
 # 获取当前window对象
 def current_window(window):
-    print(window.get_current_url())
+    print("current_window")
     pass
 
 def on_closed():
     print('pywebview window is closed')
+    sys.exit(1)
     pass
 
 def on_before_load():

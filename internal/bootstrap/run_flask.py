@@ -3,6 +3,7 @@ from internal.app.flask.routes import custom_routes_api, custom_routes_file
 from flask import make_response, request
 
 from internal.common.config import get_config
+from internal.common.func import print_log
 
 #
 CONFIG = {}
@@ -163,7 +164,7 @@ def run_flask():
     global CONFIG
     CONFIG = get_config("run_flask")
     #
-    print("✅ Flask => ", "http://127.0.0.1:" + str(CONFIG["flask"]["port"])+"/api")
+    print_log("✅ Flask => ", "http://127.0.0.1:" + str(CONFIG["flask"]["port"])+"/api")
     #
     FLASK = Flask(__name__)
     # 必要路由
