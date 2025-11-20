@@ -216,7 +216,7 @@ def init_window():
         # url=_view_url,
         html=_view_html,
         min_size=(520, 520),
-        width=540, height=540,
+        width=720, height=540,
         hidden=False,
         frameless=False,
         text_select=True,
@@ -252,7 +252,7 @@ def init_window():
         process_flask = psutil.Process(FLASK_PID)
         process_flask.kill()
         pass
-    except:
+    except Exception:
         print("❌ 不存在的PID：", [SERVICES_PID, FLASK_PID])
         pass
 

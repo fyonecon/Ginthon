@@ -6,6 +6,7 @@ import tomllib
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from internal.common.config import get_config
+from urllib.parse import urlparse
 
 # 时区
 utc = timezone(timedelta(hours=8))
@@ -119,4 +120,21 @@ def cache_path():
         return str(user_cache_dir)
     else: # 其他平台
         return ""
+
+# 是否是网址
+def is_url(url):
+    try:
+        result = urlparse(url)
+        # 检查必要的组件
+        if not all([result.scheme, result.netloc]):
+            return False
+        # 检查协议否有效
+        if result.scheme not in ['http', 'https', 'ftp', 'ftps']:
+            return False
+        # 检查网络位置（域名或IP）
+        if not result.netloc:
+            return False
+        return True
+    except Exception:
+        return False
 

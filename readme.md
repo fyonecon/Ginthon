@@ -1,19 +1,31 @@
 
-# Ginthon是用Python写的“视图窗口+稳定服务”的多功能程序基建。
+## Ginthon是用Python写的“视图窗口+稳定服务”的多功能程序基建。
 代码习惯基于Golang。
 
 代码目前只在Git^hu^b上发布（防^爬说明20251116）。
 
 框架地址：https://github.com/fyonecon/Ginthon 
 
+### 程序目标：
 
-### Python教程
+需要 Python3.12+
+
+需要 webview或webkit基础环境
+
+适配 Mac、Win、Linux
+
+开发IDE PyCharm（推荐）
+
+### Python教程：
 
 Python3:
 https://www.runoob.com/python3/python-queue.html
 
 Flask：
 https://flask.palletsprojects.com/en/stable/installation/#install-flask
+
+PyWebview
+https://pywebview.idepy.com/guide/usage.html
 
 爬虫大纲：
 https://jishuzhan.net/article/1963161837455327233
@@ -31,16 +43,21 @@ https://jishuzhan.net/article/1963161837455327233
 ### 导出或更新项目所有依赖（🔥）：
 > pip freeze > requirements.txt
 
-### 清除不必要的项目依赖
-> 删除.venv文件夹，重新初始化项目即可（pip install -r requirements.txt）
+### 清除不必要的项目依赖：
+> 删除.venv文件夹，重新初始化项目依赖即可.
 
-### 运行项目
+### 运行项目：
 > python ginthon.py
 
-3. 打包成安装程序（win、mac、linux）
+### 打包成安装程序（win、mac、linux）：
 > （手动删除/dist/ 和 /build/ 文件夹）
 > 
 > pyinstaller ginthon.py
+>
+
+### 运行效果：
+![运行效果](./show.png)
+
 
 ### 常用pip安装库
 如果遇到网络忙或者下载错误，多试几次，不需要更换镜像源（使用官方源即可）。
