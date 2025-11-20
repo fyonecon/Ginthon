@@ -25,6 +25,7 @@ def get_config(tag):
             "debug": False,  # True False
         },
         "pywebview": {
+            "url": "http://127.0.0.1:9100/?", # 网址（协议+网址+端口+路径，如：http://127.0.0.1:9100/? ）
             "ssl": False,  # True False
             "debug": False,  # True False
         },

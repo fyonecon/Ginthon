@@ -23,9 +23,9 @@ FLASK_PID = None
 
 # 视窗view-url
 def view_url():
-    url = "http://127.0.0.1:" + str(CONFIG["flask"]["port"])
+    url = CONFIG["pywebview"]["url"]
     view_auth = make_view_auth(url, CONFIG)
-    url = url + "?view_auth=" + view_auth + "&version=" + CONFIG["app"]["app_version"] + "&ap=" + CONFIG["app"][ "app_name"]
+    url = url + "view_auth=" + view_auth + "&version=" + CONFIG["app"]["app_version"] + "&ap=" + CONFIG["app"][ "app_name"]
     #
     return url
 
