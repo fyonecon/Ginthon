@@ -11,7 +11,6 @@ def get_config(tag):
             "docs": "http://datathink.top/#route=ginthon&ap=",
         },
         "sys": {
-            "icon": "./frontend/launcher.png", # app图标
             "cache_path_main_dir": "top.datathink.Ginthon", # 缓存主目录名，默认 top.datathink.Ginthon
             "debug": False,  # True False
         },
@@ -28,6 +27,9 @@ def get_config(tag):
             "url": "http://127.0.0.1:9100/?", # 网址（协议+网址+端口+路径，如：http://127.0.0.1:9100/? ）
             "ssl": False,  # True False
             "debug": False,  # True False
+        },
+        "pystray": {
+            "icon": "./frontend/launcher.png", # 状态栏托盘图标
         },
         "mysql1": {
             "ipv4": "127.0.0.1:3306",  # ip:port

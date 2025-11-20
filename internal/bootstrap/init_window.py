@@ -6,6 +6,7 @@ import psutil
 import os
 import threading
 
+from internal.bootstrap.run_pystray import run_pystray
 from internal.bootstrap.run_services import run_services
 from internal.bootstrap.run_flask import run_flask
 from internal.common.config import get_config
@@ -20,6 +21,7 @@ WINDOW = None
 WEBVIEW_PID = None
 SERVICES_PID = None
 FLASK_PID = None
+PYSTRAY_PID = None
 
 # 视窗view-url
 def view_url():
@@ -157,24 +159,29 @@ def view_html(URL):
 def join_events(_window):
     global SERVICES_PID
     global FLASK_PID
+    global PYSTRAY_PID
 
     print_log("✅ Join ", "Process")
 
     # 创建线程
     t1 = threading.Thread(target=run_services)
     t2 = threading.Thread(target=run_flask)
+    t3 = threading.Thread(target=run_pystray)
 
     # 启动线程
     t1.start()
     t2.start()
+    t3.start()
 
     # 获取pid
     # SERVICES_PID = t1.pid
     # FLASK_PID = t2.pid
+    # PYSTRAY_PID = t3.pid
 
     # 等待线程结束
     t1.join()
     t2.join()
+    t3.join()
 
     return
 
@@ -183,18 +190,22 @@ def join_events(_window):
     # 创建进程（pywebview中创建multiprocessing会触发无限webview启动）
     process_services = multiprocessing.Process(target=run_services)
     process_flask = multiprocessing.Process(target=run_flask)
+    process_pystray = multiprocessing.Process(target=run_pystray)
 
     # 启动进程
     process_services.start()
     process_flask.start()
+    process_pystray.start()
 
     # 获取pid
     SERVICES_PID = process_services.pid
     FLASK_PID = process_flask.pid
+    PYSTRAY_PID = process_pystray.pid
 
     # 等待进程完成
     process_services.join()
     process_flask.join()
+    process_pystray.join()
 
     return
 
@@ -202,9 +213,10 @@ def join_events(_window):
 def init_window():
     global CONFIG
     global WINDOW
+    global WEBVIEW_PID
     global SERVICES_PID
     global FLASK_PID
-    global WEBVIEW_PID
+    global PYSTRAY_PID
     #
     CONFIG = get_config("run_pywebview")
     _view_url = view_url()
@@ -247,16 +259,19 @@ def init_window():
 
     # 主动杀掉join_events服务进程
     try:
+        print("主动杀剩余进程：", [SERVICES_PID, FLASK_PID, PYSTRAY_PID])
         process_services = psutil.Process(SERVICES_PID)
         process_services.kill()
         process_flask = psutil.Process(FLASK_PID)
         process_flask.kill()
+        process_pystray = psutil.Process(PYSTRAY_PID)
+        process_pystray.kill()
         pass
     except Exception:
-        print("❌ 不存在的PID：", [SERVICES_PID, FLASK_PID])
+        print("❌ 不存在的PID：", [SERVICES_PID, FLASK_PID, PYSTRAY_PID])
         pass
 
     #
-    print("===视窗服务已经结束===", [WEBVIEW_PID, SERVICES_PID, FLASK_PID])
+    print("===视窗服务已经结束===", [WEBVIEW_PID, SERVICES_PID, FLASK_PID, PYSTRAY_PID])
     #
     return
