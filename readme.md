@@ -90,6 +90,8 @@ https://jishuzhan.net/article/1963161837455327233
 > 
 > pip3 install schedule
 > 
+> pip3 install pystray
+> 
 
 #### 读写office文件
 >pip3 install xlrd
