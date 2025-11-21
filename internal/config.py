@@ -1,6 +1,6 @@
 
 # 配置信息
-def get_config(tag):
+def get_config(tag=""):
     return {
         "app": {
             "app_name": "Ginthon",

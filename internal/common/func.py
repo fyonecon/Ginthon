@@ -5,7 +5,7 @@ import tomllib
 
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
-from internal.common.config import get_config
+from internal.config import get_config
 from urllib.parse import urlparse
 
 # 时区

@@ -1,5 +1,3 @@
-from time import sleep
-
 import webview
 import multiprocessing
 import psutil
@@ -9,7 +7,7 @@ import threading
 from internal.bootstrap.run_pystray import run_pystray
 from internal.bootstrap.run_services import run_services
 from internal.bootstrap.run_flask import run_flask
-from internal.common.config import get_config
+from internal.config import get_config
 from internal.common.func import print_log
 from internal.common.view_auth import make_view_auth
 # from internal.app.pywebview.window_events import on_closed,on_closing,on_shown,on_loaded,on_minimized,on_maximized,on_restored,on_resized,on_moved,on_before_load,on_before_show,on_initialized

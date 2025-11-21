@@ -1,7 +1,7 @@
 import threading
 
 from time import sleep
-from internal.common.config import get_config
+from internal.config import get_config
 from internal.common.func import get_date, print_log
 from internal.common.time_interval import do_time_interval
 

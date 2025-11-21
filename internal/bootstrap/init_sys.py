@@ -1,5 +1,5 @@
 
-from internal.common.config import get_config
+from internal.config import get_config
 from internal.bootstrap.run_check_sys import run_check_sys
 from internal.bootstrap.init_window import init_window
 from internal.common.func import print_log
