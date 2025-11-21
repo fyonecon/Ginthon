@@ -47,12 +47,12 @@ https://jishuzhan.net/article/1963161837455327233
 > 删除.venv文件夹，重新初始化项目依赖即可.
 
 ### 运行项目：
-> python ginthon.py
+> python main.py
 
 ### 打包成安装程序（win、mac、linux）：
 > （手动删除/dist/ 和 /build/ 文件夹）
 > 
-> pyinstaller ginthon.py
+> pyinstaller main.py
 >
 
 ### 运行效果：
