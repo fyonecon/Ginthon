@@ -16,6 +16,8 @@
 
 开发IDE PyCharm（推荐）
 
+window是主程A，tray是主程B，A启动B可执行文件
+
 ### Python教程：
 
 Python3:
