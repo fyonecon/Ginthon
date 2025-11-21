@@ -2,9 +2,14 @@
 import os
 import sys
 import tomllib
+import random
+import string
+import hashlib
 
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
+
+from internal.common.kits.secret_aes import aes_encrypt
 from internal.config import get_config
 from urllib.parse import urlparse
 
@@ -138,3 +143,30 @@ def is_url(url):
     except Exception:
         return False
 
+# string 转 bytes
+def str_to_bytes(txt: str):
+    return txt.encode("utf-8")
+
+# 截取固定长度的字符串，从第1位
+def truncate_string(text, length):
+    if len(text) <= length:
+        return text
+    return text[:length]
+
+# 生成指定长度范围内的随机字母数字字符串
+def rand_range_string(min_length, max_length):
+    length = random.randint(min_length, max_length)
+    characters = string.ascii_letters + string.digits
+    return "".join(random.choice(characters) for _ in range(length))
+
+# 字符串加密
+def str_encode(txt, key="25nian11y21rzhw22dian27"):
+    return aes_encrypt(txt, str_to_bytes(truncate_string(key, 16)))
+
+# 字符串解密
+def str_decode(txt, key="25nian11y21rzhw22dian27"):
+    return aes_encrypt(txt, str_to_bytes(truncate_string(key, 16)))
+
+# md5
+def md5(txt):
+    return hashlib.md5(txt.encode("utf-8")).hexdigest()

@@ -12,6 +12,7 @@ def get_config(tag=""):
         },
         "sys": {
             "cache_path_main_dir": "top.datathink.Ginthon", # 缓存主目录名，默认 top.datathink.Ginthon
+            "running_id_filename": "running_id.cache", # 
             "debug": False,  # True False
         },
         "check": {
@@ -24,7 +25,8 @@ def get_config(tag=""):
             "debug": False,  # True False
         },
         "pywebview": {
-            "url": "http://127.0.0.1:9100/?", # 网址（协议+网址+端口+路径，如：http://127.0.0.1:9100/? ）
+            "url": "http://127.0.0.1:9100/html/view", # 网址（协议+网址+端口+路径，如：http://127.0.0.1:9100/? ）
+            "secret_key": "2025nian11yue21rizhouwu22dian23", # 密钥, len>=16
             "ssl": False,  # True False
             "debug": False,  # True False
         },

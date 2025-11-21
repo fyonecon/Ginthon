@@ -9,7 +9,7 @@ from internal.bootstrap.run_services import run_services
 from internal.bootstrap.run_flask import run_flask
 from internal.config import get_config
 from internal.common.func import print_log
-from internal.common.view_auth import make_view_auth
+from internal.common.view_auth import make_view_auth, make_view_rand_id
 # from internal.app.pywebview.window_events import on_closed,on_closing,on_shown,on_loaded,on_minimized,on_maximized,on_restored,on_resized,on_moved,on_before_load,on_before_show,on_initialized
 # from internal.bootstrap.run0 import view_init, view_closed
 
@@ -24,8 +24,9 @@ PYSTRAY_PID = None
 # 视窗view-url
 def view_url():
     url = CONFIG["pywebview"]["url"]
+    view_rand_id = make_view_rand_id(url, CONFIG)
     view_auth = make_view_auth(url, CONFIG)
-    url = url + "view_auth=" + view_auth + "&version=" + CONFIG["app"]["app_version"] + "&ap=" + CONFIG["app"][ "app_name"]
+    url = url+ "/" + view_rand_id + "?" + "view_auth=" + view_auth + "&version=" + CONFIG["app"]["app_version"] + "&ap=" + CONFIG["app"][ "app_name"]
     #
     return url
 

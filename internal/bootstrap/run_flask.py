@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from internal.app.flask.routes import custom_routes_api, custom_routes_file
+from internal.app.flask.routes import custom_routes_html, custom_routes_api, custom_routes_file
 from flask import make_response, request
 
 from internal.config import get_config
@@ -19,7 +19,7 @@ def must_routes(FLASK):
             "status_code": 200
         }
         html_data = '''
-            <html><meta charset="UTF-8"><body><p id="info" style="color:grey;">YES</p><script>function show_info() {let info = [window.location.host, !!window.localStorage, !!window.indexedDB, navigator.webdriver, navigator.languages, window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light", "✅", window.navigator.userAgent]; document.getElementById("info").innerHTML = info; console.log(info);}show_info();</script></body></html>
+            <html><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" /><body><p id="info" style="color:grey;">YES</p><script>function show_info() {let info = [window.location.host, !!window.localStorage, !!window.indexedDB, navigator.webdriver, navigator.languages, window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light", "✅", window.navigator.userAgent]; document.getElementById("info").innerHTML = info; console.log(info);}show_info();</script></body></html>
         '''
         response_data = flask_request_html(request, route_data, html_data)
         return response_data
@@ -170,6 +170,7 @@ def run_flask():
     # 必要路由
     must_routes(FLASK)
     # 注册自定义路由
+    custom_routes_html(FLASK, flask_request_html)
     custom_routes_api(FLASK, flask_request_api)
     custom_routes_file(FLASK, flask_request_file)
     #
