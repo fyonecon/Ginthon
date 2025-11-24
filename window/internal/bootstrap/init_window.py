@@ -198,7 +198,7 @@ def join_events(_window):
 
     return
 
-# 视窗
+# 视窗（pywebview必须运行在主线程上）
 def init_window():
     global CONFIG
     global WINDOW
