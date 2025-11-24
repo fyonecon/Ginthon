@@ -4,8 +4,8 @@ import socket
 import sys
 import psutil
 
-from window.internal.config import get_config
-from window.internal.common.func import create_dir_level_1
+from internal.config import get_config
+from internal.common.func import create_dir_level_1
 
 #
 CONFIG = {}

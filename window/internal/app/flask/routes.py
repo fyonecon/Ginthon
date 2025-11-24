@@ -1,6 +1,6 @@
 from flask import send_file, request
 
-from window.internal.common.view_auth import check_view_rand_id
+from internal.common.view_auth import check_view_rand_id
 
 
 # 自定义路由，视图专用

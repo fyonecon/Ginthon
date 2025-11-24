@@ -1,9 +1,9 @@
 from flask import Flask, jsonify
-from window.internal.app.flask.routes import custom_routes_html, custom_routes_api, custom_routes_file
+from internal.app.flask.routes import custom_routes_html, custom_routes_api, custom_routes_file
 from flask import make_response, request
 
-from window.internal.config import get_config
-from window.internal.common.func import print_log
+from internal.config import get_config
+from internal.common.func import print_log
 
 #
 CONFIG = {}

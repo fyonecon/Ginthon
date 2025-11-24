@@ -4,8 +4,8 @@ import socket
 import sys
 import psutil
 
-from tray.internal.config import get_config
-from tray.internal.common.func import create_dir_level_1
+from internal.config import get_config
+from internal.common.func import create_dir_level_1
 
 #
 CONFIG = {}
@@ -46,18 +46,8 @@ def run_check_sys():
     # 最小Python版本
     _python_version = platform.python_version()
 
-    # 判断端口是否被占用
-    flask_port = CONFIG["flask"]["port"]
-    flask_port_state = check_port_occupied('127.0.0.1', flask_port, timeout=2)
-    if flask_port_state:
-        flask_port_txt = "端口被占用：" + str(flask_port)
-        pass
-    else:
-        flask_port_txt = "端口可用"
-        pass
-
     # 校验可用状态
-    state = cpu_count >= CONFIG["check"]["min_cpu_cores"] and total_ram >= CONFIG["check"]["min_ram"] and sys.version_info >= CONFIG["check"]["min_python_version"] and (not flask_port_state)
+    state = cpu_count >= CONFIG["check"]["min_cpu_cores"] and total_ram >= CONFIG["check"]["min_ram"] and sys.version_info >= CONFIG["check"]["min_python_version"]
     if state:
         msg = "✅ 系统基础状态 => "
         pass
@@ -66,5 +56,5 @@ def run_check_sys():
         pass
 
     #
-    print(msg, [str(cpu_count) + " Cores", str(total_ram) + " GB", _python_version, flask_port_txt])
+    print(msg, [str(cpu_count) + " Cores", str(total_ram) + " GB", _python_version])
     return state

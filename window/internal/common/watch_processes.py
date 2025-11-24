@@ -1,7 +1,7 @@
 import psutil
 import threading
 
-from window.internal.common.func import print_log
+from internal.common.func import print_log
 
 # 按照主进程杀死所有进程
 def kill_process_tree(_ppid):

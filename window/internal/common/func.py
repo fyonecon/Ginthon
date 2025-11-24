@@ -9,8 +9,8 @@ import hashlib
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-from window.internal.common.kits.secret_aes import aes_encrypt
-from window.internal.config import get_config
+from internal.common.kits.secret_aes import aes_encrypt
+from internal.config import get_config
 from urllib.parse import urlparse
 
 # 时区

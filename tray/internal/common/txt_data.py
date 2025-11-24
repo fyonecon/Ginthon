@@ -1,7 +1,7 @@
 import os.path
 
-from tray.internal.common.func import cache_path
-from tray.internal.config import get_config
+from internal.common.func import cache_path
+from internal.config import get_config
 
 #
 _cache_path = cache_path() + "/" + get_config("func")["sys"]["cache_path_main_dir"] # 结尾无/

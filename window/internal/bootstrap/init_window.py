@@ -4,11 +4,11 @@ import psutil
 import os
 import threading
 
-from window.internal.bootstrap.run_services import run_services
-from window.internal.bootstrap.run_flask import run_flask
-from window.internal.config import get_config
-from window.internal.common.func import print_log, get_platform
-from window.internal.common.view_auth import make_view_auth, make_view_rand_id
+from internal.bootstrap.run_services import run_services
+from internal.bootstrap.run_flask import run_flask
+from internal.config import get_config
+from internal.common.func import print_log, get_platform
+from internal.common.view_auth import make_view_auth, make_view_rand_id
 # from internal.app.pywebview.window_events import on_closed,on_closing,on_shown,on_loaded,on_minimized,on_maximized,on_restored,on_resized,on_moved,on_before_load,on_before_show,on_initialized
 # from internal.bootstrap.run0 import view_init, view_closed
 

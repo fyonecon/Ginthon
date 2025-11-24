@@ -2,7 +2,7 @@ import webbrowser
 import webview
 import threading
 
-from window.internal.common.func import is_url
+from internal.common.func import is_url
 
 # 改变url
 def load_url(window, new_url):

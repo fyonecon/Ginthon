@@ -1,8 +1,8 @@
-from window.internal.common.txt_data import txt_remove, txt_write
-from window.internal.config import get_config
-from window.internal.bootstrap.run_check_sys import run_check_sys
-from window.internal.bootstrap.init_window import init_window
-from window.internal.common.func import rand_range_string, print_log
+from internal.common.txt_data import txt_remove, txt_write
+from internal.config import get_config
+from internal.bootstrap.run_check_sys import run_check_sys
+from internal.bootstrap.init_window import init_window
+from internal.common.func import rand_range_string, print_log
 
 
 # 程序主入口

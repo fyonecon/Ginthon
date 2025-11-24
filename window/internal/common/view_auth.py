@@ -1,6 +1,6 @@
-from window.internal.common.func import str_encode, md5
-from window.internal.common.txt_data import txt_read
-from window.internal.config import get_config
+from internal.common.func import str_encode, md5
+from internal.common.txt_data import txt_read
+from internal.config import get_config
 
 def make_view_rand_id(url, config):
     CONFIG = config
