@@ -48,6 +48,18 @@ https://jishuzhan.net/article/1963161837455327233
 ### 清除不必要的项目依赖：
 > 删除.venv文件夹，重新初始化项目依赖即可.
 
+### 拉取仓库：
+> 视图及服务·主程序：
+> 
+> git clone -b main https://github.com/fyonecon/Ginthon.git Ginthon-Main
+> 
+
+> 状态栏托盘·次程序：
+> 
+> git clone -b tray https://github.com/fyonecon/Ginthon.git Ginthon-Tray
+> 
+
+
 ### 运行项目：
 > python main.py
 
