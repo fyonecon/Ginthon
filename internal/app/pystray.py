@@ -1,8 +1,11 @@
 from time import sleep
 
 import requests
+import os
 
+from internal.common.func import print_log
 from internal.common.view_auth import make_rand_id, make_view_auth, make_rand_token
+from internal.common.watch_pid import kill_process_by_pid
 from internal.config import get_config
 
 
@@ -32,7 +35,7 @@ def request_window(do):
     # POST
     response = requests.post(url=url, timeout=3, headers=headers, json=data)
     back_data = response.json()
-    print("back_data=", back_data)
+    print_log("back_data=", back_data)
     #
     state = back_data["state"]
     msg = back_data["msg"]
@@ -41,9 +44,19 @@ def request_window(do):
 
 # 托盘菜单操作
 # 1 show， 0 hide
+SHOW_HIDE_STATE = "show"
 def on_show_or_hide(icon, item_text):
-    state, msg = request_window("app@show_or_hide")
-    print("接口返回：", [state, msg])
+    global SHOW_HIDE_STATE
+    if SHOW_HIDE_STATE == "show":
+        SHOW_HIDE_STATE = "hide"
+        do = "app@hide"
+        pass
+    else:
+        SHOW_HIDE_STATE = "show"
+        do = "app@show"
+        pass
+    state, msg = request_window(do)
+    print_log("接口返回：", [state, msg])
     if state == 1:
         #
         pass
@@ -56,7 +69,7 @@ def on_show_or_hide(icon, item_text):
 # 1 成功
 def on_about(icon, item_text):
     state, msg = request_window("app@about")
-    print("接口返回：", [state, msg])
+    print_log("接口返回：", [state, msg])
     if state == 1:
         #
         pass
@@ -69,10 +82,12 @@ def on_about(icon, item_text):
 # 1 exit
 def on_exit(icon, item):
     state, msg = request_window("app@exit")
-    print("接口返回：", [state, msg])
+    print_log("接口返回：", [state, msg])
     if state == 1:
-        sleep(1)
-        icon.stop()
+        # sleep(1)
+        main_pid = os.getpid()
+        kill_process_by_pid(main_pid)
+        # icon.stop()
         #
         pass
     else:

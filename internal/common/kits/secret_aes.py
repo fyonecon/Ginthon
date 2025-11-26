@@ -1,5 +1,5 @@
 import base64
-from Crypto.Cipher import AES
+from Crypto.Cipher import AES # pip3 install pycryptodome
 from Crypto.Util.Padding import pad, unpad
 
 # string 转 bytes

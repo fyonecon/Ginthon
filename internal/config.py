@@ -4,7 +4,7 @@ def get_config(tag=""):
     return {
         "app": {
             "app_name": "Ginthon",
-            "app_version": "1.2.0",  # 1.0.0
+            "app_version": "1.2.1",  # 1.0.0
             "app_class": "ginthon_tray_",
             "author": "fyonecon",
             "github": "https://github.com/fyonecon/Ginthon",
@@ -19,6 +19,11 @@ def get_config(tag=""):
             "min_cpu_cores": 2,  # 物理核心数
             "min_ram": 1,  # GB
             "min_python_version": (3, 12),  # 默认最低(3, 12)，即3.12.0
+        },
+        "flask": {
+            "white_hosts": ["http://127.0.0.1:9100", "https://127.0.0.1:9100", "http://datathink.top", "https://datathink.top"],  # 白名单域名或IP，格式：协议+IPv4+port、协议+域名
+            "port": 9100,  # 服务端口 9100
+            "debug": False,  # True False
         },
         "pywebview": {
             "url": "http://127.0.0.1:9100/api/tray",  # 网址（协议+网址+端口+路径，如：http://127.0.0.1:9100/? ）
