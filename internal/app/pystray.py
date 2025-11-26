@@ -1,6 +1,8 @@
+from time import sleep
+
 import requests
 
-from internal.common.view_auth import make_view_rand_id, make_view_auth
+from internal.common.view_auth import make_rand_id, make_view_auth, make_rand_token
 from internal.config import get_config
 
 
@@ -9,38 +11,33 @@ def request_window(do):
     CONFIG = get_config()
 
     #
-    tray_rand_id = make_view_rand_id("", CONFIG)
+    app_class = CONFIG["app"]["app_class"]
+    salt_str = "pystray2025"
+    timeout_s = 2*365*24*60*60
+    tray_rand_token = make_rand_token(app_class, salt_str, timeout_s, CONFIG)
 
     # API
-    url = CONFIG["pywebview"]["url"]+"/"+tray_rand_id
+    url = CONFIG["pywebview"]["url"]+"/"+tray_rand_token
     # 请求数据
-    payload = {
+    data = {
         "app_class": CONFIG["app"]["app_class"],
         "do": do,
-        "view_auth": make_view_auth("", CONFIG)
+        "view_auth": make_view_auth(CONFIG)
     }
-    # 请求头
     headers = {
         "Content-Type": "application/json",
-        "User-Agent": CONFIG["app"]["app_name"]+"/"+CONFIG["app"]["app_version"],
+        "User-Agent": CONFIG["app"]["app_name"] + "/" + CONFIG["app"]["app_version"],
+        "App": "Tray",
     }
-    print("请求：", url)
-    # 发送POST
-    response = requests.post(
-        url,
-        json=payload,
-        headers=headers,
-        timeout=3  # 超时设置，s
-    )
-    # 返回信息
-    if response.status_code == 200: # 200
-        res = response.json()
-        state = res["json"]["state"]
-        msg = res["json"]["msg"]
-        return state, msg
-    else: # 其它情况
-        return 404, "接口请求错误：" + str(response.status_code)
-    pass
+    # POST
+    response = requests.post(url=url, timeout=3, headers=headers, json=data)
+    back_data = response.json()
+    print("back_data=", back_data)
+    #
+    state = back_data["state"]
+    msg = back_data["msg"]
+    #
+    return state, msg
 
 # 托盘菜单操作
 # 1 show， 0 hide
@@ -53,7 +50,6 @@ def on_show_or_hide(icon, item_text):
     else:
         icon.notify(title="未知状态："+str(state), message=msg)
         pass
-    pass
     pass
 
 # 关于
@@ -75,6 +71,7 @@ def on_exit(icon, item):
     state, msg = request_window("app@exit")
     print("接口返回：", [state, msg])
     if state == 1:
+        sleep(1)
         icon.stop()
         #
         pass

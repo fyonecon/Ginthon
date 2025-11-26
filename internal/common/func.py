@@ -9,7 +9,7 @@ import hashlib
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-from internal.common.kits.secret_aes import aes_encrypt
+from internal.common.kits.secret_aes import aes_encrypt, aes_decrypt
 from internal.config import get_config
 from urllib.parse import urlparse
 
@@ -165,8 +165,66 @@ def str_encode(txt, key="25nian11y21rzhw22dian27"):
 
 # 字符串解密
 def str_decode(txt, key="25nian11y21rzhw22dian27"):
-    return aes_encrypt(txt, str_to_bytes(truncate_string(key, 16)))
+    return aes_decrypt(txt, str_to_bytes(truncate_string(key, 16)))
 
 # md5
 def md5(txt):
     return hashlib.md5(txt.encode("utf-8")).hexdigest()
+
+#
+def back_500_data():
+    return f"""
+        <html>
+        <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" /><title>500</title>
+        <body>
+            <h4>500</h4>
+        </body>
+        </html>
+    """
+
+#
+def back_404_data():
+    return f"""
+        <html>
+        <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" /><title>404</title>
+        <body>
+            <h4>404</h4>
+        </body>
+        </html>
+    """
+
+#
+def back_404_data_html(msg):
+    return f"""
+        <html>
+        <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" /><title>html 404</title>
+        <body>
+            <h4>html 404</h4>
+            <p style="color: red;">{msg}</p>
+        </body>
+        </html>
+    """
+
+#
+def back_404_data_api(msg):
+    return {
+        "state": 404,
+        "msg": "api 404",
+        "content": {
+            "error": msg,
+        }
+    }
+
+#
+def back_404_data_file(msg):
+    return f"""
+        <html>
+        <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" /><title>file 404</title>
+        <body>
+            <h4>file 404</h4>
+            <p style="color: red;">{msg}</p>
+        </body>
+        </html>
+    """
+
+
