@@ -13,10 +13,12 @@ def truncate_string(text, length):
     return text[:length]
 
 # 生成指定长度范围内的随机字母数字字符串
-def rand_range_string(min_length, max_length):
-    length = random.randint(min_length, max_length)
-    characters = string.ascii_letters + string.digits
-    return "".join(random.choice(characters) for _ in range(length))
+# import random
+# import string
+# def rand_range_string(min_length, max_length):
+#     length = random.randint(min_length, max_length)
+#     characters = string.ascii_letters + string.digits
+#     return "".join(random.choice(characters) for _ in range(length))
 
 #
 # _KEY = rand_range_string(16, 16)
@@ -26,7 +28,8 @@ def rand_range_string(min_length, max_length):
 # KEY = str_to_bytes(truncate_string(_KEY, 16)) # 16字节 for AES-128
 # IV = str_to_bytes(truncate_string(_IV, 16)) # 16字节 for AES-128
 
-IV = str_to_bytes(truncate_string("qazxswedcvfrtgb1230987jhsallmi86421n", 16)) # 16字节 for AES-128
+# KEY = str_to_bytes(truncate_string("edcvfrtgb1230987edcvfrtgb1230987edcvfrtgb1230987", 16)) # 16字节 for AES-128
+IV = str_to_bytes(truncate_string("qazxsw#edcvfrtgb1230987@jhsallmi86421n", 16)) # 16字节 for AES-128
 
 # 加密
 def aes_encrypt(plaintext, KEY:bytes):
@@ -52,3 +55,9 @@ def aes_decrypt(encrypted_url_safe, KEY:bytes):
     decrypted_padded = cipher.decrypt(encrypted_data)
     decrypted_data = unpad(decrypted_padded, AES.block_size)
     return decrypted_data.decode("utf-8")
+
+# test
+# _txt = "djosdhoaisdfho0jdf90eu8nfoewu90834r5jfk#@kdsdkosdm#@dhsd#@121313"
+# en_txt = aes_encrypt(_txt, KEY)
+# de_txt = aes_decrypt(en_txt, KEY)
+# print("test=", [_txt, en_txt, de_txt, KEY])

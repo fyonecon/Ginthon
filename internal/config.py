@@ -21,11 +21,12 @@ def get_config(tag=""):
             "min_python_version": (3, 12),  # 默认最低(3, 12)，即3.12.0
         },
         "flask": {
+            "white_hosts": ["http://127.0.0.1:9100", "https://127.0.0.1:9100", "http://datathink.top", "https://datathink.top"], #白名单域名或IP，格式：协议+IPv4+port、协议+域名
             "port": 9100,  # 服务端口 9100
             "debug": False,  # True False
         },
         "pywebview": {
-            "url": "http://127.0.0.1:9100/html/view", # 网址（协议+网址+端口+路径，如：http://127.0.0.1:9100/? ）
+            "view_url": "http://127.0.0.1:9100/html/view", # 视图网址（协议+网址+端口+路径，如：http://127.0.0.1:9100/? ）
             "secret_key": "2025nian11yue21rizhouwu22dian23", # 密钥, len>=16
             "ssl": False,  # True False
             "debug": False,  # True False

@@ -1,80 +1,113 @@
 from flask import send_file, request
 
-from internal.common.view_auth import check_view_rand_id
+from internal.common.func import back_404_data_api, back_404_data_html
+from internal.common.view_auth import check_rand_id, check_rand_token
+from internal.config import get_config
 
 
 # 自定义路由，视图专用
-def custom_routes_html(FLASK, flask_request_html):
-    #
-    @FLASK.route("/html/view/<view_rand_id>")
-    def html(view_rand_id):
+def custom_routes_html(FLASK, flask_middleware_html):
+
+    # 视窗专用 http://127.0.0.1:9100/html/view/xxx
+    @FLASK.route("/html/view/<rand_id>", methods=["GET", "POST", "OPTIONS"])
+    def view(rand_id):
+        # print("method2=", request.method, request.headers, request.url)
         route_data = {
             "way": "html",
             "methods": ["GET"],
-            "status_code": 200
         }
-        rand_id_state = check_view_rand_id(view_rand_id)
-        if rand_id_state: # 正确ID
+        rand_id_state = check_rand_id(rand_id)
+        if rand_id_state: # 正确
             html_data = '''
-            html
+                视窗已启动。
             '''
+            response_data, reg_code = flask_middleware_html(request, route_data, html_data)
+            if reg_code == 200:
+                return response_data, reg_code
+            else:
+                return back_404_data_html("非法操作"), reg_code
         else: # 非法ID
-            html_data = '''
-            Error URL.
-            '''
-        response_data = flask_request_html(request, route_data, html_data)
-        return response_data
+            return back_404_data_html("非法ID"), 404
 
+    # html
     pass
 
-# 自定义路由
-def custom_routes_api(FLASK, flask_request_api):
-    #
-    @FLASK.route("/api/<txt>")  # 路由名
-    def text(txt):  # 触发函数（函数名尽量和路由名一致）
-        route_data = {
-            "way": "json",
-            "methods": ["GET", "POST", "OPTIONS"],
-            "status_code": 200
-        }
-        api_data = {
-            "state": 1,
-            "msg": "OK",
-            "content": {
-                "txt": txt,
-            }
-        }
-        response_data = flask_request_api(request, route_data, api_data)
-        return response_data
 
-    #
-    @FLASK.route("/api/tray/<tray_rand_id>")  # 路由名
-    def tray(tray_rand_id):  # 触发函数（函数名尽量和路由名一致）
+# 自定义路由，接口专用
+def custom_routes_api(FLASK, flask_middleware_api):
+
+    # 状态栏托盘专用 http://127.0.0.1:9100/api/tray/xxx
+    @FLASK.route("/api/tray/<tray_rand_token>", methods=["GET", "POST", "OPTIONS"])  # 路由名
+    def tray(tray_rand_token):  # 触发函数（函数名尽量和路由名一致）
+        # print("method2=", tray_rand_token, request.method, request.headers, request.url)
         route_data = {
             "way": "json",
             "methods": ["POST", "OPTIONS"],
-            "status_code": 200
         }
-        api_data = {
-            "state": 1, #
-            "msg": "OK",
+        # 处理接收的数据
+        data = request.get_json()
+        if not data:
+            return back_404_data_api("空的请求参数")
+
+        #
+        view_auth = data["view_auth"]
+        do = data["do"]
+        app_class = data["app_class"]
+        salt_str = "pystray2025"
+        CONFIG = get_config("tray")
+        tray_rand_token_state, msg = check_rand_token(app_class, salt_str, CONFIG, tray_rand_token)
+        if tray_rand_token_state: # 正确
+            if do == "app@show_or_hide":
+                state = 1
+                msg = "show or hide"
+                pass
+            elif do == "app@about":
+                state = 1
+                msg = "about"
+                pass
+            elif do == "app@exit": # exit
+                state = 1
+                msg = "exit"
+                pass
+            else: # 未知状态
+                state = 0
+                msg = "未知状态："+do
+                pass
+            pass
+        else:
+            state = 0
+            pass
+
+        #
+        back_data = {
+            "state": state,  #
+            "msg": msg,
             "content": {
-                "txt": tray_rand_id,
+                "tray_rand_token": tray_rand_token,
+                "view_auth": view_auth,
+                "do": do,
+                "app_class": app_class,
             }
         }
-        response_data = flask_request_api(request, route_data, api_data)
-        return response_data
+        response_data, reg_code = flask_middleware_api(request, route_data, back_data)
+        if reg_code == 200:
+            return response_data, reg_code
+        else:
+            return back_404_data_api("非法操作"), reg_code
 
+    # api
     pass
 
-# 自定义路由
-def custom_routes_file(FLASK, flask_request_file):
+
+# 自定义路由，文件专用
+def custom_routes_file(FLASK, flask_middleware_file):
     #
-    @FLASK.route("/file/<filename>")  # 路由名
+    @FLASK.route("/file/<filename>", methods=["GET", "POST", "OPTIONS"])  # 路由名
     def file(filename):  # 触发函数（函数名尽量和路由名一致）
         filetype = ""
         # flask_response("file", status_code=200, filename=filename, filetype=filetype)
         file_path = 'xx/xx.pdf'
         return send_file(file_path, as_attachment=True)
 
+    # file
     pass
