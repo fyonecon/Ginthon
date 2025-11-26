@@ -1,7 +1,10 @@
+import os
+
 from flask import send_file, request
 
 from internal.common.func import back_404_data_api, back_404_data_html
 from internal.common.view_auth import check_rand_id, check_rand_token
+from internal.common.watch_pid import kill_process_by_pid
 from internal.config import get_config
 
 
@@ -34,7 +37,7 @@ def custom_routes_html(FLASK, flask_middleware_html):
 
 
 # 自定义路由，接口专用
-def custom_routes_api(FLASK, flask_middleware_api):
+def custom_routes_api(FLASK, flask_middleware_api, window):
 
     # 状态栏托盘专用 http://127.0.0.1:9100/api/tray/xxx
     @FLASK.route("/api/tray/<tray_rand_token>", methods=["GET", "POST", "OPTIONS"])  # 路由名
@@ -57,9 +60,15 @@ def custom_routes_api(FLASK, flask_middleware_api):
         CONFIG = get_config("tray")
         tray_rand_token_state, msg = check_rand_token(app_class, salt_str, CONFIG, tray_rand_token)
         if tray_rand_token_state: # 正确
-            if do == "app@show_or_hide":
+            if do == "app@show":
                 state = 1
-                msg = "show or hide"
+                msg = "show"
+                window.show()
+                pass
+            elif do == "app@hide":
+                state = 1
+                msg = "hide"
+                window.hide()
                 pass
             elif do == "app@about":
                 state = 1
@@ -68,6 +77,10 @@ def custom_routes_api(FLASK, flask_middleware_api):
             elif do == "app@exit": # exit
                 state = 1
                 msg = "exit"
+                # 杀掉主程序（全部程序）
+                main_pid = os.getpid()
+                kill_process_by_pid(main_pid)
+                #
                 pass
             else: # 未知状态
                 state = 0

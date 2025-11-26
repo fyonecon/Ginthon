@@ -115,8 +115,7 @@ def cache_path():
     if p == "win":
         localappdata = os.environ.get("LOCALAPPDATA", "")
         local_path = Path(localappdata)
-        local_cache = local_path / "Cache",
-        return str(local_cache)
+        return str(local_path)
     elif p == "linux":
         xdg_cache_home = Path(os.environ.get('XDG_CACHE_HOME', Path.home() / '.cache'))
         return str(xdg_cache_home)

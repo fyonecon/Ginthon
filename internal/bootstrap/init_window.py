@@ -160,8 +160,8 @@ def join_events(_window):
     print("✅ Join ", "Process")
 
     # 创建线程
-    t1 = threading.Thread(target=run_services, daemon=True)
-    t2 = threading.Thread(target=run_flask, daemon=True)
+    t1 = threading.Thread(target=run_services, daemon=True, args=(_window, WEBVIEW_PID))
+    t2 = threading.Thread(target=run_flask, daemon=True, args=(_window, WEBVIEW_PID))
 
 
     # 启动线程

@@ -268,7 +268,7 @@ def flask_response_header(response, way, reg_code=404, filename="", filetype="")
     return response
 
 # 启动Flask服务
-def run_flask():
+def run_flask(window, pid):
     # 读取配置信息
     global CONFIG
     CONFIG = get_config("run_flask")
@@ -280,7 +280,7 @@ def run_flask():
     must_routes(FLASK)
     # 注册自定义路由
     custom_routes_html(FLASK, flask_middleware_html)
-    custom_routes_api(FLASK, flask_middleware_api)
+    custom_routes_api(FLASK, flask_middleware_api, window)
     custom_routes_file(FLASK, flask_middleware_file)
     #
     FLASK.run(debug=CONFIG["flask"]["debug"], port=CONFIG["flask"]["port"])
