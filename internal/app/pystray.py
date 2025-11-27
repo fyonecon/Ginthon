@@ -84,14 +84,21 @@ def on_exit(icon, item):
     state, msg = request_window("app@exit")
     print_log("接口返回：", [state, msg])
     if state == 1:
-        sleep(1)
-        main_pid = os.getpid()
-        kill_process_by_pid(main_pid)
-        #
+        try:
+            sleep(1)
+            icon.stop()
+        except:
+            main_pid = os.getpid()
+            kill_process_by_pid(main_pid)
         pass
     else:
         icon.notify(title="未知状态："+str(state), message=msg)
-        sleep(1)
-        icon.stop()
+        try:
+            sleep(1)
+            icon.stop()
+        except:
+            main_pid = os.getpid()
+            kill_process_by_pid(main_pid)
+        pass
         pass
     pass
