@@ -45,7 +45,7 @@ def service_for_ping_window():
 
 # 后台服务
 def run_service():
-    print_log("✅ run_service")
+    print_log("### run_service")
 
     # 读取配置信息
     global CONFIG
@@ -64,6 +64,6 @@ def run_service():
     t1.join()
     # t2.join()
 
-    print("❌ 服务运行结束，线程中断。")
+    print("XXX 服务运行结束，线程中断。")
 
     pass

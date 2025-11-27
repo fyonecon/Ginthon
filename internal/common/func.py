@@ -6,6 +6,7 @@ import random
 import string
 import hashlib
 import platform
+import re
 
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -113,9 +114,9 @@ def get_platform():
 # 获取平台是x86还是arm的cpu
 def get_machine():
     machine = platform.machine()
-    if machine == 'arm64':
+    if machine == 'arm64' or machine == 'ARM64':
         return "arm"
-    elif machine == 'x86_64':
+    elif machine == 'x86_64' or machine == 'AMD64' or machine == 'amd64':
         return "x86"
     else:
         return "null-cpu"
@@ -126,7 +127,7 @@ def cache_path():
     if p == "win":
         localappdata = os.environ.get("LOCALAPPDATA", "")
         local_path = Path(localappdata)
-        return str(local_path)
+        return converted_path(str(local_path))
     elif p == "linux":
         xdg_cache_home = Path(os.environ.get('XDG_CACHE_HOME', Path.home() / '.cache'))
         return str(xdg_cache_home)
@@ -135,6 +136,12 @@ def cache_path():
         return str(user_cache_dir)
     else: # 其他平台
         return ""
+
+# 转路径的反斜杠
+def converted_path(path:str):
+    path = path.replace('\\', '/')
+    path = re.sub(r'\\+', '/', path)
+    return path
 
 # 是否是网址
 def is_url(url):

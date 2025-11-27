@@ -74,7 +74,7 @@ def run_pystray():
 def init_tray():
     global CONFIG
     CONFIG = get_config()
-    print_log("✅ 状态栏托盘 ")
+    print_log("### 状态栏托盘 ")
 
     #
     run_pystray()
