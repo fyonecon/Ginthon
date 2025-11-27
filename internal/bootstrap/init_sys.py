@@ -1,4 +1,5 @@
 from internal.bootstrap.init_tray import init_tray
+from internal.common.main_dirpath import mian_virtual_dirpath
 from internal.common.txt_data import txt_remove, txt_write
 from internal.config import get_config
 from internal.bootstrap.run_check_sys import run_check_sys
@@ -7,6 +8,10 @@ from internal.common.func import rand_range_string, print_log
 
 # 程序主入口
 def init_sys():
+    # 获取前端资源路径
+    frontend_dirpath = mian_virtual_dirpath("frontend")
+    print(f"资源目录: {frontend_dirpath}")
+    #
     CONFIG = get_config("run")
     #
     check_sys_state = run_check_sys()

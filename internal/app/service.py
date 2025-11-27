@@ -51,7 +51,7 @@ def run_service():
     global CONFIG
     CONFIG = get_config("run_services")
     #
-    sleep(1)
+    # sleep(1)
 
     # 创建线程
     t1 = threading.Thread(target=service_for_ping_window, daemon=True)

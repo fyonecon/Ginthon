@@ -5,6 +5,7 @@ import tomllib
 import random
 import string
 import hashlib
+import platform
 
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -108,6 +109,16 @@ def get_platform():
     #     return "cygwin"
     else: # 其他平台
         return sys.platform
+
+# 获取平台是x86还是arm的cpu
+def get_machine():
+    machine = platform.machine()
+    if machine == 'arm64':
+        return "arm"
+    elif machine == 'x86_64':
+        return "x86"
+    else:
+        return "null-cpu"
 
 # 获取当前平台存储程序缓存的路径
 def cache_path():

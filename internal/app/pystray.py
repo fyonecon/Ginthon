@@ -33,7 +33,7 @@ def request_window(do):
         "App": "Tray",
     }
     # POST
-    response = requests.post(url=url, timeout=3, headers=headers, json=data)
+    response = requests.post(url=url, timeout=2, headers=headers, json=data)
     back_data = response.json()
     print_log("back_data=", back_data)
     #
@@ -84,13 +84,14 @@ def on_exit(icon, item):
     state, msg = request_window("app@exit")
     print_log("接口返回：", [state, msg])
     if state == 1:
-        # sleep(1)
+        sleep(1)
         main_pid = os.getpid()
         kill_process_by_pid(main_pid)
-        # icon.stop()
         #
         pass
     else:
         icon.notify(title="未知状态："+str(state), message=msg)
+        sleep(1)
+        icon.stop()
         pass
     pass
