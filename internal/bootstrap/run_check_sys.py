@@ -59,10 +59,10 @@ def run_check_sys():
     # 校验可用状态
     state = cpu_count >= CONFIG["check"]["min_cpu_cores"] and total_ram >= CONFIG["check"]["min_ram"] and sys.version_info >= CONFIG["check"]["min_python_version"] and (not flask_port_state)
     if state:
-        msg = "✅ 系统基础状态 => "
+        msg = "### 系统基础状态 => "
         pass
     else:
-        msg = "❌ 系统基础状态 => "
+        msg = "XXX 系统基础状态 => "
         pass
 
     #

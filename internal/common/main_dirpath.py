@@ -2,7 +2,7 @@ import sys
 import os
 from pathlib import Path
 
-from internal.common.func import cache_path
+from internal.common.func import cache_path, converted_path
 from internal.config import get_config
 
 
@@ -14,7 +14,7 @@ def mian_virtual_dirpath(sub_path="frontend"):
         base_path = sys._MEIPASS
     else:
         base_path = os.path.abspath(".")
-    return os.path.join(base_path, sub_path) # 返回的路径结尾无/
+    return converted_path(os.path.join(base_path, sub_path)) # 返回的路径结尾无/
 
 # 缓存真实路径
 def main_cache_dirpath(sub_path="running"):

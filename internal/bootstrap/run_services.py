@@ -65,7 +65,7 @@ def services_for_time_interval():
 
 # 启动服务
 def run_services(window, pid):
-    print("✅ 后台服务 => ", get_date("%Y-%m-%d %H:%M:%S"))
+    print("### 后台服务 => ", get_date("%Y-%m-%d %H:%M:%S"))
 
     # 读取配置信息
     global CONFIG
@@ -84,5 +84,5 @@ def run_services(window, pid):
     t1.join()
     t2.join()
 
-    print("❌ 服务运行结束，线程中断。")
+    print("XXX 服务运行结束，线程中断。")
     pass

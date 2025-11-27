@@ -43,7 +43,7 @@ def must_routes(FLASK):
 
         # 返回的数据
         html_data = ''' 
-            <html><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" /><title>HTML is OK</title><body><p id="info" style="color:grey;">YES</p><p>test='''+_test+'''</p><script>function show_info() {let info = [window.location.host, !!window.localStorage, !!window.indexedDB, navigator.webdriver, navigator.languages, window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light", "✅", window.navigator.userAgent]; document.getElementById("info").innerHTML = info; console.log(info);}show_info();</script></body></html>
+            <html><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" /><title>HTML is OK</title><body><p id="info" style="color:grey;">YES</p><p>test='''+_test+'''</p><script>function show_info() {let info = [window.location.host, !!window.localStorage, !!window.indexedDB, navigator.webdriver, navigator.languages, window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light", "###", window.navigator.userAgent]; document.getElementById("info").innerHTML = info; console.log(info);}show_info();</script></body></html>
         '''
         # 用中间件验证参数
         response_data, reg_code = flask_middleware_html(request, route_data, html_data)
@@ -273,7 +273,7 @@ def run_flask(window, pid):
     global CONFIG
     CONFIG = get_config("run_flask")
     #
-    print_log("✅ Flask => ", "http://127.0.0.1:" + str(CONFIG["flask"]["port"])+"/api")
+    print_log("### Flask => ", "http://127.0.0.1:" + str(CONFIG["flask"]["port"])+"/api")
     #
     FLASK = Flask(__name__)
     # 必要路由

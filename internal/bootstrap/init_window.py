@@ -157,7 +157,7 @@ def join_events(_window):
     global SERVICES_PID
     global FLASK_PID
 
-    print("✅ Join ", "Process")
+    print("### Join ", "Process")
 
     # 创建线程
     t1 = threading.Thread(target=run_services, daemon=True, args=(_window, WEBVIEW_PID))
@@ -225,7 +225,7 @@ def init_window():
     )
     WINDOW = _window
     WEBVIEW_PID = os.getpid()
-    print_log("✅ 视窗 => ", _view_url)
+    print_log("### 视窗 => ", _view_url)
 
     #
     # _window.events.initialized += view_init
@@ -254,7 +254,7 @@ def init_window():
         process_flask.kill()
         pass
     except Exception:
-        print("❌ 不存在的PID：", [SERVICES_PID, FLASK_PID])
+        print("XXX 不存在的PID：", [SERVICES_PID, FLASK_PID])
         pass
 
     #

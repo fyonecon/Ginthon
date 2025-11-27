@@ -13,13 +13,13 @@ def kill_process_tree(_ppid):
         for child in children:
             try:
                 child.kill()
-                print(f"✅ 杀死子进程 {child.pid}")
+                print(f"### 杀死子进程 {child.pid}")
             except:
                 pass
         parent.kill()
-        print(f"✅ 杀死主进程 {_ppid}")
+        print(f"### 杀死主进程 {_ppid}")
     except psutil.NoSuchProcess:
-        print("❌ 进程已不存在")
+        print("XXX 进程已不存在")
 
 # 时刻准备杀掉全部进程
 def ready_kill_process_pids():
@@ -41,10 +41,10 @@ def ready_kill_process_pids():
     #=========================================================
     #
     if process3.status() != "running" or process3.status() == "zombie":
-        print_log("❌ 必要进程没在运行（自动杀死所有Ginthon进程）", process3_pid, process3.is_running(), process3.status())
+        print_log("XXX 必要进程没在运行（自动杀死所有Ginthon进程）", process3_pid, process3.is_running(), process3.status())
         kill_process_tree(ppid)
     else:
-        print_log("✅ 必要进程正常运行。。。", process3_pid, process3.is_running(), process3.status())
+        print_log("### 必要进程正常运行。。。", process3_pid, process3.is_running(), process3.status())
     #
     pass
 
@@ -69,5 +69,5 @@ def watch_processes(_process1_pid, _process2_pid, _process3_pid):
         # 等待线程结束
         t1.join()
     else:
-        print("❌ watch_processes：pid参数不全")
+        print("XXX watch_processes：pid参数不全")
     pass
