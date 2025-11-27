@@ -2,9 +2,12 @@ import threading
 
 from time import sleep
 
+from zope.interface.common.builtins import IFile
+
+from internal.common._7z import _7z_remove_dir, _7z_unarchive
 from internal.common.shell import shell_run_bin_process
 from internal.config import get_config
-from internal.common.func import get_date, print_log, main_path, get_platform
+from internal.common.func import get_date, print_log, main_path, get_platform, cache_path, has_file
 from internal.common.time_interval import do_time_interval
 
 #
@@ -13,9 +16,26 @@ CONFIG = {}
 # 运行tray程序
 def services_for_open_tray():
     platform = get_platform()
-    root_path = main_path() + "frontend/tray/"+platform+"/tray"
-    state = shell_run_bin_process(root_path, "-la")
-    print("services_for_open_tray=", state, root_path)
+    # 文件路径
+    # output_dirpath最终效果=/Users/xxx/Library/Caches/top.datathink.Ginthon/running/tray/mac/mac/tray
+    _cache_path = cache_path() + "/" + get_config("func")["sys"]["cache_path_main_dir"]  # 结尾无/
+    archive_file = "./frontend/tray/" + platform + ".7z" # 文件
+    output_dirpath = _cache_path + "/running/tray/" + platform + ""  # 结尾无/
+    # 解压
+    remove_dir_state, remove_dir_msg = _7z_remove_dir(output_dirpath) # 删除老文件
+    _7z_unarchive_state, _7z_unarchive_msg = _7z_unarchive(archive_file, output_dirpath)
+    #
+    print_log("解压文件=", [has_file(archive_file), remove_dir_msg, _7z_unarchive_msg])
+    # 运行程序
+    if _7z_unarchive_state:
+        # 运行
+        root_path = output_dirpath+"/"+platform+"/tray"
+        run_state = shell_run_bin_process(root_path, "-la")
+        print_log("services_for_open_tray=", run_state, root_path)
+        pass
+    else:
+        print("解压文件时出错：", [remove_dir_msg, _7z_unarchive_msg])
+        pass
     pass
 
 # 周期服务，默认10s
