@@ -33,7 +33,7 @@ def request_window(do):
         "App": "Tray",
     }
     # POST
-    response = requests.post(url=url, timeout=2, headers=headers, json=data)
+    response = requests.post(url=url, timeout=4, headers=headers, json=data)
     back_data = response.json()
     print_log("back_data=", back_data)
     #
@@ -55,50 +55,60 @@ def on_show_or_hide(icon, item_text):
         SHOW_HIDE_STATE = "show"
         do = "app@show"
         pass
-    state, msg = request_window(do)
-    print_log("接口返回：", [state, msg])
-    if state == 1:
-        #
+    try:
+        state, msg = request_window(do)
+        print_log("接口返回：", [state, msg])
+        if state == 1:
+            #
+            pass
+        else:
+            icon.notify(title="未知状态："+str(state), message=msg)
+            pass
         pass
-    else:
-        icon.notify(title="未知状态："+str(state), message=msg)
+    except:
+        print("on_show_or_hide 错误：", "接口不通，可能是视窗主程序未启动")
         pass
     pass
 
 # 关于
 # 1 成功
 def on_about(icon, item_text):
-    state, msg = request_window("app@about")
-    print_log("接口返回：", [state, msg])
-    if state == 1:
-        #
+    try:
+        state, msg = request_window("app@about")
+        print_log("接口返回：", [state, msg])
+        if state == 1:
+            #
+            pass
+        else:
+            icon.notify(title="未知状态：" + str(state), message=msg)
+            pass
         pass
-    else:
-        icon.notify(title="未知状态：" + str(state), message=msg)
+    except:
+        print("on_about 错误：", "接口不通，可能是视窗主程序未启动")
         pass
     pass
 
 # 退出程序
 # 1 exit
 def on_exit(icon, item):
-    state, msg = request_window("app@exit")
-    print_log("接口返回：", [state, msg])
-    if state == 1:
-        try:
-            sleep(1)
-            icon.stop()
-        except:
-            main_pid = os.getpid()
-            kill_process_by_pid(main_pid)
+    try:
+        state, msg = request_window("app@exit")
+        print_log("接口返回：", [state, msg])
+        if state == 1:
+            try:
+                sleep(1)
+                icon.stop()
+            except:
+                main_pid = os.getpid()
+                kill_process_by_pid(main_pid)
+            pass
+        else:
+            icon.notify(title="未知状态：" + str(state), message=msg)
         pass
-    else:
-        icon.notify(title="未知状态："+str(state), message=msg)
-        try:
-            sleep(1)
-            icon.stop()
-        except:
-            main_pid = os.getpid()
-            kill_process_by_pid(main_pid)
-        pass
+    except:
+        print("on_exit 错误：", "接口不通，可能是视窗主程序未启动")
+        sleep(1)
+        main_pid = os.getpid()
+        kill_process_by_pid(main_pid)
         pass
     pass
