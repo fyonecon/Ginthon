@@ -217,7 +217,7 @@ def init_window():
         html=_view_html,
         min_size=(520, 520),
         width=720, height=540,
-        hidden=False,
+        hidden=False, # 打开时隐藏界面，默认False
         frameless=False,
         text_select=True,
         transparent=False,
