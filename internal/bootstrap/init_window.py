@@ -4,6 +4,7 @@ import psutil
 import os
 import threading
 
+from internal.app.pywebview.window_events import on_shown
 from internal.bootstrap.run_services import run_services
 from internal.bootstrap.run_flask import run_flask
 from internal.config import get_config
@@ -217,7 +218,7 @@ def init_window():
         html=_view_html,
         min_size=(520, 520),
         width=720, height=540,
-        hidden=False, # 打开时隐藏界面，默认False
+        hidden=False, # 打开时隐藏界面，默认 False
         frameless=False,
         text_select=True,
         transparent=False,

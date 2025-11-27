@@ -59,15 +59,18 @@ def custom_routes_api(FLASK, flask_middleware_api, window):
         salt_str = "pystray2025"
         CONFIG = get_config("tray")
         tray_rand_token_state, msg = check_rand_token(app_class, salt_str, CONFIG, tray_rand_token)
+        SHOW_HIDE_STATE = "" # “” show hide
         if tray_rand_token_state: # 正确
             if do == "app@show":
                 state = 1
                 msg = "show"
+                SHOW_HIDE_STATE = "show"
                 window.show()
                 pass
             elif do == "app@hide":
                 state = 1
                 msg = "hide"
+                SHOW_HIDE_STATE = "hide"
                 window.hide()
                 pass
             elif do == "app@about":
@@ -96,6 +99,7 @@ def custom_routes_api(FLASK, flask_middleware_api, window):
             "state": state,  #
             "msg": msg,
             "content": {
+                "SHOW_HIDE_STATE": SHOW_HIDE_STATE, # show hide
                 "tray_rand_token": tray_rand_token,
                 "view_auth": view_auth,
                 "do": do,
