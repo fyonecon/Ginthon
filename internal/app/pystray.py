@@ -40,7 +40,7 @@ def request_window(do):
     state = back_data["state"]
     msg = back_data["msg"]
     #
-    return state, msg
+    return state, msg, back_data
 
 # 托盘菜单操作
 # 1 show， 0 hide
@@ -55,11 +55,18 @@ def on_show_or_hide(icon, item_text):
         SHOW_HIDE_STATE = "show"
         do = "app@show"
         pass
+    #
     try:
-        state, msg = request_window(do)
+        state, msg, back_data = request_window(do)
         print_log("接口返回：", [state, msg])
         if state == 1:
-            #
+            try:
+                _SHOW_HIDE_STATE = back_data["content"]["SHOW_HIDE_STATE"]
+                if _SHOW_HIDE_STATE in ["show", "hide"]:
+                    SHOW_HIDE_STATE = _SHOW_HIDE_STATE
+                    pass
+            except:
+                pass
             pass
         else:
             icon.notify(title="未知状态："+str(state), message=msg)
@@ -74,7 +81,7 @@ def on_show_or_hide(icon, item_text):
 # 1 成功
 def on_about(icon, item_text):
     try:
-        state, msg = request_window("app@about")
+        state, msg, back_data = request_window("app@about")
         print_log("接口返回：", [state, msg])
         if state == 1:
             #
@@ -92,7 +99,7 @@ def on_about(icon, item_text):
 # 1 exit
 def on_exit(icon, item):
     try:
-        state, msg = request_window("app@exit")
+        state, msg, back_data = request_window("app@exit")
         print_log("接口返回：", [state, msg])
         if state == 1:
             try:
