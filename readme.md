@@ -66,11 +66,12 @@ https://jishuzhan.net/article/1963161837455327233
 ### 打包成安装程序（win、mac、linux）：
 > （手动删除/dist/ 和 /build/ 文件夹）
 > 
-> pyinstaller window.spec （推荐）
+> pyinstaller --clean window.spec （只能打包当前平台CPU结构的程序。）
 >  
 > 或
 > 
-> pyinstaller window.py
+> pyinstaller --clean tray.spec （只能打包当前平台CPU结构的程序。）
+> 
 
 ### 运行效果：
 ![运行效果](./show.png)

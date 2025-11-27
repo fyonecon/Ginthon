@@ -4,7 +4,7 @@ def get_config(tag=""):
     return {
         "app": {
             "app_name": "Ginthon",
-            "app_version": "1.2.1",  # 1.0.0
+            "app_version": "1.2.2",  # 1.0.0
             "app_class": "ginthon_window_",
             "author": "fyonecon",
             "github": "https://github.com/fyonecon/Ginthon",
@@ -12,7 +12,7 @@ def get_config(tag=""):
         },
         "sys": {
             "cache_path_main_dir": "top.datathink.Ginthon", # 缓存主目录名，默认 top.datathink.Ginthon
-            "running_id_filename": "window_running_id.cache", #
+            "running_id_filename": "running_id.cache", #
             "debug": False,  # True False
         },
         "check": {

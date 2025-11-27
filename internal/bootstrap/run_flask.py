@@ -217,7 +217,7 @@ def check_req_url(full_url):
     white_hosts = CONFIG["flask"]["white_hosts"]
     for the_host in white_hosts:
         position = full_url.find(the_host)
-        if position >= 0 and len(the_host)>=9: # OK
+        if 0 <= position <= len(the_host) and len(the_host)>=9: # OK
             return True
         else:
             continue
