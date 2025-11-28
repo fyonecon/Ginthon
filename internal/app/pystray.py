@@ -4,7 +4,7 @@ import requests
 import os
 
 from internal.common.func import print_log
-from internal.common.view_auth import make_rand_id, make_view_auth, make_rand_token
+from internal.common.view_auth import make_view_auth, make_rand_token
 from internal.common.watch_pid import kill_process_by_pid
 from internal.config import get_config
 
@@ -24,13 +24,13 @@ def request_window(do):
     # 请求数据
     data = {
         "app_class": CONFIG["app"]["app_class"],
+        "app_version": CONFIG["app"]["app_version"],
         "do": do,
         "view_auth": make_view_auth(CONFIG)
     }
     headers = {
         "Content-Type": "application/json",
-        "User-Agent": CONFIG["app"]["app_name"] + "/" + CONFIG["app"]["app_version"],
-        "App": "Tray",
+        "User-Agent": CONFIG["app"]["app_class"] + CONFIG["app"]["app_version"],
     }
     # POST
     response = requests.post(url=url, timeout=4, headers=headers, json=data)
@@ -43,30 +43,15 @@ def request_window(do):
     return state, msg, back_data
 
 # 托盘菜单操作
-# 1 show， 0 hide
-SHOW_HIDE_STATE = "show"
 def on_show_or_hide(icon, item_text):
-    global SHOW_HIDE_STATE
-    if SHOW_HIDE_STATE == "show":
-        SHOW_HIDE_STATE = "hide"
-        do = "app@hide"
-        pass
-    else:
-        SHOW_HIDE_STATE = "show"
-        do = "app@show"
-        pass
-    #
     try:
-        state, msg, back_data = request_window(do)
+        state, msg, back_data = request_window("app@show_or_hide")
         print_log("接口返回：", [state, msg])
         if state == 1:
-            try:
-                _SHOW_HIDE_STATE = back_data["content"]["SHOW_HIDE_STATE"]
-                if _SHOW_HIDE_STATE in ["show", "hide"]:
-                    SHOW_HIDE_STATE = _SHOW_HIDE_STATE
-                    pass
-            except:
-                pass
+            #
+            pass
+        elif state == 0:
+            icon.notify(title="空数据", message=msg)
             pass
         else:
             icon.notify(title="未知状态："+str(state), message=msg)
@@ -85,6 +70,9 @@ def on_about(icon, item_text):
         print_log("接口返回：", [state, msg])
         if state == 1:
             #
+            pass
+        elif state == 0:
+            icon.notify(title="空数据", message=msg)
             pass
         else:
             icon.notify(title="未知状态：" + str(state), message=msg)
@@ -108,6 +96,9 @@ def on_exit(icon, item):
             except:
                 main_pid = os.getpid()
                 kill_process_by_pid(main_pid)
+            pass
+        elif state == 0:
+            icon.notify(title="空数据", message=msg)
             pass
         else:
             icon.notify(title="未知状态：" + str(state), message=msg)

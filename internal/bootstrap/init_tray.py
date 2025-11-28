@@ -8,6 +8,7 @@ from internal.common.ICON import ICON_Binary
 from internal.app.pystray import on_show_or_hide, on_exit, on_about
 from internal.app.service import run_service
 from internal.common.func import print_log
+from internal.common.translate import get_translate
 from internal.config import get_config
 
 #
@@ -40,11 +41,11 @@ def run_pystray():
 
     # 创建菜单
     menu = pystray.Menu(
-        pystray.MenuItem(text="显示 或 隐藏", action=on_show_or_hide, default=True),
+        pystray.MenuItem(text="❇️ "+get_translate("show_window"), action=on_show_or_hide, default=True),
         pystray.Menu.SEPARATOR,
-        # pystray.MenuItem(text="关于"+CONFIG["app"]["app_name"], action=on_about, default=False),
+        # pystray.MenuItem(text="❗️ 关于"+CONFIG["app"]["app_name"], action=on_about, default=False),
         # pystray.Menu.SEPARATOR,
-        pystray.MenuItem(text="🔴 退出程序", action=on_exit, radio=False, default=False)
+        pystray.MenuItem(text="🔴 "+get_translate("exit_app"), action=on_exit, radio=False, default=False)
     )
 
     # 创建托盘图标
