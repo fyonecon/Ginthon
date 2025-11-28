@@ -7,12 +7,16 @@ datas = []
 
 # 手动添加 frontend 文件夹
 frontend_files = [
+    # 单独添加文件
     ('frontend/favicon.ico', 'frontend'),
     ('frontend/launcher.png', 'frontend'),
     ('frontend/view/index.html', 'frontend/view'),
     # 添加 tray 文件夹中的 7z 文件
     ('frontend/tray/', 'frontend/tray'),
     #('frontend/tray/mac.7z', 'frontend/tray'),
+    # 添加文件夹
+    ('frontend/view/', 'frontend/view'),
+    ('frontend/file/', 'frontend/file'),
 ]
 
 datas.extend(frontend_files)

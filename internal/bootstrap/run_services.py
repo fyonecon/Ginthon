@@ -18,40 +18,56 @@ CONFIG = {}
 def services_for_open_tray():
     platform = get_platform()
     machine = get_machine()
-    # 文件路径
-    # output_dirpath最终效果=/Users/xxx/Library/Caches/top.datathink.Ginthon/running/tray/mac/mac/tray
-    _cache_path = cache_path() + "/" + get_config("func")["sys"]["cache_path_main_dir"]  # 结尾无/
+    # 相对路径直接运行
     if platform == "win":
-        archive_file = mian_virtual_dirpath("frontend") + "/tray/" + platform + "/" + "tray_" + machine + ".exe.7z"  # 文件
-        if not has_file(archive_file): # 做压缩包名字兼容处理
-            archive_file = mian_virtual_dirpath("frontend") + "/tray/" + platform + "/" + "tray_" + machine + ".7z"  # 文件
-            pass
+        file_path = mian_virtual_dirpath("frontend") + "/tray/" + platform + "/" + "tray_" + machine + ".exe"
         pass
     else:
-        archive_file = mian_virtual_dirpath("frontend") + "/tray/" + platform + "/" + "tray_" + machine + ".7z"  # 文件
+        file_path = mian_virtual_dirpath("frontend") + "/tray/" + platform + "/" + "tray_" + machine
         pass
-    output_dirpath = _cache_path + "/running/tray/" + platform + ""  # 结尾无/
-    # 解压
-    remove_dir_state, remove_dir_msg = _7z_remove_dir(output_dirpath) # 删除老文件
-    _7z_unarchive_state, _7z_unarchive_msg = _7z_unarchive(archive_file, output_dirpath)
     #
-    print_log("解压文件=", [has_file(archive_file), remove_dir_msg, _7z_unarchive_msg])
-    # 运行程序
-    if _7z_unarchive_state:
-        # 运行
-        if platform == "win":
-            root_path = output_dirpath + "/" + "tray_" + machine+".exe"
-            pass
-        else:
-            root_path = output_dirpath + "/" + "tray_" + machine
-            pass
-        run_state = shell_run_bin_process(root_path, "-la")
-        print_log("services_for_open_tray=", run_state, root_path)
+    if has_file(file_path):
+        run_state = shell_run_bin_process(file_path, "-la")
+        print("open_tray=", run_state, file_path)
         pass
     else:
-        print("解压文件时出错：", [remove_dir_msg, _7z_unarchive_msg])
+        print("open_tray无对应文件：", file_path)
         pass
-    pass
+
+    # 解压7z文件路径
+    ## output_dirpath最终效果=/Users/xxx/Library/Caches/top.datathink.Ginthon/running/tray/mac/mac/tray
+    # _cache_path = cache_path() + "/" + get_config("func")["sys"]["cache_path_main_dir"]  # 结尾无/
+    # if platform == "win":
+    #     archive_file = mian_virtual_dirpath("frontend") + "/tray/" + platform + "/" + "tray_" + machine + ".exe.7z"  # 文件
+    #     if not has_file(archive_file): # 做压缩包名字兼容处理
+    #         archive_file = mian_virtual_dirpath("frontend") + "/tray/" + platform + "/" + "tray_" + machine + ".7z"  # 文件
+    #         pass
+    #     pass
+    # else:
+    #     archive_file = mian_virtual_dirpath("frontend") + "/tray/" + platform + "/" + "tray_" + machine + ".7z"  # 文件
+    #     pass
+    # output_dirpath = _cache_path + "/running/tray/" + platform + ""  # 结尾无/
+    # # 解压
+    # remove_dir_state, remove_dir_msg = _7z_remove_dir(output_dirpath) # 删除老文件
+    # _7z_unarchive_state, _7z_unarchive_msg = _7z_unarchive(archive_file, output_dirpath)
+    # #
+    # print_log("解压文件=", [has_file(archive_file), remove_dir_msg, _7z_unarchive_msg])
+    # # 运行程序
+    # if _7z_unarchive_state:
+    #     # 运行
+    #     if platform == "win":
+    #         root_path = output_dirpath + "/" + "tray_" + machine+".exe"
+    #         pass
+    #     else:
+    #         root_path = output_dirpath + "/" + "tray_" + machine
+    #         pass
+    #     run_state = shell_run_bin_process(root_path, "-la")
+    #     print_log("services_for_open_tray=", run_state, root_path)
+    #     pass
+    # else:
+    #     print("解压文件时出错：", [remove_dir_msg, _7z_unarchive_msg])
+    #     pass
+    # pass
 
 # 周期服务，默认10s
 def services_for_time_interval():

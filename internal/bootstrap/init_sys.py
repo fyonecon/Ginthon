@@ -3,14 +3,19 @@ from internal.common.txt_data import txt_remove, txt_write
 from internal.config import get_config
 from internal.bootstrap.run_check_sys import run_check_sys
 from internal.bootstrap.init_window import init_window
-from internal.common.func import rand_range_string, print_log, has_file
+from internal.common.func import rand_range_string, print_log, has_file, cache_path
 
 
 # 程序主入口
 def init_sys():
     # 获取前端资源路径
+    cache_dirpath = cache_path() + "/" + get_config("func")["sys"]["cache_path_main_dir"]
     frontend_dirpath = mian_virtual_dirpath("frontend")
-    print(f"资源目录: {frontend_dirpath}", has_file(frontend_dirpath+"/launcher.png"))
+    print("### 两个重要目录 => ", {
+        "frontend_dirpath": frontend_dirpath,
+        "cache_dirpath": cache_dirpath,
+        "frontend-launcher.png": has_file(frontend_dirpath+"/launcher.png"),
+    })
     #
     CONFIG = get_config("run")
     #

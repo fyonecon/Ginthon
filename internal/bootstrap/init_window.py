@@ -38,10 +38,12 @@ def view_html(URL):
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+            <link rel="apple-touch-icon" href="/launcher.png">
+            <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
             <title>Loading...</title>
             <style>
                 html {
-                    background-color: rgba(115,115,115,0.2);
+                    background-color: rgba(115,115,115,0.8);
                 }
                 body {
                     background-color: transparent;

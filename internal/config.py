@@ -26,7 +26,7 @@ def get_config(tag=""):
             "debug": False,  # True False
         },
         "pywebview": {
-            "view_url": "http://127.0.0.1:9100/html/view", # 视图网址（协议+网址+端口+路径，如：http://127.0.0.1:9100/? ）
+            "view_url": "http://127.0.0.1:9100/window", # 视图网址（协议+网址+端口+路径，如：http://127.0.0.1:9100/window/?、 http://127.0.0.1:9100/window ）
             "secret_key": "2025nian11yue21rizhouwu22dian23", # 密钥, len>=16
             "ssl": False,  # True False
             "debug": False,  # True False

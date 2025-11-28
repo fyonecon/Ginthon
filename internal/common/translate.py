@@ -4,7 +4,14 @@ import locale
 def get_translate(key="-null-", lang=""):
     # 将语言转换成可用的数组索引标记
     def make_lang_index(language):
-        _language = language.lower()
+        if language is not None:
+            _language = language.lower()
+            pass
+        else:
+            print("locale.getlocale() = ", locale.getlocale())
+            _language = ""
+            pass
+        #
         if _language.find("zh", 0)==0 or _language.find("chinese", 0)==0:  # 简体中文（包含繁体）
             return "zh"
         elif _language.find("en", 0)==0 or _language.find("english", 0)==0:  # 英文
