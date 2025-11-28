@@ -7,6 +7,7 @@ import string
 import hashlib
 import platform
 import re
+import locale
 
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -43,6 +44,13 @@ def get_time_ms():
 # 获取秒时间
 def get_time_s():
     return datetime.now(utc).microsecond // 1000 // 1000
+
+# 获取系统首选语言
+def get_sys_language(lang = ""):
+    if len(lang)>=2:
+        return lang
+    else:
+        return locale.getlocale()[0]
 
 # 获取当前main的绝对路径
 def main_path():

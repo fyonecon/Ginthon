@@ -61,53 +61,36 @@ def custom_routes_api(FLASK, flask_middleware_api, window):
         tray_rand_token_state, msg = check_rand_token(app_class, salt_str, CONFIG, tray_rand_token)
         #
         window_show_hide_state = "" # 视窗当前是否显示，需要从本地视窗获取状态（待定） “” show hide
-        SHOW_HIDE_STATE = ""  # 无用或向托盘图标指示 “” show hide
         #
-        if window_show_hide_state == "hide" and (do == "app@show" or do == "app@hide"): # 以视窗为准指示显示还是隐藏
-            SHOW_HIDE_STATE = "show"
-            window.show()
-            pass
-        elif window_show_hide_state == "show"and (do == "app@show" or do == "app@hide"): # 以视窗为准指示显示还是隐藏
-            SHOW_HIDE_STATE = "hide"
-            window.hide()
-            pass
-        else: # 以托盘图标为准指示视窗显示与隐藏
-            if tray_rand_token_state:  # 正确
-                #####################################
-                if do == "app@show":
-                    state = 1
-                    msg = "show"
-                    SHOW_HIDE_STATE = "show"
-                    window.show()
-                    pass
-                elif do == "app@hide":
-                    state = 1
-                    msg = "hide"
-                    SHOW_HIDE_STATE = "hide"
-                    window.hide()
-                    pass
-                #####################################
-                elif do == "app@about":
-                    state = 1
-                    msg = "about"
-                    pass
-                elif do == "app@exit":  # exit
-                    state = 1
-                    msg = "exit"
-                    # 杀掉主程序（全部程序）
-                    main_pid = os.getpid()
-                    kill_process_by_pid(main_pid)
-                    #
-                    pass
-                #####################################
-                else:  # 未知状态
-                    state = 0
-                    msg = "未知状态：" + do
-                    pass
+        if tray_rand_token_state:  # 正确
+            #####################################
+            if do == "app@show_or_hide":
+                state = 1
+                msg = "show"
+                window.show()
                 pass
-            else:
+            #####################################
+            elif do == "app@about":
+                state = 1
+                msg = "about"
+                #
+                pass
+            elif do == "app@exit":  # exit
+                state = 1
+                msg = "exit"
+                # 杀掉主程序（全部程序）
+                main_pid = os.getpid()
+                kill_process_by_pid(main_pid)
+                #
+                pass
+            #####################################
+            else:  # 未知状态
                 state = 0
+                msg = "未知状态：" + do
                 pass
+            pass
+        else:
+            state = 0
             pass
 
         #
@@ -115,8 +98,7 @@ def custom_routes_api(FLASK, flask_middleware_api, window):
             "state": state,  #
             "msg": msg,
             "content": {
-                "SHOW_HIDE_STATE": SHOW_HIDE_STATE, # show hide
-                "tray_rand_token": tray_rand_token,
+                # "tray_rand_token": tray_rand_token,
                 "view_auth": view_auth,
                 "do": do,
                 "app_class": app_class,

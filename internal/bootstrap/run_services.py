@@ -23,6 +23,9 @@ def services_for_open_tray():
     _cache_path = cache_path() + "/" + get_config("func")["sys"]["cache_path_main_dir"]  # 结尾无/
     if platform == "win":
         archive_file = mian_virtual_dirpath("frontend") + "/tray/" + platform + "/" + "tray_" + machine + ".exe.7z"  # 文件
+        if not has_file(archive_file): # 做压缩包名字兼容处理
+            archive_file = mian_virtual_dirpath("frontend") + "/tray/" + platform + "/" + "tray_" + machine + ".7z"  # 文件
+            pass
         pass
     else:
         archive_file = mian_virtual_dirpath("frontend") + "/tray/" + platform + "/" + "tray_" + machine + ".7z"  # 文件
@@ -32,7 +35,7 @@ def services_for_open_tray():
     remove_dir_state, remove_dir_msg = _7z_remove_dir(output_dirpath) # 删除老文件
     _7z_unarchive_state, _7z_unarchive_msg = _7z_unarchive(archive_file, output_dirpath)
     #
-    print("解压文件=", [has_file(archive_file), remove_dir_msg, _7z_unarchive_msg])
+    print_log("解压文件=", [has_file(archive_file), remove_dir_msg, _7z_unarchive_msg])
     # 运行程序
     if _7z_unarchive_state:
         # 运行
