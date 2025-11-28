@@ -7,6 +7,7 @@ datas = []
 
 # 手动添加 frontend 文件夹
 frontend_files = [
+    # 单独添加文件
     ('frontend/favicon.ico', 'frontend'),
     ('frontend/launcher.png', 'frontend'),
 ]

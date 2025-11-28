@@ -12,6 +12,7 @@ import locale
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
+from internal.common.FILETYPE_DICT import FILETYPE_Dict
 from internal.common.kits.secret_aes import aes_encrypt, aes_decrypt
 from internal.config import get_config
 from urllib.parse import urlparse
@@ -129,6 +130,19 @@ def get_machine():
     else:
         return "null-cpu"
 
+# 取后文件缀（最后一个后缀）
+# 为空或无后缀时返回""
+def get_file_ext(filename):
+    filename = filename.lower()
+    return os.path.splitext(filename)[1]
+
+# 获取mimetype
+def get_file_ext_mimetype(file_ext):
+    if FILETYPE_Dict.get(file_ext):
+        return FILETYPE_Dict[file_ext]
+    else:
+        return "application/octet-stream"
+
 # 获取当前平台存储程序缓存的路径
 def cache_path():
     p = get_platform()
@@ -199,9 +213,9 @@ def md5(txt):
 #
 def back_500_data():
     return f"""
-        <html>
-        <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" /><title>500</title>
-        <body>
+        <html style="background-color: rgba(115,115,115,0.2);">
+        <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" /><title>500</title></head>
+        <body style="background-color: transparent;">
             <h4>500</h4>
         </body>
         </html>
@@ -210,9 +224,9 @@ def back_500_data():
 #
 def back_404_data():
     return f"""
-        <html>
-        <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" /><title>404</title>
-        <body>
+        <html style="background-color: rgba(115,115,115,0.2);">
+        <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" /><title>404</title></head>
+        <body style="background-color: transparent;">
             <h4>404</h4>
         </body>
         </html>
@@ -221,11 +235,11 @@ def back_404_data():
 #
 def back_404_data_html(msg):
     return f"""
-        <html>
-        <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" /><title>html 404</title>
-        <body>
+        <html style="background-color: rgba(115,115,115,0.2);">
+        <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" /><title>html 404</title></head>
+        <body style="background-color: transparent;">
             <h4>html 404</h4>
-            <p style="color: red;">{msg}</p>
+            <p style="color: red;overflow: hidden;word-wrap: break-word;overflow-wrap: break-word;">{msg}</p>
         </body>
         </html>
     """
@@ -243,11 +257,11 @@ def back_404_data_api(msg):
 #
 def back_404_data_file(msg):
     return f"""
-        <html>
-        <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" /><title>file 404</title>
-        <body>
+        <html style="background-color: rgba(115,115,115,0.2);">
+        <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" /><title>file 404</title></head>
+        <body style="background-color: transparent;">
             <h4>file 404</h4>
-            <p style="color: red;">{msg}</p>
+            <p style="color: red;overflow: hidden;word-wrap: break-word;overflow-wrap: break-word;">{msg}</p>
         </body>
         </html>
     """
