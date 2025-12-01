@@ -4,7 +4,7 @@ def get_config(tag=""):
     return {
         "app": {
             "app_name": "Ginthon",
-            "app_version": "1.2.3",  # 1.0.0
+            "app_version": "1.3.0",  # 1.0.0
             "app_class": "ginthon_window_",
             "author": "fyonecon",
             "github": "https://github.com/fyonecon/Ginthon",
@@ -15,21 +15,21 @@ def get_config(tag=""):
             "running_id_filename": "running_id.cache", #
             "debug": False,  # True False
         },
-        "check": {
+        "check": { # check_sys
             "min_cpu_cores": 2,  # 物理核心数
             "min_ram": 1,  # GB
             "min_python_version": (3, 12),  # 默认最低(3, 12)，即3.12.0
         },
-        "flask": {
+        "flask": { # web
             "white_hosts": ["http://127.0.0.1:9100", "https://127.0.0.1:9100", "http://datathink.top", "https://datathink.top"], #白名单域名或IP，格式：协议+IPv4+port、协议+域名
             "port": 9100,  # 服务端口 9100
             "debug": False,  # True False
         },
-        "pywebview": {
-            "view_url": "http://127.0.0.1:9100/window", # 视图网址（协议+网址+端口+路径，如：http://127.0.0.1:9100/window/?、 http://127.0.0.1:9100/window ）
+        "pywebview": { # window
+            "view_host": "http://127.0.0.1", # 视图网址（协议+网址+端口+路径，如：http://127.0.0.1 ）
             "secret_key": "2025nian11yue21rizhouwu22dian23", # 密钥, len>=16
             "ssl": False,  # True False
-            "debug": False,  # True False
+            "debug": True,  # True False
         },
         "mysql1": {
             "ipv4": "127.0.0.1:3306",  # ip:port

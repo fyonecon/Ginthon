@@ -1,19 +1,20 @@
 from flask import Flask, jsonify, send_file
-from internal.app.flask.routes import custom_routes_html, custom_routes_api, custom_routes_file
+from internal.app.flask.flask_route_api import flask_route_api
+from internal.app.flask.flask_route_html import flask_route_html
+from internal.app.flask.flask_route_file import flask_route_file
 from flask import make_response, request
 
+from internal.app.window.window_route import window_route
 from internal.bootstrap.flask_middleware import flask_middleware_html, flask_middleware_file, flask_middleware_api
-from internal.common.main_dirpath import mian_virtual_dirpath
-from internal.config import get_config
-from internal.common.func import print_log, back_404_data, back_500_data, back_404_data_api, back_404_data_html, \
-    back_404_data_file, get_file_ext, get_file_ext_mimetype
+from internal.common.kits.main_dirpath import mian_virtual_dirpath
+from internal.common.func import print_log, back_404_data, back_500_data, back_404_data_api, back_404_data_html, back_404_data_file, get_file_ext, get_file_ext_mimetype
 
 #
 CONFIG = {}
 
 # 必要路由
 # 请求宽进严出、中间件验证参数
-def must_routes(FLASK):
+def must_route(window, FLASK):
 
     # index http://127.0.0.1:9100
     @FLASK.route("/", methods=["GET", "POST", "OPTIONS"]) # 路由名
@@ -99,7 +100,7 @@ def must_routes(FLASK):
             "way": "file",
             "methods": ["GET"],
         }
-        if filename in ["favicon.ico", "launcher.png"]:
+        if filename in ["favicon.ico", "launcher.png", "js_call_py.js"]:
             file_ext = get_file_ext(filename)
             mimetype = get_file_ext_mimetype(file_ext)
             file_path = mian_virtual_dirpath("frontend") + "/" + filename
@@ -200,21 +201,24 @@ def must_routes(FLASK):
 
     pass
 
+
 # 启动Flask服务
-def run_flask(window, pid):
+def run_flask(window, webview_pid, config):
     # 读取配置信息
     global CONFIG
-    CONFIG = get_config("run_flask")
+    CONFIG = config
     #
-    print_log("### Flask => ", "http://127.0.0.1:" + str(CONFIG["flask"]["port"])+"/api")
+    print_log("### Flask => ", "http://127.0.0.1" + ":" + str(CONFIG["flask"]["port"])+"/api")
     #
     FLASK = Flask(__name__)
-    # 必要路由
-    must_routes(FLASK)
+    # flask必要路由
+    must_route(window, FLASK)
+    # window必要路由
+    window_route(window, FLASK)
     # 注册自定义路由
-    custom_routes_html(FLASK, flask_middleware_html)
-    custom_routes_api(FLASK, flask_middleware_api, window)
-    custom_routes_file(FLASK, flask_middleware_file)
+    flask_route_html(window, FLASK)
+    flask_route_api(window, FLASK)
+    flask_route_file(window, FLASK)
     #
     FLASK.run(debug=CONFIG["flask"]["debug"], port=CONFIG["flask"]["port"])
 
