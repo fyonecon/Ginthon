@@ -3,8 +3,8 @@
 def get_config(tag=""):
     return {
         "app": {
-            "app_name": "Ginthon",
-            "app_version": "1.2.3",  # 1.0.0
+            "app_name": "Ginthon Tray",
+            "app_version": "1.3.0",  # 1.0.0
             "app_class": "ginthon_tray_",
             "author": "fyonecon",
             "github": "https://github.com/fyonecon/Ginthon",

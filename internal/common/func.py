@@ -12,7 +12,7 @@ import locale
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-from internal.common.FILETYPE_DICT import FILETYPE_Dict
+from internal.common.kits.FILETYPE_DICT import FILETYPE_Dict
 from internal.common.kits.secret_aes import aes_encrypt, aes_decrypt
 from internal.config import get_config
 from urllib.parse import urlparse
@@ -38,13 +38,17 @@ def print_log(*args):
 def get_date(format="%Y-%m-%d %H:%M:%S %p %A %B"):
     return datetime.now(utc).strftime(format)
 
+# 获取纳秒时间
+def get_time_ns():
+    return int(datetime.now(utc).timestamp() * 1000 * 1000 * 1000)
+
 # 获取毫秒时间
 def get_time_ms():
-    return datetime.now(utc).microsecond // 1000
+    return int(datetime.now(utc).timestamp() * 1000 * 1000)
 
 # 获取秒时间
 def get_time_s():
-    return datetime.now(utc).microsecond // 1000 // 1000
+    return int(datetime.now(utc).timestamp() * 1000)
 
 # 获取系统首选语言
 def get_sys_language(lang = ""):

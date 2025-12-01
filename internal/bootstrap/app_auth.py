@@ -1,5 +1,5 @@
 from internal.common.func import str_encode, md5, rand_range_string, get_time_ms, str_decode
-from internal.common.txt_data import txt_read
+from internal.common.kits.txt_data import txt_read
 from internal.config import get_config
 
 # 生产token
@@ -38,9 +38,9 @@ def check_rand_token(app_class, salt_str, config, check_str):
         if OK:
             return True, "参数已匹配"
         else:
-            return False, "参数不匹配"
+            return False, "Token参数不匹配"
     except:
-        return False, "参数错误"
+        return False, "Token参数错误"
 
 # 生成rand_id
 # 依赖于每次启动程序时生成的随机id，不可复用或跨软件
@@ -66,7 +66,7 @@ def check_rand_id(view_rand_id):
 
 # 生成view_auth
 # 依赖于每次启动程序时生成的随机id，不可复用或跨软件
-def make_view_auth(config):
+def make_auth(config):
     CONFIG = config
     #
     app_class = CONFIG["app"]["app_class"]
@@ -76,7 +76,7 @@ def make_view_auth(config):
     return md5(app_class+"#@"+running_id)
 
 # 校验view_auth值
-def check_view_auth(view_auth):
+def check_auth(view_auth):
     CONFIG = get_config()
     #
     app_class = CONFIG["app"]["app_class"]

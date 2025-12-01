@@ -4,7 +4,7 @@ from PIL import Image
 import io
 import threading
 
-from internal.common.ICON import ICON_Binary
+from internal.common.kits.ICON import ICON_Binary
 from internal.app.pystray import on_show_or_hide, on_exit, on_about
 from internal.app.service import run_service
 from internal.common.func import print_log

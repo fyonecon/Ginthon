@@ -4,8 +4,8 @@ import requests
 import os
 
 from internal.common.func import print_log
-from internal.common.view_auth import make_view_auth, make_rand_token
-from internal.common.watch_pid import kill_process_by_pid
+from internal.bootstrap.app_auth import make_auth, make_rand_token
+from internal.common.kits.watch_pid import kill_process_by_pid
 from internal.config import get_config
 
 
@@ -26,7 +26,7 @@ def request_window(do):
         "app_class": CONFIG["app"]["app_class"],
         "app_version": CONFIG["app"]["app_version"],
         "do": do,
-        "view_auth": make_view_auth(CONFIG)
+        "view_auth": make_auth(CONFIG)
     }
     headers = {
         "Content-Type": "application/json",
