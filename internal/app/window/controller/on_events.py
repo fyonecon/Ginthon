@@ -56,15 +56,14 @@ def on_loaded(window):
         current_url = "（current_url使用了html直接渲染）"
         pass
     print_log("当前窗口DOM=", [current_uid, current_url])
-    #
+    # 1
     script = '''
-            console.log("当前链接：", window.location.href);
-            '''
+        console.log("当前链接：", window.location.href);
+    '''
     window.evaluate_js(script, callback=None)
-    #
-    sleep(1)
+    # 2
     config = get_config("")
-    print_log(list_py_run_js(window, config, "test", {"test": "----"}))
+    list_py_run_js(window, config, "test", {"test": "----"})
     #
     pass
 
