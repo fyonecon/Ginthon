@@ -34,7 +34,43 @@ const js_call_py = function(key, data_dict){
     }
     // ==============================================================
 
-
+    // js监听当前窗口是隐藏还是展示
+    // data_dict={display="showing hiding"}
+    else if(key === "window_display"){
+        return new Promise(resolve => {
+            state = 1;
+            msg = "js监听当前窗口是隐藏还是展示";
+            //
+            back_data = {
+                "state": state,
+                "msg": msg,
+                "content": {
+                    "key": key,
+                    "data_dict": data_dict,
+                }
+            };
+            back_data["result"] = js_call_py_request(api_url, back_data),  // 远程调用py
+            resolve(back_data);
+        });
+    }
+    // data_dict={theme="dark light"}
+    else if(key === "window_theme"){
+        return new Promise(resolve => {
+            state = 1;
+            msg = "js监听当前窗口的主题";
+            //
+            back_data = {
+                "state": state,
+                "msg": msg,
+                "content": {
+                    "key": key,
+                    "data_dict": data_dict,
+                }
+            };
+            back_data["result"] = js_call_py_request(api_url, back_data),  // 远程调用py
+            resolve(back_data);
+        });
+    }
     // 隐藏窗口
     // data_dict={}
     else if(key === "window_hide"){
@@ -152,20 +188,27 @@ const js_call_py = function(key, data_dict){
         });
     }
 };
-console.log("js_call_py.js已加载。");
-// 展示窗口
-js_call_py("window_show", {}).then(
-    back_data=>{
-        console.log("js_call_py.js调用window_js_call_py.py返回值：", back_data);
-    }
-);
-//// new窗口
-//js_call_py("open_url_with_default_browser", {
-//    "url": "http://127.0.0.1",
-//    "title": "窗口",
-//    "target": "_self"
-//}).then(
-//    back_data=>{
-//        console.log("js_call_py.js调用window_js_call_py.py返回值：", back_data);
-//    }
-//);
+
+// 监听和初始化页面
+(function(){
+    console.log("js_call_py.js已加载。");
+    // 展示窗口
+    js_call_py("window_show", {}).then(
+        back_data=>{
+            console.log(back_data["content"]["key"], "js_call_py.js调用window_js_call_py.py返回值：", back_data);
+        }
+    );
+    //// new窗口
+    //js_call_py("open_url_with_default_browser", {
+    //    "url": "http://127.0.0.1",
+    //    "title": "窗口",
+    //    "target": "_self"
+    //}).then(
+    //      back_data=>{
+    //          console.log(back_data["content"]["key"], "js_call_py.js调用window_js_call_py.py返回值：", back_data);
+    //      }
+    //);
+    // watch
+    window_display_on_watch();
+    window_theme_on_watch();
+})();

@@ -121,6 +121,54 @@ def window_view(_WINDOW, rand_id, filename):
             });
         };
     '''
+    js_on_watch = '''
+        // 监听并设置窗口的当前是否展示在前台
+        function window_display_on_watch(){
+            // 检查当前页面是否隐藏（最小化或切换标签页）
+            const isMinimized = document.hidden;
+            // 或者使用 visibilityState
+            const isVisible = document.visibilityState === 'visible';
+            const isHidden = document.visibilityState === 'hidden';
+            // 添加事件监听器
+            document.addEventListener('visibilitychange', () => {
+                let display = "";
+                if (document.hidden) {
+                    //console.log('页面被隐藏（最小化或切换标签）');
+                    display = "hiding";
+                } else {
+                    //console.log('页面可见');
+                    display = "showing";
+                }
+                js_call_py("window_display", {"display": display}).then(
+                    back_data=>{
+                        console.log(back_data["content"]["key"], "js_call_py.js调用window_js_call_py.py返回值：", back_data);
+                    }
+                );
+            });
+        }
+        // 监听页面的主题
+        function window_theme_on_watch(){
+            let the_theme = window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
+            function change_theme(theme){
+                js_call_py("window_theme", {"theme": theme}).then(
+                    back_data=>{
+                        console.log(back_data["content"]["key"], "js_call_py.js调用window_js_call_py.py返回值：", back_data);
+                    }
+                );
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (e.matches) {
+                    //console.log('切换到暗黑模式');
+                    the_theme = "dark";
+                } else {
+                    //console.log('切换到浅色模式');
+                    the_theme = "light";
+                }
+                change_theme(the_theme)
+            });
+            change_theme(the_theme);
+        }
+    '''
     js_loaded = f'''
         <script class="window-script" id="window_must_data">
             const view_url = "{view_url}";
@@ -130,6 +178,7 @@ def window_view(_WINDOW, rand_id, filename):
             const js_call_py_auth = "{js_call_py_auth}"; 
         </script>
         <script class="window-script" id="window_reqeust">{js_request}</script>
+        <script class="window-script" id="window_on_watch">{js_on_watch}</script>
         <script class="window-script" id="window_js_call_py" src="{js_call_py_url}"></script>
     '''
     if len(html)==0:

@@ -2,6 +2,7 @@ import threading
 import webbrowser
 import webview
 
+from internal.app.window.window_display import set_window_display
 from internal.common.func import is_url
 
 # py_run_js对照表
@@ -105,17 +106,55 @@ def list_js_call_py(WINDOW, config, key, data_dict):
             msg = "data_dict错误"
         return state, msg, ""
 
+    # js监听当前窗口是隐藏还是展示
+    # data_dict={display="showing hiding"}
+    elif key == "window_display":
+        if data_dict.get("display"):
+            display = data_dict["display"]
+            if display == "hiding":
+                state = 1
+                msg = set_window_display("hiding")
+            elif display == "showing":
+                state = 1
+                msg = set_window_display("showing")
+            else :
+                state = 0
+                msg = "url格式不正确"
+        else:
+            state = 0
+            msg = "data_dict错误"
+        return state, msg, ""
+
+    # js监听当前窗口的主题
+    # data_dict={theme="dark light"}
+    elif key == "window_theme":
+        if data_dict.get("theme"):
+            display = data_dict["theme"]
+            if display == "dark":
+                state = 1
+                msg = "dark"
+            elif display == "light":
+                state = 1
+                msg = "light"
+            else:
+                state = 0
+                msg = "url格式不正确"
+        else:
+            state = 0
+            msg = "data_dict错误"
+        return state, msg, ""
+
     # 隐藏窗口
     # data_dict={}
     elif key == "window_hide":
         WINDOW.hide()
-        return state, msg, ""
+        return state, msg, set_window_display("hiding")
 
     # 显示窗口
     # data_dict={}
     elif key == "window_show":
         WINDOW.show()
-        return state, msg, ""
+        return state, msg, set_window_display("showing")
 
 
     # ===========================================================
@@ -123,7 +162,7 @@ def list_js_call_py(WINDOW, config, key, data_dict):
     # data_dict={}
     else:
         js_content = rf"""
-            console.log("py_run_js-else", {key}, {data_dict});
+            console.log("py_run_js-else");
         """
         state = 0
         msg = "不白名单的Key"

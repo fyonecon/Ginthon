@@ -1,3 +1,5 @@
+from internal.common.func import print_log
+
 
 # py_run_js对照表
 # 页面url=on_load后执行
@@ -31,5 +33,5 @@ def list_py_run_js(window, config, key, data_dict):
         pass
     #
     result = window.evaluate_js(js_content, callback=True)
-    print("py_run_js.py：", [state, msg, result])
+    print_log("py_run_js.py：", key, [state, msg, result])
     return state, msg, result
