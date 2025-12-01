@@ -4,7 +4,7 @@ def get_config(tag=""):
     return {
         "app": {
             "app_name": "Ginthon",
-            "app_version": "1.3.0",  # 1.0.0
+            "app_version": "1.3.1",  # 1.0.0
             "app_class": "ginthon_window_",
             "author": "fyonecon",
             "github": "https://github.com/fyonecon/Ginthon",

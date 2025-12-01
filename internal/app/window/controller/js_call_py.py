@@ -13,6 +13,7 @@ def list_js_call_py(WINDOW, config, key, data_dict):
     print("list_js_call_py=", [key, data_dict])
 
     # 默认
+    # data_dict={}
     if key == "test" or len(key) == 0:
         js_content = rf"""
             console.log("js_call_py-test", {key}, {data_dict});
@@ -23,7 +24,9 @@ def list_js_call_py(WINDOW, config, key, data_dict):
         return state, msg, result
     # ===========================================================
 
+
     # 用新窗口打开目标链接
+    # data_dict={url="", "title"="new window"}
     elif key == "open_url_with_new_window":
         if data_dict.get("url") and data_dict.get("title"):
             url = data_dict["url"]
@@ -63,6 +66,7 @@ def list_js_call_py(WINDOW, config, key, data_dict):
 
 
     # 用默认浏览器打开目标链接
+    # data_dict={url="", "target"="_blank"}
     elif key == "open_url_with_default_browser":
         if data_dict.get("url") and data_dict.get("target"):
             url = data_dict["url"]
@@ -85,6 +89,7 @@ def list_js_call_py(WINDOW, config, key, data_dict):
         return state, msg, ""
 
     # 用原始窗口打开新链接
+    # data_dict={url=""}
     elif key == "open_url_with_master_window":
         if data_dict.get("url"):
             url = data_dict["url"]
@@ -101,11 +106,13 @@ def list_js_call_py(WINDOW, config, key, data_dict):
         return state, msg, ""
 
     # 隐藏窗口
+    # data_dict={}
     elif key == "window_hide":
         WINDOW.hide()
         return state, msg, ""
 
     # 显示窗口
+    # data_dict={}
     elif key == "window_show":
         WINDOW.show()
         return state, msg, ""
@@ -113,6 +120,7 @@ def list_js_call_py(WINDOW, config, key, data_dict):
 
     # ===========================================================
     # else
+    # data_dict={}
     else:
         js_content = rf"""
             console.log("py_run_js-else", {key}, {data_dict});
