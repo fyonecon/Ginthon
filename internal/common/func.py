@@ -1,4 +1,5 @@
 # 公用函数
+import base64
 import os
 import sys
 import tomllib
@@ -15,7 +16,7 @@ from pathlib import Path
 from internal.common.kits.FILETYPE_DICT import FILETYPE_Dict
 from internal.common.kits.secret_aes import aes_encrypt, aes_decrypt
 from internal.config import get_config
-from urllib.parse import urlparse
+from urllib.parse import urlparse, quote, unquote
 
 # 时区
 utc = timezone(timedelta(hours=8))
@@ -204,15 +205,109 @@ def rand_range_string(min_length, max_length):
 
 # 字符串加密
 def str_encode(txt, key="25nian11y21rzhw22dian27"):
-    return aes_encrypt(txt, str_to_bytes(truncate_string(key, 16)))
+    return url_encode(aes_encrypt(txt, str_to_bytes(truncate_string(key, 16))))
 
 # 字符串解密
-def str_decode(txt, key="25nian11y21rzhw22dian27"):
-    return aes_decrypt(txt, str_to_bytes(truncate_string(key, 16)))
+def str_decode(txt_decoded, key="25nian11y21rzhw22dian27"):
+    return aes_decrypt(url_decode(txt_decoded), str_to_bytes(truncate_string(key, 16)))
 
 # md5
 def md5(txt):
     return hashlib.md5(txt.encode("utf-8")).hexdigest()
+
+# url_encode
+def url_encode(text:str):
+    return quote(text, encoding='utf-8')
+
+# url_decode
+def url_decode(text_encoded:str):
+    return unquote(text_encoded, encoding='utf-8')
+
+# base64_encode
+def base64_encode(text: str):
+    text_bytes = text.encode('utf-8')  # 先转为bytes
+    return base64.b64encode(text_bytes)
+
+# base64_decode
+def base64_decode(text_encoded: str):
+    decoded_bytes = base64.b64decode(text_encoded)
+    return decoded_bytes.decode('utf-8')
+
+# unicode_encode
+def unicode_encode(text, encoding_type='utf-8', escape_format='python'):
+    """
+    encoding_type: 编码格式，可选 'utf-8', 'ascii'
+    escape_format: 转义格式，可选 'html', 'url', 'hex'
+    返回:
+    编码后的字符串
+    """
+    # 编码为字节
+    try:
+        encoded_bytes = text.encode(encoding_type, errors='ignore')
+    except LookupError:
+        raise ValueError(f"不支持的编码格式: {encoding_type}")
+
+    # 根据转义格式处理
+    if escape_format == 'html':
+        # HTML实体编码（&#xXXXX;）
+        result = ''.join(f'&#x{ord(char):04x};' if ord(char) > 127 else char for char in text)
+    elif escape_format == 'url':
+        # URL百分比编码
+        from urllib.parse import quote
+        result = quote(text)
+    elif escape_format == 'hex':
+        # 纯十六进制表示
+        result = encoded_bytes.hex()
+    else:
+        raise ValueError(f"不支持的转义格式: {escape_format}")
+    return result
+
+# unicode_decode
+def unicode_decode(encoded_text, encoding_type='utf-8', escape_format='html'):
+    """
+    encoding_type: 编码格式，可选 'utf-8', 'ascii'
+    escape_format: 转义格式，可选 'html', 'url', 'hex'
+    返回:
+    解码后的原始字符串
+    """
+    import re
+    import base64
+    from urllib.parse import unquote
+
+    if escape_format == 'html' or escape_format == 'xml':
+        # HTML/XML实体解码
+        def html_entity_decode(match):
+            entity = match.group(0)
+            if entity.startswith('&#x'):
+                # 十六进制实体 &#xXXXX;
+                hex_code = entity[3:-1]
+                return chr(int(hex_code, 16))
+            elif entity.startswith('&#'):
+                # 十进制实体 &#DDDD;
+                dec_code = entity[2:-1]
+                return chr(int(dec_code))
+            else:
+                # 命名实体
+                html_entities = {
+                    '&lt;': '<',
+                    '&gt;': '>',
+                    '&amp;': '&',
+                    '&quot;': '"',
+                    '&apos;': "'"
+                }
+                return html_entities.get(entity, entity)
+        pattern = r'&#x[0-9a-fA-F]{1,6};|&#\d{1,6};|&[a-zA-Z]+;'
+        return re.sub(pattern, html_entity_decode, encoded_text)
+    elif escape_format == 'url':
+        # URL解码
+        return unquote(encoded_text)
+    elif escape_format == 'hex':
+        # 十六进制解码
+        bytes_data = bytes.fromhex(encoded_text)
+        return bytes_data.decode(encoding_type)
+    else:
+        # 直接使用指定编码解码
+        return encoded_text.encode('latin-1').decode(encoding_type)
 
 #
 def back_500_data():
@@ -269,5 +364,3 @@ def back_404_data_file(msg):
         </body>
         </html>
     """
-
-
