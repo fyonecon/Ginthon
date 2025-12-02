@@ -8,7 +8,6 @@ from internal.bootstrap.flask_middleware import flask_middleware_html, flask_mid
 from internal.common.func import back_404_data_html, back_404_data_api, print_log, back_404_data_file, has_file, \
     get_file_ext_mimetype, get_file_ext
 from internal.common.kits.main_dirpath import mian_virtual_dirpath
-from internal.common.kits.watch_pid import kill_process_by_pid
 from internal.config import get_config
 
 
