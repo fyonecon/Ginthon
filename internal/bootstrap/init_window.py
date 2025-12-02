@@ -28,98 +28,6 @@ def view_url():
     #
     return url
 
-
-# 视窗view-html
-def view_html(URL):
-    html1 = f'''
-    <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-            <link rel="apple-touch-icon" href="/launcher.png">
-            <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-            <title>Loading...</title>
-            <script>
-                const URL = "{URL}";
-            </script>'''
-
-    html2 = '''
-        </head>
-        <body>
-            <style>
-                html {
-                    background-color: rgba(115,115,115,0.8);
-                }
-                body {
-                    background-color: transparent;
-                    padding: 0 0;
-                    margin: 0 0;
-                }
-                .hide{
-                    display: none !important;
-                }
-                .click{
-                    cursor: pointer;
-                }
-                .click:active{
-                    opacity: 0.6;
-                }
-                .select-none{
-                    -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;
-                    user-select: none;
-                }
-                .break{
-                    overflow: hidden;
-                    word-wrap: break-word;
-                    overflow-wrap: break-word;
-                }
-                .url-msg{
-                    font-size: 18px;
-                    line-height: 30px;
-                    text-align: center;
-                    padding: 20px 10px;
-                }
-            </style>
-            <div id="url-msg" class="url-msg select-none break click">Default View.</div>
-            <script>
-                let click_waiting = 0;
-                let click_waiting_timeout = 0;
-                // 使用
-                function load_url(_URL){
-                    click_waiting = 1;
-                    click_waiting_timeout = 1;
-                    //
-                    if (_URL.length >= 9){
-                        document.getElementById("url-msg").innerHTML = "Services Loading....";
-                        //
-                        window.location.replace(_URL);
-                    }else{
-                        click_waiting = 0;
-                        click_waiting_timeout = 0;
-                        document.getElementById("url-msg").innerHTML = "URL Error.";
-                    }
-                }
-                (function (){
-                    load_url(URL);
-                })();
-                document.getElementById("url-msg").onclick = function (){
-                    if (click_waiting === 0 && click_waiting_timeout === 0){ // 防止连续点击
-                        load_url(URL);
-                    }else{
-                        console.log("click waiting...", [click_waiting, click_waiting_timeout]);
-                    }
-                };
-            </script>
-        </body>
-        </html>
-    '''
-    #
-    html3 = html1+html2
-    print_log(html3)
-    return html3
-
-
 # 注册服务
 def join_events(_window):
     global SERVICES_PID
@@ -157,7 +65,6 @@ def init_window():
     #
     CONFIG = get_config("run_pywebview")
     _view_url = view_url()
-    _view_html = view_html(_view_url)
 
     # 创建视窗
     _window = webview.create_window(
@@ -167,10 +74,12 @@ def init_window():
         min_size=(520, 520),
         width=720, height=540,
         hidden=True, # 打开时隐藏界面，默认 False
-        frameless=False,
+        frameless=False, # 拖住class="pywebview-drag-region"
+        confirm_close=True, # 关闭window时显示确认窗口（不支持在状态栏关闭时拦截）
         text_select=True,
         transparent=False,
         background_color="#555555",
+        draggable=False, # 可以将图片拖到桌面，建议False
     )
     WINDOW = _window
     WEBVIEW_PID = os.getpid()

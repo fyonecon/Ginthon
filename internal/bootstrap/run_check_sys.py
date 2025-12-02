@@ -31,10 +31,10 @@ def run_check_sys():
     global CONFIG
     CONFIG = get_config("run_check_sys")
 
-    # 检查缓存目录，不存在就立即创建
-    create_dir_level_1("user")
+    # 检查缓存目录，不存在就立即创建该目录
     create_dir_level_1("running")
     create_dir_level_1("log")
+    create_dir_level_1("local_database")
 
     # 至少物理双核
     cpu_count = psutil.cpu_count(logical=False)

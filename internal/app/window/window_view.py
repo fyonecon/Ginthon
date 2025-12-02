@@ -40,15 +40,16 @@ def window_view(_WINDOW, rand_id, filename):
         // js远程调用py
         const js_call_py_request = function (api_url, data_dict) {
             // 基础 POST 请求
-            async function FetchPOST(url, data, options = {}) {
+           async function FetchPOST(url, data) {
                 const config = {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: typeof data === 'string' ? data : JSON.stringify(data),
-                    mode: options.mode || 'cors', // cors, no-cors, same-origin
-                    cache: options.cache || 'no-cache', // default, no-cache, reload, force-cache, only-if-cached
+                    mode: 'same-origin', // cors, no-cors, same-origin
+                    cache: 'no-cache', // default, no-cache, reload, force-cache, only-if-cached
+                    timeout: 4, // 自定义超时 s
                 };
                 try {
                     const response = await fetch(url, config);
@@ -59,6 +60,7 @@ def window_view(_WINDOW, rand_id, filename):
                             "state": 0,
                             "msg": "请求失败1",
                             "content": {
+                                "data_dict": data_dict,
                                 "error status": response.status,
                                 "error text": response.statusText,
                             }
@@ -78,25 +80,15 @@ def window_view(_WINDOW, rand_id, filename):
                         } else {
                             result = await response.text();
                         }
-                        // let res =  {
-                        //     status: response.status,
-                        //     statusText: response.statusText,
-                        //     headers: Object.fromEntries(response.headers.entries()),
-                        //     data: result,
-                        //     ok: response.ok,
-                        //     redirected: response.redirected,
-                        //     type: response.type,
-                        //     url: response.url
-                        // };
-                        // console.log(api_url, data_dict, res);
                         return result;
                     }
                 } catch (error) {
-                    console.error('Fetch error:', error);
+                    console.error('Fetch error 1:', error);
                     return {
                         "state": 0,
                         "msg": "请求失败2",
                         "content": {
+                            "data_dict": data_dict,
                             "error": error,
                         }
                     };
@@ -105,15 +97,16 @@ def window_view(_WINDOW, rand_id, filename):
             //
             return new Promise(resolve => {
                 try {
-                    const response = FetchPOST(api_url, data_dict, {
-                        timeout: 6 // 自定义超时 s
+                    FetchPOST(api_url, data_dict).then(result=>{
+                        resolve(result);
                     });
-                    resolve(response.data);
                 } catch (error) {
+                    console.error('Fetch error 2:', error);
                     resolve({
                         "state": 0,
                         "msg": "请求失败3",
                         "content": {
+                            "data_dict": data_dict,
                             "error": error,
                         }
                     });
@@ -131,7 +124,7 @@ def window_view(_WINDOW, rand_id, filename):
             const isHidden = document.visibilityState === 'hidden';
             // 添加事件监听器
             document.addEventListener('visibilitychange', () => {
-                let display = "";
+                let display = "hiding";
                 if (document.hidden) {
                     //console.log('页面被隐藏（最小化或切换标签）');
                     display = "hiding";
@@ -139,11 +132,15 @@ def window_view(_WINDOW, rand_id, filename):
                     //console.log('页面可见');
                     display = "showing";
                 }
-                js_call_py("window_display", {"display": display}).then(
-                    back_data=>{
-                        console.log(back_data["content"]["key"], "js_call_py.js调用window_js_call_py.py返回值：", back_data);
-                    }
-                );
+                //
+                try{
+                    js_call_py("window_display", {"display": display}).then(
+                        back_data=>{
+                            console.log(back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]["result"]);
+                        }
+                    );
+                }catch(e){}
+                
             });
         }
         // 监听页面的主题
@@ -152,7 +149,7 @@ def window_view(_WINDOW, rand_id, filename):
             function change_theme(theme){
                 js_call_py("window_theme", {"theme": theme}).then(
                     back_data=>{
-                        console.log(back_data["content"]["key"], "js_call_py.js调用window_js_call_py.py返回值：", back_data);
+                        //console.log(back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]["result"]);
                     }
                 );
             }
@@ -169,7 +166,8 @@ def window_view(_WINDOW, rand_id, filename):
             change_theme(the_theme);
         }
     '''
-    js_loaded = f'''
+    # 必要参数
+    js_must_data = f'''
         <script class="window-script" id="window_must_data">
             const view_url = "{view_url}";
             const view_html = "{view_html}"; 
@@ -178,9 +176,13 @@ def window_view(_WINDOW, rand_id, filename):
             const js_call_py_auth = "{js_call_py_auth}"; 
         </script>
         <script class="window-script" id="window_reqeust">{js_request}</script>
-        <script class="window-script" id="window_on_watch">{js_on_watch}</script>
-        <script class="window-script" id="window_js_call_py" src="{js_call_py_url}"></script>
     '''
+    # loaded后执行
+    js_loaded = f'''
+            <script class="window-script" id="window_on_watch">{js_on_watch}</script>
+            <script class="window-script" id="window_js_call_py" src="{js_call_py_url}"></script>
+        '''
+    # 为空时的默认DOM
     if len(html)==0:
         html = '''
         <html lang="zh">
@@ -198,8 +200,7 @@ def window_view(_WINDOW, rand_id, filename):
                     opacity: 0.6;
                 }
                 .select-none{
-                    -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;
-                    user-select: none;
+                    -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;user-select: none;
                 }
                 .break{
                     overflow: hidden;
@@ -210,7 +211,7 @@ def window_view(_WINDOW, rand_id, filename):
         </head>
         <body style="background-color: transparent;">
             <br/>
-            <h2 style="text-align: center; " class="select-none">当前使用了空模板。</h2>
+            <h2 style="text-align: center;" class="select-none pywebview-drag-region" >当前使用了空模板。</h2>
             <div style="text-align: center;">
                 <p id="info" class="break"></p>
                 <p class="select-none"><img src="http://127.0.0.1:9100/file/test.png" width="192" alt=""/></p>
@@ -238,4 +239,4 @@ def window_view(_WINDOW, rand_id, filename):
         '''
         pass
 
-    return js_loaded+html
+    return js_must_data+html+js_loaded

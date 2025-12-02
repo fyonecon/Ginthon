@@ -11,6 +11,9 @@ txt_path = _cache_path+"/running/" # /结尾
 # txt_filename文件格式：xxx.txt。model:"w"覆盖，"a"尾部追加（\n）
 def txt_write(txt_filename, txt_content, model="w"):
     the_file = txt_path + txt_filename
+    if not os.path.exists(txt_path):
+        os.makedirs(txt_path, exist_ok=True)
+        pass
     if model in ["w", "a"]:
         with open(the_file, model, encoding="utf-8") as file:
             file.write(txt_content)

@@ -104,8 +104,17 @@ def window_route(_WINDOW, FLASK):
             key = data["content"]["key"]
             data_dict = data["content"]["data_dict"]
             _state, _msg, _result = list_js_call_py(_WINDOW, config, key=key, data_dict=data_dict)
-            print_log("api=list_js_call_py=", [_state, _msg, key, data_dict, _result])
-            return response_data, reg_code
+            # print("api=list_js_call_py=", [_state, _msg, key, data_dict, _result])
+            result = {
+                "state": _state,
+                "msg": _msg,
+                "content": {
+                    "key": key,
+                    "data_dict": data_dict,
+                    "result": _result,
+                },
+            }
+            return result, reg_code
         else:
             return back_404_data_api("非法操作"), reg_code
 
