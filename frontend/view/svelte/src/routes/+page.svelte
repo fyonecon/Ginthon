@@ -1,12 +1,13 @@
 <script>
-	import Counter from './Counter.svelte';
+	import Counter from '$lib/parts/Counter.svelte';
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcomeFallback from '$lib/images/svelte-welcome.png';
 </script>
 
 <svelte:head>
 	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+    <meta name="keywords" content="" />
+	<meta name="description" content="Home" />
 </svelte:head>
 
 <section>

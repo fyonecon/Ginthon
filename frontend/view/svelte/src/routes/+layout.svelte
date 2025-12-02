@@ -1,5 +1,5 @@
 <script>
-	import Header from './Header.svelte';
+	import Header from '$lib/parts/Header.svelte';
 	import './layout.css';
 
 	/** @type {{children: import('svelte').Snippet}} */
@@ -14,6 +14,7 @@
 	</main>
 
 	<footer>
+        <p>footer</p>
 		<p>
 			visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to learn about SvelteKit
 		</p>
