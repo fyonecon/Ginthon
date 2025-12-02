@@ -10,13 +10,14 @@ frontend_files = [
     # 单独添加文件
     ('frontend/favicon.ico', 'frontend'),
     ('frontend/launcher.png', 'frontend'),
+    ('frontend/js_call_py.js', 'frontend'),
+    ('frontend/view_loaded.js', 'frontend'),
     ('frontend/view/index.html', 'frontend/view'),
-    # 添加 tray 文件夹中的 7z 文件
+    # 添加 /tray/ 和 /view/ 文件夹中的全部文件
     ('frontend/tray/', 'frontend/tray'),
-    #('frontend/tray/mac.7z', 'frontend/tray'),
-    # 添加文件夹
     ('frontend/view/', 'frontend/view'),
-    ('frontend/file/', 'frontend/file'),
+    # 添加整个文件夹
+    #('frontend/file/', 'frontend/file'),
 ]
 
 datas.extend(frontend_files)
