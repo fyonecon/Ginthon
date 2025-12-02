@@ -1,60 +1,38 @@
+
+<!--<script>-->
+<!--    import Home from './home/+page.svelte';-->
+<!--</script>-->
+
+<!--<Home />-->
+
 <script>
-	import Counter from '$lib/parts/Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcomeFallback from '$lib/images/svelte-welcome.png';
+    import { redirect } from "@sveltejs/kit";
+    import { goto } from '$app/navigation';
+    import { page } from '$app/stores';
+
+
+    // 链接参数
+    const url_pathname = $page.url.pathname;
+    const url_param = $page.url.search;
+
+
+    // 重新定向到默认页面
+    try {
+        function web_back_home(){
+            goto('/home'+url_param, { replaceState: true }); // 浏览器替换当前历史记录
+        }
+        web_back_home();
+    }catch (e){
+        console.log("浏览器端不可用");
+    }
+    try {
+        function server_back_home(){
+            throw redirect(301, '/home'+url_param); // 服务器301永久重定向
+        }
+        server_back_home();
+    }catch (e){
+        console.log("服务端不可用");
+    }
+
+
 </script>
-
-<svelte:head>
-	<title>Home</title>
-    <meta name="keywords" content="" />
-	<meta name="description" content="Home" />
-</svelte:head>
-
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcomeFallback} alt="Welcome" />
-			</picture>
-		</span>
-
-		to your new<br />SvelteKit app
-	</h1>
-
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
-
-	<Counter />
-</section>
-
-<style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
-	}
-
-	h1 {
-		width: 100%;
-	}
-
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
-	}
-</style>
