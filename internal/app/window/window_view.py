@@ -20,12 +20,14 @@ def window_view(_WINDOW, rand_id, filename):
     #
     CONFIG = get_config()
     #
+    app_token = ""
     view_host = CONFIG["pywebview"]["view_host"]
     view_url = view_host+":"+str(CONFIG["flask"]["port"])+"/view"
     view_html = view_url + "/" + filename
     file_path = mian_virtual_dirpath("frontend") + "/view/"+filename
     #
     js_call_py_url = view_host+":"+str(CONFIG["flask"]["port"])+"/"+ "js_call_py.js" + "?cache=" + str(get_time_s()) + "&app_version=" + CONFIG["app"]["app_version"]
+    view_loaded_url = view_host+":"+str(CONFIG["flask"]["port"])+"/"+ "view_loaded.js" + "?cache=" + str(get_time_s()) + "&app_version=" + CONFIG["app"]["app_version"]
     #
     app_class = CONFIG["app"]["app_class"]
     app_version = CONFIG["app"]["app_version"]
@@ -172,6 +174,7 @@ def window_view(_WINDOW, rand_id, filename):
         <script class="window-script" id="window_must_data">
             const app_class = "{app_class}";
             const app_version = "{app_version}"; 
+            const app_token = "{app_token}";
             const view_url = "{view_url}";
             const view_html = "{view_html}"; 
             const view_filename = "{filename}"; 
@@ -184,6 +187,7 @@ def window_view(_WINDOW, rand_id, filename):
     js_loaded = f'''
             <script class="window-script" id="window_on_watch">{js_on_watch}</script>
             <script class="window-script" id="window_js_call_py" src="{js_call_py_url}"></script>
+            <script class="window-script" id="window_view_loaded" src="{view_loaded_url}"></script>
         '''
     # 为空时的默认DOM
     if len(html)==0:

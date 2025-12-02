@@ -100,7 +100,7 @@ def must_route(window, FLASK):
             "way": "file",
             "methods": ["GET"],
         }
-        if filename in ["favicon.ico", "launcher.png", "js_call_py.js"]:
+        if filename in ["favicon.ico", "launcher.png", "js_call_py.js", "view_loaded.js"]:
             file_ext = get_file_ext(filename)
             mimetype = get_file_ext_mimetype(file_ext)
             file_path = mian_virtual_dirpath("frontend") + "/" + filename

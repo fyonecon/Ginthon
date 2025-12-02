@@ -7,23 +7,24 @@ const js_call_py = function(key, data_dict){
         api_url = js_call_py_api + "/" + js_call_py_auth + "?key=" + key;
         if (JSON.stringify(data_dict) === "{}"){data_dict={"KEY": key}} // 空的话就默认一个值
     }catch(e){
-        return {"state": 0,"msg": "auth参数不全", "key": key, "data_dict": data_dict, "result": {}}
+        return {"state": 0,"msg": "auth参数不全", "content": {"key": key, "data_dict": data_dict, "app_class": app_class, "app_version": app_version, "result": {}}}
     }
     // 基本格式数据
-    let back_data = {
-        "state": 1,
-        "msg": "js初次数据",
-        "content": {
-            "key": key,
-            "data_dict": data_dict,
-        }
+    let body_data = {
+        "app_class": app_class,
+        "app_version": app_version,
+        "app_token": "",
+        "user_login_id": "",
+        "user_login_token": "",
+        "key": key,
+        "data_dict": data_dict,
     };
 
     // test
     // data_dict={}
     if (key === "test"){
         return new Promise(resolve => {
-             js_call_py_request(api_url, back_data).then(result=>{ // 远程调用py
+             js_call_py_request(api_url, body_data).then(result=>{ // 远程调用py
                 resolve(result);
             });
         });
@@ -36,7 +37,7 @@ const js_call_py = function(key, data_dict){
     // data_dict={display:"showing hiding"}
     else if(key === "window_display"){
         return new Promise(resolve => {
-            js_call_py_request(api_url, back_data).then(result=>{ // 远程调用py
+            js_call_py_request(api_url, body_data).then(result=>{ // 远程调用py
                 resolve(result);
             });
         });
@@ -45,7 +46,7 @@ const js_call_py = function(key, data_dict){
     // data_dict={theme:"dark light"}
     else if(key === "window_theme"){
         return new Promise(resolve => {
-            js_call_py_request(api_url, back_data).then(result=>{ // 远程调用py
+            js_call_py_request(api_url, body_data).then(result=>{ // 远程调用py
                 resolve(result);
             });
         });
@@ -54,7 +55,7 @@ const js_call_py = function(key, data_dict){
     // data_dict={title:""}
     else if(key === "window_title"){
         return new Promise(resolve => {
-            js_call_py_request(api_url, back_data).then(result=>{ // 远程调用py
+            js_call_py_request(api_url, body_data).then(result=>{ // 远程调用py
                 resolve(result);
             });
         });
@@ -63,7 +64,7 @@ const js_call_py = function(key, data_dict){
     // data_dict={}
     else if(key === "window_hide"){
         return new Promise(resolve => {
-            js_call_py_request(api_url, back_data).then(result=>{ // 远程调用py
+            js_call_py_request(api_url, body_data).then(result=>{ // 远程调用py
                 resolve(result);
             });
         });
@@ -72,7 +73,7 @@ const js_call_py = function(key, data_dict){
     // data_dict={}
     else if(key === "window_show"){
         return new Promise(resolve => {
-            js_call_py_request(api_url, back_data).then(result=>{ // 远程调用py
+            js_call_py_request(api_url, body_data).then(result=>{ // 远程调用py
                 resolve(result);
             });
         });
@@ -94,7 +95,7 @@ const js_call_py = function(key, data_dict){
                 msg = "‘标签+ID’不存在";
             }
             //
-            back_data = {
+            body_data = {
                 "state": state,
                 "msg": msg,
                 "content": {
@@ -103,14 +104,14 @@ const js_call_py = function(key, data_dict){
                     "result": {},
                 }
             };
-            resolve(back_data);
+            resolve(body_data);
         });
     }
     // 用新窗口打开
     // data_dict={url:"", "title":"new window"}
     else if(key === "open_url_with_new_window"){
         return new Promise(resolve => {
-             js_call_py_request(api_url, back_data).then(result=>{ // 远程调用py
+             js_call_py_request(api_url, body_data).then(result=>{ // 远程调用py
                 resolve(result);
             });
         });
@@ -119,7 +120,7 @@ const js_call_py = function(key, data_dict){
     // data_dict={url:""}
     else if(key === "open_url_with_master_window"){
         return new Promise(resolve => {
-            js_call_py_request(api_url, back_data).then(result=>{ // 远程调用py
+            js_call_py_request(api_url, body_data).then(result=>{ // 远程调用py
                 resolve(result);
             });
         });
@@ -128,7 +129,7 @@ const js_call_py = function(key, data_dict){
     // data_dict={url:"", "target":"_blank"}
     else if(key === "open_url_with_default_browser"){
         return new Promise(resolve => {
-            js_call_py_request(api_url, back_data).then(result=>{ // 远程调用py
+            js_call_py_request(api_url, body_data).then(result=>{ // 远程调用py
                 resolve(result);
             });
         });
@@ -139,7 +140,7 @@ const js_call_py = function(key, data_dict){
     // data_timeout_s最短5min
     else if(key === "set_data"){
         return new Promise(resolve => {
-            js_call_py_request(api_url, back_data).then(result=>{ // 远程调用py
+            js_call_py_request(api_url, body_data).then(result=>{ // 远程调用py
                 resolve(result);
             });
         });
@@ -148,7 +149,7 @@ const js_call_py = function(key, data_dict){
     // data_dict={data_key:""}
     else if(key === "get_data"){
         return new Promise(resolve => {
-            js_call_py_request(api_url, back_data).then(result=>{ // 远程调用py
+            js_call_py_request(api_url, body_data).then(result=>{ // 远程调用py
                 resolve(result);
             });
         });
@@ -157,7 +158,7 @@ const js_call_py = function(key, data_dict){
     // data_dict={data_key:""}
     else if(key === "del_data"){
         return new Promise(resolve => {
-            js_call_py_request(api_url, back_data).then(result=>{ // 远程调用py
+            js_call_py_request(api_url, body_data).then(result=>{ // 远程调用py
                 resolve(result);
             });
         });
@@ -170,10 +171,10 @@ const js_call_py = function(key, data_dict){
     // data_dict={}
     else {
         return new Promise(resolve => {
-            state = 1;
+            state = 0;
             msg = "key不在白名单";
             //
-            back_data = {
+            body_data = {
                 "state": state,
                 "msg": msg,
                 "content": {
@@ -182,53 +183,7 @@ const js_call_py = function(key, data_dict){
                     "result": {},
                 }
             };
-            resolve(back_data);
+            resolve(body_data);
         });
     }
 };
-
-// 监听和初始化页面
-(function(){
-    console.log("js_call_py.js已加载。");
-
-    // 展示主窗口
-    js_call_py("window_show", {}).then(
-        back_data=>{
-            console.log(back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]["result"]);
-        }
-    );
-    // 监测行为
-    window_display_on_watch();
-    window_theme_on_watch();
-
-    // ==========test=============
-    //// new窗口
-    //js_call_py("open_url_with_default_browser", {
-    //    "url": "http://127.0.0.1",
-    //    "title": "窗口",
-    //    "target": "_self"
-    //}).then(
-    //      back_data=>{
-    //          console.log(back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]["result"]);
-    //      }
-    //);
-//     js_call_py("window_title", {"title": "主窗口"}).then(
-//        back_data=>{
-//            //console.log(back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]["result"]);
-//        }
-//    );
-//    js_call_py("dom_can_drag_window", {"dom_id": "h2"}).then(
-//        back_data=>{
-//            //console.log(back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]["result"]);
-//        }
-//    );
-
-    // 设置数据
-//    js_call_py("get_data", {data_key:"test", data_value:"11111-111", data_timeout_s: 10*60}).then(
-//        back_data=>{
-//            console.log(back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]["result"]);
-//        }
-//    );
-
-
-})();

@@ -101,16 +101,20 @@ def window_route(_WINDOW, FLASK):
         response_data, reg_code = flask_middleware_api(request, route_data, back_data, "")
         if reg_code == 200:
             #
-            key = data["content"]["key"]
-            data_dict = data["content"]["data_dict"]
-            _state, _msg, _result = list_js_call_py(_WINDOW, config, key=key, data_dict=data_dict)
+            _app_class = data["app_class"]
+            _app_version = data["app_version"]
+            _app_token = data["app_token"]
+            _key = data["key"]
+            _data_dict = data["data_dict"]
+            #
+            _state, _msg, _result = list_js_call_py(_WINDOW, config, key=_key, data_dict=_data_dict)
             # print("api=list_js_call_py=", [_state, _msg, key, data_dict, _result])
             result = {
                 "state": _state,
                 "msg": _msg,
                 "content": {
-                    "key": key,
-                    "data_dict": data_dict,
+                    "key": _key,
+                    "data_dict": _data_dict,
                     "result": _result,
                 },
             }
@@ -132,12 +136,15 @@ def window_route(_WINDOW, FLASK):
         if not data:
             return back_404_data_api("空的请求参数")
         #
+        _app_class = data["app_class"]
+        _app_version = data["app_version"]
+        _app_token = data["app_token"]
         view_auth = data["view_auth"]
         do = data["do"]
-        app_class = data["app_class"]
+        #
         salt_str = "pystray2025"
         CONFIG = get_config("tray")
-        tray_rand_token_state, msg = check_rand_token(app_class, salt_str, CONFIG, tray_rand_token)
+        tray_rand_token_state, msg = check_rand_token(_app_class, salt_str, CONFIG, tray_rand_token)
         #
         if tray_rand_token_state:  # 正确
             state, msg = tray_events(_WINDOW, do)
