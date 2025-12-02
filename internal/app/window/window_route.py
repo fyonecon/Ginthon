@@ -136,8 +136,8 @@ def window_route(_WINDOW, FLASK):
             return back_404_data_api("空的请求参数")
         #
         _app_class = data["app_class"]
-        _app_version = data["app_version"]
-        _app_token = data["app_token"]
+        # _app_version = data["app_version"]
+        # _app_token = data["app_token"]
         view_auth = data["view_auth"]
         do = data["do"]
         #

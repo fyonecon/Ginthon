@@ -4,9 +4,13 @@
 .venv/
 .idea/
 .vscode/
-dist/
+.svelte-kit/
 build/
 node_modules/
+
+#
+.env
+.env.*
 
 #
 .zip

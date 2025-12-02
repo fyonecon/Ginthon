@@ -22,9 +22,10 @@ def window_view(_WINDOW, rand_id, filename):
     #
     app_token = ""
     view_host = CONFIG["pywebview"]["view_host"]
-    view_url = view_host+":"+str(CONFIG["flask"]["port"])+"/view"
+    view_index_html = CONFIG["pywebview"]["view_index.html"]
+    view_url = view_host+":"+str(CONFIG["flask"]["port"])+"/view"+view_index_html
     view_html = view_url + "/" + filename
-    file_path = mian_virtual_dirpath("frontend") + "/view/"+filename
+    file_path = mian_virtual_dirpath("frontend") + "/view"+view_index_html+"/"+filename
     #
     js_call_py_url = view_host+":"+str(CONFIG["flask"]["port"])+"/"+ "js_call_py.js" + "?cache=" + str(get_time_s()) + "&app_version=" + CONFIG["app"]["app_version"]
     view_loaded_url = view_host+":"+str(CONFIG["flask"]["port"])+"/"+ "view_loaded.js" + "?cache=" + str(get_time_s()) + "&app_version=" + CONFIG["app"]["app_version"]

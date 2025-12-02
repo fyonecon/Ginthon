@@ -1,0 +1,8 @@
+
+npx sv create view
+
+npm run dev
+
+pnpm i -D @sveltejs/adapter-static
+
+pnpm run build

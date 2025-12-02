@@ -16,8 +16,8 @@ frontend_files = [
     # 添加 /tray/ 和 /view/ 文件夹中的全部文件
     ('frontend/tray/', 'frontend/tray'),
     #('frontend/view/', 'frontend/view'),
-    #('frontend/view/vue3/dist/', 'frontend/view/vue3/dist'),
-    ('frontend/view/svelte/dist/', 'frontend/view/svelte/dist'),
+    ('frontend/view/vue3/dist/', 'frontend/view/vue3/dist'),
+    #('frontend/view/svelte/dist/', 'frontend/view/svelte/dist'),
     # 添加整个文件夹
     #('frontend/file/', 'frontend/file'),
 ]

@@ -4,7 +4,7 @@ def get_config(tag=""):
     return {
         "app": {
             "app_name": "Ginthon",
-            "app_version": "1.3.3",  # 1.0.0
+            "app_version": "1.4.0",  # 1.0.0
             "app_class": "ginthon_window_",
             "author": "fyonecon",
             "github": "https://github.com/fyonecon/Ginthon",
@@ -27,9 +27,10 @@ def get_config(tag=""):
         },
         "pywebview": { # window
             "view_host": "http://127.0.0.1", # 视图网址（协议+网址+端口+路径，如：http://127.0.0.1 ）
+            "view_index.html": "/svelte/dist", # pnpm run build后的dist目录，为“”或"/vue3/dist"或"/svelte/dist"，皆为/view/子目录中的子目录。结尾无/。
             "secret_key": "2025nian11yue21rizhouwu22dian23", # 密钥, len>=16
             "ssl": False,  # True False
-            "debug": True,  # True False
+            "debug": False,  # True False
         },
         "mysql1": {
             "ipv4": "127.0.0.1:3306",  # ip:port
