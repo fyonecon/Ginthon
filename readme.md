@@ -213,6 +213,9 @@ pip3 install pandas
 >（https://download.jetbrains.com/python/pycharm-community-2025.2.4.exe ）
 > 
 >（https://download.jetbrains.com/python/pycharm-community-2025.2.4.dmg ）
+> 
+>（https://download.jetbrains.com/python/pycharm-community-2025.2.4-aarch64.dmg ）
+
 
 ### 安装Python
 
