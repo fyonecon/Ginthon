@@ -1,0 +1,5 @@
+
+在/frontend/view/目录运行：
+pnpm create vue@latest vue3
+
+最终得到 /frontend/view/vue3/ 项目。
