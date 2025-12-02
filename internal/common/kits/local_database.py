@@ -14,7 +14,8 @@ def truncate_string(text, length):
     return text[:length]
 
 #
-_cache_path = cache_path() + "/" + get_config("func")["sys"]["cache_path_main_dir"] # 结尾无/
+CONFIG = get_config()
+_cache_path = cache_path() + "/" + CONFIG["sys"]["cache_path_main_dir"] # 结尾无/
 local_path = _cache_path+"/local_database/" # /结尾
 code_key = truncate_string("gt-py3_2025@localdatabase", 16) # 大于16位
 code_salt = "2025"
@@ -22,7 +23,7 @@ code_salt = "2025"
 
 # 设置或更新 健值对 数据
 def local_database_set_data(data_key:str, data_value:str, data_timeout_s:int):
-    filename = "local_"+md5(data_key+code_salt)+".lcl"
+    filename = CONFIG["app"]["app_class"] + "local_"+md5(data_key+code_salt)+".lcl"
     the_file = local_path+filename
     timer = get_time_s() + data_timeout_s # 截止日期
     _value = url_encode(data_key) + "\n" + str(timer) + "\n" + str_encode(data_value, code_key)  # 写入3行数据
@@ -35,7 +36,7 @@ def local_database_set_data(data_key:str, data_value:str, data_timeout_s:int):
 
 # 读取数据
 def local_database_get_data(data_key:str):
-    filename = "local_" + md5(data_key + code_salt) + ".lcl"
+    filename = CONFIG["app"]["app_class"] + "local_" + md5(data_key + code_salt) + ".lcl"
     the_file = local_path + filename
     if has_file(the_file):
         _key = ""
@@ -80,7 +81,7 @@ def local_database_get_data(data_key:str):
 
 # 删除数据（删除文件）
 def local_database_del_data(data_key:str):
-    filename = "local_" + md5(data_key + code_salt) + ".lcl"
+    filename = CONFIG["app"]["app_class"] + "local_" + md5(data_key + code_salt) + ".lcl"
     the_file = local_path + filename
     if has_file(the_file):
         os.remove(the_file)

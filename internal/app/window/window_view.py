@@ -18,22 +18,23 @@ def window_view(_WINDOW, rand_id, filename):
                     pass
         return content
     #
-    config = get_config()
+    CONFIG = get_config()
     #
-    view_host = config["pywebview"]["view_host"]
-    view_url = view_host+":"+str(config["flask"]["port"])+"/view"
+    view_host = CONFIG["pywebview"]["view_host"]
+    view_url = view_host+":"+str(CONFIG["flask"]["port"])+"/view"
     view_html = view_url + "/" + filename
     file_path = mian_virtual_dirpath("frontend") + "/view/"+filename
     #
-    js_call_py_url = view_host+":"+str(config["flask"]["port"])+"/"+ "js_call_py.js" + "?cache=" + str(get_time_s()) + "&app_version=" + config["app"]["app_version"]
+    js_call_py_url = view_host+":"+str(CONFIG["flask"]["port"])+"/"+ "js_call_py.js" + "?cache=" + str(get_time_s()) + "&app_version=" + CONFIG["app"]["app_version"]
     #
-    app_class = config["app"]["app_class"]
+    app_class = CONFIG["app"]["app_class"]
+    app_version = CONFIG["app"]["app_version"]
     salt_str = "js_call_py_auth-2025"
     timeout_s = 2*365*24*3600
     #
-    js_call_py_auth = make_rand_token(app_class, salt_str, timeout_s, config)
+    js_call_py_auth = make_rand_token(app_class, salt_str, timeout_s, CONFIG)
     #
-    js_call_py_api = view_host+":"+str(config["flask"]["port"])+"/api/js_call_py"
+    js_call_py_api = view_host+":"+str(CONFIG["flask"]["port"])+"/api/js_call_py"
     #
     html = read_html(file_path)
     js_request = '''
@@ -169,6 +170,8 @@ def window_view(_WINDOW, rand_id, filename):
     # 必要参数
     js_must_data = f'''
         <script class="window-script" id="window_must_data">
+            const app_class = "{app_class}";
+            const app_version = "{app_version}"; 
             const view_url = "{view_url}";
             const view_html = "{view_html}"; 
             const view_filename = "{filename}"; 

@@ -2,7 +2,7 @@ import threading
 import webbrowser
 import webview
 
-from internal.app.window.window_display import set_window_display
+from internal.app.window.controller.display_state import set_display_state
 from internal.common.func import is_url, print_log
 from internal.common.kits.local_database import local_database_set_data, local_database_get_data, \
     local_database_del_data
@@ -116,10 +116,10 @@ def list_js_call_py(WINDOW, config, key, data_dict):
             display = data_dict["display"]
             if display == "hiding":
                 state = 1
-                msg = set_window_display("hiding")
+                msg = set_display_state("hiding")
             elif display == "showing":
                 state = 1
-                msg = set_window_display("showing")
+                msg = set_display_state("showing")
             else :
                 state = 0
                 msg = "url格式不正确"
@@ -178,7 +178,7 @@ def list_js_call_py(WINDOW, config, key, data_dict):
         WINDOW.hide()
         state = 1
         msg = "OK"
-        return state, msg, set_window_display("hiding")
+        return state, msg, set_display_state("hiding")
 
     # 显示窗口
     # data_dict={}
@@ -186,7 +186,7 @@ def list_js_call_py(WINDOW, config, key, data_dict):
         WINDOW.show()
         state = 1
         msg = "OK"
-        return state, msg, set_window_display("showing")
+        return state, msg, set_display_state("showing")
 
     # 更新本地数据
     # data_dict={data_key:"", data_value:"", data_timeout_s:3600}

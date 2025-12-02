@@ -1,6 +1,6 @@
 import os
 
-from internal.app.window.window_display import get_window_display, set_window_display
+from internal.app.window.controller.display_state import get_display_state
 from internal.common.kits.watch_pid import kill_process_by_pid
 
 
@@ -11,7 +11,7 @@ def tray_events(_WINDOW, do):
     if do == "app@show_or_hide":
         state = 1
         msg = "show_or_hide"
-        display = get_window_display()
+        display = get_display_state()
         if display == "showing":
             _WINDOW.hide()
         else:

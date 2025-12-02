@@ -24,7 +24,7 @@ def init_sys():
     if check_sys_state:
         print_log("=== " + CONFIG["app"]["app_name"] + " => ", "v" + CONFIG["app"]["app_version"], CONFIG["app"]["author"], CONFIG["app"]["docs"] + "init_sys")
         # 设置一个临时的运行标记id
-        running_id_filename = CONFIG["app"]["app_class"]+CONFIG["sys"]["running_id_filename"]
+        running_id_filename = CONFIG["sys"]["running_id_filename"]
         txt_remove(running_id_filename)
         running_id = rand_range_string(64, 128)
         txt_write(running_id_filename, running_id)

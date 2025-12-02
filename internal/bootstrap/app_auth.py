@@ -47,9 +47,7 @@ def check_rand_token(app_class, salt_str, config, check_str):
 def make_rand_id(config):
     CONFIG = config
     #
-    app_class = CONFIG["app"]["app_class"]
     running_id_filename = CONFIG["sys"]["running_id_filename"]
-    running_id_filename = app_class + running_id_filename
     running_id = txt_read(running_id_filename)
     #
     return str_encode(running_id, CONFIG["pywebview"]["secret_key"])
@@ -58,9 +56,7 @@ def make_rand_id(config):
 def check_rand_id(view_rand_id):
     CONFIG = get_config()
     #
-    app_class = CONFIG["app"]["app_class"]
     running_id_filename = CONFIG["sys"]["running_id_filename"]
-    running_id_filename = app_class+running_id_filename
     running_id = txt_read(running_id_filename)
     return str_encode(running_id, CONFIG["pywebview"]["secret_key"]) == view_rand_id
 
@@ -71,7 +67,6 @@ def make_auth(config):
     #
     app_class = CONFIG["app"]["app_class"]
     running_id_filename = CONFIG["sys"]["running_id_filename"]
-    running_id_filename = app_class+running_id_filename
     running_id = txt_read(running_id_filename)
     return md5(app_class+"#@"+running_id)
 
@@ -81,6 +76,5 @@ def check_auth(view_auth):
     #
     app_class = CONFIG["app"]["app_class"]
     running_id_filename = CONFIG["sys"]["running_id_filename"]
-    running_id_filename = app_class+running_id_filename
     running_id = txt_read(running_id_filename)
     return md5(app_class+"#@"+running_id) == view_auth

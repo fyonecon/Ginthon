@@ -8,16 +8,16 @@ CONFIG = get_config("")
 
 # 记录当前窗口隐藏状态
 # display=hiding showing
-def set_window_display(display="hiding"):
+def set_display_state(display="hiding"):
     global CONFIG
-    running_id_filename = CONFIG["app"]["app_class"]+"display_state.cache"
+    running_id_filename = "display_state.cache"
     txt_remove(running_id_filename)
     txt_write(running_id_filename, display)
     return display
 
 # 读取当前窗口隐藏状态
-def get_window_display():
+def get_display_state():
     global CONFIG
 
-    running_id_filename = CONFIG["app"]["app_class"]+"display_state.cache"
+    running_id_filename = "display_state.cache"
     return txt_read(running_id_filename)
