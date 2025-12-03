@@ -1,0 +1,1 @@
+import{s as e,p as r}from"./Co1K6vik.js";const s={get error(){return r.error},get params(){return r.params},get route(){return r.route},get status(){return r.status},get url(){return r.url}};e.updated.check;export{s as p};
