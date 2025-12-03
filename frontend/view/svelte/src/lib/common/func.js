@@ -71,18 +71,10 @@ const func = {
             return ""; // 没有匹配的键即返回空
         }
     },
-    // make_href_host: function(){ // 重新生成一个可用的href路径，结尾无/
-    //     let that = this;
-    //     return 'http://127.0.0.1:9100/view/svelte/dist';
-    // },
-    // make_href_html: function(pathname, params){ // 重新生成一个可用的href路径的.html后缀
-    //     let that = this;
-    //     if(browser){
-    //         return that.make_href_host()+pathname + '.html';
-    //     }else {
-    //        return pathname;
-    //     }
-    // },
+
+
+
+    //
 }
 
 export default func;
