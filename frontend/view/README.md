@@ -1,4 +1,4 @@
-# 本Svelte项目是Ginthon的默认视图使用的前端框架
+# Ginthon视图使用的前端框架（搭建与设置）
 
 Ginthon主项目：https://github.com/fyonecon/Ginthon
 
@@ -8,7 +8,7 @@ https://www.jetbrains.com/webstorm/download/?section=mac
 ```
 
 ===================================
-# Svelte应用
+# Svelte应用（默认）
 
 ### 常用命令：
 在/frontend/view/目录运行：
@@ -31,7 +31,7 @@ https://svelte.dev/docs/kit/adapters
 ```
 pnpm i -D @sveltejs/adapter-static
 ```
-在svelte.config.js添加如下内容:
+在/frontend/view/svelte/svelte.config.js添加如下内容:
 ```
 //import adapter from '@sveltejs/adapter-auto';
 import adapter from '@sveltejs/adapter-static';
@@ -62,7 +62,7 @@ const config = {
 export default config;
 ```
 
-在根index.html目录添加js调用py：
+在/svelte/src/app.html的head部分添加js调用py的js文件：
 ```
 <script src="http://127.0.0.1:9100/js_must_data.js?cache="></script>
 <script src="http://127.0.0.1:9100/js_call_py.js?cache="></script>
@@ -72,6 +72,15 @@ export default config;
 最终生成的静态网站目录：
 ```
 /frontend/view/svelte/dist/
+```
+
+在Ginthon/internal/config.py中设置静态文件参数：
+```
+"pywebview": { # window
+    "view_host": "http://127.0.0.1", # 视图网址（协议+网址+端口+路径，如：http://127.0.0.1 ）
+    "view_class": "svelte", # 视图使用的模板（影响flask服务器加载页面）。 "vue"、"svelte"、单页填""
+    "view_index.html": "/svelte/dist", # pnpm run build后的dist目录。 "/vue/dist"、"/svelte/dist"、单页应用""。结尾无/。
+},
 ```
 
 =================================
@@ -90,7 +99,7 @@ pnpm run dev
 
 pnpm run build
 ```
-在根index.html目录添加js调用py：
+在/vue/src/index.html的head处添加js调用py的js文件：
 ```
 <script src="http://127.0.0.1:9100/js_must_data.js?cache="></script>
 <script src="http://127.0.0.1:9100/js_call_py.js?cache="></script>
@@ -100,6 +109,15 @@ pnpm run build
 最终生成的静态网站目录：
 ```
 /frontend/view/vue/dist/
+```
+
+在Ginthon/internal/config.py中设置静态文件参数：
+```
+"pywebview": { # window
+    "view_host": "http://127.0.0.1", # 视图网址（协议+网址+端口+路径，如：http://127.0.0.1 ）
+    "view_class": "vue", # 视图使用的模板（影响flask服务器加载页面）。 "vue"、"svelte"、单页填""
+    "view_index.html": "/vue/dist", # pnpm run build后的dist目录。 "/vue/dist"、"/svelte/dist"、单页应用""。结尾无/。
+},
 ```
 
 =================================
