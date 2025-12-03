@@ -94,13 +94,13 @@ def must_route(window, FLASK):
 
 
     # 图标
-    @FLASK.route("/<filename>", methods=["GET"])
+    @FLASK.route("/<filename>", methods=["GET", "POST", "OPTIONS"])
     def index_ico(filename = "favicon.ico"):  # filename可以包含路径
         route_data = {
             "way": "file",
             "methods": ["GET"],
         }
-        if filename in ["favicon.ico", "launcher.png", "js_call_py.js", "view_loaded.js"]:
+        if filename in ["favicon.ico", "launcher.png", "js_call_py.js", "js_func.js"]:
             file_ext = get_file_ext(filename)
             mimetype = get_file_ext_mimetype(file_ext)
             file_path = mian_virtual_dirpath("frontend") + "/" + filename

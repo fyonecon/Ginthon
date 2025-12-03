@@ -1,6 +1,9 @@
 // Page Loaded以后可以调用。
 // js对照表
 const js_call_py = function(key, data_dict){
+    let app_class = "";
+    let app_version = "";
+    let app_token = "";
     // 校验参数
     let api_url = "";
     try{
@@ -13,7 +16,7 @@ const js_call_py = function(key, data_dict){
     let body_data = {
         "app_class": app_class,
         "app_version": app_version,
-        "app_token": "",
+        "app_token": app_token,
         "user_login_id": "",
         "user_login_token": "",
         "key": key,
@@ -187,3 +190,5 @@ const js_call_py = function(key, data_dict){
         });
     }
 };
+
+console.log("js_call_py.js已加载。");

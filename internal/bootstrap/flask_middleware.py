@@ -102,17 +102,19 @@ def flask_response_header(response, way, reg_code=404, filename=""):
     response.headers["Header-Way"] = way
     response.headers["Author"] = CONFIG["app"]["author"]
     response.headers["App-Name"] = CONFIG["app"]["app_name"]
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
     #
     if way == "html" or way == "view": # html
         response.headers["Content-Type"] = get_file_ext_mimetype(".html")
-        response.headers["Cache-Control"] = "max-age=720"  # s
+        response.headers["Cache-Control"] = "max-age=120"  # s
         response.headers["filename"] = filename
     elif way == "json" or way == "api": # api
         response.headers["Content-Type"] = get_file_ext_mimetype(".json")
         response.headers["Cache-Control"] = "max-age=120"  # s
     else: # 文件，file
         response.headers["Content-Disposition"] = "attachment"
-        response.headers["Cache-Control"] = "max-age=700"  # s
+        response.headers["Cache-Control"] = "max-age=120"  # s
         response.headers["filename"] = filename
         file_ext = get_file_ext(filename)
         response.headers["Content-Type"] = get_file_ext_mimetype(file_ext)

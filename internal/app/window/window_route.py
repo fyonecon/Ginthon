@@ -1,8 +1,8 @@
-from flask import send_file, request
+from flask import send_file, request, redirect
 
 from internal.app.window.controller.js_call_py import list_js_call_py
 from internal.app.window.controller.tray_events import tray_events
-from internal.app.window.window_view import window_view
+from internal.app.window.window_view import view_js_must_data, view_index
 from internal.bootstrap.app_auth import check_rand_id, check_rand_token
 from internal.bootstrap.flask_middleware import flask_middleware_html, flask_middleware_api, flask_middleware_file
 from internal.common.func import back_404_data_html, back_404_data_api, print_log, back_404_data_file, has_file, \
@@ -14,9 +14,93 @@ from internal.config import get_config
 #
 def window_route(_WINDOW, FLASK):
 
-    # 视窗专用 http://127.0.0.1:9100/window/xxx
-    @FLASK.route("/window/<rand_id>", methods=["GET"])
-    def window(rand_id, filename="index.html"):
+    # 适配svelte文件结构的html静态文件系统
+    @FLASK.route("/view/svelte/dist", methods=["GET"])
+    def svelte_ok_pathname():
+        return redirect('/view/svelte/dist/', 301)
+    @FLASK.route("/view/svelte/dist/", methods=["GET", "POST", "OPTIONS"])
+    @FLASK.route("/view/svelte/dist/<path:filename>", methods=["GET", "POST", "OPTIONS"])
+    def svelte_dist(filename=""):
+        route_data = {
+            "way": "file",
+            "methods": ["GET"],
+        }
+        # 还原真实文件
+        file_ext = get_file_ext(filename)
+        if len(file_ext) == 0:  # 是路由就转成实际文件名
+            filename = "index.html"
+            pass
+        config = get_config()
+        view_index_html = config["pywebview"]["view_index.html"] # "/svelte/dist"
+        file_ext = get_file_ext(filename)
+        mimetype = get_file_ext_mimetype(file_ext)
+        file_path = mian_virtual_dirpath("frontend") + "/view" + view_index_html + "/" + filename  # 限定根目录
+        #
+        if has_file(file_path):
+            response_data, reg_code = flask_middleware_file(request, route_data, "", filename)
+            if reg_code == 200:
+                # 使用返回文件的方式返回html模板或文件
+                return send_file(file_path, as_attachment=False, mimetype=mimetype, max_age=12 * 60, download_name=filename), reg_code
+            else:
+                return back_404_data_file("非法操作"), reg_code
+        else:
+            return back_404_data_file("无对应文件：" + filename), 404
+    # file
+
+
+    # 适配vue文件结构的html静态文件系统
+    @FLASK.route("/view/vue/dist", methods=["GET"])
+    def vue_ok_pathname():
+        return redirect('/view/vue/dist/', 301)
+    @FLASK.route("/view/vue/dist/", methods=["GET", "POST", "OPTIONS"])
+    @FLASK.route("/view/vue/dist/<path:filename>", methods=["GET", "POST", "OPTIONS"])
+    def vue_dist(filename=""):
+        route_data = {
+            "way": "file",
+            "methods": ["GET"],
+        }
+        # 还原真实文件
+        file_ext = get_file_ext(filename)
+        if len(file_ext) == 0:  # 是路由就转成实际文件名
+            filename = "index.html"
+            pass
+        config = get_config()
+        view_index_html = config["pywebview"]["view_index.html"] # "/vue/dist"
+        file_ext = get_file_ext(filename)
+        mimetype = get_file_ext_mimetype(file_ext)
+        file_path = mian_virtual_dirpath("frontend") + "/view" + view_index_html + "/" + filename  # 限定根目录
+        #
+        if has_file(file_path):
+            response_data, reg_code = flask_middleware_file(request, route_data, "", filename)
+            if reg_code == 200:
+                # 使用返回文件的方式返回html模板或文件
+                return send_file(file_path, as_attachment=False, mimetype=mimetype, max_age=12 * 60, download_name=filename), reg_code
+            else:
+                return back_404_data_file("非法操作"), reg_code
+        else:
+            return back_404_data_file("无对应文件：" + filename), 404
+    # file
+
+
+    # view_js必要参数
+    @FLASK.route("/js_must_data.js", methods=["GET", "POST", "OPTIONS"])
+    def js_must_data(filename="js_must_data.js"):
+        route_data = {
+            "way": "file",
+            "methods": ["GET"],
+        }
+        js_data = view_js_must_data()
+        response_data, reg_code = flask_middleware_file(request, route_data, js_data, filename)
+        if reg_code == 200:
+            return response_data, reg_code
+        else:
+            return back_404_data_html("非法操作"), reg_code
+    # file
+
+
+    # 视窗单页型静态文件系统 http://127.0.0.1:9100/view/xxx
+    @FLASK.route("/view/<rand_id>", methods=["GET", "POST", "OPTIONS"])
+    def view(rand_id, filename="index.html"):
         # print("method2=", request.method, request.headers, request.url)
         route_data = {
             "way": "html",
@@ -24,7 +108,7 @@ def window_route(_WINDOW, FLASK):
         }
         rand_id_state = check_rand_id(rand_id)
         if rand_id_state:  # 正确
-            html_data = window_view(_WINDOW, rand_id, filename)
+            html_data = view_index(_WINDOW, filename)
             response_data, reg_code = flask_middleware_html(request, route_data, html_data, filename)
             if reg_code == 200:
                 return response_data, reg_code
@@ -35,34 +119,32 @@ def window_route(_WINDOW, FLASK):
     # html
 
 
-    # 主view-file的资源。
-    # http://127.0.0.1:9100/view
-    # http://127.0.0.1:9100/view/static/2.png
-    @FLASK.route("/view/", methods=["GET"])
-    @FLASK.route("/view", methods=["GET"])
-    @FLASK.route("/view/<path:filename>", methods=["GET", "POST", "OPTIONS"])
-    def frontend_files(filename=""):  # filename可以包含路径
+    # 静态文件系统 http://127.0.0.1:9100/file/test.txt
+    @FLASK.route("/file/<path:filename>", methods=["GET", "POST", "OPTIONS"])
+    def file(filename):
         route_data = {
             "way": "file",
             "methods": ["GET"],
         }
-        if len(filename) == 0:
-            filename = "index.html"
-            pass
-        #
+        # 还原真实文件
         file_ext = get_file_ext(filename)
-        mimetype = get_file_ext_mimetype(file_ext)
-        file_path = mian_virtual_dirpath("frontend") + "/view" + "/" + filename  # 限定根目录
-        if has_file(file_path):
-            response_data, reg_code = flask_middleware_file(request, route_data, "", filename)
-            if reg_code == 200:
-                # 使用返回文件的方式返回html模板或文件
-                return send_file(file_path, as_attachment=False, mimetype=mimetype, max_age=12 * 60,
-                                 download_name=filename), reg_code
+        if len(file_ext) >=1:  # 有文件
+            file_ext = get_file_ext(filename)
+            mimetype = get_file_ext_mimetype(file_ext)
+            file_path = mian_virtual_dirpath("frontend") + "/file" + "/" + filename  # 限定根目录
+            #
+            if has_file(file_path):
+                response_data, reg_code = flask_middleware_file(request, route_data, "", filename)
+                if reg_code == 200:
+                    # 使用返回文件的方式返回html模板或文件
+                    return send_file(file_path, as_attachment=False, mimetype=mimetype, max_age=12 * 60,  download_name=filename), reg_code
+                else:
+                    return back_404_data_file("非法操作"), reg_code
             else:
-                return back_404_data_file("非法操作"), reg_code
+                return back_404_data_file("无对应文件：" + filename), 404
         else:
             return back_404_data_file("无对应文件：" + filename), 404
+    # file
 
 
     # js_call_py http://127.0.0.1:9100/api/js_call_py/xxx
@@ -160,12 +242,11 @@ def window_route(_WINDOW, FLASK):
                 # "tray_rand_token": tray_rand_token,
                 "view_auth": view_auth,
                 "do": do,
-                "app_class": app_class,
+                "app_class": _app_class,
             }
         }
         response_data, reg_code = flask_middleware_api(request, route_data, back_data, "")
         if reg_code == 200:
-            #
             return response_data, reg_code
         else:
             return back_404_data_api("非法操作"), reg_code

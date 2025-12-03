@@ -1,56 +1,89 @@
 <script>
-	import Header from '$lib/parts/Header.svelte';
+    import Left from '$lib/parts/Left.svelte';
+    import Nav from '$lib/parts/Nav.svelte';
+    import Foot from '$lib/parts/Foot.svelte';
 	import './layout.css';
 
 	/** @type {{children: import('svelte').Snippet}} */
 	let { children } = $props();
+
+    import { onMount, onDestroy} from 'svelte';
+    import { page } from '$app/state';
+    import func from "$lib/common/func.js";
+    import {afterNavigate, beforeNavigate} from "$app/navigation";
+    import { browser, dev, building, version } from '$app/environment';
+
+    // 重定向到自定义的404页面
+    function watch_404(){
+        if (page.status === 404) {
+            func.redirect_pathname({
+                url_pathname: "/404",
+                url_param: "?error_url="+encodeURIComponent(func.get_href())+"&error_msg=404 Route",
+            });
+        }else{
+            let href = page.url.href;
+            let host = page.url.host;
+            let port = page.url.port;
+            let route = page.route;
+            let params = page.params;
+            let search = page.url.search;
+            let status = page.status;
+            let origin = page.url.origin;
+            let url_pathname = page.url.pathname;
+            let url_param = page.url.searchParams;
+            console.log('当前页面参数=', {
+                href: href,
+                host: host,
+                port: port,
+                route: route,
+                params: params,
+                status: status,
+                origin: origin,
+                url_pathname: url_pathname,
+                url_param: url_param,
+                search: search,
+            });
+        }
+    }
+
+    // 路由变化之前
+    beforeNavigate(()=>{
+        //
+    });
+
+    // 路由变化之后
+    afterNavigate(()=>{
+        watch_404();
+    });
+
+    // 页面装载完成后，只运行一次
+    onMount(() => {
+        console.log("onMount=", [browser, dev]);
+
+        // 展示主窗口
+        try {
+            js_call_py("window_show", {}).then(
+                back_data=>{
+                    console.log(back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]);
+                }
+            );
+        }catch(e){console.error("外部调用的函数不存在。");}
+        // 监测窗口是否隐藏
+        try {
+            window_display_on_watch();
+        }catch(e){console.error("外部调用的函数不存在。");}
+
+    });
+
 </script>
 
 <div class="app">
-	<Header />
+    <Left />
+    <Nav />
 
-	<main>
+	<main class="main">
 		{@render children()}
 	</main>
 
-	<footer>
-        <p>footer</p>
-	</footer>
+	<Foot />
 </div>
-
-<style>
-	.app {
-		display: flex;
-		flex-direction: column;
-		min-height: 100vh;
-	}
-
-	main {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		padding: 1rem;
-		width: 100%;
-		max-width: 64rem;
-		margin: 0 auto;
-		box-sizing: border-box;
-	}
-
-	footer {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		padding: 12px;
-	}
-
-	footer a {
-		font-weight: bold;
-	}
-
-	@media (min-width: 480px) {
-		footer {
-			padding: 12px 0;
-		}
-	}
-</style>

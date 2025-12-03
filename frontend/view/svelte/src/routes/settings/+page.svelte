@@ -3,12 +3,11 @@
 </script>
 
 <svelte:head>
-    <title>Home</title>
+    <title>Settings</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
 </svelte:head>
 
 <section class="section-main scroll-y-style">
-    <h1>Home</h1>
-    <div style="height: 2000px;"></div>
+    <h1>Settings</h1>
 </section>

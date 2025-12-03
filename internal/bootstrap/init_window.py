@@ -6,6 +6,7 @@ import threading
 
 from internal.bootstrap.run_services import run_services
 from internal.bootstrap.run_flask import run_flask
+from internal.common.kits.main_dirpath import mian_virtual_dirpath
 from internal.config import get_config
 from internal.common.func import print_log
 from internal.bootstrap.app_auth import make_auth, make_rand_id
@@ -20,13 +21,22 @@ FLASK_PID = None
 
 
 # 视窗view-url
-def view_url():
-    view_host = CONFIG["pywebview"]["view_host"]
-    rand_id = make_rand_id(CONFIG)
-    view_auth = make_auth(CONFIG)
-    url = view_host+":"+str(CONFIG["flask"]["port"])+ "/window/" + rand_id + "?" + "view_auth=" + view_auth + "&version=" + CONFIG["app"]["app_version"] + "&ap=" + CONFIG["app"][ "app_name"]
-    #
-    return url
+def view_url(view_class=""):
+
+    if view_class == "vue" or view_class == "svelte":
+        # svelte dist 或 vue dist
+        view_host = CONFIG["pywebview"]["view_host"]
+        view_index_html = CONFIG["pywebview"]["view_index.html"]
+        url = view_host + ":" + str(CONFIG["flask"]["port"]) + "/view" + view_index_html
+        return url
+    else:
+        # 单页HTML
+        view_host = CONFIG["pywebview"]["view_host"]
+        rand_id = make_rand_id(CONFIG)
+        view_auth = make_auth(CONFIG)
+        url = view_host+":"+str(CONFIG["flask"]["port"])+ "/view/" + rand_id + "?" + "view_auth=" + view_auth + "&version=" + CONFIG["app"]["app_version"] + "&ap=" + CONFIG["app"][ "app_name"]
+        return url
+
 
 # 注册服务
 def join_events(_window):
@@ -64,7 +74,7 @@ def init_window():
     global FLASK_PID
     #
     CONFIG = get_config("run_pywebview")
-    _view_url = view_url()
+    _view_url = view_url(CONFIG["pywebview"]["view_class"]) # vue svelte ""
 
     # 创建视窗
     _window = webview.create_window(
@@ -72,11 +82,11 @@ def init_window():
         url=_view_url,
         # html=_view_html,
         min_size=(520, 520),
-        width=720, height=540,
+        width=960, height=700, # width=720, height=540     width=960, height=700
         hidden=True, # 打开时隐藏界面，默认 False
-        frameless=False, # 拖住class="pywebview-drag-region"
+        frameless=False, # 默认 False 拖住class="pywebview-drag-region"
         confirm_close=True, # 关闭window时显示确认窗口（不支持在状态栏关闭时拦截）
-        text_select=True,
+        text_select=True, # False True
         transparent=False,
         background_color="#555555",
         draggable=False, # 可以将图片拖到桌面，建议False

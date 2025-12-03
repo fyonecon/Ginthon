@@ -5,9 +5,38 @@ import os
 
 from internal.config import get_config
 
+# 必要js参数
+def view_js_must_data():
+    #
+    CONFIG = get_config()
+    #
+    app_token = ""
+    view_host = CONFIG["pywebview"]["view_host"]
+    view_index_html = CONFIG["pywebview"]["view_index.html"]
+    view_url = view_host + ":" + str(CONFIG["flask"]["port"]) + "/view" + view_index_html
+    #
+    app_class = CONFIG["app"]["app_class"]
+    app_version = CONFIG["app"]["app_version"]
+    salt_str = "js_call_py_auth-2025"
+    timeout_s = 2 * 365 * 24 * 3600
+    #
+    js_call_py_auth = make_rand_token(app_class, salt_str, timeout_s, CONFIG)
+    #
+    js_call_py_api = view_host + ":" + str(CONFIG["flask"]["port"]) + "/api/js_call_py"
+    # 必要参数
+    js_must_data = f'''
+           const app_class = "{app_class}";
+           const app_version = "{app_version}"; 
+           const app_token = "{app_token}";
+           const view_url = "{view_url}";
+           const js_call_py_api = "{js_call_py_api}"; 
+           const js_call_py_auth = "{js_call_py_auth}"; 
+       '''
+    return js_must_data
 
-# 视图view
-def window_view(_WINDOW, rand_id, filename):
+
+# 视图view（针对单页应用最佳）
+def view_index(_WINDOW, filename):
     #
     def read_html(the_file):
         content = ""
@@ -20,175 +49,20 @@ def window_view(_WINDOW, rand_id, filename):
     #
     CONFIG = get_config()
     #
-    app_token = ""
     view_host = CONFIG["pywebview"]["view_host"]
     view_index_html = CONFIG["pywebview"]["view_index.html"]
-    view_url = view_host+":"+str(CONFIG["flask"]["port"])+"/view"+view_index_html
-    view_html = view_url + "/" + filename
     file_path = mian_virtual_dirpath("frontend") + "/view"+view_index_html+"/"+filename
     #
+    js_must_data_url = view_host+":"+str(CONFIG["flask"]["port"])+"/"+ "js_must_data.js" + "?cache=" + str(get_time_s()) + "&app_version=" + CONFIG["app"]["app_version"]
     js_call_py_url = view_host+":"+str(CONFIG["flask"]["port"])+"/"+ "js_call_py.js" + "?cache=" + str(get_time_s()) + "&app_version=" + CONFIG["app"]["app_version"]
-    view_loaded_url = view_host+":"+str(CONFIG["flask"]["port"])+"/"+ "view_loaded.js" + "?cache=" + str(get_time_s()) + "&app_version=" + CONFIG["app"]["app_version"]
-    #
-    app_class = CONFIG["app"]["app_class"]
-    app_version = CONFIG["app"]["app_version"]
-    salt_str = "js_call_py_auth-2025"
-    timeout_s = 2*365*24*3600
-    #
-    js_call_py_auth = make_rand_token(app_class, salt_str, timeout_s, CONFIG)
-    #
-    js_call_py_api = view_host+":"+str(CONFIG["flask"]["port"])+"/api/js_call_py"
+    js_func_url = view_host+":"+str(CONFIG["flask"]["port"])+"/"+ "js_func.js" + "?cache=" + str(get_time_s()) + "&app_version=" + CONFIG["app"]["app_version"]
     #
     html = read_html(file_path)
-    js_request = '''
-        // js远程调用py
-        const js_call_py_request = function (api_url, data_dict) {
-            // 基础 POST 请求
-           async function FetchPOST(url, data) {
-                const config = {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: typeof data === 'string' ? data : JSON.stringify(data),
-                    mode: 'same-origin', // cors, no-cors, same-origin
-                    cache: 'no-cache', // default, no-cache, reload, force-cache, only-if-cached
-                    timeout: 4, // 自定义超时 s
-                };
-                try {
-                    const response = await fetch(url, config);
-                    // 检查响应状态
-                    if (!response.ok) {
-                        // throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                        return {
-                            "state": 0,
-                            "msg": "请求失败1",
-                            "content": {
-                                "data_dict": data_dict,
-                                "error status": response.status,
-                                "error text": response.statusText,
-                            }
-                        };
-                    }else{
-                        // 根据 Content-Type 解析响应
-                        const contentType = response.headers.get('content-type');
-                        let result;
-                        if (contentType && contentType.includes('application/json')) {
-                            result = await response.json();
-                        } else if (contentType && contentType.includes('text/')) {
-                            result = await response.text();
-                        } else if (contentType && contentType.includes('form-data')) {
-                            result = await response.formData();
-                        } else if (contentType && contentType.includes('blob')) {
-                            result = await response.blob();
-                        } else {
-                            result = await response.text();
-                        }
-                        return result;
-                    }
-                } catch (error) {
-                    console.error('Fetch error 1:', error);
-                    return {
-                        "state": 0,
-                        "msg": "请求失败2",
-                        "content": {
-                            "data_dict": data_dict,
-                            "error": error,
-                        }
-                    };
-                }
-            }
-            //
-            return new Promise(resolve => {
-                try {
-                    FetchPOST(api_url, data_dict).then(result=>{
-                        resolve(result);
-                    });
-                } catch (error) {
-                    console.error('Fetch error 2:', error);
-                    resolve({
-                        "state": 0,
-                        "msg": "请求失败3",
-                        "content": {
-                            "data_dict": data_dict,
-                            "error": error,
-                        }
-                    });
-                }
-            });
-        };
-    '''
-    js_on_watch = '''
-        // 监听并设置窗口的当前是否展示在前台
-        function window_display_on_watch(){
-            // 检查当前页面是否隐藏（最小化或切换标签页）
-            const isMinimized = document.hidden;
-            // 或者使用 visibilityState
-            const isVisible = document.visibilityState === 'visible';
-            const isHidden = document.visibilityState === 'hidden';
-            // 添加事件监听器
-            document.addEventListener('visibilitychange', () => {
-                let display = "hiding";
-                if (document.hidden) {
-                    //console.log('页面被隐藏（最小化或切换标签）');
-                    display = "hiding";
-                } else {
-                    //console.log('页面可见');
-                    display = "showing";
-                }
-                //
-                try{
-                    js_call_py("window_display", {"display": display}).then(
-                        back_data=>{
-                            console.log(back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]["result"]);
-                        }
-                    );
-                }catch(e){}
-                
-            });
-        }
-        // 监听页面的主题
-        function window_theme_on_watch(){
-            let the_theme = window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
-            function change_theme(theme){
-                js_call_py("window_theme", {"theme": theme}).then(
-                    back_data=>{
-                        //console.log(back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]["result"]);
-                    }
-                );
-            }
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-                if (e.matches) {
-                    //console.log('切换到暗黑模式');
-                    the_theme = "dark";
-                } else {
-                    //console.log('切换到浅色模式');
-                    the_theme = "light";
-                }
-                change_theme(the_theme)
-            });
-            change_theme(the_theme);
-        }
-    '''
-    # 必要参数
-    js_must_data = f'''
-        <script class="window-script" id="window_must_data">
-            const app_class = "{app_class}";
-            const app_version = "{app_version}"; 
-            const app_token = "{app_token}";
-            const view_url = "{view_url}";
-            const view_html = "{view_html}"; 
-            const view_filename = "{filename}"; 
-            const js_call_py_api = "{js_call_py_api}"; 
-            const js_call_py_auth = "{js_call_py_auth}"; 
-        </script>
-        <script class="window-script" id="window_reqeust">{js_request}</script>
-    '''
     # loaded后执行
     js_loaded = f'''
-            <script class="window-script" id="window_on_watch">{js_on_watch}</script>
+            <script class="window-script" id="window_js_must_data" src="{js_must_data_url}"></script>
             <script class="window-script" id="window_js_call_py" src="{js_call_py_url}"></script>
-            <script class="window-script" id="window_view_loaded" src="{view_loaded_url}"></script>
+            <script class="window-script" id="window_js_func" src="{js_func_url}"></script>
         '''
     # 为空时的默认DOM
     if len(html)==0:
@@ -247,4 +121,4 @@ def window_view(_WINDOW, rand_id, filename):
         '''
         pass
 
-    return js_must_data+html+js_loaded
+    return html+js_loaded

@@ -15,7 +15,12 @@ const config = {
 			fallback: '404.html',
 			precompress: false,
 			strict: true
-		})
+		}),
+        // 添加路径重写配置
+        paths: {
+            base: '', // 根据你的部署路径设置
+            assets: '' // 根据你的部署路径设置。CDN如：'http://127.0.0.1:9100/view/svelte/dist'，，结尾无/
+        },
 	}
 };
 
