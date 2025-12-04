@@ -28,7 +28,7 @@ def test(txt):
 
 # 打印控制台信息
 def print_log(*args):
-    debug = get_config("func")["sys"]["debug"] # True False
+    debug = get_config("")["sys"]["debug"] # True False
     if debug:
         print(args)
     else:

@@ -1,5 +1,7 @@
 <script>
     import { resolve } from '$app/paths';
+    import func from "$lib/common/func.js";
+    import Settings from "$lib/pages/settings/Settings.svelte";
 </script>
 
 <svelte:head>
@@ -9,5 +11,5 @@
 </svelte:head>
 
 <section class="section-main scroll-y-style">
-    <h1>Settings</h1>
+    <Settings />
 </section>

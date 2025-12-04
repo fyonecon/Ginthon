@@ -97,7 +97,7 @@ const window_display_on_watch = function (){
         try{
             js_call_py("window_display", {"display": display}).then(
                 back_data=>{
-                    console.log(back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]["result"]);
+                    console.log("[视窗JS-Log]", back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]["result"]);
                 }
             );
         }catch(e){}
@@ -134,7 +134,7 @@ const window_display_on_watch = function (){
 
 //    js_call_py("window_show", {}).then(
 //        back_data=>{
-//            console.log(back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]);
+//            console.log("[视窗JS-Log]", back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]);
 //        }
 //    );
 
@@ -150,24 +150,24 @@ const window_display_on_watch = function (){
     //    "target": "_self"
     //}).then(
     //      back_data=>{
-    //          console.log(back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]["result"]);
+    //          console.log("[视窗JS-Log]", back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]["result"]);
     //      }
     //);
 //     js_call_py("window_title", {"title": "主窗口"}).then(
 //        back_data=>{
-//            //console.log(back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]["result"]);
+//            //console.log("[视窗JS-Log]", back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]["result"]);
 //        }
 //    );
 //    js_call_py("dom_can_drag_window", {"dom_id": "h2"}).then(
 //        back_data=>{
-//            //console.log(back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]["result"]);
+//            //console.log("[视窗JS-Log]", back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]["result"]);
 //        }
 //    );
 
     // 设置数据
 //    js_call_py("get_data", {data_key:"test", data_value:"11111-111", data_timeout_s: 10*60}).then(
 //        back_data=>{
-//            console.log(back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]["result"]);
+//            console.log("[视窗JS-Log]", back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]["result"]);
 //        }
 //    );
 

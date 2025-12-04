@@ -1,9 +1,7 @@
 // Page Loaded以后可以调用。
 // js对照表
 const js_call_py = function(key, data_dict){
-    let app_class = "";
-    let app_version = "";
-    let app_token = "";
+    let window_token = localStorage.getItem("window_token");
     // 校验参数
     let api_url = "";
     try{
@@ -17,6 +15,7 @@ const js_call_py = function(key, data_dict){
         "app_class": app_class,
         "app_version": app_version,
         "app_token": app_token,
+        "window_token": window_token,
         "user_login_id": "",
         "user_login_token": "",
         "key": key,

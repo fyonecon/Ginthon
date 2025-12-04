@@ -1,6 +1,7 @@
 <script>
     import { resolve } from '$app/paths';
     import { page } from '$app/state';
+    import func from "$lib/common/func.js";
 
 </script>
 
@@ -11,13 +12,13 @@
     </div>
     <ul class="left-menu scroll-y-style select-none font-title">
         <li aria-current={page.url.pathname === '/home' ? 'page' : undefined}>
-            <a href={resolve('./home')}>Home</a>
+            <a href={resolve(func.url_path('/home'))}>Home</a>
         </li>
         <li aria-current={page.url.pathname === '/settings' ? 'page' : undefined}>
-            <a href={resolve('./settings')}>Settings</a>
+            <a href={resolve(func.url_path('/settings'))}>Settings</a>
         </li>
         <li class="">
-            <a href={resolve('./settings/about')}>About</a>
+            <a href={resolve(func.url_path('/settings/about'))}>About</a>
         </li>
     </ul>
 </section>

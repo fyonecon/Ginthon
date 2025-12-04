@@ -1,5 +1,8 @@
 <script>
     import { resolve } from '$app/paths';
+    import func from "$lib/common/func.js";
+    import Home from "$lib/pages/home/Home.svelte";
+
 </script>
 
 <svelte:head>
@@ -9,6 +12,5 @@
 </svelte:head>
 
 <section class="section-main scroll-y-style">
-    <h1>Home</h1>
-    <div style="height: 2000px;"></div>
+    <Home />
 </section>

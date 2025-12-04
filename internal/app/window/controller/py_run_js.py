@@ -12,7 +12,7 @@ def list_py_run_js(window, config, key, data_dict):
     # 默认
     if key == "test" or len(key) == 0:
         js_content = rf"""
-            console.log("py_run_js-test", "{key}", "{data_dict}");
+            console.log("[视窗PY-Log]", "py_run_js-test", ["{key}", "{data_dict}"]);
         """
         state = 1
         msg = "默认Key"
@@ -26,7 +26,7 @@ def list_py_run_js(window, config, key, data_dict):
     # else
     else:
         js_content = rf"""
-            console.log("py_run_js-else", "{key}", "{data_dict}");
+            console.log("[视窗PY-Log]", "py_run_js-else", ["{key}", "{data_dict}"]);
         """
         state = 0
         msg = "不白名单的Key"

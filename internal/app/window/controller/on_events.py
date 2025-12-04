@@ -2,6 +2,7 @@ import sys
 from time import sleep
 
 from internal.app.window.controller.py_run_js import list_py_run_js
+from internal.bootstrap.app_auth import make_rand_id
 from internal.common.func import print_log
 from internal.config import get_config
 
@@ -50,20 +51,23 @@ def on_maximized(window):
 def on_loaded(window):
     print_log('DOM is ready')
     #
+    CONFIG = get_config("")
+    #
     current_uid = window.uid
     current_url = window.get_current_url()
     if current_url is None:
         current_url = "（current_url使用了html直接渲染）"
         pass
     print_log("当前窗口DOM=", [current_uid, current_url])
+    window_token = make_rand_id(CONFIG) # 视窗软件启动时会生成一个新的
     # 1
-    script = '''
-        console.log("当前链接：", window.location.href);
+    script = f'''
+        localStorage.setItem("window_token", "{window_token}");
+        console.log("[视窗PY-Log]", "PY写入视窗的信息：", ["{current_uid}", window.location.href, "{window_token}"]);
     '''
     window.evaluate_js(script, callback=None)
     # 2
-    config = get_config("")
-    list_py_run_js(window, config, "test", {"test": "----"})
+    list_py_run_js(window, CONFIG, "test", {"key1": "111"})
     #
     pass
 

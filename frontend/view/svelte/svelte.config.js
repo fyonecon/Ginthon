@@ -19,7 +19,7 @@ const config = {
         // 添加路径重写配置
         paths: {
             base: '', // 根据你的部署路径设置
-            assets: '' // 根据你的部署路径设置。CDN如：'http://127.0.0.1:9100/view/svelte/dist'，，结尾无/
+            assets: 'http://127.0.0.1:9750/view/svelte/dist' // 根据你的部署路径设置。CDN如：'http://127.0.0.1:9750/view/svelte/dist'，，结尾无/
         },
 	}
 };

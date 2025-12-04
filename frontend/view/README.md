@@ -54,7 +54,7 @@ const config = {
 		// 添加路径重写配置
         paths: {
             base: '', // 根据你的部署路径设置
-            assets: '' // 根据你的部署路径设置。CDN如：'http://127.0.0.1:9100/view/svelte/dist'，，结尾无/
+            assets: '' // 根据你的部署路径设置。CDN如：'http://127.0.0.1:9750/view/svelte/dist'，，结尾无/
         },
 	}
 };
@@ -64,9 +64,9 @@ export default config;
 
 在/svelte/src/app.html的head部分添加js调用py的js文件：
 ```
-<script src="http://127.0.0.1:9100/js_must_data.js?cache="></script>
-<script src="http://127.0.0.1:9100/js_call_py.js?cache="></script>
-<script src="http://127.0.0.1:9100/js_func.js?cache="></script>
+<script src="http://127.0.0.1:9750/js_must_data.js?cache="></script>
+<script src="http://127.0.0.1:9750/js_call_py.js?cache="></script>
+<script src="http://127.0.0.1:9750/js_func.js?cache="></script>
 ```
 
 最终生成的静态网站目录：
@@ -101,9 +101,9 @@ pnpm run build
 ```
 在/vue/src/index.html的head处添加js调用py的js文件：
 ```
-<script src="http://127.0.0.1:9100/js_must_data.js?cache="></script>
-<script src="http://127.0.0.1:9100/js_call_py.js?cache="></script>
-<script src="http://127.0.0.1:9100/js_func.js?cache="></script>
+<script src="http://127.0.0.1:9750/js_must_data.js?cache="></script>
+<script src="http://127.0.0.1:9750/js_call_py.js?cache="></script>
+<script src="http://127.0.0.1:9750/js_func.js?cache="></script>
 ```
 
 最终生成的静态网站目录：
@@ -129,7 +129,7 @@ pnpm run build
 ```
 单页应用的其它静态资源放置在：
 
-（访问静态资源：http://127.0.0.1:9100/file/xxx ）
+（访问静态资源：http://127.0.0.1:9750/file/xxx ）
 ```
 /frontend/file/
 ```

@@ -6,7 +6,7 @@ from internal.app.window.window_view import view_js_must_data, view_index
 from internal.bootstrap.app_auth import check_rand_id, check_rand_token
 from internal.bootstrap.flask_middleware import flask_middleware_html, flask_middleware_api, flask_middleware_file
 from internal.common.func import back_404_data_html, back_404_data_api, print_log, back_404_data_file, has_file, \
-    get_file_ext_mimetype, get_file_ext
+    get_file_ext_mimetype, get_file_ext, md5
 from internal.common.kits.main_dirpath import mian_virtual_dirpath
 from internal.config import get_config
 
@@ -98,7 +98,7 @@ def window_route(_WINDOW, FLASK):
     # file
 
 
-    # 视窗单页型静态文件系统 http://127.0.0.1:9100/view/xxx
+    # 视窗单页型静态文件系统 http://127.0.0.1:9750/view/xxx
     @FLASK.route("/view/<rand_id>", methods=["GET", "POST", "OPTIONS"])
     def view(rand_id, filename="index.html"):
         # print("method2=", request.method, request.headers, request.url)
@@ -119,7 +119,7 @@ def window_route(_WINDOW, FLASK):
     # html
 
 
-    # 静态文件系统 http://127.0.0.1:9100/file/test.txt
+    # 静态文件系统 http://127.0.0.1:9750/file/test.txt
     @FLASK.route("/file/<path:filename>", methods=["GET", "POST", "OPTIONS"])
     def file(filename):
         route_data = {
@@ -147,7 +147,7 @@ def window_route(_WINDOW, FLASK):
     # file
 
 
-    # js_call_py http://127.0.0.1:9100/api/js_call_py/xxx
+    # js_call_py http://127.0.0.1:9750/api/js_call_py/xxx
     @FLASK.route("/api/js_call_py/<js_call_py_auth>", methods=["GET", "POST", "OPTIONS"])  # 路由名
     def js_call_py(js_call_py_auth):
         route_data = {
@@ -163,9 +163,18 @@ def window_route(_WINDOW, FLASK):
         #
         app_class = config["app"]["app_class"]
         salt_str = "js_call_py_auth-2025"
+        # 接收的参数
+        _app_class = data["app_class"]
+        _app_version = data["app_version"]
+        _app_token = data["app_token"]
+        _window_token = data["window_token"]
+        _key = data["key"]
+        _data_dict = data["data_dict"]
         #
+        window_token_state = check_rand_id(_window_token)
+        app_token_state = check_rand_token(app_class, md5(salt_str), config, _app_token)
         js_call_py_auth_state = check_rand_token(app_class, salt_str, config, js_call_py_auth)
-        if js_call_py_auth_state:
+        if js_call_py_auth_state and app_token_state and window_token_state:
             state = 1
             msg = "OK"
             pass
@@ -181,12 +190,6 @@ def window_route(_WINDOW, FLASK):
         }
         response_data, reg_code = flask_middleware_api(request, route_data, back_data, "")
         if reg_code == 200:
-            #
-            _app_class = data["app_class"]
-            _app_version = data["app_version"]
-            _app_token = data["app_token"]
-            _key = data["key"]
-            _data_dict = data["data_dict"]
             #
             _state, _msg, _result = list_js_call_py(_WINDOW, config, key=_key, data_dict=_data_dict)
             # print("api=list_js_call_py=", [_state, _msg, key, data_dict, _result])
@@ -204,7 +207,7 @@ def window_route(_WINDOW, FLASK):
             return back_404_data_api("非法操作"), reg_code
 
 
-    # 状态栏托盘专用 http://127.0.0.1:9100/api/tray/xxx
+    # 状态栏托盘专用 http://127.0.0.1:9750/api/tray/xxx
     @FLASK.route("/api/tray/<tray_rand_token>", methods=["GET", "POST", "OPTIONS"])  # 路由名
     def tray(tray_rand_token):  # 触发函数（函数名尽量和路由名一致）
         # print("method2=", tray_rand_token, request.method, request.headers, request.url)
@@ -224,7 +227,7 @@ def window_route(_WINDOW, FLASK):
         do = data["do"]
         #
         salt_str = "pystray2025"
-        CONFIG = get_config("tray")
+        CONFIG = get_config("")
         tray_rand_token_state, msg = check_rand_token(_app_class, salt_str, CONFIG, tray_rand_token)
         #
         if tray_rand_token_state:  # 正确

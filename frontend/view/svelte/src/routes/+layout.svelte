@@ -17,7 +17,7 @@
     function watch_404(){
         if (page.status === 404) {
             func.redirect_pathname({
-                url_pathname: "/404",
+                url_pathname: func.url_path("/404"),
                 url_param: "?error_url="+encodeURIComponent(func.get_href())+"&error_msg=404 Route",
             });
         }else{
@@ -31,7 +31,7 @@
             let origin = page.url.origin;
             let url_pathname = page.url.pathname;
             let url_param = page.url.searchParams;
-            console.log('当前页面参数=', {
+            func.console_log('当前页面参数=', {
                 href: href,
                 host: host,
                 port: port,
@@ -58,13 +58,13 @@
 
     // 页面装载完成后，只运行一次
     onMount(() => {
-        console.log("onMount=", [browser, dev]);
+        func.console_log("onMount=", [browser, dev]);
 
         // 展示主窗口
         try {
             js_call_py("window_show", {}).then(
                 back_data=>{
-                    console.log(back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]);
+                    func.console_log("[视窗JS-Log]", back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]);
                 }
             );
         }catch(e){console.error("外部调用的函数不存在。");}

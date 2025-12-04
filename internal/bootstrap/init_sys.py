@@ -18,7 +18,7 @@ def init_sys():
         "frontend-launcher.png": has_file(frontend_dirpath+"/launcher.png"),
     })
     #
-    CONFIG = get_config("run")
+    CONFIG = get_config("")
     #
     check_sys_state = run_check_sys()
     if check_sys_state:

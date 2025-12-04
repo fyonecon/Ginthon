@@ -1,5 +1,5 @@
 from internal.bootstrap.app_auth import make_rand_token
-from internal.common.func import get_time_s, get_date
+from internal.common.func import get_time_s, get_date, md5
 from internal.common.kits.main_dirpath import mian_virtual_dirpath
 import os
 
@@ -10,7 +10,6 @@ def view_js_must_data():
     #
     CONFIG = get_config()
     #
-    app_token = ""
     view_host = CONFIG["pywebview"]["view_host"]
     view_index_html = CONFIG["pywebview"]["view_index.html"]
     view_url = view_host + ":" + str(CONFIG["flask"]["port"]) + "/view" + view_index_html
@@ -19,8 +18,9 @@ def view_js_must_data():
     app_version = CONFIG["app"]["app_version"]
     salt_str = "js_call_py_auth-2025"
     timeout_s = 2 * 365 * 24 * 3600
+    app_token = make_rand_token(app_class, md5(salt_str), timeout_s, CONFIG) # page刷新时会生成一个新的
     #
-    js_call_py_auth = make_rand_token(app_class, salt_str, timeout_s, CONFIG)
+    js_call_py_auth = make_rand_token(app_class, salt_str, timeout_s, CONFIG) # 视窗软件启动时会生成一个新的
     #
     js_call_py_api = view_host + ":" + str(CONFIG["flask"]["port"]) + "/api/js_call_py"
     # 必要参数
@@ -96,7 +96,7 @@ def view_index(_WINDOW, filename):
             <h2 style="text-align: center;" class="select-none pywebview-drag-region" >当前使用了空模板。</h2>
             <div style="text-align: center;">
                 <p id="info" class="break"></p>
-                <p class="select-none"><img src="http://127.0.0.1:9100/file/test.png" width="192" alt=""/></p>
+                <p class="select-none"><img src="http://127.0.0.1:9750/file/test.png" width="192" alt=""/></p>
             </div>
             <script>
             function show_info(_view_html) {

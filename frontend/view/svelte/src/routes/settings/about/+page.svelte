@@ -1,5 +1,7 @@
 <script>
 	import { resolve } from '$app/paths';
+    import func from "$lib/common/func.js";
+    import About from "$lib/pages/settings/about/About.svelte";
 </script>
 
 <svelte:head>
@@ -9,9 +11,5 @@
 </svelte:head>
 
 <section class="section-main">
-    <h1>About this app</h1>
-
-    <p>
-        <a href={resolve('/settings/about')}>About</a>
-    </p>
+    <About/>
 </section>

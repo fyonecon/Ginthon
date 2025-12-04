@@ -16,7 +16,7 @@ CONFIG = {}
 # 请求宽进严出、中间件验证参数
 def must_route(window, FLASK):
 
-    # index http://127.0.0.1:9100
+    # index http://127.0.0.1:9750
     @FLASK.route("/", methods=["GET", "POST", "OPTIONS"]) # 路由名
     def index(filename="virtual.html"): # 触发函数（函数名尽量和路由名一致）
         # route验证参数
@@ -115,7 +115,7 @@ def must_route(window, FLASK):
         # ico图标
 
 
-    # api http://127.0.0.1:9100/api
+    # api http://127.0.0.1:9750/api
     #     # GET
     #     response = requests.get(url=url, timeout=12, headers=headers, params=data)
     #     print("response=", response.status_code, response.url, response.json())
