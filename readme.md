@@ -30,7 +30,7 @@ window是主程A，tray是主程B，A启动B可执行文件
 > git clone -b tray https://github.com/fyonecon/Ginthon.git Ginthon-Tray
 
 视图交互·Web程序（Ginthon-View-Svelte）：
-> git clone -b view-svelte https://github.com/fyonecon/Ginthon.git Ginthon-View-Svelte
+> git clone -b main https://github.com/fyonecon/Ginthon-View-Svelte.git Ginthon-View-Svelte
 
 ### 项目目录介绍：
 ```
