@@ -21,6 +21,17 @@
 window是主程A，tray是主程B，A启动B可执行文件
 ```
 
+### 拉取仓库：
+窗口及服务·主程序（Ginthon-Main）：
+> git clone -b main https://github.com/fyonecon/Ginthon.git Ginthon-Main
+
+
+状态栏托盘·子程序（Ginthon-Tray）：
+> git clone -b tray https://github.com/fyonecon/Ginthon.git Ginthon-Tray
+
+视图交互·Web程序（Ginthon-View-Svelte）：
+> git clone -b view-svelte https://github.com/fyonecon/Ginthon.git Ginthon-View-Svelte
+
 ### 项目目录介绍：
 ```
 Ginthon-Main
@@ -77,21 +88,6 @@ Ginthon-Main
 └── window.spec PYinstaller的SPEC打包文件参数
 ```
 
-### Python教程：
-```
-Python3:
-https://www.runoob.com/python3/python-queue.html
-
-Flask：
-https://flask.palletsprojects.com/en/stable/installation/#install-flask
-
-PyWebview
-https://pywebview.idepy.com/guide/usage.html
-
-爬虫大纲：
-https://jishuzhan.net/article/1963161837455327233
-```
-
 ### 初始化项目：
 1. 安装.venv虚拟环境：
 ```
@@ -111,20 +107,8 @@ https://jishuzhan.net/article/1963161837455327233
 删除.venv文件夹，重新初始化项目依赖即可.
 ```
 
-### 拉取仓库：
-视图及服务·主程序（Ginthon-Main）：
-```
-git clone -b main https://github.com/fyonecon/Ginthon.git Ginthon-Main
-```
-
-状态栏托盘·次程序（Ginthon-Tray）：
-```
-git clone -b tray https://github.com/fyonecon/Ginthon.git Ginthon-Tray
-```
-
-
 ### 运行项目：
-> python main.py
+> python window.py
 
 ### 打包成安装程序（win、mac、linux）：
 > （手动删除/dist/ 和 /build/ 文件夹）
@@ -197,6 +181,21 @@ pip3 install XlsxWriter
 pip3 install openpyxl
  
 pip3 install pandas
+```
+
+### Python教程：
+```
+Python3:
+https://www.runoob.com/python3/python-queue.html
+
+Flask：
+https://flask.palletsprojects.com/en/stable/installation/#install-flask
+
+PyWebview
+https://pywebview.idepy.com/guide/usage.html
+
+爬虫大纲：
+https://jishuzhan.net/article/1963161837455327233
 ```
 
 ### Mac安装Homebrew国内源
