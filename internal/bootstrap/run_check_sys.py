@@ -11,7 +11,7 @@ from internal.common.func import create_dir_level_1
 CONFIG = {}
 
 # 检查端口是否被占用，true已占用
-def check_port_occupied(host="127.0.0.1", port=9100, timeout=2):
+def check_port_occupied(host="127.0.0.1", port=9750, timeout=2):
     try:
         # 创建 socket 对象
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
@@ -29,12 +29,12 @@ def check_port_occupied(host="127.0.0.1", port=9100, timeout=2):
 def run_check_sys():
     # 读取配置信息
     global CONFIG
-    CONFIG = get_config("run_check_sys")
+    CONFIG = get_config("")
 
     # 检查缓存目录，不存在就立即创建
-    create_dir_level_1("user")
     create_dir_level_1("running")
     create_dir_level_1("log")
+    create_dir_level_1("local_database")
 
     # 至少物理双核
     cpu_count = psutil.cpu_count(logical=False)
