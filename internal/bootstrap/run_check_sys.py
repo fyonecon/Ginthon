@@ -5,10 +5,54 @@ import sys
 import psutil
 
 from internal.config import get_config
-from internal.common.func import create_dir_level_1
+from internal.common.func import create_dir_level_1, get_platform
 
 #
 CONFIG = {}
+
+# 检查最小系统版本
+def check_min_sys_version():
+    _sys = get_platform()
+    if _sys == "win":
+        def min_win_version():
+            min_win = 10
+            version_info = platform.win32_ver()
+            release = version_info[0]  # 获取发布版本
+            if release:
+                try:
+                    # 将版本号转换为整数进行比较
+                    major_version = int(release.split('.')[0])
+                    if major_version >= min_win:
+                        return True
+                    else:
+                        print("最小Windows是：" + str(min_win))
+                        return False
+                except (ValueError, IndexError):
+                    return False
+            else:
+                return False
+        return min_win_version()
+    elif _sys == "mac":
+        def min_mac_version():
+            min_mac = 12
+            try:
+                mac_version = platform.mac_ver()[0]
+                if mac_version:
+                    version_parts = mac_version.split('.') # 解析版本号，如 "12.6.1"
+                    major_version = int(version_parts[0]) # 获取主要版本号
+                    if major_version >= min_mac:
+                        return True
+                    else:
+                        print("最小macOS是：" + str(min_mac))
+                        return False
+                else:
+                    return False
+            except (ValueError, IndexError) as e:
+                return False
+        return min_mac_version()
+    else:
+        print("当前仅支持Window10+、macOS12+。")
+        return False
 
 # 检查端口是否被占用，true已占用
 def check_port_occupied(host="127.0.0.1", port=9750, timeout=2):
@@ -46,6 +90,9 @@ def run_check_sys():
     # 最小Python版本
     _python_version = platform.python_version()
 
+    # 最下系统版本
+    sys_state = check_min_sys_version()
+
     # 判断端口是否被占用
     flask_port = CONFIG["flask"]["port"]
     flask_port_state = check_port_occupied('127.0.0.1', flask_port, timeout=2)
@@ -57,7 +104,7 @@ def run_check_sys():
         pass
 
     # 校验可用状态
-    state = cpu_count >= CONFIG["check"]["min_cpu_cores"] and total_ram >= CONFIG["check"]["min_ram"] and sys.version_info >= CONFIG["check"]["min_python_version"] and (not flask_port_state)
+    state = cpu_count >= CONFIG["check"]["min_cpu_cores"] and total_ram >= CONFIG["check"]["min_ram"] and sys.version_info >= CONFIG["check"]["min_python_version"] and (not flask_port_state) and sys_state
     if state:
         msg = "### 系统基础状态 => "
         pass
