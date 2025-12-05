@@ -1,7 +1,7 @@
 
-## Ginthon是用Python写的“视图窗口+稳定服务”的桌面多功能程序基建
+## Ginthon是用Python写的“视图窗口+稳定服务”的桌面端多功能程序基建
 ```
-代码习惯基于Golang。
+代码习惯基于Golang，打造Python领域的Wails。
 
 代码目前只在Git^hu^b上发布（防^爬说明20251116）。
 
@@ -18,7 +18,6 @@
 
 开发IDE PyCharm（推荐）
 
-window是主程A，tray是主程B，A启动B可执行文件
 ```
 
 ### 拉取仓库：
