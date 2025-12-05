@@ -1,5 +1,5 @@
 
-## Ginthon是用Python写的“视图窗口+稳定服务”的多功能程序基建
+## Ginthon是用Python写的“视图窗口+稳定服务”的桌面多功能程序基建
 ```
 代码习惯基于Golang。
 
@@ -14,7 +14,7 @@
 
 需要 webview或webkit基础环境
 
-适配 Mac、Win、Linux
+已适配macOS12+、Win10+。Linux环境尚未验证。
 
 开发IDE PyCharm（推荐）
 
