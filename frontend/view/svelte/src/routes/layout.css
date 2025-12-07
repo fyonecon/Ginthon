@@ -7,6 +7,12 @@ body, html{
     font-size: 16px;
 }
 
+.can-drag{
+    --wails-draggable: drag;
+}
+.no-drag{
+    --wails-draggable: no-drag !important;
+}
 
 .hide{
     display: none !important;

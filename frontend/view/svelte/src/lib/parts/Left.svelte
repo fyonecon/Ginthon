@@ -6,7 +6,7 @@
 </script>
 
 <section class="section-left scroll-y-style">
-    <div class="left-logo select-none pywebview-drag-region"></div>
+    <div class="left-logo select-none pywebview-drag-region can-drag"></div>
     <div class="left-search font-text">
         <input class="left-search-input" value="" placeholder="..." />
     </div>
