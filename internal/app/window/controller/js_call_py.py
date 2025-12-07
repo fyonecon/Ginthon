@@ -184,6 +184,7 @@ def list_js_call_py(WINDOW, config, key, data_dict):
     # data_dict={}
     elif key == "window_show":
         WINDOW.show()
+        # WINDOW.focus()
         state = 1
         msg = "OK"
         return state, msg, set_display_state("showing")
