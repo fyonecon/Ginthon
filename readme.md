@@ -10,6 +10,8 @@ Ginthon基于pywebview、flask等。
 框架地址：https://github.com/fyonecon/Ginthon 。
 ```
 
+Golang版请戳：https://github.com/fyonecon/Waigo 。Python版视窗功能没有Golang版全，差异在于各自依赖的生态不同。
+
 ### 程序目标：
 ```
 需要 Python3.12+
