@@ -14,7 +14,7 @@ Ginthon基于pywebview、flask等。
 ```
 需要 Python3.12+
 
-需要 webview或webkit基础环境
+需要 webview2或webkit基础环境
 
 已适配macOS12+、Win10+。Linux环境尚未验证。
 
