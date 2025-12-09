@@ -2,7 +2,7 @@ import sys
 from time import sleep
 
 from internal.app.window.controller.py_run_js import list_py_run_js
-from internal.bootstrap.app_auth import make_rand_id
+from internal.common.app_auth import make_rand_id
 from internal.common.func import print_log
 from internal.config import get_config
 

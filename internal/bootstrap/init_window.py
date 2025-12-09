@@ -9,7 +9,7 @@ from internal.bootstrap.run_flask import run_flask
 from internal.common.kits.main_dirpath import mian_virtual_dirpath
 from internal.config import get_config
 from internal.common.func import print_log
-from internal.bootstrap.app_auth import make_auth, make_rand_id
+from internal.common.app_auth import make_auth, make_rand_id
 from internal.app.window.controller.on_events import on_closed,on_closing,on_shown,on_loaded,on_minimized,on_maximized,on_restored,on_resized,on_moved,on_before_load,on_before_show,on_initialized
 
 #

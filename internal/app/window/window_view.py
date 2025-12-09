@@ -1,4 +1,4 @@
-from internal.bootstrap.app_auth import make_rand_token
+from internal.common.app_auth import make_rand_token
 from internal.common.func import get_time_s, get_date, md5
 from internal.common.kits.main_dirpath import mian_virtual_dirpath
 import os

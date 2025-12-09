@@ -3,7 +3,7 @@ from flask import send_file, request, redirect
 from internal.app.window.controller.js_call_py import list_js_call_py
 from internal.app.window.controller.tray_events import tray_events
 from internal.app.window.window_view import view_js_must_data, view_index
-from internal.bootstrap.app_auth import check_rand_id, check_rand_token
+from internal.common.app_auth import check_rand_id, check_rand_token
 from internal.bootstrap.flask_middleware import flask_middleware_html, flask_middleware_api, flask_middleware_file
 from internal.common.func import back_404_data_html, back_404_data_api, print_log, back_404_data_file, has_file, \
     get_file_ext_mimetype, get_file_ext, md5
