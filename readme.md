@@ -5,12 +5,16 @@
 
 Ginthon基于pywebview、flask等。
 
+前端默认Svelte。
+
 代码目前只在Git^hu^b上发布（防^爬说明20251116）。
 
-框架地址：https://github.com/fyonecon/Ginthon 。
+开源地址：https://github.com/fyonecon/Ginthon 。
 ```
 
-Golang版请戳：https://github.com/fyonecon/Waigo 。Python版视窗功能没有Golang版全，差异在于各自依赖的生态不同。
+Python版基座请戳：https://github.com/fyonecon/Ginthon 。
+
+Golang版基座请戳：https://github.com/fyonecon/Waigo 。
 
 ### 程序目标：
 ```
@@ -32,24 +36,29 @@ Golang版请戳：https://github.com/fyonecon/Waigo 。Python版视窗功能没�
 状态栏托盘·子程序（Ginthon-Tray）：
 > git clone -b tray https://github.com/fyonecon/Ginthon.git Ginthon-Tray
 
-视图交互·Web程序（Ginthon-View-Svelte）：
-> git clone -b main https://github.com/fyonecon/Ginthon-View-Svelte.git Ginthon-View-Svelte
 
-### 项目目录介绍：
+### 项目结构：
 ```
 Ginthon-Main
 ├── frontend 前端或静态文件
-│   ├── file 其他文件
+│   ├── file 放其他web文件，额外的web文件
 │   ├── js_call_py.js js调用py的对照表
 │   ├── tray
-│   └── view 前端文件
-│       ├── index.html （也是窗口html代码）
+│   └── view 前端视图（可多视图框架切换）
+│       ├── svelte 视图UI（默认SvelteKit）
+│       ├── src 视图发开发文件
+│       │   └── lib 页面、公共文件、公共函数。   
+│       │   └── routes 路由、layout。
+│       ├── static 静态文件
+│       ├── vue 视图UI（查看文件/frontend/view/README.md）
+│       ├── index.html （单页应用请使用此文件）
+│       ├── README.md 🔥前端操作记录与教程
 ├── internal 后段时间或py核心代码
 │   ├── app 自定义的App功能
 │   │   ├── flask Web接口目录
 │   │   ├── services 系统服务目录
-│   │   │   ├── services_for_open_tray.py
-│   │   │   └── services_for_time_interval.py
+│   │   │   ├── services_for_open_tray.py 启动tray
+│   │   │   └── services_for_time_interval.py 定时器
 │   │   └── window 窗口服务目录
 │   │       ├── controller
 │   │       │   ├── do_events.py 操作窗口事件
@@ -67,7 +76,7 @@ Ginthon-Main
 │   │   ├── run_check_sys.py
 │   │   ├── run_flask.py Web服务
 │   │   └── run_services.py 其它主页服务
-│   ├── common 公共函数
+│   ├── common 公共函数、封装的kit
 │   │   ├── func.py 公共函数
 │   │   ├── kits 公共函数的Kit
 │   │   │   ├── _7z.py 7Z解压
@@ -80,7 +89,7 @@ Ginthon-Main
 │   │   │   ├── txt_data.py 简单的文件型数据库
 │   │   │   ├── watch_pid.py
 │   │   │   └── watch_processes.py
-│   │   └── translate.py
+│   │   └── translate.py 翻译对照表
 │   └── config.py 系统配置信息
 ├── LICENSE
 ├── readme.md
@@ -113,8 +122,11 @@ Ginthon-Main
 ### 运行项目：
 > python window.py
 
+### 视图UI配置教程（Svelte、VUE）：
+🔥请查看本目录文件/frontend/view/README.md
+
 ### 打包成安装程序（win、mac、linux）：
-> （手动删除/dist/ 和 /build/ 文件夹）
+（如有需要请手动删除/dist/ 和 /build/ 文件夹）
 > 
 > pyinstaller --clean window.spec （只能打包当前平台CPU结构的程序。）
 >  
@@ -123,11 +135,20 @@ Ginthon-Main
 > pyinstaller --clean tray.spec （只能打包当前平台CPU结构的程序。）
 > 
 
+### Python教程：
+
+> Python3:https://www.runoob.com/python3/python-queue.html
+>
+> Flask：https://flask.palletsprojects.com/en/stable/installation/#install-flask
+>
+> PyWebview：https://pywebview.idepy.com/guide/usage.html
+>
+
 ### 运行效果：
 ![运行效果](./show.png)
 
 
-### 常用pip安装库
+### 常用pip安装库：
 如果遇到网络忙或者下载错误，多试几次，不需要更换镜像源（使用官方源即可）。
 #### 爬虫
 ```
@@ -186,38 +207,12 @@ pip3 install openpyxl
 pip3 install pandas
 ```
 
-### Python教程：
-```
-Python3:
-https://www.runoob.com/python3/python-queue.html
-
-Flask：
-https://flask.palletsprojects.com/en/stable/installation/#install-flask
-
-PyWebview
-https://pywebview.idepy.com/guide/usage.html
-
-爬虫大纲：
-https://jishuzhan.net/article/1963161837455327233
-```
-
 ### Mac安装Homebrew国内源
 #### 苹果电脑安装脚本（选择清华大学镜像）：
 > /bin/zsh -c "$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)"
 
 #### 苹果电脑卸载脚本：
 > /bin/zsh -c "$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/HomebrewUninstall.sh)"
-
-
-### 下载安装包：pycharm-community（不推荐使用vs code）：
-> https://www.jetbrains.com.cn/edu-products/download/download-thanks-pce.html
-> 
->（https://download.jetbrains.com/python/pycharm-community-2025.2.4.exe ）
-> 
->（https://download.jetbrains.com/python/pycharm-community-2025.2.4.dmg ）
-> 
->（https://download.jetbrains.com/python/pycharm-community-2025.2.4-aarch64.dmg ）
-
 
 ### 安装Python
 
@@ -250,6 +245,16 @@ pip3 --version
 > brew uninstall python@3.12
 > 
 > brew uninstall python@3.14
+
+### 开发工具IDE：pycharm-community：
+不推荐使用vscode。
+> https://www.jetbrains.com.cn/edu-products/download/download-thanks-pce.html
+> 
+>（https://download.jetbrains.com/python/pycharm-community-2025.2.4.exe ）
+> 
+>（https://download.jetbrains.com/python/pycharm-community-2025.2.4.dmg ）
+> 
+>（https://download.jetbrains.com/python/pycharm-community-2025.2.4-aarch64.dmg ）
 
 
 # start 2025-11-15

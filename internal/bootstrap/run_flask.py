@@ -222,4 +222,6 @@ def run_flask(window, webview_pid, config):
     #
     FLASK.run(debug=CONFIG["flask"]["debug"], port=CONFIG["flask"]["port"])
 
+    # 检测端口在check_sys中，此处不再检测。
+
     pass
