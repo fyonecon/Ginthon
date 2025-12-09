@@ -1,6 +1,6 @@
 //
 // js远程调用py
-const js_call_py_request = function (api_url, data_dict) {
+const js_call_py_request = function (api_url, body_dict) {
     // 基础 POST 请求
    async function FetchPOST(url, data) {
         const config = {
@@ -22,7 +22,7 @@ const js_call_py_request = function (api_url, data_dict) {
                     "state": 0,
                     "msg": "请求失败1",
                     "content": {
-                        "data_dict": data_dict,
+                        "body_dict": body_dict,
                         "error status": response.status,
                         "error text": response.statusText,
                     }
@@ -50,7 +50,7 @@ const js_call_py_request = function (api_url, data_dict) {
                 "state": 0,
                 "msg": "请求失败2",
                 "content": {
-                    "data_dict": data_dict,
+                    "body_dict": body_dict,
                     "error": error,
                 }
             };
@@ -59,7 +59,7 @@ const js_call_py_request = function (api_url, data_dict) {
     //
     return new Promise(resolve => {
         try {
-            FetchPOST(api_url, data_dict).then(result=>{
+            FetchPOST(api_url+"?cache="+(new Date()).getTime(), body_dict).then(result=>{
                 resolve(result);
             });
         } catch (error) {
@@ -68,7 +68,7 @@ const js_call_py_request = function (api_url, data_dict) {
                 "state": 0,
                 "msg": "请求失败3",
                 "content": {
-                    "data_dict": data_dict,
+                    "body_dict": body_dict,
                     "error": error,
                 }
             });
