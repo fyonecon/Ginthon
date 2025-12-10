@@ -119,8 +119,8 @@ Ginthon-Main
 删除.venv文件夹，重新初始化项目依赖即可.
 ```
 
-### 运行项目：
-> python window.py
+### 运行项目（仅限开发环境）：
+> python dev.py
 
 ### 视图UI配置教程（Svelte、VUE）：
 🔥请查看本目录文件/frontend/view/README.md

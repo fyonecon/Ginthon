@@ -1,0 +1,17 @@
+{
+  "steps":{
+    "step_1": "cd ./frontend/view/svelte",
+    "step_2": "pnpm install",
+    "step_3": "pnpm run build",
+    "step_4": "cd ../../../",
+    "step_5": "pip install -r requirements.txt",
+    "step_6": "pip freeze > requirements.txt",
+    "step_7": "python window.py"
+  },
+  "custom_commands": {
+    "npm": "pnpm",
+    "python": "python",
+    "pip": "pip"
+  },
+  "timeout_seconds": 120
+}
