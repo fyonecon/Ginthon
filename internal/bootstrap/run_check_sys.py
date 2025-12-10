@@ -5,7 +5,7 @@ import sys
 import psutil
 
 from internal.config import get_config
-from internal.common.func import create_dir_level_1, get_platform
+from internal.common.func import create_dir_level_1, get_platform, get_date
 
 #
 CONFIG = {}
@@ -93,6 +93,12 @@ def run_check_sys():
     # 最下系统版本
     sys_state = check_min_sys_version()
 
+    # 检测强制更新时间（这是软件及扩展更新的要求）
+    start_time = CONFIG["sys"]["app_state_start_time"]
+    end_time = CONFIG["sys"]["app_state_end_time"]
+    now_time = int(get_date("%Y%m%d%H%M%S"))
+    time_state = (now_time >= start_time) and (now_time <= end_time)
+
     # 判断端口是否被占用
     flask_port = CONFIG["flask"]["port"]
     flask_port_state = check_port_occupied('127.0.0.1', flask_port, timeout=2)
@@ -104,7 +110,7 @@ def run_check_sys():
         pass
 
     # 校验可用状态
-    state = cpu_count >= CONFIG["check"]["min_cpu_cores"] and total_ram >= CONFIG["check"]["min_ram"] and sys.version_info >= CONFIG["check"]["min_python_version"] and (not flask_port_state) and sys_state
+    state = cpu_count >= CONFIG["check"]["min_cpu_cores"] and total_ram >= CONFIG["check"]["min_ram"] and sys.version_info >= CONFIG["check"]["min_python_version"] and (not flask_port_state) and sys_state and time_state
     if state:
         msg = "### 系统基础状态 => "
         pass
@@ -113,5 +119,5 @@ def run_check_sys():
         pass
 
     #
-    print(msg, [str(cpu_count) + " Cores", str(total_ram) + " GB", _python_version, flask_port_txt])
+    print(msg, [str(cpu_count) + " Cores", str(total_ram) + " GB", _python_version, flask_port_txt], str(now_time))
     return state

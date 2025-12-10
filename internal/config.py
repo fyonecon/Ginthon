@@ -10,6 +10,8 @@ GLOBAL_CONFIG_DICT = {
         "docs": "http://datathink.top/#route=ginthon&ap=",
     },
     "sys": {
+        "app_state_start_time": 20251201010101, # 最早时间 YmdHis
+        "app_state_end_time": 20341201010101, #  截止时间，一个版本：9年。（这是软件及扩展更新的要求）
         "cache_path_main_dir": "top.datathink.Ginthon", # 缓存主目录名，默认 top.datathink.Ginthon
         "running_id_filename": "running_id.cache", #
         "debug": False,  # True False
