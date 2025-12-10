@@ -1,38 +1,36 @@
-from internal.common.app_auth import make_rand_token
+from internal.common.app_auth import make_rand_token, make_rand_id
 from internal.common.func import get_time_s, get_date, md5
 from internal.common.kits.main_dirpath import mian_virtual_dirpath
 import os
 
 from internal.config import get_config
 
-# 必要js参数
+#
 def view_js_must_data():
     #
-    CONFIG = get_config()
+    CONFIG = get_config("", "")
+    #
+    window_token = make_rand_id(CONFIG)  # 视窗软件启动时会生成一个新的
+    js_token = f'''
+        localStorage.setItem("window_token", "{window_token}"); 
+    '''
     #
     view_host = CONFIG["pywebview"]["view_host"]
     view_index_html = CONFIG["pywebview"]["view_index.html"]
     view_url = view_host + ":" + str(CONFIG["flask"]["port"]) + "/view" + view_index_html
-    #
     app_class = CONFIG["app"]["app_class"]
-    app_version = CONFIG["app"]["app_version"]
     salt_str = "js_call_py_auth-2025"
     timeout_s = 2 * 365 * 24 * 3600
-    app_token = make_rand_token(app_class, md5(salt_str), timeout_s, CONFIG) # page刷新时会生成一个新的
-    #
-    js_call_py_auth = make_rand_token(app_class, salt_str, timeout_s, CONFIG) # 视窗软件启动时会生成一个新的
-    #
+    app_token = make_rand_token(app_class, md5(salt_str + "nbPlus"), timeout_s, CONFIG)  # page刷新时会生成一个新的
+    js_call_py_auth = make_rand_token(app_class, salt_str, timeout_s, CONFIG)  # 视窗软件启动时会生成一个新的
     js_call_py_api = view_host + ":" + str(CONFIG["flask"]["port"]) + "/api/js_call_py"
-    # 必要参数
     js_must_data = f'''
-           const app_class = "{app_class}";
-           const app_version = "{app_version}"; 
-           const app_token = "{app_token}";
-           const view_url = "{view_url}";
-           const js_call_py_api = "{js_call_py_api}"; 
-           const js_call_py_auth = "{js_call_py_auth}"; 
-       '''
-    return js_must_data
+       const app_token = "{app_token}";
+       const view_url = "{view_url}";
+       const js_call_py_api = "{js_call_py_api}"; 
+       const js_call_py_auth = "{js_call_py_auth}"; 
+   '''
+    return js_token + js_must_data
 
 
 # 视图view（针对单页应用最佳）
@@ -47,22 +45,18 @@ def view_index(_WINDOW, filename):
                     pass
         return content
     #
-    CONFIG = get_config()
+    CONFIG = get_config("", "")
     #
     view_host = CONFIG["pywebview"]["view_host"]
     view_index_html = CONFIG["pywebview"]["view_index.html"]
     file_path = mian_virtual_dirpath("frontend") + "/view"+view_index_html+"/"+filename
     #
     js_must_data_url = view_host+":"+str(CONFIG["flask"]["port"])+"/"+ "js_must_data.js" + "?cache=" + str(get_time_s()) + "&app_version=" + CONFIG["app"]["app_version"]
-    js_call_py_url = view_host+":"+str(CONFIG["flask"]["port"])+"/"+ "js_call_py.js" + "?cache=" + str(get_time_s()) + "&app_version=" + CONFIG["app"]["app_version"]
-    js_func_url = view_host+":"+str(CONFIG["flask"]["port"])+"/"+ "js_func.js" + "?cache=" + str(get_time_s()) + "&app_version=" + CONFIG["app"]["app_version"]
     #
     html = read_html(file_path)
     # loaded后执行
     js_loaded = f'''
-            <script class="window-script" id="window_js_must_data" src="{js_must_data_url}"></script>
-            <script class="window-script" id="window_js_call_py" src="{js_call_py_url}"></script>
-            <script class="window-script" id="window_js_func" src="{js_func_url}"></script>
+            <script src="{js_must_data_url}"></script>
         '''
     # 为空时的默认DOM
     if len(html)==0:

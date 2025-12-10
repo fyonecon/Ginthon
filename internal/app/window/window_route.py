@@ -11,7 +11,7 @@ from internal.common.kits.main_dirpath import mian_virtual_dirpath
 from internal.config import get_config
 
 
-#
+# window专用路由
 def window_route(_WINDOW, FLASK):
 
     # 适配svelte文件结构的html静态文件系统
@@ -30,7 +30,7 @@ def window_route(_WINDOW, FLASK):
         if len(file_ext) == 0:  # 是路由就转成实际文件名
             filename = "index.html"
             pass
-        config = get_config()
+        config = get_config("", "")
         view_index_html = config["pywebview"]["view_index.html"] # "/svelte/dist"
         file_ext = get_file_ext(filename)
         mimetype = get_file_ext_mimetype(file_ext)
@@ -64,7 +64,7 @@ def window_route(_WINDOW, FLASK):
         if len(file_ext) == 0:  # 是路由就转成实际文件名
             filename = "index.html"
             pass
-        config = get_config()
+        config = get_config("", "")
         view_index_html = config["pywebview"]["view_index.html"] # "/vue/dist"
         file_ext = get_file_ext(filename)
         mimetype = get_file_ext_mimetype(file_ext)
@@ -159,22 +159,20 @@ def window_route(_WINDOW, FLASK):
         if not data:
             return back_404_data_api("空的请求参数")
         #
-        config = get_config()
+        config = get_config("", "")
         #
         app_class = config["app"]["app_class"]
         salt_str = "js_call_py_auth-2025"
         # 接收的参数
         _app_class = data["app_class"]
         _app_version = data["app_version"]
-        _app_token = data["app_token"]
         _window_token = data["window_token"]
         _key = data["key"]
         _data_dict = data["data_dict"]
         #
         window_token_state = check_rand_id(_window_token)
-        app_token_state = check_rand_token(app_class, md5(salt_str), config, _app_token)
         js_call_py_auth_state = check_rand_token(app_class, salt_str, config, js_call_py_auth)
-        if js_call_py_auth_state and app_token_state and window_token_state:
+        if js_call_py_auth_state and window_token_state:
             state = 1
             msg = "OK"
             pass
@@ -191,17 +189,7 @@ def window_route(_WINDOW, FLASK):
         response_data, reg_code = flask_middleware_api(request, route_data, back_data, "")
         if reg_code == 200:
             #
-            _state, _msg, _result = list_js_call_py(_WINDOW, config, key=_key, data_dict=_data_dict)
-            # print("api=list_js_call_py=", [_state, _msg, key, data_dict, _result])
-            result = {
-                "state": _state,
-                "msg": _msg,
-                "content": {
-                    "key": _key,
-                    "data_dict": _data_dict,
-                    "result": _result,
-                },
-            }
+            result = list_js_call_py(_WINDOW, key=_key, data_dict=_data_dict)
             return result, reg_code
         else:
             return back_404_data_api("非法操作"), reg_code
@@ -227,7 +215,7 @@ def window_route(_WINDOW, FLASK):
         do = data["do"]
         #
         salt_str = "pystray2025"
-        CONFIG = get_config("")
+        CONFIG = get_config("", "")
         tray_rand_token_state, msg = check_rand_token(_app_class, salt_str, CONFIG, tray_rand_token)
         #
         if tray_rand_token_state:  # 正确

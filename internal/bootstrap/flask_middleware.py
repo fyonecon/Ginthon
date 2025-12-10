@@ -4,7 +4,7 @@ from internal.common.func import get_file_ext, get_file_ext_mimetype
 from internal.config import get_config
 
 #
-CONFIG = get_config()
+CONFIG = get_config("", "")
 
 # html，验证请求的必要参数
 def flask_middleware_html(_request, route_data, back_data, filename):

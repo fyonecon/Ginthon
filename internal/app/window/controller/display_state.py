@@ -2,7 +2,7 @@ from internal.common.kits.txt_data import txt_remove, txt_write, txt_read
 from internal.config import get_config
 
 #
-CONFIG = get_config("")
+CONFIG = get_config("", "")
 
 # 原理：使用js监测窗口的display，然后js_call_py实现state值持久化保存在本地
 

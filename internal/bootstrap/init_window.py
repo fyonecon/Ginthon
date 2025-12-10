@@ -73,7 +73,7 @@ def init_window():
     global SERVICES_PID
     global FLASK_PID
     #
-    CONFIG = get_config("")
+    CONFIG = get_config("", "")
     _view_url = view_url(CONFIG["pywebview"]["view_class"]) # vue svelte ""
 
     # 创建视窗

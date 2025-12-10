@@ -6,13 +6,17 @@ from internal.app.window.controller.display_state import set_display_state
 from internal.common.func import is_url, print_log
 from internal.common.kits.local_database import local_database_set_data, local_database_get_data, \
     local_database_del_data
+from internal.config import get_config
 
 
 # py_run_js对照表
-def list_js_call_py(WINDOW, config, key, data_dict):
+def list_js_call_py(WINDOW, key, data_dict):
+    #
+    CONFIG = get_config("", "")
     #
     state = 0
     msg = "（null）"
+    content = {}
 
     print_log("list_js_call_py=", [key, data_dict])
 
@@ -22,10 +26,11 @@ def list_js_call_py(WINDOW, config, key, data_dict):
         js_content = rf"""
             console.log("js_call_py-test", {key}, {data_dict});
         """
+        #
         state = 1
         msg = "默认Key"
-        result = WINDOW.evaluate_js(js_content)
-        return state, msg, result
+        content["result"] = WINDOW.evaluate_js(js_content)
+        pass
     # ===========================================================
 
 
@@ -66,7 +71,7 @@ def list_js_call_py(WINDOW, config, key, data_dict):
         else:
             state = 0
             msg = "data_dict错误"
-        return state, msg, ""
+        pass
 
 
     # 用默认浏览器打开目标链接
@@ -90,7 +95,7 @@ def list_js_call_py(WINDOW, config, key, data_dict):
         else:
             state = 0
             msg = "data_dict错误"
-        return state, msg, ""
+        pass
 
     # 用原始窗口打开新链接
     # data_dict={url:""}
@@ -107,7 +112,7 @@ def list_js_call_py(WINDOW, config, key, data_dict):
         else:
             state = 0
             msg = "data_dict错误"
-        return state, msg, ""
+        pass
 
     # js监听当前窗口是隐藏还是展示
     # data_dict={display:"showing hiding"}
@@ -126,7 +131,7 @@ def list_js_call_py(WINDOW, config, key, data_dict):
         else:
             state = 0
             msg = "data_dict错误"
-        return state, msg, ""
+        pass
 
     # js监听当前窗口的主题
     # data_dict={theme:"dark light"}
@@ -145,7 +150,7 @@ def list_js_call_py(WINDOW, config, key, data_dict):
         else:
             state = 0
             msg = "data_dict错误"
-        return state, msg, ""
+        pass
 
     # 设置视窗title
     # data_dict={title:""}
@@ -153,7 +158,7 @@ def list_js_call_py(WINDOW, config, key, data_dict):
         if data_dict.get("title"):
             title = data_dict["title"]
             if len(title)==0:
-                title = config["app"]["app_name"]
+                title = CONFIG["app"]["app_name"]
                 pass
             elif len(title) >= 8:
                 title = title[:8]+".."
@@ -170,24 +175,30 @@ def list_js_call_py(WINDOW, config, key, data_dict):
         else:
             state = 0
             msg = "data_dict错误"
-        return state, msg, ""
+        pass
 
     # 隐藏窗口
     # data_dict={}
     elif key == "window_hide":
         WINDOW.hide()
+        display = set_display_state("hiding")
+        #
         state = 1
         msg = "OK"
-        return state, msg, set_display_state("hiding")
+        content["display"] = display
+        pass
 
     # 显示窗口
     # data_dict={}
     elif key == "window_show":
         WINDOW.show()
         # WINDOW.focus()
+        display = set_display_state("showing")
+        #
         state = 1
         msg = "OK"
-        return state, msg, set_display_state("showing")
+        content["display"] = display
+        pass
 
     # 更新本地数据
     # data_dict={data_key:"", data_value:"", data_timeout_s:3600}
@@ -208,13 +219,16 @@ def list_js_call_py(WINDOW, config, key, data_dict):
                 pass
             #
             value = local_database_set_data(_key, _value, _timeout_s)
+            #
             state = 1
             msg = "OK"
-            return state, msg, value
+            content["data"] = value
         else:
             state = 0
             msg = "data_dict参数不全"
-            return state, msg, ""
+            content["data"] = ""
+            pass
+        pass
 
     # 读取本地数据
     # data_dict={data_key:""}
@@ -222,26 +236,30 @@ def list_js_call_py(WINDOW, config, key, data_dict):
         if data_dict.get("data_key"):
             _key = data_dict["data_key"]
             value, state = local_database_get_data(_key)
+            #
             msg = "get_data"
-            return state, msg, value
+            content["data"] = value
+            pass
         else:
             state = 0
             msg = "data_dict参数不全"
-            return state, msg, ""
+            content["data"] = ""
+            pass
+        pass
 
     # 删除本地数据
     # data_dict={data_key:""}
-    elif key == "get_data":
+    elif key == "del_data":
         if data_dict.get("data_key"):
             _key = data_dict["data_key"]
             state = local_database_del_data(_key)
             msg = "del_data"
-            return state, msg, ""
+            pass
         else:
             state = 0
             msg = "data_dict参数不全"
-            return state, msg, ""
-
+            pass
+        pass
 
 
     # ===========================================================
@@ -251,8 +269,16 @@ def list_js_call_py(WINDOW, config, key, data_dict):
         js_content = rf"""
             console.log("py_run_js-else");
         """
+        #
         state = 0
         msg = "不白名单的Key"
-        result = WINDOW.evaluate_js(js_content)
-        return state, msg, result
+        content["result"] = WINDOW.evaluate_js(js_content)
+        pass
+
+    #
+    return {
+        "state": state,
+        "msg": msg,
+        "content": content,
+    }
     #

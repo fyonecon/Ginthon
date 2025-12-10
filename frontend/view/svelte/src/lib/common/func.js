@@ -4,7 +4,8 @@ import { page } from '$app/state';
 import { browser } from '$app/environment';
 import md5 from 'md5';
 import { setContext, getContext } from 'svelte';
-import config from "$lib/common/config.js";
+import config from "$lib/config.js";
+// import {AppServicesForWindow} from "../../bindings/datathink.top/Waigo/internal/bootstrap";
 
 // 复用函数
 const func = {
@@ -438,38 +439,176 @@ const func = {
         temp.innerHTML = html;
         return temp.innerText || temp.textContent;
     },
-    // js调用Go
-    js_call_go: function (key, data_dict){
-        return new Promise(resolve => {
-            try{
-                AppServicesForWindow.JSCallGo(key, data_dict).then((resultValue) => {
-                    resolve(resultValue);
-                }).catch((error) => {
-                    console.error("JSCallGo=Error=", error);
+    // js调用PY或GO（API法），兼容
+    js_call_py_or_go: function (key, data_dict){
+        let that = this;
+        // js远程调用
+        const post_request = function (api_url, body_dict) {
+            // 基础 POST 请求
+            async function FetchPOST(url, data) {
+                const config = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: typeof data === 'string' ? data : JSON.stringify(data),
+                    mode: 'cors', // cors, no-cors, same-origin
+                    cache: 'no-cache', // default, no-cache, reload, force-cache, only-if-cached
+                    timeout: 4, // 自定义超时 s
+                };
+                try {
+                    const response = await fetch(url, config);
+                    // 检查响应状态
+                    if (!response.ok) {
+                        // throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        return {
+                            "state": 0,
+                            "msg": "请求失败1",
+                            "content": {
+                                "body_dict": body_dict,
+                                "error status": response.status,
+                                "error text": response.statusText,
+                            }
+                        };
+                    }else{
+                        // 根据 Content-Type 解析响应
+                        const contentType = response.headers.get('content-type');
+                        let result;
+                        if (contentType && contentType.includes('application/json')) {
+                            result = await response.json();
+                        } else if (contentType && contentType.includes('text/')) {
+                            result = await response.text();
+                        } else if (contentType && contentType.includes('form-data')) {
+                            result = await response.formData();
+                        } else if (contentType && contentType.includes('blob')) {
+                            result = await response.blob();
+                        } else {
+                            result = await response.text();
+                        }
+                        return result;
+                    }
+                } catch (error) {
+                    console.error('Fetch error 1:', error);
+                    return {
+                        "state": 0,
+                        "msg": "请求失败2",
+                        "content": {
+                            "data_dict": body_dict,
+                            "error": error,
+                        }
+                    };
+                }
+            }
+            //
+            return new Promise(resolve => {
+                try {
+                    FetchPOST(api_url+"?cache="+that.get_time_ms(), body_dict).then(result=>{
+                        resolve(result);
+                    });
+                } catch (error) {
+                    console.error('Fetch error 2:', error);
                     resolve({
                         "state": 0,
-                        "msg": "JSCallGo出错",
+                        "msg": "请求失败3",
                         "content": {
-                            "key": key,
-                            "data_dict": data_dict,
+                            "body_dict": body_dict,
                             "error": error,
-                        },
+                        }
                     });
-                });
-            }catch(e){
-                // import {AppServicesForWindow} from "../../bindings/datathink.top.Waigo/internal/bootstrap";
+                }
+            });
+        };
+        //
+        return new Promise(resolve => {
+            const sys_backend = config.sys.backend; // go、py
+            const _app_class = config.app.app_class;
+            const _app_version = config.app.app_version;
+            //
+            let api_url = "";
+            let window_token = "";
+            if (sys_backend === "py"){
+                try {
+                    api_url = js_call_py_api + "/" + js_call_py_auth;
+                }catch (e) {
+                    try {
+                        api_url = config.api.js_call_py_url+"api/js_call_py";
+                    }catch (e) {
+                        console.log("-值未获得-py-")
+                    }
+                }
+                window_token = that.get_local_data("window_token");
+            }else if (sys_backend === "go"){
+                api_url = config.api.js_call_go_url+"api/js_call_go";
+                window_token = that.get_local_data(_app_class+"window_token");
+            }else{
                 resolve({
                     "state": 0,
-                    "msg": "JSCallGo无此方法：AppServicesForWindow",
+                    "msg": "config参数错误",
                     "content": {
                         "key": key,
-                        "data_dict": data_dict,
-                        "error": error,
+                        "body_dict": {},
+                    },
+                });
+                return
+            }
+            //
+            let body_dict = {
+                "window_token": window_token,
+                "key": key,
+                "data_dict": data_dict,
+                "app_class": _app_class,
+                "app_version": _app_version,
+            }
+            //
+            try{
+                post_request(api_url, body_dict).then(res=>{
+                    resolve(res);
+                })
+            }catch(e){
+                resolve({
+                    "state": 0,
+                    "msg": "JSCallX无此方法",
+                    "content": {
+                        "key": key,
+                        "body_dict": body_dict,
                     },
                 });
             }
         });
-    }
+    },
+    js_watch_window_display: function (){ // 显示还是隐藏窗口的状态的判断
+        let that = this;
+
+        // // 检查当前页面是否隐藏（最小化或切换标签页）
+        // const isMinimized = document.hidden;
+        // // 或者使用 visibilityState
+        // const isVisible = document.visibilityState === 'visible';
+        // const isHidden = document.visibilityState === 'hidden';
+        // 添加事件监听器
+        document.addEventListener('visibilitychange', () => {
+            let display = "hiding";
+            if (document.hidden) {
+                display = "hiding";
+            } else {
+                display = "showing";
+            }
+
+            //
+            const sys_backend = config.sys.backend; // go、py
+            if (sys_backend === "py"){
+                //
+                try{
+                    that.js_call_py_or_go("window_display", {"display": display}).then(
+                        back_data=>{
+                            console.log("[视窗JS-Log]", "js_call_py.py返回值：", back_data);
+                        }
+                    );
+                }catch(e){}
+            }
+
+        });
+    },
+    //
 
     //
 }

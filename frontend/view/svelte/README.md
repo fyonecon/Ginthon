@@ -62,11 +62,9 @@ const config = {
 export default config;
 ```
 
-在/svelte/src/app.html的head部分添加js调用py的js文件：
+将如下js添加至/svelte/src/app.html的头部head之中：
 ```
-<script src="http://127.0.0.1:9750/js_must_data.js?cache="></script>
-<script src="http://127.0.0.1:9750/js_call_py.js?cache="></script>
-<script src="http://127.0.0.1:9750/js_func.js?cache="></script>
+<script src="http://127.0.0.1:9750/js_must_data.js?cache=v1.4.0"></script>
 ```
 
 最终生成的静态网站目录：
@@ -99,11 +97,10 @@ pnpm run dev
 
 pnpm run build
 ```
-在/vue/src/index.html的head处添加js调用py的js文件：
+
+将如下js添加至/vue/src/index.html的头部head之中：
 ```
-<script src="http://127.0.0.1:9750/js_must_data.js?cache="></script>
-<script src="http://127.0.0.1:9750/js_call_py.js?cache="></script>
-<script src="http://127.0.0.1:9750/js_func.js?cache="></script>
+<script src="http://127.0.0.1:9750/js_must_data.js?cache=v1.4.0"></script>
 ```
 
 最终生成的静态网站目录：

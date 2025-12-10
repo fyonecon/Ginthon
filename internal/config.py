@@ -3,7 +3,7 @@
 GLOBAL_CONFIG_DICT = {
     "app": {
         "app_name": "Ginthon",
-        "app_version": "1.4.3",  # 1.0.0
+        "app_version": "1.4.4",  # 1.0.0
         "app_class": "ginthon_window_",
         "author": "fyonecon",
         "github": "https://github.com/fyonecon/Ginthon",
@@ -23,8 +23,8 @@ GLOBAL_CONFIG_DICT = {
     },
     "flask": { # web
         "white_hosts": [
-            "http://127.0.0.1",
-            "https://127.0.0.1",
+            "http://127.0.0.1:9750",
+            "https://127.0.0.1:9750",
             "http://datathink.top",
             "https://datathink.top",
         ], #白名单域名或IP，格式：协议+IPv4+port、协议+域名
@@ -48,12 +48,11 @@ GLOBAL_CONFIG_DICT = {
 }
 
 # 读取配置信息
-def get_config(key=""):
-    if len(key) == 0:
-        return GLOBAL_CONFIG_DICT
-    else:
-        if GLOBAL_CONFIG_DICT.get(key): # 只能返回一维值
-            return GLOBAL_CONFIG_DICT[key]
+def get_config(group="", key=""):
+    if GLOBAL_CONFIG_DICT.get(group):
+        if GLOBAL_CONFIG_DICT[group].get(key):
+            return GLOBAL_CONFIG_DICT[group][key]
         else:
-            return GLOBAL_CONFIG_DICT
-    pass
+            return GLOBAL_CONFIG_DICT[group]
+    else:
+        return GLOBAL_CONFIG_DICT

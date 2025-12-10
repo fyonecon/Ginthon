@@ -10,7 +10,7 @@ from internal.common.func import rand_range_string, print_log, has_file, cache_p
 # 程序主入口
 def init_sys():
     # 获取前端资源路径
-    cache_dirpath = cache_path() + "/" + get_config("func")["sys"]["cache_path_main_dir"]
+    cache_dirpath = cache_path() + "/" + get_config("sys", "cache_path_main_dir")
     frontend_dirpath = mian_virtual_dirpath("frontend")
     print("### 两个重要目录 => ", {
         "frontend_dirpath": frontend_dirpath,
@@ -18,7 +18,7 @@ def init_sys():
         "frontend-launcher.png": has_file(frontend_dirpath+"/launcher.png"),
     })
     #
-    CONFIG = get_config("")
+    CONFIG = get_config("", "")
     #
     check_sys_state = run_check_sys()
     if check_sys_state:

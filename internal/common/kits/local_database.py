@@ -14,7 +14,7 @@ def truncate_string(text, length):
     return text[:length]
 
 #
-CONFIG = get_config()
+CONFIG = get_config("", "")
 _cache_path = cache_path() + "/" + CONFIG["sys"]["cache_path_main_dir"] # 结尾无/
 local_path = _cache_path+"/local_database/" # /结尾
 code_key = truncate_string("gt-py3_2025@localdatabase", 16) # 大于16位

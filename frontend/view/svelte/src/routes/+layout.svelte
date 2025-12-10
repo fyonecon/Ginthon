@@ -59,19 +59,15 @@
     // 页面装载完成后，只运行一次
     onMount(() => {
         func.console_log("onMount=", [browser, dev]);
+        func.js_watch_window_display(); // 监测窗口是否隐藏
 
+        // 其它
         // 展示主窗口
-        try {
-            js_call_py("window_show", {}).then(
-                back_data=>{
-                    func.console_log("[视窗JS-Log]", back_data["content"]["key"], "js_call_py.py返回值：", back_data["content"]);
-                }
-            );
-        }catch(e){console.error("外部调用的函数不存在。");}
-        // 监测窗口是否隐藏
-        try {
-            window_display_on_watch();
-        }catch(e){console.error("外部调用的函数不存在。");}
+        func.js_call_py_or_go("window_show", {}).then(
+            back_data=>{
+                func.console_log("[视窗JS-Log]", "js_call_py.py返回值：", back_data);
+            }
+        );
 
     });
 

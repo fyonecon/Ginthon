@@ -18,7 +18,7 @@ def mian_virtual_dirpath(sub_path="frontend"):
 
 # 缓存真实路径
 def main_cache_dirpath(sub_path="running"):
-    _cache_path = cache_path() + "/" + get_config("func")["sys"]["cache_path_main_dir"]  # 结尾无/
+    _cache_path = cache_path() + "/" + get_config("sys", "cache_path_main_dir")  # 结尾无/
     return _cache_path+"/"+sub_path
 
 # 获取前端资源路径
