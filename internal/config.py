@@ -22,7 +22,12 @@ GLOBAL_CONFIG_DICT = {
         "min_python_version": (3, 12),  # 默认最低(3, 12)，即3.12.0
     },
     "flask": { # web
-        "white_hosts": ["http://127.0.0.1", "https://127.0.0.1", "http://datathink.top", "https://datathink.top"], #白名单域名或IP，格式：协议+IPv4+port、协议+域名
+        "white_hosts": [
+            "http://127.0.0.1",
+            "https://127.0.0.1",
+            "http://datathink.top",
+            "https://datathink.top",
+        ], #白名单域名或IP，格式：协议+IPv4+port、协议+域名
         "port": 9750,  # 服务端口 9750
         "debug": False,  # True False
     },
