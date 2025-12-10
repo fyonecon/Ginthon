@@ -28,7 +28,7 @@ def test(txt):
 
 # 打印控制台信息
 def print_log(*args):
-    debug = get_config("")["sys"]["debug"] # True False
+    debug = get_config("sys", "debug") # True False
     if debug:
         print(args)
     else:
@@ -85,7 +85,7 @@ def has_dir(full_dirpath):
 # 创建文件夹（只能在main.py目录或子目录创建）,dirpath开头和结尾都不带 /
 # 只能创建1级子文件夹
 def create_dir_level_1(dirpath):
-    _cache_path = cache_path() + "/" + get_config("func")["sys"]["cache_path_main_dir"] # 结尾无/
+    _cache_path = cache_path() + "/" + get_config("sys", "cache_path_main_dir") # 结尾无/
     # 没有主文件就直接创建
     if not has_dir(_cache_path):
         os.mkdir(_cache_path)

@@ -49,7 +49,7 @@ def run_service():
 
     # 读取配置信息
     global CONFIG
-    CONFIG = get_config("")
+    CONFIG = get_config("", "")
     #
     # sleep(1)
 

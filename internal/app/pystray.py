@@ -11,7 +11,7 @@ from internal.config import get_config
 
 # 请求window视图的状态
 def request_window(do):
-    CONFIG = get_config()
+    CONFIG = get_config("", "")
 
     #
     app_class = CONFIG["app"]["app_class"]

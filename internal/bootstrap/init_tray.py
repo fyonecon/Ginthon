@@ -74,7 +74,7 @@ def run_pystray():
 # 状态栏托盘（pystray必须运行在主线程上）
 def init_tray():
     global CONFIG
-    CONFIG = get_config()
+    CONFIG = get_config("", "")
     print_log("### 状态栏托盘 ")
 
     #

@@ -4,7 +4,7 @@ from internal.common.func import cache_path
 from internal.config import get_config
 
 #
-CONFIG = get_config()
+CONFIG = get_config("", "")
 _cache_path = cache_path() + "/" + CONFIG["sys"]["cache_path_main_dir"] # 结尾无/
 txt_path = _cache_path+"/running/" # /结尾
 

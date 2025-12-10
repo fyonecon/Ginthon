@@ -29,7 +29,7 @@ def check_port_occupied(host="127.0.0.1", port=9750, timeout=2):
 def run_check_sys():
     # 读取配置信息
     global CONFIG
-    CONFIG = get_config("")
+    CONFIG = get_config("", "")
 
     # 检查缓存目录，不存在就立即创建
     create_dir_level_1("running")

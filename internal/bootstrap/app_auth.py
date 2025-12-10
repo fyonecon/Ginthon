@@ -56,7 +56,7 @@ def make_rand_id(config):
 
 # 校验rand_id值
 def check_rand_id(view_rand_id):
-    CONFIG = get_config()
+    CONFIG = get_config("", "")
     #
     app_class = CONFIG["app"]["app_class"]
     running_id_filename = CONFIG["sys"]["running_id_filename"]
@@ -77,7 +77,7 @@ def make_auth(config):
 
 # 校验view_auth值
 def check_auth(view_auth):
-    CONFIG = get_config()
+    CONFIG = get_config("", "")
     #
     app_class = CONFIG["app"]["app_class"]
     running_id_filename = CONFIG["sys"]["running_id_filename"]

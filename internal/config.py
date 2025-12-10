@@ -3,7 +3,7 @@
 GLOBAL_CONFIG_DICT = {
     "app": {
         "app_name": "Ginthon Tray",
-        "app_version": "1.4.2",  # 1.0.0
+        "app_version": "1.4.4",  # 1.0.0
         "app_class": "ginthon_tray_",
         "author": "fyonecon",
         "github": "https://github.com/fyonecon/Ginthon",
@@ -37,12 +37,11 @@ GLOBAL_CONFIG_DICT = {
 }
 
 # 读取配置信息
-def get_config(key=""):
-    if len(key) == 0:
-        return GLOBAL_CONFIG_DICT
-    else:
-        if GLOBAL_CONFIG_DICT.get(key): # 只能返回一维值
-            return GLOBAL_CONFIG_DICT[key]
+def get_config(group="", key=""):
+    if GLOBAL_CONFIG_DICT.get(group):
+        if GLOBAL_CONFIG_DICT[group].get(key):
+            return GLOBAL_CONFIG_DICT[group][key]
         else:
-            return GLOBAL_CONFIG_DICT
-    pass
+            return GLOBAL_CONFIG_DICT[group]
+    else:
+        return GLOBAL_CONFIG_DICT
