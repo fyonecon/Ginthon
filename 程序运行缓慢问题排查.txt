@@ -1,0 +1,30 @@
+
+《检查签名是否有效，程序是否被Mac系统策略影响而减缓了.app程序的加载速度》
+
+
+
+
+#检查是否是 Gatekeeper/公证延迟
+codesign -dv --verbose=4 Ginthon.app
+# 
+spctl -a -vvv Ginthon.app
+
+
+
+
+# 检查应用沙盒延迟
+log stream --predicate 'process == "Ginthon"'
+
+
+
+
+主要问题是 adhoc 签名 + Gatekeeper 验证。解决方案优先级：
+
+立即解决：运行 sudo xattr -dr com.apple.quarantine /Applications/Ginthon.app
+添加 entitlements：禁用沙盒，减少安全检查
+考虑获取开发者证书：真正的解决方案是获取 Apple Developer 证书
+对于分发：如果给其他人用，需要进行公证（notarize）
+如果只是自己使用，方案1+2应该能解决问题。
+
+
+

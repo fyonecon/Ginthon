@@ -61,8 +61,8 @@ exe = EXE(
     runtime_tmpdir=None,
     argv_emulation=True,  # 对GUI应用重要。True
     target_arch=None,
-    codesign_identity=None,
-    entitlements_file=None,
+    #codesign_identity=None,
+    #entitlements_file=None,
     icon='./frontend/icon.ico', # win必须.ico，此处适配win、Linux
     console=False,
     disable_windowed_traceback=False,
@@ -74,6 +74,7 @@ app = BUNDLE(
     name='Ginthon.app',  # .app 的名称
     icon='./frontend/icons.icns', # mac必须.icns
     bundle_identifier='top.datathink.ginthon',  # 可选：bundle identifier
+#    entitlements_file='./frontend/entitlements.plist',  # 提前申请一些权限
     info_plist={
         'CFBundlePackageType': 'APPL',
         'CFBundleName': 'Ginthon',
@@ -85,13 +86,25 @@ app = BUNDLE(
         'NSHumanReadableCopyright': '© Datathink.Top',
         'LSMinimumSystemVersion': '12.0',        # 最低系统要求
         'NSHighResolutionCapable': 'True',          # 支持 Retina
-        'LSUIElement': False,                       # 是否显示Dock图标。 True
+        'LSUIElement': True,                       # 是否显示Dock图标。 True
 #        'NSSupportsAutomaticTermination': False,
-        'NSQuitAlwaysKeepsWindows': True,
-#        'LSBackgroundOnly': False,
-        #'NSPrincipalClass': 'NSApplication',
+#        'NSQuitAlwaysKeepsWindows': True,
+##        'LSBackgroundOnly': False,
+#        'NSPrincipalClass': 'NSApplication',
+#        'LSEnvironment': {
+#            'PYWEBVIEW_GUI': 'webkit',  # 强制使用 WebKit
+#        },
+        ###
+        # 无签名时请启用如下，否则Mac系统会延迟15s打开程序窗口：
+        # 关键配置：禁用 Gatekeeper 延迟
+        'LSFileQuarantineEnabled': False,
         'LSEnvironment': {
-            'PYWEBVIEW_GUI': 'webkit',  # 强制使用 WebKit
-        }
+            'PYTHONOPTIMIZE': '2',
+        },
+        # 禁用沙盒
+        #'com.apple.security.app-sandbox': False,
+        # 告诉系统这是一个本地应用，不需要验证
+        #'NSUIPersistentDownloadsDirectory': '~/Downloads',
+        ###
     },
 )
