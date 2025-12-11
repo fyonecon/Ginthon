@@ -111,7 +111,7 @@ def init_window():
     _window.events.closed += on_closed
 
     # 启动视窗
-    webview.start(func=join_events, args=_window, ssl=CONFIG["pywebview"]["ssl"], debug=CONFIG["pywebview"]["debug"])
+    webview.start(func=join_events, args=_window, ssl=CONFIG["pywebview"]["ssl"], debug=CONFIG["pywebview"]["debug"], user_agent="gthon_fy")
 
     # 主动杀掉join_events服务进程
     try:

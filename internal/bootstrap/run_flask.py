@@ -51,7 +51,7 @@ def must_route(window, FLASK):
             <html>
             <head>
             <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-            <link rel="apple-touch-icon" href="/launcher.png">
+            <link rel="apple-touch-icon" href="/icon.png">
             <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
             <title>HTML is OK</title>
             <style>
@@ -100,7 +100,7 @@ def must_route(window, FLASK):
             "way": "file",
             "methods": ["GET"],
         }
-        if filename in ["favicon.ico", "launcher.png", "js_call_py.js", "js_func.js"]:
+        if filename in ["favicon.ico", "icon.png"]:
             file_ext = get_file_ext(filename)
             mimetype = get_file_ext_mimetype(file_ext)
             file_path = mian_virtual_dirpath("frontend") + "/" + filename

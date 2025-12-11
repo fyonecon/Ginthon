@@ -64,6 +64,8 @@ def view_index(_WINDOW, filename):
         <html lang="zh">
         <head>
             <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+            <link rel="apple-touch-icon" href="/icon.png">
+            <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
             <title>Default Window</title>
             <style>
                 .hide{

@@ -9,15 +9,13 @@ datas = []
 frontend_files = [
     # 单独添加文件
     ('frontend/favicon.ico', 'frontend'),
-    ('frontend/launcher.png', 'frontend'),
-    ('frontend/js_call_py.js', 'frontend'),
-    ('frontend/view_loaded.js', 'frontend'),
-    #('frontend/view/index.html', 'frontend/view'),
+    ('frontend/icon.png', 'frontend'),
+    ('frontend/view/index.html', 'frontend/view'),
     # 添加 /tray/ 和 /view/ 文件夹中的全部文件
-    ('frontend/tray/', 'frontend/tray'),
-    #('frontend/view/', 'frontend/view'),
-    #('frontend/view/vue3/dist/', 'frontend/view/vue3/dist'),
-    ('frontend/view/svelte/dist/', 'frontend/view/svelte/dist'),
+    ('frontend/tray/', 'frontend/tray'), # 状态拉托盘
+    #('frontend/view/', 'frontend/view'), # 单页应用
+    #('frontend/view/vue/dist/', 'frontend/view/vue/dist'), # VUE
+    ('frontend/view/svelte/dist/', 'frontend/view/svelte/dist'), # Svelte
     # 添加整个文件夹
     #('frontend/file/', 'frontend/file'),
 ]
@@ -46,6 +44,7 @@ a = Analysis(
 
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
+# Win
 exe = EXE(
     pyz,
     a.scripts,
@@ -60,11 +59,32 @@ exe = EXE(
     upx=True,
     upx_exclude=[],
     runtime_tmpdir=None,
-    console=False,
-    disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='frontend/favicon.ico',
+    icon='./frontend/icon.ico', # win必须.ico，此处适配win、Linux
+    console=False,
+    disable_windowed_traceback=False,
+)
+
+# Mac：创建 .app bundle
+app = BUNDLE(
+    exe,
+    name='Ginthon.app',  # .app 的名称
+    icon='./frontend/icons.icns', # mac必须.icns
+    bundle_identifier='top.datathink.ginthon',  # 可选：bundle identifier
+    info_plist={
+        'CFBundleName': 'Ginthon',
+        'CFBundleDisplayName': 'Ginthon',
+        'CFBundleIdentifier': 'top.datathink.ginthon',
+        'CFBundleShortVersionString': '1.4.0',      # 显示版本
+        'CFBundleVersion': '1.4.x',                     # 构建版本(日期、版本号、其它数字)
+        'CFBundleDevelopmentRegion': 'zh',       # 开发地区
+        'NSHumanReadableCopyright': '© Datathink.Top',
+        'LSMinimumSystemVersion': '12.0',        # 最低系统要求
+        'NSHighResolutionCapable': 'True',          # 支持 Retina
+        'LSUIElement': False,                       # 是否显示 Dock 图标
+        'NSPrincipalClass': 'NSApplication',
+    },
 )

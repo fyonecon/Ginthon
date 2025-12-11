@@ -122,18 +122,21 @@ Ginthon-Main
 ### 运行项目（仅限开发环境）：
 > python dev.py
 
-### 视图UI配置教程（Svelte、VUE）：
-🔥请查看本目录文件/frontend/view/README.md
+### 打包安装包（仅限当前操作系统类型）：
+> python build.py
 
 ### 打包成安装程序（win、mac、linux）：
 （如有需要请手动删除/dist/ 和 /build/ 文件夹）
 > 
-> pyinstaller --clean window.spec （只能打包当前平台CPU结构的程序。）
+> pyinstaller --clean window.spec （只能打包当前平台CPU结构的程序。也可以使用“python build.py”命令一键打包）
 >  
 > 或
 > 
 > pyinstaller --clean tray.spec （只能打包当前平台CPU结构的程序。）
 > 
+
+### 视图UI配置教程（Svelte、VUE）：
+🔥请查看本目录文件/frontend/view/README.md
 
 ### Python教程：
 
@@ -145,7 +148,7 @@ Ginthon-Main
 >
 
 ### 运行效果：
-![运行效果](./show.png)
+![运行效果](./frontend/show.png)
 
 
 ### 常用pip安装库：
@@ -223,12 +226,13 @@ pip3 install pandas
 下载安装包：https://www.python.org/downloads/
 
 方法2: 使用brew（推荐）:
-brew install python@3.12
-brew install python@3.14
+> brew install python@3.12
+> 
+> brew install python@3.14
 
 查看安装的版本：
-python3 --version
-pip3 --version
+> python3 --version
+> pip3 --version
 
 ### 卸载Python
 

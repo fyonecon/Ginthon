@@ -1,13 +1,14 @@
 {
   "steps":{
-    "step_0": "python -c \"print(\"\n开始执行dev开发环境：dev.json\n \")\"",
+    "step_0": "python -c \"print(\"\n开始执行软件打包：build.json\n \")\"",
     "step_1": "cd ./frontend/view/svelte",
     "step_2": "pnpm install",
     "step_3": "pnpm run build",
     "step_4": "cd ../../../",
     "step_5": "pip install -r requirements.txt",
     "step_6": "pip freeze > requirements.txt",
-    "step_7": "python window.py"
+    "step_7": "pyinstaller window.spec",
+    "step_8": "python -c \"print(\"\n===打包完成===\n\")\""
   },
   "custom_commands": {
     "npm": "pnpm",

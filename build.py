@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import task_cmd
 
-# 开发环境、开发测试
+# 生成应用安装包
 if __name__ == "__main__":
     #
-    task_cmd.run_task_cmd("dev.json")
+    task_cmd.run_task_cmd("build.json")
     pass

@@ -7,6 +7,8 @@
 .svelte-kit/
 build/
 node_modules/
+.task/
+Ginthon.app/
 
 #
 .env
@@ -20,3 +22,5 @@ node_modules/
 .pdf
 .log
 .cache
+Ginthon
+Ginthon.exe
