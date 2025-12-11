@@ -111,7 +111,7 @@ Ginthon-Main
 2. 初始化项目依赖：
 > pip install -r requirements.txt
 
-### 导出或更新项目所有依赖（🔥）：
+### 导出或更新项目所有依赖：
 > pip freeze > requirements.txt
 
 ### 清除不必要的项目依赖：
@@ -119,10 +119,10 @@ Ginthon-Main
 删除.venv文件夹，重新初始化项目依赖即可.
 ```
 
-### 运行项目（仅限开发环境）：
+### 运行项目（仅限开发环境）（🔥）：
 > python dev.py
 
-### 打包安装包（仅限当前操作系统类型）：
+### 打包安装包（仅打包当前操作系统类型安装包）（🔥）：
 > python build.py
 
 ### 打包成安装程序（win、mac、linux）：
