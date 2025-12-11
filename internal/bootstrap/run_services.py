@@ -2,7 +2,6 @@ import threading
 
 from internal.app.services.services_for_open_tray import services_for_open_tray
 from internal.app.services.services_for_time_interval import services_for_time_interval
-from internal.config import get_config
 from internal.common.func import get_date
 
 #
@@ -18,8 +17,8 @@ def run_services(window, webview_pid, config):
     #
 
     # 创建线程
-    t1 = threading.Thread(target=services_for_time_interval, daemon=True, args=(window, webview_pid, CONFIG))
-    t2 = threading.Thread(target=services_for_open_tray, daemon=True, args=(window, webview_pid, CONFIG))
+    t1 = threading.Thread(target=services_for_open_tray, daemon=True, args=(window, webview_pid, CONFIG))
+    t2 = threading.Thread(target=services_for_time_interval, daemon=True, args=(window, webview_pid, CONFIG))
 
     # 启动线程
     t1.start()

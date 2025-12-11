@@ -12,8 +12,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     cmd_model = args.cmd
     print("'--cmd'=", cmd_model)
-    if cmd_model == "":
-        cmd_model = "dev"
+    if cmd_model == "" or cmd_model is None:
+        cmd_model = "build"
         pass
     #
     if cmd_model in ["dev", "build"]:

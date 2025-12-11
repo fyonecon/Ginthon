@@ -46,9 +46,8 @@ def join_events(_window):
     print("### Join ", "Process")
 
     # 创建线程
-    t1 = threading.Thread(target=run_services, daemon=True, args=(_window, WEBVIEW_PID, CONFIG))
-    t2 = threading.Thread(target=run_flask, daemon=True, args=(_window, WEBVIEW_PID, CONFIG))
-
+    t1 = threading.Thread(target=run_flask, daemon=True, args=(_window, WEBVIEW_PID, CONFIG))
+    t2 = threading.Thread(target=run_services, daemon=True, args=(_window, WEBVIEW_PID, CONFIG))
 
     # 启动线程
     t1.start()
@@ -88,15 +87,15 @@ def init_window(cmd_model):
     _window = webview.create_window(
         title=CONFIG["app"]["app_name"],
         url=pywebveiw_url,
-        # html=_view_html,
+        # html='<h2>Ginthon</h2>',
         min_size=(520, 520),
         width=960, height=700, # width=720, height=540     width=960, height=700
-        hidden=True, # 打开时隐藏界面，默认 False
+        hidden=False, # 打开时隐藏界面，默认 False
         frameless=False, # 默认 False 拖住class="pywebview-drag-region"
         confirm_close=False, # 关闭window时显示确认窗口（不支持在状态栏关闭时拦截） False True
         text_select=True, # False True
         transparent=False,
-        background_color="#555555",
+        background_color="#505050",
         draggable=False, # 可以将图片拖到桌面，建议False
     )
     WINDOW = _window

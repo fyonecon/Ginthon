@@ -38,7 +38,7 @@ GLOBAL_CONFIG_DICT = {
         "dev_url": "http://localhost:9770/", # 开发环境：页面地址，默认 http://localhost:9770/ (此端口可在vite.config.js里面改)
         "secret_key": "2025nian11yue21rizhouwu22dian23", # 密钥, len>=16
         "ssl": False,  # True False
-        "debug": True,  # True False
+        "debug": False,  # True False
     },
     "mysql1": {
         "ipv4": "127.0.0.1:3306",  # ip:port

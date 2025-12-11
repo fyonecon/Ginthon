@@ -56,10 +56,10 @@ exe = EXE(
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
-    upx=True,
+    upx=True, # UPX。False
     upx_exclude=[],
     runtime_tmpdir=None,
-    argv_emulation=False,
+    argv_emulation=True,  # 对GUI应用重要。True
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
@@ -75,16 +75,23 @@ app = BUNDLE(
     icon='./frontend/icons.icns', # mac必须.icns
     bundle_identifier='top.datathink.ginthon',  # 可选：bundle identifier
     info_plist={
+        'CFBundlePackageType': 'APPL',
         'CFBundleName': 'Ginthon',
         'CFBundleDisplayName': 'Ginthon',
         'CFBundleIdentifier': 'top.datathink.ginthon',
         'CFBundleShortVersionString': '1.4.0',      # 显示版本
         'CFBundleVersion': '1.4.x',                     # 构建版本(日期、版本号、其它数字)
-        'CFBundleDevelopmentRegion': 'zh',       # 开发地区
+        'CFBundleDevelopmentRegion': 'zh-CN',       # 开发地区
         'NSHumanReadableCopyright': '© Datathink.Top',
         'LSMinimumSystemVersion': '12.0',        # 最低系统要求
         'NSHighResolutionCapable': 'True',          # 支持 Retina
-        'LSUIElement': False,                       # 是否显示 Dock 图标
-        'NSPrincipalClass': 'NSApplication',
+        'LSUIElement': False,                       # 是否显示Dock图标。 True
+#        'NSSupportsAutomaticTermination': False,
+        'NSQuitAlwaysKeepsWindows': True,
+#        'LSBackgroundOnly': False,
+        #'NSPrincipalClass': 'NSApplication',
+        'LSEnvironment': {
+            'PYWEBVIEW_GUI': 'webkit',  # 强制使用 WebKit
+        }
     },
 )
