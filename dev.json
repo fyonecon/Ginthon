@@ -5,7 +5,6 @@
     "step_2": "pnpm install",
     "step_3": "pnpm run dev",
     "step_4": "cd ../../../",
-    "step_5": "pip install -r requirements.txt",
     "step_6": "pip freeze > requirements.txt",
     "step_7": "python window.py --cmd dev"
   },

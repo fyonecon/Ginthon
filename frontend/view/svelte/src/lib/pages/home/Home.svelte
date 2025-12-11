@@ -9,6 +9,4 @@
 
 <div>
     <h3>{route}</h3>
-    <p>{window.location.href}</p>
-    <p>{window.navigator.userAgent}</p>
 </div>
