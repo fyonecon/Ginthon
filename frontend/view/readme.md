@@ -16,6 +16,17 @@ https://www.jetbrains.com/webstorm/download/?section=mac
 npx sv create svelte
 ```
 
+更改端口为9770（本地开发环境用）:
+```
+在vite.config.js中设置：
+
+server: {
+    port: 9770, // 固定端口为 9770
+    strictPort: true, // 如果端口被占用，不自动选择其他端口
+    host: true // 允许外部访问（可选）
+}
+```
+
 项目所在文件夹：/frontend/view/svelte/
 ```
 pnpm install
@@ -89,6 +100,18 @@ export default config;
 ```
 pnpm create vue@latest vue
 ```
+
+更改端口为9770（本地开发环境用）:
+```
+在vite.config.js中设置：
+
+server: {
+    port: 9770, // 固定端口为 9770
+    strictPort: true, // 如果端口被占用，不自动选择其他端口
+    host: true // 允许外部访问（可选）
+}
+```
+
 项目所在文件夹：/frontend/view/vue/
 ```
 pnpm install
