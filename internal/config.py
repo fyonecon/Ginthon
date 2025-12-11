@@ -23,19 +23,19 @@ GLOBAL_CONFIG_DICT = {
     },
     "flask": { # web
         "white_hosts": [
-            "http://127.0.0.1:9750",
-            "https://127.0.0.1:9750",
+            "http://127.0.0.1",
+            "https://127.0.0.1",
             "http://datathink.top",
             "https://datathink.top",
         ], #白名单域名或IP，格式：协议+IPv4+port、协议+域名
-        "port": 9750,  # 服务端口 9750
+        "port": 9750,  # 服务端口 9750（前端端口使用了 9770 ，请勿重复）
         "debug": False,  # True False
     },
     "pywebview": { # window
         "view_host": "http://127.0.0.1", # 生产环境：视图网址（协议+网址+端口+路径，如：http://127.0.0.1 ）
         "view_class": "svelte", # 视图使用的模板（影响flask服务器加载页面）。 "vue"、"svelte"、单页填""
         "view_index.html": "/svelte/dist", # 生产环境：pnpm run build后的dist目录。 "/vue/dist"、"/svelte/dist"、单页应用""。结尾无/。
-        "dev_url": "http://localhost:9770/", # 开发环境：页面地址，默认http://localhost:9770/ (此端口可在vite里面跟欸)
+        "dev_url": "http://localhost:9770/", # 开发环境：页面地址，默认 http://localhost:9770/ (此端口可在vite.config.js里面改)
         "secret_key": "2025nian11yue21rizhouwu22dian23", # 密钥, len>=16
         "ssl": False,  # True False
         "debug": True,  # True False
