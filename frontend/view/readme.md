@@ -62,6 +62,11 @@ const config = {
 export default config;
 ```
 
+将如下js添加至/svelte/src/app.html的头部head之中：
+```
+<script src="http://127.0.0.1:9750/js_must_data.js?cache=v1.4.0"></script>
+```
+
 最终生成的静态网站目录：
 ```
 /frontend/view/svelte/dist/
@@ -91,6 +96,11 @@ pnpm install
 pnpm run dev
 
 pnpm run build
+```
+
+将如下js添加至/vue/src/index.html的头部head之中：
+```
+<script src="http://127.0.0.1:9750/js_must_data.js?cache=v1.4.0"></script>
 ```
 
 最终生成的静态网站目录：
