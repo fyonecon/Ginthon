@@ -1,4 +1,5 @@
-from flask import send_file, request, redirect
+from bottle import response
+from flask import send_file, request, redirect, jsonify, make_response
 
 from internal.app.window.controller.js_call_py import list_js_call_py
 from internal.app.window.controller.tray_events import tray_events
@@ -23,7 +24,7 @@ def window_route(_WINDOW, FLASK):
     def svelte_dist(filename=""):
         route_data = {
             "way": "file",
-            "methods": ["GET"],
+            "methods": ["GET", "POST", "OPTIONS"],
         }
         # 还原真实文件
         file_ext = get_file_ext(filename)
@@ -57,7 +58,7 @@ def window_route(_WINDOW, FLASK):
     def vue_dist(filename=""):
         route_data = {
             "way": "file",
-            "methods": ["GET"],
+            "methods": ["GET", "POST", "OPTIONS"],
         }
         # 还原真实文件
         file_ext = get_file_ext(filename)
@@ -87,7 +88,7 @@ def window_route(_WINDOW, FLASK):
     def js_must_data(filename="js_must_data.js"):
         route_data = {
             "way": "file",
-            "methods": ["GET"],
+            "methods": ["GET", "POST", "OPTIONS"],
         }
         js_data = view_js_must_data()
         response_data, reg_code = flask_middleware_file(request, route_data, js_data, filename)
@@ -101,14 +102,14 @@ def window_route(_WINDOW, FLASK):
     # 视窗单页型静态文件系统 http://127.0.0.1:9750/view/xxx
     @FLASK.route("/view/<rand_id>", methods=["GET", "POST", "OPTIONS"])
     def view(rand_id, filename="index.html"):
-        # print("method2=", request.method, request.headers, request.url)
         route_data = {
             "way": "html",
-            "methods": ["GET"],
+            "methods": ["GET", "POST", "OPTIONS"],
         }
         rand_id_state = check_rand_id(rand_id)
         if rand_id_state:  # 正确
             html_data = view_index(_WINDOW, filename)
+            #
             response_data, reg_code = flask_middleware_html(request, route_data, html_data, filename)
             if reg_code == 200:
                 return response_data, reg_code
@@ -124,7 +125,7 @@ def window_route(_WINDOW, FLASK):
     def file(filename):
         route_data = {
             "way": "file",
-            "methods": ["GET"],
+            "methods": ["GET", "POST", "OPTIONS"],
         }
         # 还原真实文件
         file_ext = get_file_ext(filename)
@@ -150,9 +151,10 @@ def window_route(_WINDOW, FLASK):
     # js_call_py http://127.0.0.1:9750/api/js_call_py/xxx
     @FLASK.route("/api/js_call_py/<js_call_py_auth>", methods=["GET", "POST", "OPTIONS"])  # 路由名
     def js_call_py(js_call_py_auth):
+        #
         route_data = {
             "way": "json",
-            "methods": ["GET", "POST", "OPTIONS"],
+            "methods": ["POST", "OPTIONS"],
         }
         # 处理接收的数据
         data = request.get_json()
@@ -173,24 +175,21 @@ def window_route(_WINDOW, FLASK):
         window_token_state = check_rand_id(_window_token)
         js_call_py_auth_state = check_rand_token(app_class, salt_str, config, js_call_py_auth)
         if js_call_py_auth_state and window_token_state:
-            state = 1
-            msg = "OK"
+            back_data = list_js_call_py(_WINDOW, key=_key, data_dict=_data_dict)
+            #
             pass
         else:
             state = 0
             msg = "非法auth"
+            back_data = {
+                "state": state,  #
+                "msg": msg,
+                "content": data,
+            }
             pass
-        #
-        back_data = {
-            "state": state,  #
-            "msg": msg,
-            "content": data,
-        }
         response_data, reg_code = flask_middleware_api(request, route_data, back_data, "")
         if reg_code == 200:
-            #
-            result = list_js_call_py(_WINDOW, key=_key, data_dict=_data_dict)
-            return result, reg_code
+            return response_data, reg_code
         else:
             return back_404_data_api("非法操作"), reg_code
 
@@ -198,7 +197,6 @@ def window_route(_WINDOW, FLASK):
     # 状态栏托盘专用 http://127.0.0.1:9750/api/tray/xxx
     @FLASK.route("/api/tray/<tray_rand_token>", methods=["GET", "POST", "OPTIONS"])  # 路由名
     def tray(tray_rand_token):  # 触发函数（函数名尽量和路由名一致）
-        # print("method2=", tray_rand_token, request.method, request.headers, request.url)
         route_data = {
             "way": "json",
             "methods": ["POST", "OPTIONS"],
@@ -220,6 +218,7 @@ def window_route(_WINDOW, FLASK):
         #
         if tray_rand_token_state:  # 正确
             state, msg = tray_events(_WINDOW, do)
+            #
             pass
         else:
             state = 0

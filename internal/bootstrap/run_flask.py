@@ -22,7 +22,7 @@ def must_route(window, FLASK):
         # route验证参数
         route_data = {
             "way": "html", # 当前接口请求的数据请求的类型：html、json、file
-            "methods": ["GET", "HEAD", "POST", "OPTIONS"], # 可接受的请求方法：["GET", "POST", "OPTIONS"]
+            "methods": ["GET", "POST", "OPTIONS"], # 可接受的请求方法：["GET", "POST", "OPTIONS"]
         }
 
         # 接口接收的数据
@@ -98,7 +98,7 @@ def must_route(window, FLASK):
     def index_ico(filename = "favicon.ico"):  # filename可以包含路径
         route_data = {
             "way": "file",
-            "methods": ["GET"],
+            "methods": ["GET", "POST", "OPTIONS"],
         }
         if filename in ["favicon.ico", "icon.png"]:
             file_ext = get_file_ext(filename)
@@ -211,6 +211,20 @@ def run_flask(window, webview_pid, config):
     print_log("### Flask => ", "http://127.0.0.1" + ":" + str(CONFIG["flask"]["port"])+"/api")
     #
     FLASK = Flask(__name__)
+
+    # 装饰器
+    @FLASK.before_request
+    def before_request():
+        """全局处理 OPTIONS 请求"""
+        if request.method == 'OPTIONS':
+            response = jsonify()
+            response.headers.add('Access-Control-Allow-Origin', '*')
+            response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
+            response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+            return response
+        else:
+            return None
+
     # flask必要路由
     must_route(window, FLASK)
     # window必要路由

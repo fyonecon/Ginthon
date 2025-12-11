@@ -1,6 +1,5 @@
 {
   "steps":{
-    "step_0": "python -c \"print(\"\n开始执行软件打包：build.json\n \")\"",
     "step_1": "cd ./frontend/view/svelte",
     "step_2": "pnpm install",
     "step_3": "pnpm run build",

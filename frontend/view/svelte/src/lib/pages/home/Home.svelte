@@ -9,4 +9,5 @@
 
 <div>
     <h3>{route}</h3>
+    <p>{window.location.href}</p>
 </div>

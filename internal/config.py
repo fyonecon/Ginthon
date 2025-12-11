@@ -32,9 +32,10 @@ GLOBAL_CONFIG_DICT = {
         "debug": False,  # True False
     },
     "pywebview": { # window
-        "view_host": "http://127.0.0.1", # 视图网址（协议+网址+端口+路径，如：http://127.0.0.1 ）
+        "view_host": "http://127.0.0.1", # 生产环境：视图网址（协议+网址+端口+路径，如：http://127.0.0.1 ）
         "view_class": "svelte", # 视图使用的模板（影响flask服务器加载页面）。 "vue"、"svelte"、单页填""
-        "view_index.html": "/svelte/dist", # pnpm run build后的dist目录。 "/vue/dist"、"/svelte/dist"、单页应用""。结尾无/。
+        "view_index.html": "/svelte/dist", # 生产环境：pnpm run build后的dist目录。 "/vue/dist"、"/svelte/dist"、单页应用""。结尾无/。
+        "dev_url": "http://localhost:9770/", # 开发环境：页面地址，默认http://localhost:9770/ (此端口可在vite里面跟欸)
         "secret_key": "2025nian11yue21rizhouwu22dian23", # 密钥, len>=16
         "ssl": False,  # True False
         "debug": True,  # True False

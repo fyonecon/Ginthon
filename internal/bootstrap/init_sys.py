@@ -8,14 +8,14 @@ from internal.common.func import rand_range_string, print_log, has_file, cache_p
 # 代码习惯基于Golang。
 
 # 程序主入口
-def init_sys():
+def init_sys(cmd_model):
     # 获取前端资源路径
     cache_dirpath = cache_path() + "/" + get_config("sys", "cache_path_main_dir")
     frontend_dirpath = mian_virtual_dirpath("frontend")
     print("### 两个重要目录 => ", {
         "frontend_dirpath": frontend_dirpath,
         "cache_dirpath": cache_dirpath,
-        "frontend-launcher.png": has_file(frontend_dirpath+"/launcher.png"),
+        "frontend-launcher.png": has_file(frontend_dirpath+"/icon.png"),
     })
     #
     CONFIG = get_config("", "")
@@ -29,7 +29,7 @@ def init_sys():
         running_id = rand_range_string(64, 128)
         txt_write(running_id_filename, running_id)
         #
-        init_window()
+        init_window(cmd_model)
     else:
         print("XXX Operation-SYS is Low：", check_sys_state, "last CPU " + str(CONFIG["check"]["min_cpu_cores"]) + " Cores, last RAM " + str(CONFIG["check"]["min_ram"]) + " GB, last Python " + str(CONFIG["check"]["min_python_version"]) + ", Flask-Port " + str(CONFIG["flask"]["port"]) + " .")
         # alert

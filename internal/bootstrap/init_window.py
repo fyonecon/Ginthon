@@ -8,7 +8,7 @@ from internal.bootstrap.run_services import run_services
 from internal.bootstrap.run_flask import run_flask
 from internal.common.kits.main_dirpath import mian_virtual_dirpath
 from internal.config import get_config
-from internal.common.func import print_log
+from internal.common.func import print_log, get_platform
 from internal.common.app_auth import make_auth, make_rand_id
 from internal.app.window.controller.on_events import on_closed,on_closing,on_shown,on_loaded,on_minimized,on_maximized,on_restored,on_resized,on_moved,on_before_load,on_before_show,on_initialized
 
@@ -66,7 +66,7 @@ def join_events(_window):
 
 
 # 视窗（pywebview必须运行在主线程上）
-def init_window():
+def init_window(cmd_model):
     global CONFIG
     global WINDOW
     global WEBVIEW_PID
@@ -74,18 +74,26 @@ def init_window():
     global FLASK_PID
     #
     CONFIG = get_config("", "")
-    _view_url = view_url(CONFIG["pywebview"]["view_class"]) # vue svelte ""
-
+    #
+    _view_url = view_url(CONFIG["pywebview"]["view_class"]) # 生产环境url：vue svelte ""
+    _dev_url = CONFIG["pywebview"]["dev_url"] # 开发环境url
+    if cmd_model == "dev":
+        pywebveiw_url = _dev_url
+        pass
+    else:
+        cmd_model = "build"
+        pywebveiw_url = _view_url
+        pass
     # 创建视窗
     _window = webview.create_window(
         title=CONFIG["app"]["app_name"],
-        url=_view_url,
+        url=pywebveiw_url,
         # html=_view_html,
         min_size=(520, 520),
         width=960, height=700, # width=720, height=540     width=960, height=700
         hidden=True, # 打开时隐藏界面，默认 False
         frameless=False, # 默认 False 拖住class="pywebview-drag-region"
-        confirm_close=True, # 关闭window时显示确认窗口（不支持在状态栏关闭时拦截）
+        confirm_close=False, # 关闭window时显示确认窗口（不支持在状态栏关闭时拦截） False True
         text_select=True, # False True
         transparent=False,
         background_color="#555555",
@@ -93,7 +101,7 @@ def init_window():
     )
     WINDOW = _window
     WEBVIEW_PID = os.getpid()
-    print_log("### 视窗 => ", _view_url)
+    print_log("### 视窗 => ", pywebveiw_url)
 
     # 窗口实时事件
     _window.events.closing += on_closing
@@ -111,7 +119,7 @@ def init_window():
     _window.events.closed += on_closed
 
     # 启动视窗
-    webview.start(func=join_events, args=_window, ssl=CONFIG["pywebview"]["ssl"], debug=CONFIG["pywebview"]["debug"], user_agent="gthon_fy")
+    webview.start(func=join_events, args=_window, ssl=CONFIG["pywebview"]["ssl"], debug=CONFIG["pywebview"]["debug"], user_agent="gthon/fy/"+get_platform()+"/"+cmd_model)
 
     # 主动杀掉join_events服务进程
     try:

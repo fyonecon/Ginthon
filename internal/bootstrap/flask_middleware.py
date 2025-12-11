@@ -96,14 +96,17 @@ def check_req_url(full_url):
 
 # 设置header
 # way= html json file, filename含后缀,
-def flask_response_header(response, way, reg_code=404, filename=""):
+def flask_response_header(response, way, reg_code=200, filename=""):
     #
     response.status_code = reg_code
-    response.headers["Header-Way"] = way
+    response.headers["Way"] = way
     response.headers["Author"] = CONFIG["app"]["author"]
-    response.headers["App-Name"] = CONFIG["app"]["app_name"]
-    response.headers["Access-Control-Allow-Origin"] = "*"
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    #
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With'
+    # response.headers['Access-Control-Allow-Credentials'] = 'true' # true不能与*一起使用
+    response.headers['Access-Control-Max-Age'] = '30'
     #
     if way == "html" or way == "view": # html
         response.headers["Content-Disposition"] = "inline"

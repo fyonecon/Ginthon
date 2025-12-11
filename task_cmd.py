@@ -18,6 +18,8 @@ from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field
 from enum import Enum
 
+from anyio import sleep
+
 
 class StepStatus(Enum):
     """步骤状态枚举"""
@@ -211,6 +213,28 @@ class CrossPlatformDevRunner:
             return False
 
     async def _run_single_step(self, step_key: str, command_str: str) -> bool:
+        await sleep(2)
+        # # 兼容命令行阻塞
+        # if self.is_windows and "pnpm run dev" in command_str:
+        #     command_str = command_str.replace("pnpm run dev", "start \"Dev Server\" pnpm run dev")
+        # elif not self.is_windows and not command_str.endswith("&"):
+        #     command_str = command_str + " &"
+        # #
+        # if self.is_windows and "npm run dev" in command_str:
+        #     command_str = command_str.replace("npm run dev", "start \"Dev Server\" npm run dev")
+        # elif not self.is_windows and not command_str.endswith("&"):
+        #     command_str = command_str + " &"
+        # #
+        # if self.is_windows and "pnpm dev" in command_str:
+        #     command_str = command_str.replace("pnpm dev", "start \"Dev Server\" pnpm dev")
+        # elif not self.is_windows and not command_str.endswith("&"):
+        #     command_str = command_str + " &"
+        # #
+        # if self.is_windows and "npm dev" in command_str:
+        #     command_str = command_str.replace("npm dev", "start \"Dev Server\" npm dev")
+        # elif not self.is_windows and not command_str.endswith("&"):
+        #     command_str = command_str + " &"
+
         """执行单个步骤"""
         self._log(f"开始执行: {command_str}", "STEP", step_key)
 
