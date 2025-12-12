@@ -1,10 +1,11 @@
 {
   "steps":{
-    "step_0": "python --version",
-    "step_1": "cd ./frontend/view/svelte",
+    "step_0": "cd ./frontend/view/svelte",
+    "step_1": "npm install pnpm",
     "step_2": "pnpm install",
     "step_3": "pnpm run dev",
     "step_4": "cd ../../../",
+    "step_5": "pip install -r requirements.txt",
     "step_6": "pip freeze > requirements.txt",
     "step_7": "python window.py --cmd dev"
   },
