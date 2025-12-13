@@ -7,8 +7,8 @@
     "step_4": "cd ../../../",
     "step_5": "pip install -r requirements.txt",
     "step_6": "pip freeze > requirements.txt",
-    "step_7": "pyinstaller window.spec",
-    "step_8": "python -c \"print(\"\n===打包完成===\n\")\""
+    "step_7": "pyinstaller --clean window.spec",
+    "step_8": "python --version"
   },
   "custom_commands": {
     "npm": "pnpm",
