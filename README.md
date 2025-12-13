@@ -1,9 +1,9 @@
 
-## Ginthon是用Python+Web写的“视图窗口+稳定服务”的桌面端多功能程序基建
+## Ginthon是用Python+Web写的“视图窗口+稳定服务”的桌面端多功能程序基建。
 ```
 代码习惯基于Golang。
 
-Ginthon基于pywebview、flask等。
+Ginthon基于pywebview、flask等。无PyQT。Apache License。
 
 前端默认Svelte。
 
