@@ -16,7 +16,9 @@ Python版基座请戳：https://github.com/fyonecon/Ginthon 。
 
 Golang版基座请戳：https://github.com/fyonecon/Waigo 。
 
-### 程序目标：
+---
+
+### 程序要求：
 ```
 需要 Python3.12+
 
@@ -28,17 +30,6 @@ Golang版基座请戳：https://github.com/fyonecon/Waigo 。
 
 ```
 
-### AI在代码里面做了哪些
-```
-给AI喂“描述过程准确”的提示词，AI解决程序运行过程的错误，但也在生成代码时，同时生成了过度抽象的、依然会在某些特定场景下的发生的程序错误。这些程序错误，通过更多提示词，越来越绕，也似乎越来降智，最终有些工程问题依然靠人工解决。
-
-整个项目思想，依然有人工完成，但AI让开发变得更加快速、顺利、容易。
-
-靠绝对AI、绝对的人工都是走向固执的南墙。AI替代的不是菜鸟、大牛，而是替代了有明确提示词，但需要大量人工完成的费时费力的劳作部分。
-
-无工程经验的但有明确提示词的菜鸟和有工程经验但无明确提示词的大牛都是一样的人。
-```
-
 ### 拉取仓库：
 窗口及服务·主程序（Ginthon-Main）：
 > git clone -b main https://github.com/fyonecon/Ginthon.git Ginthon-Main
@@ -47,6 +38,72 @@ Golang版基座请戳：https://github.com/fyonecon/Waigo 。
 状态栏托盘·子程序（Ginthon-Tray）：
 > git clone -b tray https://github.com/fyonecon/Ginthon.git Ginthon-Tray
 
+### 【自动】开发环境运行项目（🔥）：
+> python dev.py
+
+### 【自动】打包做桌面安装包（仅打包当前操作系统类型安装包）（🔥）：
+> python build.py
+
+---
+
+### 【手动】初始化项目：
+1. 安装.venv虚拟环境：
+```
+以PyCharm为例：
+
+（删除老.venv，有就删除）-- 设置 -- Python -- Interpreter -- Add Interpreter -- Add local interpreter -- Generate New -- 创建新的.venv即可。
+```
+
+2. 初始化项目py依赖：
+> pip install -r requirements.txt
+
+3. 导出或更新项目所有依赖：
+> pip freeze > requirements.txt
+
+4. 清除不必要的项目依赖：
+```
+删除.venv文件夹，重新初始化项目依赖即可.
+```
+5. 安装pnpm依赖及项目node_modules：
+> cd ./frontend/view/svelte
+> 
+> npm install pnpm
+> 
+> pnpm install
+
+### 【手动】开发环境运行项目
+1. 开发环境运行视图UI：
+> cd ./frontend/view/svelte
+> 
+> pnpm install
+> 
+> pnpm run dev
+
+2. 开发环境运行软件：
+> python window.py --cmd dev
+
+### 【手动】打包程序为程序安装包：
+1. 生成视图UI dist静态文件：
+> cd ./frontend/view/svelte
+> 
+> pnpm run build
+
+2. 打包成桌面安装包：
+> pyinstaller --clean window.spec
+> 
+
+### 其它：打包成安装程序（win、mac、linux）：
+（如有需要请手动删除/dist/ 和 /build/ 文件夹）
+> 
+> pyinstaller --clean window.spec （只能打包当前平台CPU结构的程序。也可以使用“python build.py”命令一键打包）
+>  
+> 或
+> 
+> pyinstaller --clean tray.spec （只能打包当前平台CPU结构的程序。）
+> 
+
+### 视图UI配置教程（Svelte、VUE）：
+🔥请查看本目录文件/frontend/view/README.md
 
 ### 项目结构：
 ```
@@ -111,43 +168,10 @@ Ginthon-Main
 └── window.spec PYinstaller的SPEC打包文件参数
 ```
 
-### 初始化项目：
-1. 安装.venv虚拟环境：
-```
-以PyCharm为例：
+### 运行效果：
+![运行效果](./frontend/show.png)
 
-（删除老.venv，有就删除）-- 设置 -- Python -- Interpreter -- Add Interpreter -- Add local interpreter -- Generate New -- 创建新的.venv即可。
-```
-
-2. 初始化项目依赖：
-> pip install -r requirements.txt
-
-### 导出或更新项目所有依赖：
-> pip freeze > requirements.txt
-
-### 清除不必要的项目依赖：
-```
-删除.venv文件夹，重新初始化项目依赖即可.
-```
-
-### 运行项目（仅限开发环境）（🔥）：
-> python dev.py
-
-### 打包安装包（仅打包当前操作系统类型安装包）（🔥）：
-> python build.py
-
-### 打包成安装程序（win、mac、linux）：
-（如有需要请手动删除/dist/ 和 /build/ 文件夹）
-> 
-> pyinstaller --clean window.spec （只能打包当前平台CPU结构的程序。也可以使用“python build.py”命令一键打包）
->  
-> 或
-> 
-> pyinstaller --clean tray.spec （只能打包当前平台CPU结构的程序。）
-> 
-
-### 视图UI配置教程（Svelte、VUE）：
-🔥请查看本目录文件/frontend/view/README.md
+---
 
 ### Python教程：
 
@@ -157,10 +181,6 @@ Ginthon-Main
 >
 > PyWebview：https://pywebview.idepy.com/guide/usage.html
 >
-
-### 运行效果：
-![运行效果](./frontend/show.png)
-
 
 ### 常用pip安装库：
 如果遇到网络忙或者下载错误，多试几次，不需要更换镜像源（使用官方源即可）。
