@@ -82,6 +82,8 @@ Golang版基座请戳：https://github.com/fyonecon/Waigo 。
 2. 开发环境运行软件：
 > python window.py --cmd dev
 
+(注意，直接运行“python window.py” == “python window.py --cmd build”，window.py加载的是svelte的dist静态文件，使用127.0.0.1域名。而“python window.py --cmd dev”加载的是svelte的“pnpm run dev”本地localhost网页。)
+
 ### 【手动】打包程序为程序安装包：
 1. 生成视图UI dist静态文件：
 > cd ./frontend/view/svelte
