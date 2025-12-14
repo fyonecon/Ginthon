@@ -11,6 +11,10 @@ node_modules/
 Ginthon.app/
 dist/
 
+# OS
+.DS_Store
+Thumbs.db
+
 #
 .env
 .env.*
