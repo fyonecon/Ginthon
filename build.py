@@ -443,6 +443,7 @@ def run_task_cmd(config_json):
 
 
 # 生成应用安装包
+# 按build.json步骤执行，会阻塞。
 if __name__ == "__main__":
     #
     run_task_cmd("build.json")

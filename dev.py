@@ -744,11 +744,14 @@ def run_task_cmd(config_json):
     runner.run()
 
 
+# 开发环境已经运行程序
+# 按dev.json步骤执行，除了“step_3”标号步骤，其它步骤会阻塞。
 if __name__ == "__main__":
     # 直接运行
     if len(sys.argv) > 1:
         config_file = sys.argv[1]
     else:
         config_file = "dev.json"
-
+    #
     run_task_cmd(config_file)
+    pass
