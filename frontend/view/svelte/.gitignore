@@ -13,6 +13,7 @@ node_modules
 .svelte-kit/
 build/
 node_modules/
+dist/
 
 # OS
 .DS_Store
