@@ -142,7 +142,7 @@ def load_icon(icon_binary):
 
 
 # 创建tray
-# mac、win、linux创建时都会调用此函数
+# mac、win、linux创建时都会调用此函数，但不会被window.py直接调用
 def tray_create():
     #
     global CONFIG
