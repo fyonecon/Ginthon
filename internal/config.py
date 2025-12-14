@@ -3,7 +3,7 @@
 GLOBAL_CONFIG_DICT = {
     "app": {
         "app_name": "Ginthon",
-        "app_version": "1.4.4",  # 1.0.0
+        "app_version": "1.5.0",  # 1.0.0
         "app_class": "ginthon_window_",
         "author": "fyonecon",
         "github": "https://github.com/fyonecon/Ginthon",
@@ -38,6 +38,11 @@ GLOBAL_CONFIG_DICT = {
         "dev_url": "http://localhost:9770/", # 开发环境：页面地址，默认 http://localhost:9770/ (此端口可在vite.config.js里面改)
         "secret_key": "2025nian11yue21rizhouwu22dian23", # 密钥, len>=16
         "ssl": False,  # True False
+        "debug": False,  # True False
+    },
+    "pytray": {
+        "api_url": "http://127.0.0.1:9750/api/tray",
+        "icon": "./frontend/icon.png", # 状态栏托盘图标
         "debug": False,  # True False
     },
     "mysql1": {

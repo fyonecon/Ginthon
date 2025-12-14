@@ -85,8 +85,8 @@ app = BUNDLE(
         'CFBundleDevelopmentRegion': 'zh-CN',       # 开发地区
         'NSHumanReadableCopyright': '© Datathink.Top',
         'LSMinimumSystemVersion': '12.0',        # 最低系统要求
-        'NSHighResolutionCapable': 'True',          # 支持 Retina
-        'LSUIElement': True,                       # 是否显示Dock图标。 True
+        'NSHighResolutionCapable': 'True',          # 支持 Retina。'True'
+        'LSUIElement': "1",                       # 是否显示Dock图标。 "1"不显示，"1"显示
 #        'NSSupportsAutomaticTermination': False,
 #        'NSQuitAlwaysKeepsWindows': True,
 ##        'LSBackgroundOnly': False,

@@ -1,12 +1,11 @@
 import webview
-import multiprocessing
 import psutil
 import os
 import threading
 
 from internal.bootstrap.run_services import run_services
 from internal.bootstrap.run_flask import run_flask
-from internal.common.kits.main_dirpath import mian_virtual_dirpath
+from internal.bootstrap.run_tray import run_tray
 from internal.config import get_config
 from internal.common.func import print_log, get_platform
 from internal.common.app_auth import make_auth, make_rand_id
@@ -48,10 +47,12 @@ def join_events(_window):
     # 创建线程
     t1 = threading.Thread(target=run_flask, daemon=True, args=(_window, WEBVIEW_PID, CONFIG))
     t2 = threading.Thread(target=run_services, daemon=True, args=(_window, WEBVIEW_PID, CONFIG))
+    t3 = threading.Thread(target=run_tray, daemon=True, args=(_window, WEBVIEW_PID, CONFIG))
 
     # 启动线程
     t1.start()
     t2.start()
+    t3.start()
 
     # 获取pid
     # SERVICES_PID = t1.pid
@@ -60,6 +61,7 @@ def join_events(_window):
     # 等待线程结束
     t1.join()
     t2.join()
+    t3.join()
 
     return
 
