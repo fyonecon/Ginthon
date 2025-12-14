@@ -1,5 +1,7 @@
 {
   "steps":{
+    "step_01": "pyinstaller --clean tray.spec",
+    "step_02": "python ./internal/bootstrap/tray_move.py",
     "step_0": "cd ./frontend/view/svelte",
     "step_1": "npm install pnpm",
     "step_2": "pnpm install",

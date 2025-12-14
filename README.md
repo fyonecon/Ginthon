@@ -34,10 +34,6 @@ Golang版基座请戳：https://github.com/fyonecon/Waigo 。
 窗口及服务·主程序（Ginthon-Main）：
 > git clone -b main https://github.com/fyonecon/Ginthon.git Ginthon-Main
 
-
-状态栏托盘·子程序（Ginthon-Tray）：
-> git clone -b tray https://github.com/fyonecon/Ginthon.git Ginthon-Tray
-
 ### 【自动】开发环境运行项目（🔥）：
 > python dev.py
 
@@ -71,7 +67,7 @@ Golang版基座请戳：https://github.com/fyonecon/Waigo 。
 > 
 > pnpm install
 
-### 【手动】开发环境运行项目
+### 【手动】开发环境逐步运行项目：
 1. 开发环境运行视图UI：
 > cd ./frontend/view/svelte
 > 
@@ -79,7 +75,10 @@ Golang版基座请戳：https://github.com/fyonecon/Waigo 。
 > 
 > pnpm run dev
 
-2. 开发环境运行软件：
+2. 开发环境直接运行状态栏托盘：
+> python tray.py
+
+3. 开发环境运行软件：
 > python window.py --cmd dev
 
 (注意，直接运行“python window.py” == “python window.py --cmd build”，window.py加载的是svelte的dist静态文件，使用127.0.0.1域名。而“python window.py --cmd dev”加载的是svelte的“pnpm run dev”本地localhost网页。)
@@ -96,16 +95,22 @@ Golang版基座请戳：https://github.com/fyonecon/Waigo 。
 
 ### 其它：打包成安装程序（win、mac、linux）：
 （如有需要请手动删除/dist/ 和 /build/ 文件夹）
+（只能打包当前平台CPU结构的程序。也可以使用“python build.py”命令一键打包）
 > 
-> pyinstaller --clean window.spec （只能打包当前平台CPU结构的程序。也可以使用“python build.py”命令一键打包）
->  
-> 或
-> 
-> pyinstaller --clean tray.spec （只能打包当前平台CPU结构的程序。）
-> 
+> pyinstaller --clean window.spec 
+>
 
 ### 视图UI配置教程（Svelte、VUE）：
 🔥请查看本目录文件/frontend/view/README.md
+
+### 状态栏托盘Tray运行原理：
+原理：由于视图主程序已经是主线程，mac中不能存在第二主线程（NSWindow影响）。所以本程序在视图主程序中以多线程的方式，利用shell拉起打包成二进制的Tray程序。
+
+在开发的过程中，运行dev.py或build.py都会自动执行打包程序，无需担心window主程序没有挂载“tray_create()”。
+
+dev过程：打包Tray二进制文件--将二进制文件移动到frontend/tray文件夹--启动pnpm--启动window--shell启动二进制文件。
+
+build过程：打包Tray二进制文件--将二进制文件移动到frontend/tray文件夹--pnpm打包视图UI--打包frontend+PY文件。
 
 ### 项目结构：
 ```
@@ -129,6 +134,7 @@ Ginthon-Main
 │   │   ├── services 系统服务目录
 │   │   │   ├── services_for_open_tray.py 启动tray
 │   │   │   └── services_for_time_interval.py 定时器
+│   │   ├── tray 状态栏托盘
 │   │   └── window 窗口服务目录
 │   │       ├── controller
 │   │       │   ├── do_events.py 操作窗口事件
@@ -145,6 +151,7 @@ Ginthon-Main
 │   │   ├── init_window.py 窗口服务
 │   │   ├── run_check_sys.py
 │   │   ├── run_flask.py Web服务
+│   │   ├── run_tray.py 启动状态栏托盘
 │   │   └── run_services.py 其它主页服务
 │   ├── common 公共函数、封装的kit
 │   │   ├── func.py 公共函数
@@ -165,8 +172,12 @@ Ginthon-Main
 ├── README.md 项目说明
 ├── requirements-win.txt Win下的依赖
 ├── requirements.txt 默认依赖
-├── show.png
-├── window.py 程序入口
+├── build.json 打包程序的配置文件
+├── build.py 打包程序
+├── dev.json 开发环境运行的配置文件
+├── dev.py 开发环境一键运行
+├── tray.py 状态栏托盘入口
+├── window.py 视窗主程序入口
 └── window.spec PYinstaller的SPEC打包文件参数
 ```
 
