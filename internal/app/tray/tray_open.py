@@ -15,10 +15,10 @@ def tray_open(window, webview_pid, config):
     # 兼容处理
     plt = get_platform()
     if plt == "mac" or plt == "linux":
-        file = "tray"  # 源文件路径
+        file = "Tray"  # 源文件路径
         pass
     else:
-        file = "tray.exe"  # 源文件路径
+        file = "Tray.exe"  # 源文件路径
         pass
     # 命令行运行
     file_path = mian_virtual_dirpath("frontend") + "/tray/" + file

@@ -41,7 +41,7 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name='tray', # 文件名或应用名
+    name='Tray', # 文件名或应用名
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,

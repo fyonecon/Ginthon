@@ -8,10 +8,10 @@ def tray_file_move():
     # 兼容处理
     plt = get_platform()
     if plt == "mac" or plt == "linux":
-        file = "./dist/tray"  # 源文件路径
+        file = "./dist/Tray"  # 源文件路径
         pass
     else:
-        file = "./dist/tray.exe"  # 源文件路径
+        file = "./dist/Tray.exe"  # 源文件路径
         pass
     # 目标文件夹路径
     new_dir = "./frontend/tray/"
