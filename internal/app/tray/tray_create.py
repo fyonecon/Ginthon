@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import threading
 from time import sleep
 
 import pystray
@@ -8,15 +9,51 @@ import requests
 from PIL import Image
 import io
 
+from internal.bootstrap.run_check_sys import check_port_occupied
 from internal.common.app_auth import make_rand_token, make_auth
 from internal.common.func import print_log
 from internal.common.kits.ICON import ICON_Binary
+from internal.common.kits.time_interval import do_time_interval
 from internal.common.kits.watch_pid import kill_process_by_pid
 from internal.common.translate import get_translate
 from internal.config import get_config
 
 #
 CONFIG = {}
+HOST_STATE = 1
+
+# 检测视窗服务是否可用，不可用则主动退出状态栏托盘程序
+def tray_ping_window():
+    global HOST_STATE
+    tag = "tray_ping_window"
+    def do_timer():
+        global HOST_STATE
+        main_pid = os.getpid()
+        # 判断端口是否被占用
+        flask_port = CONFIG["flask"]["port"]
+        flask_port_state = check_port_occupied('127.0.0.1', flask_port, timeout=1)
+        if flask_port_state: # 占用
+            HOST_STATE = 1
+            pass
+        else: # 空闲
+            host = "127.0.0.1:"+str(flask_port)
+            if HOST_STATE >= 2:
+                # Exit
+                print("🔴 主动退出程序=视窗可能未启动=PID=", main_pid, HOST_STATE, host)
+                kill_process_by_pid(main_pid)
+                #
+                pass
+            else:
+                print("🔴 程序正在运行自检...（可能是因为视窗程序未启动）", main_pid, HOST_STATE, host)
+                HOST_STATE = HOST_STATE + 1
+                pass
+            pass
+        #
+        pass
+    #
+    do_timer()
+    do_time_interval(0, do_timer, tag, CONFIG)
+    pass
 
 # 请求window视图的状态
 def request_window(do):
@@ -146,13 +183,12 @@ def load_icon(icon_binary):
 # 创建tray
 # mac、win、linux创建时都会调用此函数，但不会被window.py直接调用
 def tray_create():
-    #
     global CONFIG
     CONFIG = get_config("", "")
 
     # 创建菜单
     menu = pystray.Menu(
-        pystray.MenuItem(text="" + get_translate("show_window"), action=on_show_or_hide, default=True),
+        pystray.MenuItem(text="❇️ " + get_translate("show_window"), action=on_show_or_hide, default=True),
         pystray.Menu.SEPARATOR,
         # pystray.MenuItem(text="❗️ 关于"+CONFIG["app"]["app_name"], action=on_about, default=False),
         # pystray.Menu.SEPARATOR,
@@ -167,7 +203,16 @@ def tray_create():
         menu  # 菜单
     )
 
+    # 创建线程
+    t1 = threading.Thread(target=tray_ping_window, daemon=True)
+
+    # 启动线程
+    t1.start()
+
     # 托盘
     icon.run()
+
+    # 等待线程结束
+    t1.join()
 
     pass
