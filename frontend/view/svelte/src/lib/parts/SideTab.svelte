@@ -54,6 +54,7 @@
     .side_tab-search-input{
         height: 40px;
         display: block;
+        background: rgba(200, 200, 200, 0.1);
     }
     .side_tab-menu{
         width: calc(100%);
@@ -66,7 +67,7 @@
     }
     .side_tab-menu-a{
         line-height: 24px;
-        padding: 8px 10px;
+        padding: 8px 8px;
         width: 100%;
         display: block;
         clear: both;
@@ -76,7 +77,7 @@
         margin-right: 5px;
     }
     .side_tab-menu-a-active{
-        background: rgba(200, 200, 200, 0.4);
+        background: rgba(200, 200, 200, 0.2);
         color: deepskyblue;
     }
 
