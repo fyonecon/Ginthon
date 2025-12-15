@@ -199,7 +199,7 @@ def tray_create():
     icon = pystray.Icon(
         CONFIG["app"]["app_name"],  # app_name
         load_icon(ICON_Binary),  # 图标
-        "显示、隐藏、退出 " + CONFIG["app"]["app_name"],  # hover tips
+        "" + CONFIG["app"]["app_name"],  # hover tips
         menu  # 菜单
     )
 
