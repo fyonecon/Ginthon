@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-    <title>Settings</title>
+    <title>{func.get_translate("Settings")}</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
 </svelte:head>

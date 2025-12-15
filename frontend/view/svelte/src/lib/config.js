@@ -1,6 +1,6 @@
 // 自定义的前端配置文件
 const config = {
-    debug: false, // true、false
+    debug: true, // true、false
     app: {
         app_class: "ginthon_sv_", // ginthon_sv_ 、waigo_sv_
         app_version: "1.4.0", // 1.0.0

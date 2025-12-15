@@ -17,6 +17,7 @@ from pathlib import Path
 
 from internal.common.kits.FILETYPE_DICT import FILETYPE_Dict
 from internal.common.kits.secret_aes import aes_encrypt, aes_decrypt
+from internal.common.translate import lang_dict
 from internal.config import get_config
 from urllib.parse import urlparse, quote, unquote
 
@@ -366,3 +367,54 @@ def back_404_data_file(msg):
         </body>
         </html>
     """
+
+# 获取翻译
+def get_translate(key="", lang=""):
+    # 将语言转换成可用的数组索引标记
+    def make_lang_index(_language):
+        #
+        if _language.find("zh", 0)==0 or _language.find("chinese", 0)==0:  # 简体中文（包含繁体）
+            return "zh"
+        elif _language.find("en", 0)==0 or _language.find("english", 0)==0:  # 英文
+            return "en"
+        elif _language.find("jp", 0)==0:  # 日文
+            return "jp"
+        elif _language.find("fr", 0)==0:  # 法语
+            return "fr"
+        elif _language.find("de", 0)==0:  # 德语
+            return "de"
+        elif _language.find("ru", 0)==0:  # 俄语或乌克兰语
+            return "ru"
+        elif _language.find("es", 0)==0:  # 西班牙语
+            return "es"
+        elif _language.find("vi", 0)==0:  # 越语
+            return "vi"
+        else:  # 默认英文
+            return "en"
+        pass
+    # 系统语言
+    def sys_language(_lang=""):
+        if len(_lang) >= 2:
+            return _lang.lower()
+        else:
+            return locale.getlocale()[0].lower()
+        pass
+    # 索引
+    lang_index = make_lang_index(sys_language(lang))
+    #
+    if lang_dict.get(key):
+        if lang_dict[key].get(lang_index):
+            return lang_dict[key][lang_index]
+        else:
+            if len(lang_dict["_null"][lang_index])>=1:
+                return lang_dict["_null"][lang_index]
+            else:
+                return lang_dict["_null"]["en"]
+    else:
+        if lang_dict["_null"].get(lang_index):
+            return lang_dict["_null"][lang_index]
+        else:
+            return lang_dict["_null"]["en"]
+    pass
+
+

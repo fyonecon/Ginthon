@@ -12,13 +12,13 @@
     </div>
     <ul class="left-menu scroll-y-style select-none font-title">
         <li aria-current={page.url.pathname === '/home' ? 'page' : undefined}>
-            <a href={resolve(func.url_path('/home'))}>Home</a>
+            <a href={resolve(func.url_path('/home'))}>{func.get_translate("Home")}</a>
         </li>
         <li aria-current={page.url.pathname === '/settings' ? 'page' : undefined}>
-            <a href={resolve(func.url_path('/settings'))}>Settings</a>
+            <a href={resolve(func.url_path('/settings'))}>{func.get_translate("Settings")}</a>
         </li>
         <li class="">
-            <a href={resolve(func.url_path('/settings/about'))}>About</a>
+            <a href={resolve(func.url_path('/settings/about'))}>{func.get_translate("About")}</a>
         </li>
     </ul>
 </section>

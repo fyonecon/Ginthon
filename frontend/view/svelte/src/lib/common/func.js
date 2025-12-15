@@ -5,7 +5,9 @@ import { browser } from '$app/environment';
 import md5 from 'md5';
 import { setContext, getContext } from 'svelte';
 import config from "$lib/config.js";
+import lang_dict from "$lib/common/language.js";
 // import {AppServicesForWindow} from "../../bindings/datathink.top/Waigo/internal/bootstrap";
+
 
 // 复用函数
 const func = {
@@ -54,6 +56,11 @@ const func = {
                 console.log("服务端不可用");
             }
         }
+    },
+    get_agent: function(){
+        let that = this;
+        //
+        return navigator.userAgent;
     },
     get_href: function(){
         let that = this;
@@ -118,28 +125,44 @@ const func = {
         let that = this;
         key = that.url_encode(key); // 支持中文和特殊字符
         //
-        localStorage.setItem(key,value);
-        return localStorage.getItem(key);
+        if (browser){
+            localStorage.setItem(key,value);
+            return localStorage.getItem(key);
+        }else{
+            return false;
+        }
     },
     get_local_data: function (key) { // 获取一个
         let that = this;
         key = that.url_encode(key);
         //
-        let value = localStorage.getItem(key);
-        if (value){
-            return value;
-        }else {
-            return "";
+        if (browser){
+            let value = localStorage.getItem(key);
+            if (value){
+                return value;
+            }else {
+                return "";
+            }
+        }else{
+            return false;
         }
     },
     del_local_data: function (key) { // 删除一个
         let that = this;
         key = that.url_encode(key);
         //
-        return localStorage.removeItem(key);
+        if (browser){
+            return localStorage.removeItem(key);
+        }else {
+            return false;
+        }
     },
     clear_local_data: function () { // 全部清空
-        return localStorage.clear();
+        if (browser){
+            return localStorage.clear();
+        }else {
+            return false;
+        }
     },
     set_page_data: function(key, value){ // 新增或更新数据（跨路由<页面>值，除非在浏览器关闭页面或刷新页面）
         let that = this;
@@ -608,7 +631,99 @@ const func = {
 
         });
     },
-    //
+    is_wails: function (){ // 是否是wails环境
+        let that = this;
+        //
+        let url = "";
+        if(browser){
+            url = page.url.host.toLowerCase();
+            return url === "wails.localhost" || url === "wails";
+        }else {
+            return false;
+        }
+    },
+    is_gthon: function (){ // 是否是gthon环境
+        let that = this;
+        //
+        let agent = that.get_agent().toLowerCase();
+        if(browser){
+            return agent.indexOf("gthon") !== -1 ;
+        }else {
+            return false;
+        }
+    },
+    // 获取翻译
+     get_translate: function(key="", lang=""){
+        let that = this;
+        // 将语言转换成可用的数组索引标记
+        function make_lang_index(_language){
+            if (_language.indexOf("zh") >= 0) { // 简体中文（包含繁体）
+                return "zh";
+            }
+            else if (_language.indexOf("en") >= 0){ // 英文
+                return "en";
+            }
+            else if (_language.indexOf("jp") >= 0){ // 日文
+                return "jp";
+            }
+            else if (_language.indexOf("fr") >= 0){ // 法语
+                return "fr";
+            }
+            else if (_language.indexOf("de") >= 0){ // 德语
+                return "de";
+            }
+            else if (_language.indexOf("ru") >= 0){ // 俄语或乌克兰语
+                return "ru";
+            }
+            else if (_language.indexOf("es") >= 0){ // 西班牙语
+                return "es";
+            }
+            else if (_language.indexOf("vi") >= 0){ // 越语
+                return "vi";
+            }
+            else{ // 默认英文
+                return "en"
+            }
+        }
+        // 系统语言
+        function sys_language(_lang=""){
+            if (_lang.length >= 2){
+                return _lang.toLowerCase();
+            }else {
+                return navigator.language.toLowerCase();
+            }
+        }
+         // 从本地读取语言配置
+         if(lang.length >= 2){ // lang参数优先
+             that.console_log("自定义lang=", lang);
+         }else{
+             let lang_data = that.get_local_data(config.app.app_class + "lang_index");
+             if (lang_data.length >= 2) {
+                 lang = lang_data
+             }
+         }
+         // 语言标记
+         let lang_index = make_lang_index(sys_language(lang));
+         // console.log("get_translate=", key, lang, sys_language(lang), lang.indexOf("zh"), lang_index);
+        //
+        if (lang_dict[key]){
+            if (lang_dict[key][lang_index]){
+                return lang_dict[key][lang_index];
+            }else{
+                if (lang_dict["_null"][lang_index]){
+                    return lang_dict["_null"][lang_index];
+                }else{
+                    return lang_dict["_null"]["en"]
+                }
+            }
+        }else{
+            if (lang_dict["_null"][lang_index]){
+                return lang_dict["_null"][lang_index];
+            }else{
+                return lang_dict["_null"]["en"]
+            }
+        }
+    },
 
     //
 }

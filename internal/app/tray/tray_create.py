@@ -11,11 +11,10 @@ import io
 
 from internal.bootstrap.run_check_sys import check_port_occupied
 from internal.common.app_auth import make_rand_token, make_auth
-from internal.common.func import print_log
+from internal.common.func import print_log, get_translate
 from internal.common.kits.ICON import ICON_Binary
 from internal.common.kits.time_interval import do_time_interval
 from internal.common.kits.watch_pid import kill_process_by_pid
-from internal.common.translate import get_translate
 from internal.config import get_config
 
 #
