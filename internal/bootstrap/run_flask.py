@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask import Flask, jsonify, send_file
 from internal.app.flask.flask_route_api import flask_route_api
 from internal.app.flask.flask_route_html import flask_route_html

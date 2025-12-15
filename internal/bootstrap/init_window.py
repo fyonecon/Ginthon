@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import webview
 import psutil
 import os

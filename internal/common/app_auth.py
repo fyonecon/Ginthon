@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from internal.common.func import str_encode, md5, rand_range_string, get_time_ms, str_decode
 from internal.common.kits.txt_data import txt_read
 from internal.config import get_config

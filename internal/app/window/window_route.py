@@ -1,5 +1,6 @@
-from bottle import response
-from flask import send_file, request, redirect, jsonify, make_response
+# -*- coding: utf-8 -*-
+
+from flask import send_file, request, redirect
 
 from internal.app.window.controller.js_call_py import list_js_call_py
 from internal.app.window.controller.tray_events import tray_events

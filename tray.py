@@ -1,3 +1,12 @@
+# -*- coding: utf-8 -*-
+import sys
+import io
+
+# 修复标准输出的编码
+if sys.platform == 'win32' and hasattr(sys.stdout, 'buffer'):
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+    pass
+
 # Ginthon Tray主入口
 # 代码习惯基于Golang。
 from internal.app.tray.tray_create import tray_create

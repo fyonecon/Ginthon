@@ -5,6 +5,8 @@
 支持 Windows、macOS、Linux
 """
 
+# -*- coding: utf-8 -*-
+
 import asyncio
 import json
 import sys
@@ -118,6 +120,9 @@ class CrossPlatformDevRunner:
             "python": "python" if self.is_windows else "python3",
             "pip": "pip" if self.is_windows else "pip3",
             "cd": "cd",  # cd是shell内置命令
+            "pnpm": "pnpm.cmd" if self.is_windows else "pnpm",
+            "yarn": "yarn.cmd" if self.is_windows else "yarn",
+            "node": "node.exe" if self.is_windows else "node",
         }
 
         # 用自定义命令覆盖默认值
@@ -186,6 +191,24 @@ class CrossPlatformDevRunner:
 
         return cmd, args
 
+    def _should_use_shell(self, cmd: str, command_str: str) -> bool:
+        """判断是否需要使用 shell"""
+        # 总是对某些命令使用 shell
+        if cmd in ["cd", "npm", "pnpm", "yarn", "pip", "python"]:
+            return True
+
+        # 如果命令中包含管道、重定向、环境变量等shell特性
+        shell_special_chars = ['|', '>', '<', '&', ';', '$', '(', ')', '*', '?', '[', ']']
+        for char in shell_special_chars:
+            if char in command_str:
+                return True
+
+        # Windows 上对更多命令使用 shell
+        if self.is_windows and cmd in ["node", "git"]:
+            return True
+
+        return False
+
     def _handle_cd_command(self, args: List[str]) -> bool:
         """处理cd命令"""
         if not args:
@@ -213,28 +236,6 @@ class CrossPlatformDevRunner:
             return False
 
     async def _run_single_step(self, step_key: str, command_str: str) -> bool:
-        await sleep(2)
-        # # 兼容命令行阻塞
-        # if self.is_windows and "pnpm run dev" in command_str:
-        #     command_str = command_str.replace("pnpm run dev", "start \"Dev Server\" pnpm run dev")
-        # elif not self.is_windows and not command_str.endswith("&"):
-        #     command_str = command_str + " &"
-        # #
-        # if self.is_windows and "npm run dev" in command_str:
-        #     command_str = command_str.replace("npm run dev", "start \"Dev Server\" npm run dev")
-        # elif not self.is_windows and not command_str.endswith("&"):
-        #     command_str = command_str + " &"
-        # #
-        # if self.is_windows and "pnpm dev" in command_str:
-        #     command_str = command_str.replace("pnpm dev", "start \"Dev Server\" pnpm dev")
-        # elif not self.is_windows and not command_str.endswith("&"):
-        #     command_str = command_str + " &"
-        # #
-        # if self.is_windows and "npm dev" in command_str:
-        #     command_str = command_str.replace("npm dev", "start \"Dev Server\" npm dev")
-        # elif not self.is_windows and not command_str.endswith("&"):
-        #     command_str = command_str + " &"
-
         """执行单个步骤"""
         self._log(f"开始执行: {command_str}", "STEP", step_key)
 
@@ -268,36 +269,61 @@ class CrossPlatformDevRunner:
         try:
             result.status = StepStatus.RUNNING
 
-            # 创建子进程
-            process = await asyncio.create_subprocess_exec(
-                actual_cmd,
-                *args,
-                stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE,
-                shell=self.is_windows and cmd in ["npm", "pip"]
-            )
+            # 判断是否需要使用 shell
+            use_shell = self._should_use_shell(cmd, command_str)
+
+            if use_shell:
+                # 使用 shell 执行完整命令
+                self._log(f"使用 shell 执行命令", "INFO", step_key)
+                process = await asyncio.create_subprocess_shell(
+                    command_str,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE,
+                    shell=True
+                )
+            else:
+                # 对于其他命令，直接执行
+                self._log(f"直接执行命令: {actual_cmd}", "INFO", step_key)
+                process = await asyncio.create_subprocess_exec(
+                    actual_cmd,
+                    *args,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE
+                )
 
             # 收集输出
             stdout_data = []
             stderr_data = []
 
-            # 实时读取输出
-            async def read_stream(stream, output_list):
+            # 修复编码问题的读取函数
+            async def read_stream(stream, output_list, is_stderr=False):
                 while True:
                     line = await stream.readline()
                     if not line:
                         break
-                    text = line.decode('utf-8', errors='ignore').rstrip()
+                    try:
+                        # 尝试 UTF-8 解码
+                        text = line.decode('utf-8').rstrip()
+                    except UnicodeDecodeError:
+                        # 如果失败，尝试 GBK（Windows 默认）
+                        try:
+                            text = line.decode('gbk').rstrip()
+                        except UnicodeDecodeError:
+                            # 都不行，用替换模式
+                            text = line.decode('utf-8', errors='replace').rstrip()
+
                     output_list.append(text)
                     # 实时显示输出
                     if text:
-                        print(f"    {text}")
+                        # 错误输出用不同前缀
+                        prefix = "    [ERR]" if is_stderr else "    "
+                        print(f"{prefix}{text}")
 
             # 并行读取stdout和stderr
             await asyncio.wait_for(
                 asyncio.gather(
-                    read_stream(process.stdout, stdout_data),
-                    read_stream(process.stderr, stderr_data)
+                    read_stream(process.stdout, stdout_data, False),
+                    read_stream(process.stderr, stderr_data, True)
                 ),
                 timeout=self.timeout
             )
@@ -415,9 +441,10 @@ class CrossPlatformDevRunner:
             self._log(f"未处理的错误: {str(e)}", "ERROR")
             sys.exit(1)
 
+
 # 任务入口
 def run_task_cmd(config_json):
-    folder_path = "./dist" # 要删除的文件夹路径
+    folder_path = "./dist"  # 要删除的文件夹路径
     # 确保文件夹存在
     if os.path.exists(folder_path):
         shutil.rmtree(folder_path)  # 删除文件夹及其所有内容
@@ -430,7 +457,7 @@ def run_task_cmd(config_json):
     print("=" * 40)
 
     # 检查配置文件
-    config_file = config_json # json配置文件
+    config_file = config_json  # json配置文件
     if not os.path.exists(config_file):
         print(f"❌ 找不到配置文件: {config_file}")
         print("请确保 dev.json 文件存在于当前目录")

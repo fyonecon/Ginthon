@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from internal.common.kits.main_dirpath import mian_virtual_dirpath
 from internal.common.kits.txt_data import txt_remove, txt_write
 from internal.config import get_config

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # 文件类型对照表
 FILETYPE_Dict = {
             ".avi": "video/avi",

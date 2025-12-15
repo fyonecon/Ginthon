@@ -5,6 +5,8 @@ step_3: 前台显示执行过程 + 后台健康检查
 其他步骤: 阻塞执行，原样显示输出
 """
 
+# -*- coding: utf-8 -*-
+
 import json
 import sys
 import os

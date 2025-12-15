@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # 公用函数
 import base64
 import os

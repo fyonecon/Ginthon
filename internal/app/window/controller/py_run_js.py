@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from internal.common.app_auth import make_rand_id, make_rand_token
 from internal.common.func import print_log, md5
 from internal.config import get_config

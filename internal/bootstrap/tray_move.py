@@ -22,10 +22,10 @@ def tray_file_move():
         target_file = os.path.join(new_dir, os.path.basename(file))
         # 移动文件
         shutil.move(file, target_file)
-        print(f"文件已从 {file} 移动到 {target_file}")
+        print(f" {file} to {target_file}")
         pass
     else:
-        print("tray文件不存在=", file)
+        print("Tray=", file)
         pass
     pass
 

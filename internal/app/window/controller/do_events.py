@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import webbrowser
 import webview
 import threading

@@ -3,7 +3,6 @@
     "step_01": "pyinstaller --clean tray.spec",
     "step_02": "python ./internal/bootstrap/tray_move.py",
     "step_0": "cd ./frontend/view/svelte",
-    "step_1": "npm install pnpm",
     "step_2": "pnpm install",
     "step_3": "pnpm run build",
     "step_4": "cd ../../../",
@@ -17,5 +16,5 @@
     "python": "python",
     "pip": "pip"
   },
-  "timeout_seconds": 120
+  "timeout_seconds": 300
 }

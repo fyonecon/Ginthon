@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from internal.common.kits.txt_data import txt_remove, txt_write, txt_read
 from internal.config import get_config
 

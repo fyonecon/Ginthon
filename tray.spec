@@ -10,6 +10,7 @@ frontend_files = [
     # 单独添加文件
     ('frontend/favicon.ico', 'frontend'),
     ('frontend/icon.png', 'frontend'),
+    ('frontend/icon.ico', 'frontend'),
 ]
 
 datas.extend(frontend_files)
@@ -54,5 +55,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='frontend/favicon.ico',
+    icon='frontend/icon.ico',
 )

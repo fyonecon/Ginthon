@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # 配置信息
 # 获取get_config(key="")
 GLOBAL_CONFIG_DICT = {

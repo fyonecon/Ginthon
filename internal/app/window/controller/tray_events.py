@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 
 from internal.app.window.controller.display_state import get_display_state, set_display_state

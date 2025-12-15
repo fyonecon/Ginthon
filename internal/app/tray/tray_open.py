@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 from internal.common.func import has_file, get_platform
 from internal.common.kits.main_dirpath import mian_virtual_dirpath

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 from flask import send_file, request
 from internal.bootstrap.flask_middleware import flask_middleware_html

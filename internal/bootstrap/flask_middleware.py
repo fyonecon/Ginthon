@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask import make_response, request, jsonify
 
 from internal.common.func import get_file_ext, get_file_ext_mimetype
