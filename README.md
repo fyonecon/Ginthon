@@ -194,6 +194,8 @@ Ginthon-Main
 >
 > PyWebview：https://pywebview.idepy.com/guide/usage.html
 >
+> Skeleton UI：https://www.skeleton.dev/docs/svelte/guides/mode
+> 
 
 ### 常用pip安装库：
 如果遇到网络忙或者下载错误，多试几次，不需要更换镜像源（使用官方源即可）。
