@@ -4,25 +4,44 @@
     import func from "$lib/common/func.js";
     import { afterNavigate, beforeNavigate } from "$app/navigation";
     import config from "$lib/config.js";
+    import { sideTabData } from '$lib/stores/side_tab_store.js';
 
     //
     let route = func.get_route();
     let app_name = config.app.app_name;
     let app_version = config.app.app_version;
 
+    // 将路由转化为翻译的键
+    function get_route_name(route="") {
+        switch (route) {
+            case "/home":
+                return "Home";
+            case "/settings":
+                return "Settings";
+            case "/settings/about":
+                return "About";
+            default:
+                return "";
+        }
+    }
+
     //
     afterNavigate(() => {
         route = func.get_route();
+        sideTabData.set({
+            tab_value: route,
+            tab_name: func.get_translate(get_route_name(route)),
+        });
     });
 
 </script>
 
-<section class="section-side_tab scroll-y-style">
+<section class="section-side_tab scroll-y-style select-none">
     <div class="side_tab-logo select-none pywebview-drag-region can-drag center">
         <span class="font-class">{app_name}</span>
         <span class="font-mini"> v{app_version}</span>
     </div>
-    <div class="side_tab-search font-text">
+    <div class="side_tab-search font-text select-all">
         <label class="label">
             <input class="side_tab-search-input input w-full border-radius font-text" type="text" maxlength="1000" placeholder="Input..." />
         </label>
