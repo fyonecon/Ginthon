@@ -8,6 +8,8 @@ from internal.app.window.controller.display_state import set_display_state
 from internal.common.func import is_url, print_log
 from internal.common.kits.local_database import local_database_set_data, local_database_get_data, \
     local_database_del_data
+from internal.common.kits.main_dirpath import mian_virtual_dirpath
+from internal.common.kits.notice import send_notice
 from internal.config import get_config
 
 
@@ -200,6 +202,30 @@ def list_js_call_py(WINDOW, key, data_dict):
         state = 1
         msg = "OK"
         content["display"] = display
+        pass
+
+    # 显示系统通知
+    # data_dict={}
+    elif key == "send_notice":
+        if data_dict is None:
+            data_dict = { # 参数格式
+                "title": "（？）",
+                "msg": "（？？？）",
+                "group": get_config("app", "app_class"),  # 分组或ID
+                "icon": mian_virtual_dirpath("frontend") + "/icon.png",  # 图标 .png、.ico
+                "open_url": "",  # 要打开的网址
+                "app_path": "",  # 要打开的app的绝对地址
+                "timeout_s": 5,  # 通知显示的时间
+            }
+            pass
+        #
+        title = data_dict["title"]
+        msg = data_dict["msg"]
+        send_notice(title, msg, data_dict)
+        #
+        state = 1
+        msg = "OK"
+        # content["display"] = display
         pass
 
     # 更新本地数据

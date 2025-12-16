@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+from time import sleep
 
 from internal.common.kits.main_dirpath import mian_virtual_dirpath
+from internal.common.kits.notice import send_notice
 from internal.common.kits.txt_data import txt_remove, txt_write
 from internal.config import get_config
 from internal.bootstrap.run_check_sys import run_check_sys
@@ -33,6 +35,8 @@ def init_sys(cmd_model):
         #
         init_window(cmd_model)
     else:
+        send_notice("⚠️", "Can't open the software.")
+        sleep(1)
         print("XXX Operation-SYS is Low：", check_sys_state, "last CPU " + str(CONFIG["check"]["min_cpu_cores"]) + " Cores, last RAM " + str(CONFIG["check"]["min_ram"]) + " GB, last Python " + str(CONFIG["check"]["min_python_version"]) + ", Flask-Port " + str(CONFIG["flask"]["port"]) + " .")
         # alert
         exit(403) # 出现错误就直接关闭程序

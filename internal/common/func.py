@@ -372,6 +372,9 @@ def back_404_data_file(msg):
 def get_translate(key="", lang=""):
     # 将语言转换成可用的数组索引标记
     def make_lang_index(_language):
+        if len(_language) >= 2:
+            _language = _language.lower()
+            pass
         #
         if _language.find("zh", 0)==0 or _language.find("chinese", 0)==0:  # 简体中文（包含繁体）
             return "zh"
@@ -395,10 +398,16 @@ def get_translate(key="", lang=""):
     # 系统语言
     def sys_language(_lang=""):
         if len(_lang) >= 2:
-            return _lang.lower()
+            return _lang
         else:
-            return locale.getlocale()[0].lower()
+            sys_lan = locale.getlocale()[0]
+            if sys_lan is None:
+                return ""
+            else:
+                return sys_lan
         pass
+
+    print("sys_language(lang)=", sys_language(lang),  locale.getlocale())
     # 索引
     lang_index = make_lang_index(sys_language(lang))
     #
