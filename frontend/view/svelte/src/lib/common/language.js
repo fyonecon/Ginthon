@@ -52,6 +52,19 @@ const lang_dict = {
         en: "About",
     },
     //
+    btn_cancel: {
+        zh: "取消",
+        en: "Cancel",
+    },
+    btn_save: {
+        zh: "保存",
+        en: "Save",
+    },
+    //
+    confirm_change_language_tip: {
+        zh: "切换语言 ？（页面将会刷新.）",
+        en: "Change language ？（The page will refresh.）",
+    },
 
     // =========
 //

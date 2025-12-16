@@ -129,7 +129,7 @@ const func = {
             localStorage.setItem(key,value);
             return localStorage.getItem(key);
         }else{
-            return false;
+            return "";
         }
     },
     get_local_data: function (key) { // 获取一个
@@ -144,7 +144,7 @@ const func = {
                 return "";
             }
         }else{
-            return false;
+            return "";
         }
     },
     del_local_data: function (key) { // 删除一个
@@ -652,8 +652,7 @@ const func = {
             return false;
         }
     },
-    // 获取翻译
-     get_translate: function(key="", lang=""){
+    get_lang_index: function (lang){ // 获取语言索引
         let that = this;
         // 将语言转换成可用的数组索引标记
         function make_lang_index(_language){
@@ -693,17 +692,23 @@ const func = {
                 return navigator.language.toLowerCase();
             }
         }
+        //
+        return make_lang_index(sys_language(lang))
+    },
+    // 获取翻译
+     get_translate: function(key="", lang=""){
+        let that = this;
          // 从本地读取语言配置
          if(lang.length >= 2){ // lang参数优先
              that.console_log("自定义lang=", lang);
          }else{
-             let lang_data = that.get_local_data(config.app.app_class + "lang_index");
+             let lang_data = that.get_local_data(config.app.app_class + "language_index");
              if (lang_data.length >= 2) {
                  lang = lang_data
              }
          }
          // 语言标记
-         let lang_index = make_lang_index(sys_language(lang));
+         let lang_index = that.get_lang_index(lang);
          // console.log("get_translate=", key, lang, sys_language(lang), lang.indexOf("zh"), lang_index);
         //
         if (lang_dict[key]){
@@ -722,6 +727,31 @@ const func = {
             }else{
                 return lang_dict["_null"]["en"]
             }
+        }
+    },
+    open_url: function (url="", target="_self"){
+        let that = this;
+        if (browser){
+            if (url.length >= 9){
+                window.open(url, target);
+            }else{
+                //
+            }
+        }else{
+            //
+        }
+    },
+    fresh_page: function (timeout_ms=500){
+        let that = this;
+        if (timeout_ms<=0){
+            timeout_ms = 0;
+        }
+        if (browser){
+            setTimeout(function(){
+                window.location.reload();
+            }, timeout_ms);
+        }else {
+            //
         }
     },
 
