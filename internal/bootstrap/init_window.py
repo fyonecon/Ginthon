@@ -27,8 +27,7 @@ def view_url(view_class=""):
     if view_class == "vue" or view_class == "svelte":
         # svelte dist 或 vue dist
         view_host = CONFIG["pywebview"]["view_host"]
-        view_index_html = CONFIG["pywebview"]["view_index.html"]
-        url = view_host + ":" + str(CONFIG["flask"]["port"]) + "/view" + view_index_html
+        url = view_host + ":" + str(CONFIG["flask"]["port"]) + "/"
         return url
     else:
         # 单页HTML
@@ -78,7 +77,7 @@ def init_window(cmd_model):
     #
     CONFIG = get_config("", "")
     #
-    _view_url = view_url(CONFIG["pywebview"]["view_class"]) # 生产环境url：vue svelte ""
+    _view_url = view_url(CONFIG["pywebview"]["view_class"]) # 生产环境url：vue、svelte、""
     _dev_url = CONFIG["pywebview"]["dev_url"] # 开发环境url
     if cmd_model == "dev":
         pywebveiw_url = _dev_url

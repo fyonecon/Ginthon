@@ -18,8 +18,9 @@ def view_js_must_data():
     '''
     #
     view_host = CONFIG["pywebview"]["view_host"]
-    view_index_html = CONFIG["pywebview"]["view_index.html"]
-    view_url = view_host + ":" + str(CONFIG["flask"]["port"]) + "/view" + view_index_html
+    # view_file_html = CONFIG["pywebview"]["view_file_html"]
+    # view_url = view_host + ":" + str(CONFIG["flask"]["port"]) + "/" + view_file_html
+    view_url = view_host + ":" + str(CONFIG["flask"]["port"]) + "/"
     app_class = CONFIG["app"]["app_class"]
     salt_str = "js_call_py_auth-2025"
     timeout_s = 2 * 365 * 24 * 3600
@@ -50,8 +51,8 @@ def view_index(_WINDOW, filename):
     CONFIG = get_config("", "")
     #
     view_host = CONFIG["pywebview"]["view_host"]
-    view_index_html = CONFIG["pywebview"]["view_index.html"]
-    file_path = mian_virtual_dirpath("frontend") + "/view"+view_index_html+"/"+filename
+    view_file_html = CONFIG["pywebview"]["view_file_html"]
+    file_path = mian_virtual_dirpath("frontend") + "/"+view_file_html+"/"+filename
     #
     js_must_data_url = view_host+":"+str(CONFIG["flask"]["port"])+"/"+ "js_must_data.js" + "?cache=" + str(get_time_s()) + "&app_version=" + CONFIG["app"]["app_version"]
     #
