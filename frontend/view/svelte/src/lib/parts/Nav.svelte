@@ -187,8 +187,8 @@
 </script>
 
 
-<section class="section-nav pywebview-drag-region can-drag">
-    <div class="nav-director-div select-none font-text border-radius">
+<section class="section-nav">
+    <div class="nav-director-div select-none font-text border-radius no-drag">
         <button type="button" class="nav-director-span nav-director-span-left {before_click} border-radius font-blue" title="Before" data-href="{before_href}" onclick={()=>open_href(before_href)}>
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M15.488 4.43a.75.75 0 0 1 .081 1.058L9.988 12l5.581 6.512a.75.75 0 1 1-1.138.976l-6-7a.75.75 0 0 1 0-.976l6-7a.75.75 0 0 1 1.057-.081" clip-rule="evenodd"/></svg>
         </button>
@@ -196,7 +196,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M8.512 4.43a.75.75 0 0 1 1.057.082l6 7a.75.75 0 0 1 0 .976l-6 7a.75.75 0 0 1-1.138-.976L14.012 12L8.431 5.488a.75.75 0 0 1 .08-1.057" clip-rule="evenodd"/></svg>
         </button>
     </div>
-    <div class="nav-title-div center select-none font-title" data-nav_value="{side_tab_data.tab_value}">{side_tab_data.tab_name}</div>
+    <div class="nav-title-div center select-none font-title pywebview-drag-region can-drag" data-nav_value="{side_tab_data.tab_value}">{side_tab_data.tab_name}</div>
 
 </section>
 

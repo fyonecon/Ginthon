@@ -13,8 +13,9 @@
             func.set_local_data(config.app.app_class + "language_index", lang);
         }
         language_index = now_language(); // 更新选中
-        func.open_url(func.url_path(config.sys.home_route)+"?lang=" + language_index);
-        // func.open_url_no_cache(func.url_path(config.sys.home_route)+"?lang=" + language_index);
+        // func.open_url(func.url_path(config.sys.home_route)+"?lang=" + language_index);
+        // func.open_url_no_cache("./?lang=" + language_index);
+        func.open_url_no_cache();
         return func.get_local_data(config.app.app_class + "language_index");
     }
     //

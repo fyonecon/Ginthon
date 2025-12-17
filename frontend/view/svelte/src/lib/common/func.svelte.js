@@ -740,7 +740,7 @@ const func = {
             }
         }
     },
-    open_url: function (url="", target="_self"){
+    open_url: function (url="", target="_self"){ // 需要强制刷新所有数据时，请勿使用此函数
         let that = this;
         if (browser){
             if (url.length >= 1){
@@ -762,13 +762,16 @@ const func = {
             //
         }
     },
-    open_url_no_cache: function (url="", target="_self"){ // 强制刷新页面或跳转
+    open_url_no_cache: function (url="./?update=1", target="_self"){ // 强制刷新页面或跳转或更新页面全部数据
         let that = this;
         if (browser){
+            // url请携带新参数
             if (url.length >= 1){
                 if (target === "_self"){
-                    window.location.assign(url);
+                    history.replaceState(null, '', url);
+                    window.location.replace(url);
                 }else {
+                    history.replaceState(null, '', url);
                     window.open(url, target);
                 }
             }else{
