@@ -1,7 +1,7 @@
 <script>
     import { resolve } from '$app/paths';
     import { page } from '$app/state';
-    import func from "$lib/common/func.js";
+    import func from "$lib/common/func.svelte.js";
     import config from "$lib/config.js";
     import { afterNavigate, beforeNavigate } from "$app/navigation";
     import { Dialog, Portal } from '@skeletonlabs/skeleton-svelte';
@@ -13,7 +13,8 @@
             func.set_local_data(config.app.app_class + "language_index", lang);
         }
         language_index = now_language(); // 更新选中
-        func.fresh_page(0);
+        func.open_url(func.url_path(config.sys.home_route)+"?lang=" + language_index);
+        // func.open_url_no_cache(func.url_path(config.sys.home_route)+"?lang=" + language_index);
         return func.get_local_data(config.app.app_class + "language_index");
     }
     //
@@ -35,7 +36,6 @@
         language_index = now_language(); // 更新选中
     });
 
-
 </script>
 
 <div>
@@ -45,7 +45,7 @@
                 {func.get_translate("About")}
             </div>
             <div class="li-group-content">
-                <a title="See Detail" class="font-blue click" href={resolve(func.url_path('/settings/about'))}>{func.get_translate("a_click_tip_see_detail")}</a>
+                <a title="See Detail" class="font-blue click" href={resolve(func.url_path('/settings/about'))} >{func.get_translate("a_click_tip_see_detail")}</a>
             </div>
         </li>
         <li class="li-group">

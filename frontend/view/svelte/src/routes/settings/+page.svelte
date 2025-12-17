@@ -1,6 +1,6 @@
 <script>
     import { resolve } from '$app/paths';
-    import func from "$lib/common/func.js";
+    import func from "$lib/common/func.svelte.js";
     import Settings from "$lib/pages/settings/Settings.svelte";
 </script>
 

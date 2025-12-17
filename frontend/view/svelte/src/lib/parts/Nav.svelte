@@ -1,5 +1,5 @@
 <script>
-    import func from "$lib/common/func.js";
+    import func from "$lib/common/func.svelte.js";
     import { page } from '$app/state';
     import { afterNavigate, beforeNavigate } from "$app/navigation";
     import config from "$lib/config.js";
@@ -20,7 +20,7 @@
         if (href.length >= 1){
             func.open_url(href, "_self");
         }else{ // 空
-            //
+            console.log("空链接");
         }
     }
     // 设置访问历史

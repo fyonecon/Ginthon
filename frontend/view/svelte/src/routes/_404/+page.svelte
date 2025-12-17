@@ -1,7 +1,7 @@
 <script>
     import { resolve } from '$app/paths';
     import { page } from '$app/state';
-    import func from "$lib/common/func.js";
+    import func from "$lib/common/func.svelte.js";
     import Page404 from "$lib/pages/_404/_404.svelte";
 
 

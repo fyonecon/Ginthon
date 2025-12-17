@@ -9,9 +9,8 @@
 
 	import { onMount, onDestroy } from 'svelte';
 	import { page } from '$app/state';
-	import func from "$lib/common/func.js";
+	import func from "$lib/common/func.svelte.js";
 	import { afterNavigate, beforeNavigate } from "$app/navigation";
-	import { browser, dev, building, version } from '$app/environment';
 
 	// 重定向到自定义的404页面
 	function watch_404() {
@@ -113,12 +112,13 @@
 	// 路由变化之后
 	afterNavigate(() => {
 		watch_404();
+        console.log("layout=afterNavigate=", page.route);
 	});
 
 	// 页面装载完成后，只运行一次
 	onMount(() => {
 		// func.console_log("onMount=", [browser, dev, func.is_wails(), func.is_gthon()]);
-
+        // console.log("layout=onMount=", page.route);
 		//
 		func.js_watch_window_display(); // 监测窗口是否隐藏
 
@@ -127,7 +127,7 @@
 
     // 监控所有变化
     $effect(() => {
-
+        // console.log("layout=effect=", page.route);
     });
 
 </script>

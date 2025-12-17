@@ -1,5 +1,5 @@
 <script>
-    import func from "$lib/common/func.js";
+    import func from "$lib/common/func.svelte.js";
     import config from "$lib/config.js";
 
     // 重新定向 /到 /home 页面

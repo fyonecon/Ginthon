@@ -8,8 +8,8 @@ import config from "$lib/config.js";
 import lang_dict from "$lib/common/language.js";
 // import {AppServicesForWindow} from "../../bindings/datathink.top/Waigo/internal/bootstrap";
 
-
 // 复用函数
+// 调用xxx = func.test();
 const func = {
     test: function(data_dict){
         let that = this;
@@ -32,7 +32,7 @@ const func = {
     url_path: function(pathname){ // URL的path路径前缀，适配后端服务器输出规则。默认""，推荐"."。pathname开头/ 。
         return ""+pathname;
     },
-    redirect_pathname: function (data_dict){ // 重定向到新路由。 url_pathname开头/
+    redirect_pathname: function (data_dict){ // 重定向到新路由。相当于301永久重定向。 url_pathname开头/
         let that = this;
         //
         const url_pathname = data_dict['url_pathname'];
@@ -40,7 +40,10 @@ const func = {
         if(browser){
             // 浏览器替换当前历史记录
             function browser_redirect(){
-                goto(url_pathname + url_params, {replaceState: true}).then(r => {
+                goto(url_pathname + url_params, {
+                    replaceState: true, // 清除历史记录
+                    invalidateAll: true // 重新加载数据
+                }).then(r => {
                     //
                 });
             }
@@ -716,6 +719,7 @@ const func = {
          }
          // 语言标记
          let lang_index = that.get_lang_index(lang);
+         // console.log("get_translate=", lang_index, key);
          // console.log("get_translate=", key, lang, sys_language(lang), lang.indexOf("zh"), lang_index);
         //
         if (lang_dict[key]){
@@ -740,7 +744,33 @@ const func = {
         let that = this;
         if (browser){
             if (url.length >= 1){
-                window.open(url, target);
+                if (target === "_self"){
+                    goto(url, {
+                        replaceState: true, // false新增历史记录，true清除历史记录
+                        invalidateAll: true, // true强制重新加载
+                        noScroll: true // true回到滚动位置
+                    }).then(r => {
+                        //
+                    });
+                }else {
+                    window.open(url, target);
+                }
+            }else{
+                //
+            }
+        }else{
+            //
+        }
+    },
+    open_url_no_cache: function (url="", target="_self"){ // 强制刷新页面或跳转
+        let that = this;
+        if (browser){
+            if (url.length >= 1){
+                if (target === "_self"){
+                    window.location.assign(url);
+                }else {
+                    window.open(url, target);
+                }
             }else{
                 //
             }
@@ -756,6 +786,7 @@ const func = {
         if (browser){
             setTimeout(function(){
                 window.location.reload();
+                // that.open_url(that.get_href(), "_self");
             }, timeout_ms);
         }else {
             //
