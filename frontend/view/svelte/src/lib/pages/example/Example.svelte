@@ -5,6 +5,7 @@
 
     //
     const route = func.get_route();
+    // 或 let route = $state(func.get_route());
 </script>
 
 <div>

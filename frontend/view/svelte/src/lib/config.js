@@ -1,13 +1,14 @@
 // 自定义的前端配置文件
 const config = {
-    debug: true, // true、false
+    debug: false, // true、false
     app: {
         app_name: "Ginthon",
         app_class: "ginthon_sv_", // ginthon_sv_ 、waigo_sv_
-        app_version: "1.4.0", // 1.0.0
+        app_version: "1.5.0", // 1.0.0
     },
     sys:{
         backend: "py", // go、py
+        home_route: "/home" // 主页默认页的路由 “”、"/home”
     },
     api: {
         js_call_py_url: "http://127.0.0.1:9750/", // http://127.0.0.1:9750/ 、http://127.0.0.1:9850/

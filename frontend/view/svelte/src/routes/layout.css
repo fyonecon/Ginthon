@@ -14,7 +14,7 @@ html {
 .app {
 	font-size: 14px;
     clear: both;
-    min-height: 520px;
+    min-width: 520px;
 }
 @media screen and (min-width: 280px) and (max-width: 520px) {
 /*    */
@@ -73,6 +73,16 @@ html {
 	cursor: pointer;
 }
 
+.font-blue{
+    color: var(--color-blue-400);
+}
+.font-orange{
+    color: var(--color-orange-400);
+}
+.font-red{
+    color: var(--color-red-400);
+}
+
 .click-none {
 	cursor: not-allowed;
 	user-select: none;
@@ -84,15 +94,20 @@ html {
 }
 
 .click:active {
-	opacity: 0.8;
+	opacity: 0.6;
 }
 
 .click:hover {
 	opacity: 0.8;
 }
 
+.not-click{
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
 .hover:hover {
-	opacity: 0.7;
+	opacity: 0.8;
 	cursor: pointer;
 }
 
@@ -137,7 +152,7 @@ html {
 	position: fixed;
 	z-index: 0;
 	width: 220px;
-    padding: 0 10px 50px 10px;
+    padding: 0 10px 90px 10px;
 	height: 100%;
 	top: 0;
 	left: 0;
@@ -164,7 +179,7 @@ html {
 	top: 50px;
 	right: 0;
 	/*background-color: white;*/
-	padding-bottom: 50px;
+	padding-bottom: 90px;
 }
 
 .section-foot {
@@ -215,4 +230,9 @@ html {
 svg{
     float: left;
     margin-right: 5px;
+}
+
+.a-span{
+    margin-right: 10px;
+    margin-bottom: 10px;
 }

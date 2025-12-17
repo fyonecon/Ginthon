@@ -30,7 +30,7 @@ const func = {
         }
     },
     url_path: function(pathname){ // URL的path路径前缀，适配后端服务器输出规则。默认""，推荐"."。pathname开头/ 。
-        return "."+pathname;
+        return ""+pathname;
     },
     redirect_pathname: function (data_dict){ // 重定向到新路由。 url_pathname开头/
         let that = this;
@@ -188,6 +188,10 @@ const func = {
     get_time_ms: function(){
         return (new Date()).getTime();
     }, // 毫秒时间戳，ms
+    get_time_date: function(format){ // Ymd His
+        let that = this;
+        return that.get_time_s_date(format, "");
+    },
     get_time_s_date: function(format, time_s){ // YmdHisW，日期周
         let that = this;
         let t;
@@ -272,11 +276,15 @@ const func = {
         return [that.md5(app_class+"@"+ua+"@"+app_date+"@"+href+"@"+window.innerWidth+"@"+rand), app_date];
     },
     get_theme_model: function (){ // 获取浏览器当前处于light还是dark
-        let light = window.matchMedia('(prefers-color-scheme: light)').matches;
-        if (light){
-            return "light";
+        if (browser){
+            let light = window.matchMedia('(prefers-color-scheme: light)').matches;
+            if (light){
+                return "light";
+            }else {
+                return "dark";
+            }
         }else {
-            return "dark";
+            return "light";
         }
     },
     md5: function (string){
@@ -351,7 +359,6 @@ const func = {
     string_to_json: function (string) { // 将string转化为json，注意，里面所有key的引号为双引号，否则浏览器会报错。
         let json;
         let back = string;
-
         if(typeof back === "string"){
             json = JSON.parse(back);
         } else {
@@ -700,7 +707,7 @@ const func = {
         let that = this;
          // 从本地读取语言配置
          if(lang.length >= 2){ // lang参数优先
-             that.console_log("自定义lang=", lang);
+             // that.console_log("自定义lang=", lang);
          }else{
              let lang_data = that.get_local_data(config.app.app_class + "language_index");
              if (lang_data.length >= 2) {
@@ -732,7 +739,7 @@ const func = {
     open_url: function (url="", target="_self"){
         let that = this;
         if (browser){
-            if (url.length >= 9){
+            if (url.length >= 1){
                 window.open(url, target);
             }else{
                 //
@@ -752,6 +759,16 @@ const func = {
             }, timeout_ms);
         }else {
             //
+        }
+    },
+    get_app_uid: function (){ // 随机app_uid
+        let that = this;
+        let app_uid = that.get_local_data(config.app.app_class+"app_uid");
+        if (app_uid.length < 16){
+            app_uid = that.md5(config.app.app_class+that.get_time_ms()+that.js_rand(1000000000000, 999999999999)+that.get_agent()+(navigator.language?navigator.language:"-"));
+            return that.set_local_data(config.app.app_class + "app_uid", app_uid)?app_uid:"uid..";
+        }else{
+            return app_uid;
         }
     },
 

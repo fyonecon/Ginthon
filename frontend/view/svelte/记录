@@ -1,0 +1,6 @@
+
+变量用：
+let xxx = $state(xx);
+
+静态变量用：
+const xxx = xx;

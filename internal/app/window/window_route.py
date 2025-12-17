@@ -27,10 +27,14 @@ def window_route(_WINDOW, FLASK):
             "way": "file",
             "methods": ["GET", "POST", "OPTIONS"],
         }
+        #
+        if len(filename) == 0:
+            filename = "index.html"
+            pass
         # 还原真实文件
         file_ext = get_file_ext(filename)
         if len(file_ext) == 0:  # 是路由就转成实际文件名
-            filename = "index.html"
+            filename = filename + ".html"
             pass
         config = get_config("", "")
         view_index_html = config["pywebview"]["view_index.html"] # "/svelte/dist"
@@ -61,10 +65,14 @@ def window_route(_WINDOW, FLASK):
             "way": "file",
             "methods": ["GET", "POST", "OPTIONS"],
         }
+        #
+        if len(filename) == 0:
+            filename = "index.html"
+            pass
         # 还原真实文件
         file_ext = get_file_ext(filename)
         if len(file_ext) == 0:  # 是路由就转成实际文件名
-            filename = "index.html"
+            filename = filename + ".html"
             pass
         config = get_config("", "")
         view_index_html = config["pywebview"]["view_index.html"] # "/vue/dist"

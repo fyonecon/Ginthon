@@ -60,6 +60,14 @@ const lang_dict = {
         zh: "保存",
         en: "Save",
     },
+    a_click_tip_see_detail: {
+        zh: "点击查看详情",
+        en: "See Details",
+    },
+    a_click_tip_back_home: {
+        zh: "返回主页",
+        en: "Back Home",
+    },
     //
     confirm_change_language_tip: {
         zh: "切换语言 ？（页面将会刷新.）",

@@ -78,8 +78,11 @@ Golang版基座请戳：https://github.com/fyonecon/Waigo 。
 2. 开发环境直接运行状态栏托盘：
 > python tray.py
 
-3. 开发环境运行软件：
+3. 开发环境运行软件（加载localhost pnpm动态文件）：
 > python window.py --cmd dev
+
+4. 开发环境运行软件（加载127.0.0.1 dist静态文件）：
+> python window.py --cmd build
 
 (注意，直接运行“python window.py” == “python window.py --cmd build”，window.py加载的是svelte的dist静态文件，使用127.0.0.1域名。而“python window.py --cmd dev”加载的是svelte的“pnpm run dev”本地localhost网页。)
 

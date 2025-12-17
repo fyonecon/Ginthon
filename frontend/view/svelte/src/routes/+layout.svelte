@@ -17,7 +17,7 @@
 	function watch_404() {
 		if (page.status === 404) {
 			func.redirect_pathname({
-				url_pathname: func.url_path("/404"),
+				url_pathname: func.url_path("/_404"),
 				url_params: "?error_url=" + encodeURIComponent(func.get_href()) + "&error_msg=404 Route"
 			});
 		} else {
@@ -31,6 +31,7 @@
 			let origin = page.url.origin;
 			let url_pathname = page.url.pathname;
 			let url_param = page.url.searchParams;
+            let app_uid = func.get_app_uid();
 
 			func.console_log('当前页面参数=', {
 				href,
@@ -44,7 +45,8 @@
 				url_param,
 				search,
 				lang: navigator.language,
-				langs: navigator.languages
+				langs: navigator.languages,
+                app_uid: app_uid,
 			});
 		}
 	}
@@ -115,13 +117,19 @@
 
 	// 页面装载完成后，只运行一次
 	onMount(() => {
-		func.console_log("onMount=", [browser, dev, func.is_wails(), func.is_gthon()]);
+		// func.console_log("onMount=", [browser, dev, func.is_wails(), func.is_gthon()]);
 
 		//
 		func.js_watch_window_display(); // 监测窗口是否隐藏
 
 		watch_window_runtime();
 	});
+
+    // 监控所有变化
+    $effect(() => {
+
+    });
+
 </script>
 
 <div class="app">
