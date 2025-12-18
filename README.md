@@ -65,11 +65,16 @@ Golang版基座请戳：https://github.com/fyonecon/Waigo 。
 > 
 > npm install pnpm
 > 
+> npx sv add tailwindcss
+> 
 > pnpm install
+>
 
 ### 【手动】开发环境逐步运行项目：
 1. 开发环境运行视图UI：
 > cd ./frontend/view/svelte
+> 
+> npx sv add tailwindcss
 > 
 > pnpm install
 > 

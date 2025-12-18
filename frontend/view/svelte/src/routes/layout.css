@@ -4,6 +4,7 @@
 @import '@skeletonlabs/skeleton/themes/cerberus';
 /* skeleton UI教程：https://www.skeleton.dev/docs/svelte/guides/mode */
 /* iconify图标教程：https://icon-sets.iconify.design/solar/ */
+/* 如果上面遇到@import引入错误，请手动运行‘ npx sv add tailwindcss ’ 来安装tailwindcss */
 
 body,
 html {
