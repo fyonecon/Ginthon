@@ -56,6 +56,11 @@ const lang_dict = {
         en: "Theme",
     },
     //
+    ITHome: {
+        zh: "IT之家",
+        en: "ITHome",
+    },
+    //
     btn_cancel: {
         zh: "取消",
         en: "Cancel",
