@@ -51,6 +51,10 @@ const lang_dict = {
         zh: "关于",
         en: "About",
     },
+    ThemeModel: {
+        zh: "主题",
+        en: "Theme",
+    },
     //
     btn_cancel: {
         zh: "取消",
@@ -78,6 +82,19 @@ const lang_dict = {
         ru: "Переключить язык? (Страница будет обновлена.)",
         es: "¿Cambiar de idioma? (la página se actualizará).",
         vi: "Đổi ngôn ngữ? (Trang sẽ được làm mới.)",
+    },
+    //
+    sys_default: {
+        zh: "跟随系统",
+        en: "Same system",
+    },
+    theme_model_light: {
+        zh: "亮",
+        en: "Light",
+    },
+    theme_model_dark: {
+        zh: "暗",
+        en: "Dark",
     },
 
     // =========

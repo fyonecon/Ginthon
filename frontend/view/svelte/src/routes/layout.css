@@ -11,6 +11,9 @@ html {
 	letter-spacing: 1px;
 }
 
+/*亮暗主题切换*/
+@custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
+
 .app {
 	font-size: 14px;
     clear: both;

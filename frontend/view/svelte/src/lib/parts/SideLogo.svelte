@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import config from "$lib/config.js";
 
     // 页面数据

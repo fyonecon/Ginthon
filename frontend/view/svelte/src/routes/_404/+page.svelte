@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { resolve } from '$app/paths';
     import { page } from '$app/state';
     import func from "$lib/common/func.svelte.js";

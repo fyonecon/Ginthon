@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import SideTab from '$lib/parts/SideTab.svelte';
 	import Nav from '$lib/parts/Nav.svelte';
 	import Foot from '$lib/parts/Foot.svelte';
@@ -14,6 +14,7 @@
     import SideLogo from "$lib/parts/SideLogo.svelte";
     import SideSearch from "$lib/parts/SideSearch.svelte";
     import SideFoot from "$lib/parts/SideFoot.svelte";
+    import {watch_theme_model_data} from "$lib/stores/watch_theme_model.store.svelte.js";
 
 	// 重定向到自定义的404页面
 	function watch_404() {
@@ -107,6 +108,9 @@
 		}
 	}
 
+    // 页面数据
+    let theme_model = $state(watch_theme_model_data.theme_model);
+
 	// 路由变化之前
 	beforeNavigate(() => {
 		//
@@ -114,18 +118,16 @@
 
 	// 路由变化之后
 	afterNavigate(() => {
-		watch_404();
-        console.log("layout=afterNavigate=", page.route);
+		watch_404(); // 检测路由变化
+        theme_model = watch_theme_model_data.theme_model; // 检测主题变化
+        //
 	});
 
 	// 页面装载完成后，只运行一次
 	onMount(() => {
-		// func.console_log("onMount=", [browser, dev, func.is_wails(), func.is_gthon()]);
-        // console.log("layout=onMount=", page.route);
-		//
 		func.js_watch_window_display(); // 监测窗口是否隐藏
-
 		watch_window_runtime();
+        //
 	});
 
     // 监控所有变化

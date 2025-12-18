@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
     import { resolve } from '$app/paths';
     import { page } from '$app/state';
     import func from "$lib/common/func.svelte.js";
     import config from "$lib/config.js";
-    // import { afterNavigate, beforeNavigate } from "$app/navigation";
+    import { afterNavigate, beforeNavigate } from "$app/navigation";
     import {browser} from "$app/environment";
     import {watch_theme_model_data} from "$lib/stores/watch_theme_model.store.svelte.js";
 
@@ -15,26 +15,8 @@
     let href = $state(func.get_href());
     let params = $state(func.get_params());
     let languages = $state(navigator.languages);
-    let theme = $state(watch_theme_model_data.theme_model);
+    let theme_model = $state(watch_theme_model_data.theme_model);
     let language_index = $state(func.get_local_data(config.app.app_class + "language_index"));
-
-
-    // 检测主题变化
-    // function watch_theme_model() {
-    //     if (browser){
-    //         //
-    //         let theme_event = window.matchMedia('(prefers-color-scheme: dark)');
-    //         theme_event.addEventListener('change', function (event){
-    //             // watchThemeModelData.set({
-    //             //     theme_model: func.get_theme_model(),
-    //             // });
-    //             theme = watch_theme_model_data.theme_model;
-    //         });
-    //     }else{
-    //         //
-    //     }
-    // }
-    // watch_theme_model();
 
     // 打开默认浏览器
     function open_url_with_default_browser(url="", target="_self") {
@@ -43,6 +25,13 @@
             target: target,
         }).then(result => {});
     }
+
+    // 路由变化之后
+    afterNavigate(() => {
+        const key_theme_model = "theme_model";
+        const mode = localStorage.getItem(key_theme_model);
+        theme_model = mode?mode:watch_theme_model_data.theme_model;
+    });
 
 </script>
 
@@ -117,7 +106,7 @@
                 Themes
             </div>
             <div class="li-group-content break">
-                {theme}
+                {theme_model}
             </div>
         </li>
         <li class="li-group select-text">

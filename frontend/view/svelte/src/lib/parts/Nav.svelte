@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import func from "$lib/common/func.svelte.js";
     import { page } from '$app/state';
     import { afterNavigate, beforeNavigate } from "$app/navigation";

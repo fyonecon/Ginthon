@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 
 import func from "$lib/common/func.svelte.js";
 import config from "$lib/config.js";
