@@ -72,6 +72,12 @@ const lang_dict = {
     confirm_change_language_tip: {
         zh: "切换语言 ？（页面将会刷新.）",
         en: "Change language ？（The page will refresh.）",
+        jp: "言語を切り替えますか？（ページが更新されます.）",
+        fr: "Changer de langue? (la page sera actualisée.)",
+        de: "Sprache wechseln?  (Die Seite wird aktualisiert.)",
+        ru: "Переключить язык? (Страница будет обновлена.)",
+        es: "¿Cambiar de idioma? (la página se actualizará).",
+        vi: "Đổi ngôn ngữ? (Trang sẽ được làm mới.)",
     },
 
     // =========

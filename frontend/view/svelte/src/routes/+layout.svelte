@@ -11,6 +11,9 @@
 	import { page } from '$app/state';
 	import func from "$lib/common/func.svelte.js";
 	import { afterNavigate, beforeNavigate } from "$app/navigation";
+    import SideLogo from "$lib/parts/SideLogo.svelte";
+    import SideSearch from "$lib/parts/SideSearch.svelte";
+    import SideFoot from "$lib/parts/SideFoot.svelte";
 
 	// 重定向到自定义的404页面
 	function watch_404() {
@@ -133,7 +136,10 @@
 </script>
 
 <div class="app">
+    <SideLogo />
+    <SideSearch />
 	<SideTab />
+    <SideFoot />
 	<Nav />
 	<main class="main">{@render children()}</main>
 	<Foot />

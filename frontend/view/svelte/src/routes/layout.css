@@ -74,13 +74,16 @@ html {
 }
 
 .font-blue{
-    color: var(--color-blue-400);
+    color: var(--color-blue-500);
 }
 .font-orange{
     color: var(--color-orange-400);
 }
 .font-red{
-    color: var(--color-red-400);
+    color: var(--color-red-600);
+}
+.font-green{
+    color: var(--color-green-600);
 }
 
 .click-none {
@@ -148,29 +151,6 @@ html {
 	font-size: 20px;
 }
 
-.section-side_tab {
-	position: fixed;
-	z-index: 0;
-	width: 220px;
-    padding: 0 10px 90px 10px;
-	height: 100%;
-	top: 0;
-	left: 0;
-	/*background-color: gray;*/
-}
-
-.section-nav {
-	position: fixed;
-	z-index: 0;
-	width: calc(100% - 220px);
-	height: 50px;
-	top: 0;
-	right: 0;
-	/*background-color: lightgray;*/
-	overflow-x: hidden;
-	overflow-y: hidden;
-}
-
 .section-main {
 	position: fixed;
 	z-index: 0;
@@ -178,21 +158,10 @@ html {
 	height: calc(100% - 50px);
 	top: 50px;
 	right: 0;
-	/*background-color: white;*/
 	padding-bottom: 90px;
 }
 
-.section-foot {
-	position: fixed;
-	z-index: 0;
-	width: calc(100% - 220px);
-	height: 50px;
-	bottom: 0;
-	right: 0;
-	/*background-color: wheat;*/
-	overflow-x: hidden;
-	overflow-y: hidden;
-}
+
 
 .border-radius {
     border-radius: 5px;
@@ -222,17 +191,20 @@ html {
     float: left;
 }
 
-.btn{
-    margin-bottom: 10px;
-    margin-right: 10px;
-}
-
-svg{
+.svg-icon{
     float: left;
     margin-right: 5px;
 }
 
-.a-span{
-    margin-right: 10px;
+.a-btn{
+    margin-right: 20px;
     margin-bottom: 10px;
+}
+
+.btn-base{
+    border-radius: 40px;
+    padding: 5px 20px;
+}
+.box-shadow{
+    box-shadow: 0 0 40px rgba(100, 100, 100, 0.5);
 }

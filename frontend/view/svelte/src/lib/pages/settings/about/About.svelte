@@ -47,7 +47,7 @@
 </script>
 
 <div>
-    <ul class="ul-group font-text">
+    <ul class="ul-group font-text select-text">
         <li class="li-group">
             <div class="li-group-title break">
                 {func.get_translate("About")}
@@ -64,7 +64,7 @@
                 {app_uid?app_uid:"-"}
             </div>
         </li>
-        <li class="li-group">
+        <li class="li-group select-text">
             <div class="li-group-title break">
                 User Agent
             </div>
@@ -120,13 +120,13 @@
                 {theme}
             </div>
         </li>
-        <li class="li-group">
+        <li class="li-group select-text">
             <div class="li-group-title break">
                 Framework
             </div>
             <div class="li-group-content break">
-                <button type="button" class="a-span font-blue click" onclick={()=>open_url_with_default_browser("https://github.com/fyonecon/Ginthon?ap=app", "_blank")}>Ginthon(Python)</button>
-                <button type="button" class="a-span font-blue click" onclick={()=>open_url_with_default_browser("https://github.com/fyonecon/Waigo?ap=app", "_blank")}>Waigo(Golang)</button>
+                <button type="button" class="a-btn font-blue click" onclick={()=>open_url_with_default_browser("https://github.com/fyonecon/Ginthon?ap=app", "_blank")}>Ginthon(Python)</button>
+                <button type="button" class="a-btn font-blue click" onclick={()=>open_url_with_default_browser("https://github.com/fyonecon/Waigo?ap=app", "_blank")}>Waigo(Golang)</button>
             </div>
         </li>
         <li class="li-group">
@@ -134,9 +134,10 @@
                 UI
             </div>
             <div class="li-group-content break">
-                <button title="Open" type="button" class="a-span font-blue click" onclick={()=>open_url_with_default_browser("https://svelte.js.cn/docs/svelte/overview", "_blank")}>SvelteKit</button>
-                <button title="Open" type="button" class="a-span font-blue click" onclick={()=>open_url_with_default_browser("https://www.skeleton.dev/docs/svelte/guides/mode", "_blank")}>SkeletonUI</button>
-                <button title="Open" type="button" class="a-span font-blue click" onclick={()=>open_url_with_default_browser("https://icon-sets.iconify.design/solar/", "_blank")}>Iconify</button>
+                <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>open_url_with_default_browser("https://svelte.js.cn/docs/svelte/overview", "_blank")}>SvelteKit</button>
+                <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>open_url_with_default_browser("https://www.skeleton.dev/docs/svelte/guides/mode", "_blank")}>SkeletonUI</button>
+                <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>open_url_with_default_browser("https://www.tailwindcss.cn/docs/installation", "_blank")}>Tailwind CSS</button>
+                <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>open_url_with_default_browser("https://icon-sets.iconify.design/solar/", "_blank")}>Iconify SVG</button>
             </div>
         </li>
     </ul>
