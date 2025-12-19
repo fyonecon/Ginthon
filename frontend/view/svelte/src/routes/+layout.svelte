@@ -9,12 +9,17 @@
 
 	import { onMount, onDestroy } from 'svelte';
 	import { page } from '$app/state';
+    import config from "$lib/config.js";
 	import func from "$lib/common/func.svelte.js";
 	import { afterNavigate, beforeNavigate } from "$app/navigation";
     import SideLogo from "$lib/parts/SideLogo.svelte";
     import SideSearch from "$lib/parts/SideSearch.svelte";
     import SideFoot from "$lib/parts/SideFoot.svelte";
     import {watch_theme_model_data} from "$lib/stores/watch_theme_model.store.svelte.js";
+
+    // wails专用
+    // import {Events} from "@wailsio/runtime";
+    // import {AppServicesForWindow} from "../../bindings/datathink.top/Waigo/internal/bootstrap";
 
 	// 重定向到自定义的404页面
 	function watch_404() {
@@ -68,18 +73,17 @@
 			}
 		} else if (func.is_wails()) {
 			// try {
-			//     import {Events} from "@wailsio/runtime";
-			//     import {AppServicesForWindow} from "../../bindings/datathink.top/Waigo/internal/bootstrap";
-			//     import config from "$lib/config.js";
-			//
 			//     // GoRunJS写入token，用于验证js_call_go
 			//     Events.On("make_window_token", (result) => {
 			//         const info = func.string_to_json(result.data);
 			//         const app_class = config.app.app_class;
 			//         // 设置新的
 			//         const window_token = info.content["windowToken"];
+            //         const js_call_go_api = info.content["jsCallGoApi"];
 			//         const window_token_timer = func.get_time_s_date("YmdHis");
-			//         func.set_local_data(app_class+"window_token", window_token)
+            //         //
+			//         func.set_local_data(app_class+"window_token", window_token);
+            //         func.set_local_data(app_class+"js_call_go_api", js_call_go_api);
 			//         func.set_local_data(app_class+"window_token_timer", window_token_timer)
 			//         //
 			//         const key = "stop_go_run_js_for_make_window_token";
@@ -88,23 +92,23 @@
 			//             if (res.state === 1){ // 成功
 			//                 console.log("[func.js_call_go]",res);
 			//             }else{
-			//                 console.log(res.msg)
+			//                 console.log(res.msg, res)
 			//             }
 			//         });
 			//     });
 			//
 			//     //
 			//     AppServicesForWindow.JSCallGo("test", {"data1": 2}).then(res=>{
-			//         console.log(res);
+			//         console.log("[AppServicesForWindow-JSCallGo]", res);
 			//     })
 			//     AppServicesForWindow.Test().then(res=>{
-			//         console.log(res);
+            //         console.log("[AppServicesForWindow-JSCallGo]", res);
 			//     })
 			// }catch (e) {
 			//     console.error("不能导入Wails-UI相关文件");
 			// }
 		} else {
-			console.warn("请指明Web运行的浏览器环境，否则数据不能初始化，只能使用简易Web功能。");
+            console.warn("Runtime：", "请指明Web运行的浏览器环境，否则数据不能初始化，只能使用简易Web功能。", func.is_gthon(), func.is_wails(), func.get_agent(), func.get_href());
 		}
 	}
 

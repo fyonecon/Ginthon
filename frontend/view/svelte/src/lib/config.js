@@ -11,7 +11,7 @@ const config = {
         home_route: "/home" // 主页默认页的路由 “”、"/home”
     },
     api: {
-        js_call_py_url: "http://127.0.0.1:9750/", // http://127.0.0.1:9750/ 、http://127.0.0.1:9850/
+        js_call_py_url: "http://127.0.0.1:9750/api/js_call_py", // http://127.0.0.1:9750/api/js_call_py 、http://127.0.0.1:9850/api/js_call_go
     },
 };
 export default config;

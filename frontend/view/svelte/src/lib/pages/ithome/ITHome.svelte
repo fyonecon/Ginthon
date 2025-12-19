@@ -4,6 +4,7 @@
     import func from "$lib/common/func.svelte.js";
     import FetchPOST from "$lib/common/post.svelte";
     import config from "$lib/config";
+    import {onMount} from "svelte";
 
     //
     let loading_tip = $state("Loading..");
@@ -12,31 +13,39 @@
         loading_tip = "Loading..."
         //
         const _api_url = "http://127.0.0.1:9750/api/spider/ithome";
-        // const _app_token = (app_token !== undefined)?app_token:"";
+        const _app_token = func.get_local_data("app_token");
         const body_dict = {
-            app_token: "",
+            app_token: _app_token,
             app_class: config.app.app_class
         };
         FetchPOST(_api_url, body_dict).then(result=>{
-            console.log(_api_url, result);
             let state = result.state;
             let msg = result.msg;
-            let array = result.content.array;
-            let url = result.content.it_url;
-            loading_tip = msg + "：" + url;
-            //
-            if (array.length > 0) {
+            if (state === 1){
+                let array = result.content.array;
+                let url = result.content.it_url;
+                //
+                loading_tip = msg + "：" + url;
                 news_array = array;
-                console.log(news_array[0]["news_title"]);
+            }else{ //
+                loading_tip = msg;
             }
         });
     }
 
-    read_ithome();
+    // 页面装载完成后，只运行一次
+    onMount(() => {
+        read_ithome();
+    });
 
 </script>
 
 <div style="padding: 10px 10px;">
+
+    <div>
+        <button type="button" class="btn preset-tonal-warning" onclick={read_ithome}>Load Spider</button>
+    </div>
+
     <div>{loading_tip}</div>
     <ul>
         {#each news_array as news, index}

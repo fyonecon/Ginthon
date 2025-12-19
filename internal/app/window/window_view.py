@@ -14,12 +14,10 @@ def view_js_must_data():
     #
     window_token = make_rand_id(CONFIG)  # 视窗软件启动时会生成一个新的
     js_token = f'''
-        localStorage.setItem("window_token", "{window_token}"); 
+        localStorage.setItem("window_token", "{window_token}");
     '''
     #
     view_url = CONFIG["pywebview"]["view_url"]
-    # view_file_html = CONFIG["pywebview"]["view_file_html"]
-    # view_url = view_url + "/" + view_file_html
     app_class = CONFIG["app"]["app_class"]
     salt_str = "js_call_py_auth-2025"
     timeout_s = 2 * 365 * 24 * 3600
@@ -27,10 +25,9 @@ def view_js_must_data():
     js_call_py_auth = make_rand_token(app_class, salt_str, timeout_s, CONFIG)  # 视窗软件启动时会生成一个新的
     js_call_py_api = view_url + "/api/js_call_py"
     js_must_data = f'''
-       const app_token = "{app_token}";
-       const view_url = "{view_url}";
-       const js_call_py_api = "{js_call_py_api}"; 
-       const js_call_py_auth = "{js_call_py_auth}"; 
+        localStorage.setItem("app_token", "{app_token}");
+        localStorage.setItem("js_call_py_api", "{js_call_py_api}"); 
+        localStorage.setItem("js_call_py_auth", "{js_call_py_auth}");
    '''
     return js_token + js_must_data
 

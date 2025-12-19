@@ -34,7 +34,7 @@ GLOBAL_CONFIG_DICT = {
         "debug": False,  # True False
     },
     "pywebview": { # window
-        "view_url": "http://127.0.0.1:9750", # 生产环境：视图网址（协议+网址+端口+路径，如：http://127.0.0.1 ）
+        "view_url": "http://127.0.0.1:9750", # 生产环境：api主网址或视图网址（协议+网址+端口+路径，如：http://127.0.0.1:port ）
         "view_class": "svelte", # 视图使用的模板（影响flask服务器加载页面）。 "vue"、"svelte"、单页填""
         "view_file_html": "view/svelte/dist", # 生产环境：pnpm run build后的dist目录。 "view/vue/dist"、"view/svelte/dist"、单页应用""。结尾无/。
         "dev_url": "http://localhost:9770/", # 开发环境：页面地址，默认 http://localhost:9770/ (此端口可在vite.config.js里面改)

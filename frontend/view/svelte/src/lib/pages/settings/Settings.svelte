@@ -273,15 +273,15 @@
                 {func.get_translate("ThemeModel")}
             </div>
             <div class="li-group-content">
-                <button class="btn btn-sm select-none preset-outlined-surface-500 font-text float-left mr-[10px] mb-[10px]" onclick="{()=>choose_theme_model('')}">
+                <button class="btn btn-sm select-none preset-outlined-surface-500 font-text float-left mr-[10px] mb-[10px]" onclick={()=>choose_theme_model('')}>
                     <svg class="{(theme_model==='')?'':'hide'} font-green" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 48 48"><path fill="currentColor" fill-rule="evenodd" d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20m10.742-26.33a1 1 0 1 0-1.483-1.34L21.28 29.567l-6.59-6.291a1 1 0 0 0-1.382 1.446l7.334 7l.743.71l.689-.762z" clip-rule="evenodd"/></svg>
                     {func.get_translate("sys_default")}
                 </button>
-                <button class="btn btn-sm select-none preset-outlined-surface-500 font-text float-left mr-[10px] mb-[10px]" onclick="{()=>choose_theme_model('light')}">
+                <button class="btn btn-sm select-none preset-outlined-surface-500 font-text float-left mr-[10px] mb-[10px]" onclick={()=>choose_theme_model('light')}>
                     <svg class="{(theme_model==='light')?'':'hide'} font-green" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 48 48"><path fill="currentColor" fill-rule="evenodd" d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20m10.742-26.33a1 1 0 1 0-1.483-1.34L21.28 29.567l-6.59-6.291a1 1 0 0 0-1.382 1.446l7.334 7l.743.71l.689-.762z" clip-rule="evenodd"/></svg>
                     {func.get_translate("theme_model_light")}
                 </button>
-                <button class="btn btn-sm select-none preset-outlined-surface-500 font-text float-left mr-[10px] mb-[10px]" onclick="{()=>choose_theme_model('dark')}">
+                <button class="btn btn-sm select-none preset-outlined-surface-500 font-text float-left mr-[10px] mb-[10px]" onclick={()=>choose_theme_model('dark')}>
                     <svg class="{(theme_model==='dark')?'':'hide'} font-green" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 48 48"><path fill="currentColor" fill-rule="evenodd" d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20m10.742-26.33a1 1 0 1 0-1.483-1.34L21.28 29.567l-6.59-6.291a1 1 0 0 0-1.382 1.446l7.334 7l.743.71l.689-.762z" clip-rule="evenodd"/></svg>
                     {func.get_translate("theme_model_dark")}
                 </button>

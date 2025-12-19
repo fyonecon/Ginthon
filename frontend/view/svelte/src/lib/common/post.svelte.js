@@ -60,11 +60,12 @@ const FetchPOST = function (api_url, body_dict) {
                 timeout: 12, // 自定义超时 s
             });
             if (!response.ok) {
-                // throw new Error(`HTTP error! status: ${response.status}`);
                 state = 0;
-                msg = "接口错误";
+                msg = "API Status Error.";
                 content = {
-                    "error": response.status
+                    "api_url": api_url,
+                    "status": response.status,
+                    "error": "接口返回状态错误"
                 };
                 //
                 resolve({
@@ -91,9 +92,11 @@ const FetchPOST = function (api_url, body_dict) {
                 resolve(result);
             }
         } catch (error) {
+            // console.error('接口不通:', error);
             state = 0;
-            msg = "接口错误";
+            msg = "API filed.";
             content = {
+                "api_url": api_url,
                 "error": error
             };
             //

@@ -560,18 +560,29 @@ const func = {
             let api_url = "";
             let window_token = "";
             if (sys_backend === "py"){
-                try {
-                    api_url = js_call_py_api + "/" + js_call_py_auth;
-                }catch (e) {
+                const _js_call_py_api = that.get_local_data("js_call_py_api");
+                const _js_call_py_auth = that.get_local_data("js_call_py_auth");
+                if (_js_call_py_api && _js_call_py_auth){
+                    api_url = _js_call_py_api + "/" + _js_call_py_auth;
+                }else{
                     try {
-                        api_url = config.api.js_call_py_url+"api/js_call_py";
+                        api_url = config.api.js_call_py_url;
                     }catch (e) {
-                        console.log("-值未获得-py-")
+                        api_url = "null-js_call_py_url";
                     }
                 }
                 window_token = that.get_local_data("window_token");
             }else if (sys_backend === "go"){
-                api_url = config.api.js_call_go_url+"api/js_call_go";
+                const _js_call_go_api = that.get_local_data("js_call_go_api");
+                if (_js_call_go_api){
+                    api_url = _js_call_go_api;
+                }else{
+                    try {
+                        api_url = config.api.js_call_go_url;
+                    }catch (e) {
+                        api_url = "null-js_call_go_url";
+                    }
+                }
                 window_token = that.get_local_data(_app_class+"window_token");
             }else{
                 resolve({
@@ -644,10 +655,9 @@ const func = {
     is_wails: function (){ // 是否是wails环境
         let that = this;
         //
-        let url = "";
+        let agent = that.get_agent().toLowerCase();
         if(browser){
-            url = page.url.host.toLowerCase();
-            return url === "wails.localhost" || url === "wails";
+            return agent.indexOf("wails") !== -1 ;
         }else {
             return false;
         }
