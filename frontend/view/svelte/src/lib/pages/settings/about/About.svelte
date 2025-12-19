@@ -2,7 +2,7 @@
     import { resolve } from '$app/paths';
     import { page } from '$app/state';
     import func from "$lib/common/func.svelte.js";
-    import config from "$lib/config.js";
+    import config from "../../../../config.js";
     import { afterNavigate, beforeNavigate } from "$app/navigation";
     import {browser} from "$app/environment";
     import {watch_theme_model_data} from "$lib/stores/watch_theme_model.store.svelte.js";

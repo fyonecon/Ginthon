@@ -1,48 +1,5 @@
 
-let formData = {
-    username: '',
-    email: '',
-    password: ''
-};
-
-let responseMessage = '';
-let isLoading = false;
-
-// 基本POST请求
-async function handleSubmit() {
-    isLoading = true;
-    responseMessage = '';
-
-    try {
-        const response = await fetch('https://api.example.com/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                // 如果需要认证
-                // 'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(formData)
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        responseMessage = `注册成功！用户ID: ${data.userId}`;
-
-        // 重置表单
-        formData = { username: '', email: '', password: '' };
-
-    } catch (error) {
-        console.error('Error:', error);
-        responseMessage = `错误: ${error.message}`;
-    } finally {
-        isLoading = false;
-    }
-}
-
-//
+// POST请求专用
 const FetchPOST = function (api_url, body_dict) {
     let state = 0;
     let msg = "";

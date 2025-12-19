@@ -3,7 +3,7 @@
     import { page } from '$app/state';
     import func from "$lib/common/func.svelte.js";
     import FetchPOST from "$lib/common/post.svelte";
-    import config from "$lib/config";
+    import config from "../../../config";
     import {onMount} from "svelte";
 
     //

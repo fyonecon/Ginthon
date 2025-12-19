@@ -3,7 +3,7 @@
     import { page } from '$app/state';
     import func from "$lib/common/func.svelte.js";
     import { afterNavigate, beforeNavigate } from "$app/navigation";
-    import config from "$lib/config.js";
+    import config from "../../config.js";
     import { side_tab_data } from '$lib/stores/side_tab.store.svelte.js';
 
     // 将路由转化为翻译的键
