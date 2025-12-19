@@ -125,7 +125,6 @@ build过程：打包Tray二进制文件--将二进制文件移动到frontend/tra
 Ginthon-Main
 ├── frontend 前端或静态文件
 │   ├── file 放其他web文件，额外的web文件
-│   ├── js_call_py.js js调用py的对照表
 │   ├── tray
 │   └── view 前端视图（可多视图框架切换）
 │       ├── svelte 视图UI（默认SvelteKit）
