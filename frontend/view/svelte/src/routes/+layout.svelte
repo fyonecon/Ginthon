@@ -13,8 +13,9 @@
 	import { afterNavigate, beforeNavigate } from "$app/navigation";
     import SideLogo from "../parts/SideLogo.svelte";
     import SideSearch from "../parts/SideSearch.svelte";
-    import SideFoot from "../parts/SideFoot.svelte";
+    import SideSetting from "../parts/SideSetting.svelte";
     import {watch_theme_model_data} from "../stores/watch_theme_model.store.svelte.js";
+    import Director from "../parts/Director.svelte";
 
     // wails专用（在Ginthon中无任何作用，仅限代码跨平台同步）
     // import {Events} from "@wailsio/runtime";
@@ -142,12 +143,13 @@
 
 </script>
 
-<div class="app" data-theme_model="{theme_model}">
+<div class="app bg-white dark:bg-neutral-900" data-theme_model="{theme_model}">
     <SideLogo />
     <SideSearch />
 	<SideTab />
-    <SideFoot />
+    <SideSetting />
 	<Nav />
+    <Director />
 	<main class="main">{@render children()}</main>
 	<Foot />
 </div>

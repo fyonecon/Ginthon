@@ -1,5 +1,4 @@
 <script lang="ts">
-    import {onMount} from "svelte";
     import {afterNavigate} from "$app/navigation";
 
 
@@ -18,15 +17,9 @@
     });
 
 
-    // 页面装载完成后，只运行一次
-    onMount(() => {
-        //
-    });
-
-
 </script>
 
-<section class="section-side_search select-none bg-neutral-100 dark:bg-neutral-800 border-radius">
+<section class="section-side_search select-none bg-neutral-200 dark:bg-neutral-800 border-radius">
     <div class="side-search font-text select-text">
         <label class="label">
             <input class="side-search-input input w-full border-radius font-text" type="text" maxlength="1000" placeholder="Input..." />

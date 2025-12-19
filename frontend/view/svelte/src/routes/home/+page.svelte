@@ -11,6 +11,6 @@
     <meta name="description" content="" />
 </svelte:head>
 
-<section class="section-main scroll-y-style  bg-white dark:bg-neutral-900">
+<section class="section-main scroll-y-style  ">
     <Home />
 </section>

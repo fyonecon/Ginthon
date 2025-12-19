@@ -1,7 +1,6 @@
 <script lang="ts">
     import config from "../config.js";
     import {afterNavigate} from "$app/navigation";
-    import {onMount} from "svelte";
 
 
     // 本页面参数
@@ -20,18 +19,12 @@
     });
 
 
-    // 页面装载完成后，只运行一次
-    onMount(() => {
-        //
-    });
-
-
 </script>
 
-<section class="section-side_logo scroll-y-style select-none pywebview-drag-region can-drag bg-neutral-100 dark:bg-neutral-800">
-    <div class="side-logo select-none center hide">
+<section class="section-side_logo scroll-y-style select-none pywebview-drag-region can-drag bg-neutral-200 dark:bg-neutral-800">
+    <div class="side-logo select-none center">
         <span class="font-class">{app_name}</span>
-        <span class="font-mini"> v{app_version}</span>
+        <span class="font-mini hide"> v{app_version}</span>
     </div>
 </section>
 
@@ -43,13 +36,15 @@
         height: 50px;
         top: 0;
         left: 0;
+        overflow: hidden;
     }
 
     .side-logo{
         height: 50px;
         line-height: 50px;
         overflow: hidden;
-        width: calc(100%);
+        width: calc(100% - 0px);
+        padding: 0 10px;
     }
 
 </style>

@@ -51,9 +51,13 @@ const lang_dict = {
         zh: "关于",
         en: "About",
     },
+    User: {
+        zh: "我的",
+        en: "Me",
+    },
     ThemeModel: {
         zh: "主题",
-        en: "Theme",
+        en: "Themes",
     },
     //
     ITHome: {
@@ -92,6 +96,10 @@ const lang_dict = {
     sys_default: {
         zh: "跟随系统",
         en: "Same system",
+    },
+    app_info: {
+        zh: "软件信息",
+        en: "App Information",
     },
     theme_model_light: {
         zh: "亮",

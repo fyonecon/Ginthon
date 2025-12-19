@@ -179,6 +179,7 @@ html {
 .li-group{
     clear: both;
     overflow: hidden;
+    margin-bottom: 10px;
 }
 .li-group-title{
     width: 200px;
@@ -197,7 +198,7 @@ html {
 
 .svg-icon{
     float: left;
-    margin-right: 5px;
+    margin-right: 8px;
 }
 
 .a-btn{
