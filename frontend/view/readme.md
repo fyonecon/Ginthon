@@ -86,7 +86,7 @@ export default config;
 在Ginthon/internal/config.py中设置静态文件参数：
 ```
 "pywebview": { # window
-    "view_host": "http://127.0.0.1", # 视图网址（协议+网址+端口+路径，如：http://127.0.0.1 ）
+    "view_url": "http://127.0.0.1:port", # 视图网址（协议+网址+端口+路径，如：http://127.0.0.1 ）
     "view_class": "svelte", # 视图使用的模板（影响flask服务器加载页面）。 "vue"、"svelte"、单页填""
     "view_file_html": "view/svelte/dist", # pnpm run build后的dist目录。 "view/vue/dist"、"view/svelte/dist"、单页应用""。结尾无/。
 },
@@ -134,7 +134,7 @@ pnpm run build
 在Ginthon/internal/config.py中设置静态文件参数：
 ```
 "pywebview": { # window
-    "view_host": "http://127.0.0.1", # 视图网址（协议+网址+端口+路径，如：http://127.0.0.1 ）
+    "view_url": "http://127.0.0.1:port", # 视图网址（协议+网址+端口+路径，如：http://127.0.0.1 ）
     "view_class": "vue", # 视图使用的模板（影响flask服务器加载页面）。 "vue"、"svelte"、单页填""
     "view_file_html": "view/vue/dist", # pnpm run build后的dist目录。 "view/vue/dist"、"view/svelte/dist"、单页应用""。结尾无/。
 },

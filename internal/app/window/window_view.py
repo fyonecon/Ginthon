@@ -17,16 +17,15 @@ def view_js_must_data():
         localStorage.setItem("window_token", "{window_token}"); 
     '''
     #
-    view_host = CONFIG["pywebview"]["view_host"]
+    view_url = CONFIG["pywebview"]["view_url"]
     # view_file_html = CONFIG["pywebview"]["view_file_html"]
-    # view_url = view_host + ":" + str(CONFIG["flask"]["port"]) + "/" + view_file_html
-    view_url = view_host + ":" + str(CONFIG["flask"]["port"]) + "/"
+    # view_url = view_url + "/" + view_file_html
     app_class = CONFIG["app"]["app_class"]
     salt_str = "js_call_py_auth-2025"
     timeout_s = 2 * 365 * 24 * 3600
     app_token = make_rand_token(app_class, md5(salt_str + "nbPlus"), timeout_s, CONFIG)  # page刷新时会生成一个新的
     js_call_py_auth = make_rand_token(app_class, salt_str, timeout_s, CONFIG)  # 视窗软件启动时会生成一个新的
-    js_call_py_api = view_host + ":" + str(CONFIG["flask"]["port"]) + "/api/js_call_py"
+    js_call_py_api = view_url + "/api/js_call_py"
     js_must_data = f'''
        const app_token = "{app_token}";
        const view_url = "{view_url}";
@@ -50,11 +49,11 @@ def view_index(_WINDOW, filename):
     #
     CONFIG = get_config("", "")
     #
-    view_host = CONFIG["pywebview"]["view_host"]
+    view_url = CONFIG["pywebview"]["view_url"]
     view_file_html = CONFIG["pywebview"]["view_file_html"]
     file_path = mian_virtual_dirpath("frontend") + "/"+view_file_html+"/"+filename
     #
-    js_must_data_url = view_host+":"+str(CONFIG["flask"]["port"])+"/"+ "js_must_data.js" + "?cache=" + str(get_time_s()) + "&app_version=" + CONFIG["app"]["app_version"]
+    js_must_data_url = view_url+"/"+ "js_must_data.js" + "?cache=" + str(get_time_s()) + "&app_version=" + CONFIG["app"]["app_version"]
     #
     html = read_html(file_path)
     # loaded后执行

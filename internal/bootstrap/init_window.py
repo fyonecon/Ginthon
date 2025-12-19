@@ -21,21 +21,19 @@ SERVICES_PID = None
 FLASK_PID = None
 
 
-# 视窗view-url
-def view_url(view_class=""):
-
+# 视窗view_url
+def get_view_url(view_class=""):
     if view_class == "vue" or view_class == "svelte":
         # svelte dist 或 vue dist
-        view_host = CONFIG["pywebview"]["view_host"]
-        url = view_host + ":" + str(CONFIG["flask"]["port"]) + "/"
-        return url
+        view_url = CONFIG["pywebview"]["view_url"]
+        return view_url
     else:
         # 单页HTML
-        view_host = CONFIG["pywebview"]["view_host"]
+        view_url = CONFIG["pywebview"]["view_url"]
         rand_id = make_rand_id(CONFIG)
         view_auth = make_auth(CONFIG)
-        url = view_host+":"+str(CONFIG["flask"]["port"])+ "/view/" + rand_id + "?" + "view_auth=" + view_auth + "&version=" + CONFIG["app"]["app_version"] + "&ap=" + CONFIG["app"][ "app_name"]
-        return url
+        view_url = view_url + "/view/" + rand_id + "?" + "view_auth=" + view_auth + "&version=" + CONFIG["app"]["app_version"] + "&ap=" + CONFIG["app"][ "app_name"]
+        return view_url
 
 
 # 注册服务
@@ -77,7 +75,7 @@ def init_window(cmd_model):
     #
     CONFIG = get_config("", "")
     #
-    _view_url = view_url(CONFIG["pywebview"]["view_class"]) # 生产环境url：vue、svelte、""
+    _view_url = get_view_url(CONFIG["pywebview"]["view_class"]) # 生产环境url：vue、svelte、""
     _dev_url = CONFIG["pywebview"]["dev_url"] # 开发环境url
     if cmd_model == "dev":
         pywebveiw_url = _dev_url
