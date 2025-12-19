@@ -51,7 +51,7 @@ const FetchPOST = function (api_url, body_dict) {
         } catch (error) {
             // console.error('接口不通:', error);
             state = 0;
-            msg = "API filed.";
+            msg = "API Broken.";
             content = {
                 "api_url": api_url,
                 "error": error

@@ -1,9 +1,9 @@
 <script lang="ts">
-    import func from "$lib/common/func.svelte.js";
+    import func from "..//common/func.svelte.js";
     import { page } from '$app/state';
     import { afterNavigate, beforeNavigate } from "$app/navigation";
-    import config from "../../config.js";
-    import { side_tab_data } from '$lib/stores/side_tab.store.svelte.js';
+    import config from "../config.js";
+    import { side_tab_data } from '../stores/side_tab.store.svelte.js';
 
     // 历史记录算法 >>>>>>
     let href = $state(func.get_href());

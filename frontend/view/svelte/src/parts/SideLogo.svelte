@@ -1,5 +1,5 @@
 <script lang="ts">
-    import config from "../../config.js";
+    import config from "../config.js";
 
     // 页面数据
     let app_name = $state(config.app.app_name);

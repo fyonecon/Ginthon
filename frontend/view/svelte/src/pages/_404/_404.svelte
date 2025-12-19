@@ -1,8 +1,8 @@
 <script lang="ts">
     import { resolve } from '$app/paths';
     import { page } from '$app/state';
-    import func from "$lib/common/func.svelte.js";
-    import config from "../../../config.js";
+    import func from "../../common/func.svelte.js";
+    import config from "../../config.js";
     // 链接携带的信息
     const error_url = func.search_param("error_url")
     const error_msg = func.search_param("error_msg");

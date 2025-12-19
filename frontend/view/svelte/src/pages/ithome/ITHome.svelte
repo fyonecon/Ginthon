@@ -1,9 +1,9 @@
 <script lang="ts">
     import { resolve } from '$app/paths';
     import { page } from '$app/state';
-    import func from "$lib/common/func.svelte.js";
-    import FetchPOST from "$lib/common/post.svelte";
-    import config from "../../../config";
+    import func from "../../common/func.svelte.js";
+    import FetchPOST from "../../common/post.svelte";
+    import config from "../../config";
     import {onMount} from "svelte";
 
     //

@@ -1,6 +1,6 @@
 import {browser} from "$app/environment";
-import func from "$lib/common/func.svelte.js";
-import config from "../../config.js";
+import func from "../common/func.svelte.js";
+import config from "../config.js";
 
 export const watch_theme_model_data = $state({
     theme_model: "", // dark light

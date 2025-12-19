@@ -1,7 +1,7 @@
 <script lang="ts">
-	import SideTab from '$lib/parts/SideTab.svelte';
-	import Nav from '$lib/parts/Nav.svelte';
-	import Foot from '$lib/parts/Foot.svelte';
+	import SideTab from '../parts/SideTab.svelte';
+	import Nav from '../parts/Nav.svelte';
+	import Foot from '../parts/Foot.svelte';
 	import './layout.css';
 
 	/** @type {{children: import('svelte').Snippet}} */
@@ -10,12 +10,12 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { page } from '$app/state';
     import config from "../config.js";
-	import func from "$lib/common/func.svelte.js";
+	import func from "../common/func.svelte.js";
 	import { afterNavigate, beforeNavigate } from "$app/navigation";
-    import SideLogo from "$lib/parts/SideLogo.svelte";
-    import SideSearch from "$lib/parts/SideSearch.svelte";
-    import SideFoot from "$lib/parts/SideFoot.svelte";
-    import {watch_theme_model_data} from "$lib/stores/watch_theme_model.store.svelte.js";
+    import SideLogo from "../parts/SideLogo.svelte";
+    import SideSearch from "../parts/SideSearch.svelte";
+    import SideFoot from "../parts/SideFoot.svelte";
+    import {watch_theme_model_data} from "../stores/watch_theme_model.store.svelte.js";
 
     // wails专用（在Ginthon中无任何作用，仅限代码跨平台同步）
     // import {Events} from "@wailsio/runtime";

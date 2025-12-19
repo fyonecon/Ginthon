@@ -1,7 +1,7 @@
 <script lang="ts">
 
-import func from "$lib/common/func.svelte.js";
-import config from "../../config.js";
+import func from "../common/func.svelte.js";
+import config from "../config.js";
 </script>
 
 <section class="section-foot select-none  pywebview-drag-region can-drag bg-white dark:bg-neutral-900">

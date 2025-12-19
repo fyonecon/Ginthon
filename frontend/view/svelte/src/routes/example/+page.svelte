@@ -1,7 +1,7 @@
 <script lang="ts">
     import { resolve } from '$app/paths';
-    import func from "$lib/common/func.svelte.js";
-    import Example from "$lib/pages/example/Example.svelte";
+    import func from "../../common/func.svelte.js";
+    import Example from "../../pages/example/Example.svelte";
 
 </script>
 

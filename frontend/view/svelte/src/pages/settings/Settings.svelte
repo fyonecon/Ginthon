@@ -1,8 +1,8 @@
 <script lang="ts">
     import { resolve } from '$app/paths';
     import { page } from '$app/state';
-    import func from "$lib/common/func.svelte.js";
-    import config from "../../../config.js";
+    import func from "../../common/func.svelte.js";
+    import config from "../../config.js";
     import { afterNavigate, beforeNavigate } from "$app/navigation";
     import { Dialog, Portal } from '@skeletonlabs/skeleton-svelte';
 

@@ -1,7 +1,7 @@
 <script lang="ts">
     import { resolve } from '$app/paths';
     import { page } from '$app/state';
-    import func from "$lib/common/func.svelte.js";
+    import func from "../common/func.svelte.js";
     import { afterNavigate, beforeNavigate } from "$app/navigation";
 
 

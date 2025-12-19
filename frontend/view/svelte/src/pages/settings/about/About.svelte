@@ -1,11 +1,11 @@
 <script lang="ts">
     import { resolve } from '$app/paths';
     import { page } from '$app/state';
-    import func from "$lib/common/func.svelte.js";
-    import config from "../../../../config.js";
+    import func from "../../../common/func.svelte.js";
+    import config from "../../../config.js";
     import { afterNavigate, beforeNavigate } from "$app/navigation";
     import {browser} from "$app/environment";
-    import {watch_theme_model_data} from "$lib/stores/watch_theme_model.store.svelte.js";
+    import {watch_theme_model_data} from "../../../stores/watch_theme_model.store.svelte.js";
 
 
     // 页面数据
@@ -28,8 +28,8 @@
 
     // 路由变化之后
     afterNavigate(() => {
-        const key_theme_model = "theme_model";
-        const mode = localStorage.getItem(key_theme_model);
+        const key_theme_model = config.app.app_class + "theme_model";
+        let mode = func.get_local_data(key_theme_model);
         theme_model = mode?mode:watch_theme_model_data.theme_model;
     });
 
