@@ -1,9 +1,29 @@
 <script lang="ts">
     import config from "../config.js";
+    import {afterNavigate} from "$app/navigation";
+    import {onMount} from "svelte";
 
-    // 页面数据
+
+    // 本页面参数
     let app_name = $state(config.app.app_name);
     let app_version = $state(config.app.app_version);
+
+    // 本页面函数
+    const def = {
+        //
+    };
+
+
+    // 刷新页面数据
+    afterNavigate(() => {
+        //
+    });
+
+
+    // 页面装载完成后，只运行一次
+    onMount(() => {
+        //
+    });
 
 
 </script>

@@ -1,7 +1,31 @@
 <script lang="ts">
+    import func from "../common/func.svelte.js";
+    import config from "../config.js";
+    import {afterNavigate} from "$app/navigation";
+    import {onMount} from "svelte";
 
-import func from "../common/func.svelte.js";
-import config from "../config.js";
+
+    // 本页面参数
+
+
+    // 本页面函数
+    const def = {
+        //
+    };
+
+
+    // 刷新页面数据
+    afterNavigate(() => {
+        //
+    });
+
+
+    // 页面装载完成后，只运行一次
+    onMount(() => {
+        //
+    });
+
+
 </script>
 
 <section class="section-foot select-none  pywebview-drag-region can-drag bg-white dark:bg-neutral-900">

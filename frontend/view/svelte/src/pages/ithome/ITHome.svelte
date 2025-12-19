@@ -5,45 +5,62 @@
     import FetchPOST from "../../common/post.svelte";
     import config from "../../config";
     import {onMount} from "svelte";
+    import {afterNavigate} from "$app/navigation";
 
-    //
+
+    // 本页面参数
     let loading_tip = $state("Loading..");
     let news_array = $state([]);
-    function read_ithome(){
-        loading_tip = "Loading..."
+
+
+    // 本页面函数
+    const def = {
+        read_ithome: function(){
+            let that = this;
+            //
+            loading_tip = "Loading..."
+            //
+            const _api_url = "http://127.0.0.1:9750/api/spider/ithome";
+            const _app_token = func.get_local_data("app_token");
+            const body_dict = {
+                app_token: _app_token,
+                app_class: config.app.app_class
+            };
+            FetchPOST(_api_url, body_dict).then(result=>{
+                let state = result.state;
+                let msg = result.msg;
+                if (state === 1){
+                    let array = result.content.array;
+                    let url = result.content.it_url;
+                    //
+                    loading_tip = msg + "：" + url;
+                    news_array = array;
+                }else{ //
+                    loading_tip = msg;
+                }
+            });
+        },
+    };
+
+
+    // 刷新页面数据
+    afterNavigate(() => {
         //
-        const _api_url = "http://127.0.0.1:9750/api/spider/ithome";
-        const _app_token = func.get_local_data("app_token");
-        const body_dict = {
-            app_token: _app_token,
-            app_class: config.app.app_class
-        };
-        FetchPOST(_api_url, body_dict).then(result=>{
-            let state = result.state;
-            let msg = result.msg;
-            if (state === 1){
-                let array = result.content.array;
-                let url = result.content.it_url;
-                //
-                loading_tip = msg + "：" + url;
-                news_array = array;
-            }else{ //
-                loading_tip = msg;
-            }
-        });
-    }
+    });
+
 
     // 页面装载完成后，只运行一次
     onMount(() => {
-        read_ithome();
+        def.read_ithome();
     });
+
 
 </script>
 
 <div style="padding: 10px 10px;">
 
     <div>
-        <button type="button" class="btn preset-tonal-warning" onclick={read_ithome}>Load Spider</button>
+        <button type="button" class="btn preset-tonal-warning" onclick={def.read_ithome}>Load Spider</button>
     </div>
 
     <div>{loading_tip}</div>

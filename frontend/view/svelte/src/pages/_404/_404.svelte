@@ -3,13 +3,36 @@
     import { page } from '$app/state';
     import func from "../../common/func.svelte.js";
     import config from "../../config.js";
+    import {afterNavigate} from "$app/navigation";
+    import {onMount} from "svelte";
     // 链接携带的信息
     const error_url = func.search_param("error_url")
     const error_msg = func.search_param("error_msg");
     const back_url = func.url_path(config.sys.home_route);
-    //
-    // const route = func.get_route();
-    // 或 let route = $state(func.get_route());
+
+
+    // 本页面参数
+    let route = $state(func.get_route());
+
+
+    // 本页面函数
+    const def = {
+        //
+    };
+
+
+    // 刷新页面数据
+    afterNavigate(() => {
+        //
+    });
+
+
+    // 页面装载完成后，只运行一次
+    onMount(() => {
+        //
+    });
+
+
 </script>
 
 <div>

@@ -5,52 +5,64 @@
     import config from "../../config.js";
     import { afterNavigate, beforeNavigate } from "$app/navigation";
     import { Dialog, Portal } from '@skeletonlabs/skeleton-svelte';
+    import {onMount} from "svelte";
 
 
-    // 显示和设置语言
-    function choose_language(lang=""){
-        if (lang.length >= 2) {
-            func.set_local_data(config.app.app_class + "language_index", lang);
-        }
-        language_index = now_language(); // 更新选中
-        // func.open_url(func.url_path(config.sys.home_route)+"?lang=" + language_index);
-        // func.open_url_no_cache("./?lang=" + language_index);
-        func.open_url_no_cache();
-        return func.get_local_data(config.app.app_class + "language_index");
-    }
-    // 已选的语言
-    function now_language(){
-        let the_language_index = func.get_local_data(config.app.app_class + "language_index");
-        return the_language_index?the_language_index:func.get_lang_index("");
-    }
-    // 选择主题
-    function choose_theme_model(mode){
-        theme_model = mode;
-        if (!mode){ // 系统默认
-            func.set_local_data(key_theme_model, "");
-            document.documentElement.setAttribute('data-mode', func.get_theme_model());
-        }else{ // 手动设置
-            func.set_local_data(key_theme_model, mode);
-            document.documentElement.setAttribute('data-mode', mode);
-        }
-    }
-
-
-    // 页面数据
+    // 本页面数据
     const animation = 'transition transition-discrete opacity-0 translate-y-[100px] starting:data-[state=open]:opacity-0 starting:data-[state=open]:translate-y-[100px] data-[state=open]:opacity-100 data-[state=open]:translate-y-0';
     let route = $state(func.get_route());
-    let language_index = $state(now_language()); // 语言选中
+    let language_index = $state(""); // 语言选中
     const key_theme_model = config.app.app_class+"theme_model";
     let mode = func.get_local_data(key_theme_model);
     let theme_model = $state(mode?mode:""); // 主题选中
 
 
+    // 本页面函数
+    const def = {
+        choose_language: function (lang=""){  // 显示和设置语言
+            let that = this;
+            //
+            if (lang.length >= 2) {
+                func.set_local_data(config.app.app_class + "language_index", lang);
+            }
+            language_index = that.now_language(); // 更新选中
+            func.open_url_no_cache();
+            return func.get_local_data(config.app.app_class + "language_index");
+        },
+        now_language: function () { // 已选的语言
+            let that = this;
+            //
+            let the_language_index = func.get_local_data(config.app.app_class + "language_index");
+            return the_language_index?the_language_index:func.get_lang_index("");
+        },
+        choose_theme_model: function (mode){ // 选择主题
+            let that = this;
+            //
+            theme_model = mode;
+            if (!mode){ // 系统默认
+                func.set_local_data(key_theme_model, "");
+                document.documentElement.setAttribute('data-mode', func.get_theme_model());
+            }else{ // 手动设置
+                func.set_local_data(key_theme_model, mode);
+                document.documentElement.setAttribute('data-mode', mode);
+            }
+        },
+    };
+
+
     // 刷新页面数据
     afterNavigate(() => {
-        language_index = now_language(); // 更新选中
+        language_index = def.now_language(); // 更新选中
         mode = func.get_local_data(key_theme_model);
         theme_model = mode?mode:"";
     });
+
+
+    // 页面装载完成后，只运行一次
+    onMount(() => {
+        //
+    });
+
 
 </script>
 
@@ -89,7 +101,7 @@
                                 </Dialog.Description>
                                 <footer class="flex justify-center gap-10 select-none  px-[10px] py-[10px]">
                                     <Dialog.CloseTrigger class="btn btn-base preset-tonal font-title">{func.get_translate("btn_cancel")}</Dialog.CloseTrigger>
-                                    <button title="Save" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>choose_language("en")}>{func.get_translate("btn_save")}</button>
+                                    <button title="Save" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>def.choose_language("en")}>{func.get_translate("btn_save")}</button>
                                 </footer>
                             </Dialog.Content>
                         </Dialog.Positioner>
@@ -113,7 +125,7 @@
                                 </Dialog.Description>
                                 <footer class="flex justify-center gap-10 select-none  px-[10px] py-[10px]">
                                     <Dialog.CloseTrigger class="btn btn-base preset-tonal font-title">{func.get_translate("btn_cancel")}</Dialog.CloseTrigger>
-                                    <button title="Save" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>choose_language("zh")}>{func.get_translate("btn_save")}</button>
+                                    <button title="Save" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>def.choose_language("zh")}>{func.get_translate("btn_save")}</button>
                                 </footer>
                             </Dialog.Content>
                         </Dialog.Positioner>
@@ -137,7 +149,7 @@
                                 </Dialog.Description>
                                 <footer class="flex justify-center gap-10 select-none  px-[10px] py-[10px]">
                                     <Dialog.CloseTrigger class="btn btn-base preset-tonal font-title">{func.get_translate("btn_cancel")}</Dialog.CloseTrigger>
-                                    <button title="Save" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>choose_language("jp")}>{func.get_translate("btn_save")}</button>
+                                    <button title="Save" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>def.choose_language("jp")}>{func.get_translate("btn_save")}</button>
                                 </footer>
                             </Dialog.Content>
                         </Dialog.Positioner>
@@ -161,7 +173,7 @@
                                 </Dialog.Description>
                                 <footer class="flex justify-center gap-10 select-none  px-[10px] py-[10px]">
                                     <Dialog.CloseTrigger class="btn btn-base preset-tonal font-title">{func.get_translate("btn_cancel")}</Dialog.CloseTrigger>
-                                    <button title="Save" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>choose_language("fr")}>{func.get_translate("btn_save")}</button>
+                                    <button title="Save" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>def.choose_language("fr")}>{func.get_translate("btn_save")}</button>
                                 </footer>
                             </Dialog.Content>
                         </Dialog.Positioner>
@@ -185,7 +197,7 @@
                                 </Dialog.Description>
                                 <footer class="flex justify-center gap-10 select-none  px-[10px] py-[10px]">
                                     <Dialog.CloseTrigger class="btn btn-base preset-tonal font-title">{func.get_translate("btn_cancel")}</Dialog.CloseTrigger>
-                                    <button title="Save" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>choose_language("de")}>{func.get_translate("btn_save")}</button>
+                                    <button title="Save" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>def.choose_language("de")}>{func.get_translate("btn_save")}</button>
                                 </footer>
                             </Dialog.Content>
                         </Dialog.Positioner>
@@ -209,7 +221,7 @@
                                 </Dialog.Description>
                                 <footer class="flex justify-center gap-10 select-none  px-[10px] py-[10px]">
                                     <Dialog.CloseTrigger class="btn btn-base preset-tonal font-title">{func.get_translate("btn_cancel")}</Dialog.CloseTrigger>
-                                    <button title="Save" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>choose_language("ru")}>{func.get_translate("btn_save")}</button>
+                                    <button title="Save" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>def.choose_language("ru")}>{func.get_translate("btn_save")}</button>
                                 </footer>
                             </Dialog.Content>
                         </Dialog.Positioner>
@@ -233,7 +245,7 @@
                                 </Dialog.Description>
                                 <footer class="flex justify-center gap-10 select-none  px-[10px] py-[10px]">
                                     <Dialog.CloseTrigger class="btn btn-base preset-tonal font-title">{func.get_translate("btn_cancel")}</Dialog.CloseTrigger>
-                                    <button title="Save" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>choose_language("es")}>{func.get_translate("btn_save")}</button>
+                                    <button title="Save" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>def.choose_language("es")}>{func.get_translate("btn_save")}</button>
                                 </footer>
                             </Dialog.Content>
                         </Dialog.Positioner>
@@ -257,7 +269,7 @@
                                 </Dialog.Description>
                                 <footer class="flex justify-center gap-10 select-none  px-[10px] py-[10px]">
                                     <Dialog.CloseTrigger class="btn btn-base preset-tonal font-title">{func.get_translate("btn_cancel")}</Dialog.CloseTrigger>
-                                    <button title="Save" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>choose_language("vi")}>{func.get_translate("btn_save")}</button>
+                                    <button title="Save" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>def.choose_language("vi")}>{func.get_translate("btn_save")}</button>
                                 </footer>
                             </Dialog.Content>
                         </Dialog.Positioner>
@@ -273,15 +285,15 @@
                 {func.get_translate("ThemeModel")}
             </div>
             <div class="li-group-content">
-                <button class="btn btn-sm select-none preset-outlined-surface-500 font-text float-left mr-[10px] mb-[10px]" onclick={()=>choose_theme_model('')}>
+                <button class="btn btn-sm select-none preset-outlined-surface-500 font-text float-left mr-[10px] mb-[10px]" onclick={()=>def.choose_theme_model('')}>
                     <svg class="{(theme_model==='')?'':'hide'} font-green" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 48 48"><path fill="currentColor" fill-rule="evenodd" d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20m10.742-26.33a1 1 0 1 0-1.483-1.34L21.28 29.567l-6.59-6.291a1 1 0 0 0-1.382 1.446l7.334 7l.743.71l.689-.762z" clip-rule="evenodd"/></svg>
                     {func.get_translate("sys_default")}
                 </button>
-                <button class="btn btn-sm select-none preset-outlined-surface-500 font-text float-left mr-[10px] mb-[10px]" onclick={()=>choose_theme_model('light')}>
+                <button class="btn btn-sm select-none preset-outlined-surface-500 font-text float-left mr-[10px] mb-[10px]" onclick={()=>def.choose_theme_model('light')}>
                     <svg class="{(theme_model==='light')?'':'hide'} font-green" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 48 48"><path fill="currentColor" fill-rule="evenodd" d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20m10.742-26.33a1 1 0 1 0-1.483-1.34L21.28 29.567l-6.59-6.291a1 1 0 0 0-1.382 1.446l7.334 7l.743.71l.689-.762z" clip-rule="evenodd"/></svg>
                     {func.get_translate("theme_model_light")}
                 </button>
-                <button class="btn btn-sm select-none preset-outlined-surface-500 font-text float-left mr-[10px] mb-[10px]" onclick={()=>choose_theme_model('dark')}>
+                <button class="btn btn-sm select-none preset-outlined-surface-500 font-text float-left mr-[10px] mb-[10px]" onclick={()=>def.choose_theme_model('dark')}>
                     <svg class="{(theme_model==='dark')?'':'hide'} font-green" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 48 48"><path fill="currentColor" fill-rule="evenodd" d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20m10.742-26.33a1 1 0 1 0-1.483-1.34L21.28 29.567l-6.59-6.291a1 1 0 0 0-1.382 1.446l7.334 7l.743.71l.689-.762z" clip-rule="evenodd"/></svg>
                     {func.get_translate("theme_model_dark")}
                 </button>

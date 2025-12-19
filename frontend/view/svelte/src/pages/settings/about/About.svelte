@@ -6,9 +6,10 @@
     import { afterNavigate, beforeNavigate } from "$app/navigation";
     import {browser} from "$app/environment";
     import {watch_theme_model_data} from "../../../stores/watch_theme_model.store.svelte.js";
+    import {onMount} from "svelte";
 
 
-    // 页面数据
+    // 本页面数据
     let route = $state(func.get_route());
     let app_uid = $state(func.get_app_uid());
     let user_agent = $state(func.get_agent());
@@ -18,13 +19,19 @@
     let theme_model = $state(watch_theme_model_data.theme_model);
     let language_index = $state(func.get_local_data(config.app.app_class + "language_index"));
 
-    // 打开默认浏览器
-    function open_url_with_default_browser(url="", target="_self") {
-        func.js_call_py_or_go("open_url_with_default_browser", {
-            url: url,
-            target: target,
-        }).then(result => {});
-    }
+
+    // 本页面函数
+    const def = {
+        open_url_with_default_browser: function (url="", target="_self") { // 打开默认浏览器
+            let that = this;
+            //
+            func.js_call_py_or_go("open_url_with_default_browser", {
+                url: url,
+                target: target,
+            }).then(result => {});
+        }
+    };
+
 
     // 路由变化之后
     afterNavigate(() => {
@@ -32,6 +39,13 @@
         let mode = func.get_local_data(key_theme_model);
         theme_model = mode?mode:watch_theme_model_data.theme_model;
     });
+
+
+    // 页面装载完成后，只运行一次
+    onMount(() => {
+        //
+    });
+
 
 </script>
 
@@ -114,8 +128,8 @@
                 Framework
             </div>
             <div class="li-group-content break">
-                <button type="button" class="a-btn font-blue click" onclick={()=>open_url_with_default_browser("https://github.com/fyonecon/Ginthon?ap=app", "_blank")}>Ginthon(Python)</button>
-                <button type="button" class="a-btn font-blue click" onclick={()=>open_url_with_default_browser("https://github.com/fyonecon/Waigo?ap=app", "_blank")}>Waigo(Golang)</button>
+                <button type="button" class="a-btn font-blue click" onclick={()=>def.open_url_with_default_browser("https://github.com/fyonecon/Ginthon?ap=app", "_blank")}>Ginthon(Python)</button>
+                <button type="button" class="a-btn font-blue click" onclick={()=>def.open_url_with_default_browser("https://github.com/fyonecon/Waigo?ap=app", "_blank")}>Waigo(Golang)</button>
             </div>
         </li>
         <li class="li-group">
@@ -123,10 +137,10 @@
                 UI
             </div>
             <div class="li-group-content break">
-                <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>open_url_with_default_browser("https://svelte.js.cn/docs/svelte/overview", "_blank")}>SvelteKit</button>
-                <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>open_url_with_default_browser("https://www.skeleton.dev/docs/svelte/guides/mode", "_blank")}>SkeletonUI</button>
-                <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>open_url_with_default_browser("https://www.tailwindcss.cn/docs/installation", "_blank")}>Tailwind CSS</button>
-                <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>open_url_with_default_browser("https://icon-sets.iconify.design/solar/", "_blank")}>Iconify SVG</button>
+                <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>def.open_url_with_default_browser("https://svelte.js.cn/docs/svelte/overview", "_blank")}>SvelteKit</button>
+                <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>def.open_url_with_default_browser("https://www.skeleton.dev/docs/svelte/guides/mode", "_blank")}>SkeletonUI</button>
+                <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>def.open_url_with_default_browser("https://www.tailwindcss.cn/docs/installation", "_blank")}>Tailwind CSS</button>
+                <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>def.open_url_with_default_browser("https://icon-sets.iconify.design/solar/", "_blank")}>Iconify SVG</button>
             </div>
         </li>
     </ul>

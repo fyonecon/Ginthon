@@ -1,4 +1,27 @@
 <script lang="ts">
+    import {onMount} from "svelte";
+    import {afterNavigate} from "$app/navigation";
+
+
+    // 本页面参数
+
+
+    // 本页面函数
+    const def = {
+        //
+    };
+
+
+    // 刷新页面数据
+    afterNavigate(() => {
+        //
+    });
+
+
+    // 页面装载完成后，只运行一次
+    onMount(() => {
+        //
+    });
 
 
 </script>
