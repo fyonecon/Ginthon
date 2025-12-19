@@ -129,10 +129,10 @@ Ginthon-Main
 │   ├── tray
 │   └── view 前端视图（可多视图框架切换）
 │       ├── svelte 视图UI（默认SvelteKit）
-│       ├── src 视图发开发文件
-│       │   └── lib 页面、公共文件、公共函数。   
-│       │   └── routes 路由、layout。
-│       ├── static 静态文件
+│           ├── src 视图发开发文件
+│           │   └── lib 页面、公共文件、公共函数。   
+│           │   └── routes 路由、layout。
+│           ├── static 静态文件
 │       ├── vue 视图UI（查看文件/frontend/view/README.md）
 │       ├── index.html （单页应用请使用此文件）
 │       ├── readme.md 🔥前端操作记录与教程
