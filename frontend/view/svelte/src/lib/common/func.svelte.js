@@ -5,7 +5,7 @@ import { browser } from '$app/environment';
 import md5 from 'md5';
 import { setContext, getContext } from 'svelte';
 import config from "$lib/config.js";
-import lang_dict from "$lib/common/language.js";
+import lang_dict from "$lib/common/translate.js";
 // import {AppServicesForWindow} from "../../bindings/datathink.top/Waigo/internal/bootstrap";
 
 // 复用函数
