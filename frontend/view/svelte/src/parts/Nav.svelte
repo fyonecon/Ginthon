@@ -24,9 +24,11 @@
 </script>
 
 
-<section class="section-nav bg-neutral-200 dark:bg-neutral-800  pywebview-drag-region can-drag">
+<section class="section-nav pywebview-drag-region can-drag">
     <!--  标题  -->
-    <div class="nav-title-div center select-none font-title font-bold" data-nav_value="{side_tab_data.tab_value}">{side_tab_data.tab_name}</div>
+    <div class="nav-title-div select-none font-title font-bold" data-nav_value="{side_tab_data.tab_value}">
+        {side_tab_data.tab_name}
+    </div>
 
 </section>
 
@@ -34,7 +36,7 @@
     .section-nav {
         position: fixed;
         z-index: 0;
-        width: calc(100% - 220px);
+        width: calc(100% - 220px - 80px);
         height: 50px;
         top: 0;
         right: 0;
@@ -45,6 +47,8 @@
         height: 50px;
         line-height: 50px;
         overflow: hidden;
+        padding-left: 10px;
+        padding-right: 10px;
         opacity: 0.8;
     }
 </style>

@@ -14,9 +14,9 @@
     let time = $state(func.get_time_date("YmdHis"));
     // CSS显示数据
     let before_href = $state('');
-    let before_click = $state('hide');
+    let before_click = $state('director-btn-not_click');
     let next_href = $state('');
-    let next_click = $state('hide');
+    let next_click = $state('director-btn-not_click');
     // 本页面函数
     const def = {
         open_href: function(href="") { // 打开链接
@@ -160,23 +160,23 @@
                 }
                 //
                 if(direction_history.length <= 1){
-                    before_click = "hide";
-                    next_click = "hide";
+                    before_click = "director-btn-not_click";
+                    next_click = "director-btn-not_click";
                 }else{
                     //
                     if (before_href === "" && next_href === ""){
-                        before_click = "hide";
-                        next_click = "hide";
+                        before_click = "director-btn-not_click";
+                        next_click = "director-btn-not_click";
                     }else{
                         if (before_href === "") {
-                            before_click = "hide";
+                            before_click = "director-btn-not_click";
                         }else{
-                            before_click = "click";
+                            before_click = "director-btn-click";
                         }
                         if (next_href === "") {
-                            next_click = "hide";
+                            next_click = "director-btn-not_click";
                         }else {
-                            next_click = "click";
+                            next_click = "director-btn-click";
                         }
                     }
                 }
@@ -194,13 +194,13 @@
 
 </script>
 
-<section class="section-director bg-neutral-200 dark:bg-neutral-800">
+<section class="section-director no-drag">
     <!--  导航  -->
-    <div class="director-div select-none font-text border-radius no-drag">
-        <button type="button" class="director-span nav-director-span-left {before_click} border-radius font-blue" title="Before" data-href="{before_href}" onclick={()=>def.open_href(before_href)}>
+    <div class="director-div select-none font-text">
+        <button type="button" class="director-btn director-btn-left {before_click} border-radius font-blue" title="Before" data-href="{before_href}" onclick={()=>def.open_href(before_href)}>
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M15.488 4.43a.75.75 0 0 1 .081 1.058L9.988 12l5.581 6.512a.75.75 0 1 1-1.138.976l-6-7a.75.75 0 0 1 0-.976l6-7a.75.75 0 0 1 1.057-.081" clip-rule="evenodd"/></svg>
         </button>
-        <button type="button" class="director-span nav-director-span-right {next_click} border-radius font-blue" title="Next" data-href="{next_href}" onclick={()=>def.open_href(next_href)}>
+        <button type="button" class="director-btn director-btn-right {next_click} border-radius font-blue" title="Next" data-href="{next_href}" onclick={()=>def.open_href(next_href)}>
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M8.512 4.43a.75.75 0 0 1 1.057.082l6 7a.75.75 0 0 1 0 .976l-6 7a.75.75 0 0 1-1.138-.976L14.012 12L8.431 5.488a.75.75 0 0 1 .08-1.057" clip-rule="evenodd"/></svg>
         </button>
     </div>
@@ -221,7 +221,7 @@
     .director-div{
         position: absolute;
         top: 0;
-        left: 0;
+        left: 4px;
         height: 50px;
         line-height: 50px;
         width: 80px;
@@ -229,18 +229,27 @@
         overflow: hidden;
         clear: both;
     }
-    .director-span{
-        height: 40px;
-        line-height: 40px;
-        width: 40px;
+    .director-btn{
+        height: 36px;
+        line-height: 36px;
+        width: 36px;
         text-align: center;
         float: left;
         border: 0;
         outline: none;
-        margin-top: 5px;
+        margin-top: 7px;
     }
-    .director-span > svg{
+    .director-btn-click:hover{
+        background-color: rgba(180, 180, 180, 0.2);
+    }
+    .director-btn-click:active{
+        background-color: rgba(180, 180, 180, 0.4);
+    }
+    .director-btn-not_click{
+        color: rgba(180, 180, 180, 0.6);
+    }
+    .director-btn > svg{
         float: inherit !important;
-        margin-left: 10px;
+        margin-left: 8px;
     }
 </style>

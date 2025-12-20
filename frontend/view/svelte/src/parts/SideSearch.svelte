@@ -19,10 +19,10 @@
 
 </script>
 
-<section class="section-side_search select-none bg-neutral-200 dark:bg-neutral-800 border-radius">
-    <div class="side-search font-text select-text">
+<section class="section-side_search select-none bg-neutral-200 dark:bg-neutral-800">
+    <div class="side-search font-text">
         <label class="label">
-            <input class="side-search-input input w-full border-radius font-text" type="text" maxlength="1000" placeholder="Input..." />
+            <input class="side-search-input input w-full border-radius font-text select-text" type="text" maxlength="1000" placeholder="Input..." />
         </label>
     </div>
 </section>
@@ -32,14 +32,14 @@
         position: fixed;
         z-index: 0;
         width: 220px;
-        height: 50px;
+        height: 42px;
         top: 50px;
         left: 0;
     }
 
 
     .side-search{
-        height: 50px;
+        height: 40px;
         padding: 0 2px;
     }
     .side-search-input{

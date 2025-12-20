@@ -23,7 +23,7 @@
 
 <section class="section-side_logo scroll-y-style select-none pywebview-drag-region can-drag bg-neutral-200 dark:bg-neutral-800">
     <div class="side-logo select-none center">
-        <span class="font-class">{app_name}</span>
+        <span class="font-class hide">{app_name}</span>
         <span class="font-mini hide"> v{app_version}</span>
     </div>
 </section>
@@ -37,11 +37,14 @@
         top: 0;
         left: 0;
         overflow: hidden;
+        padding: 5px 10px;
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;
     }
 
     .side-logo{
-        height: 50px;
-        line-height: 50px;
+        height: 40px;
+        line-height: 40px;
         overflow: hidden;
         width: calc(100% - 0px);
         padding: 0 10px;
