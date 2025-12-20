@@ -791,6 +791,19 @@ const func = {
             //
         }
     },
+    open_url_with_default_browser: function (url=""){ // 用系统浏览器打开链接
+        let that = this;
+        //
+        let target = "_blank";
+        if (that.is_gthon() || that.is_wails()){
+            that.js_call_py_or_go("open_url_with_default_browser", {
+                url: url,
+                target: target,
+            }).then(result => {});
+        }else{
+            that.open_url(url, target);
+        }
+    },
     fresh_page: function (timeout_ms=500){
         let that = this;
         if (timeout_ms<=0){

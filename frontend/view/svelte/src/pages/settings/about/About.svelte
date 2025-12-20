@@ -22,14 +22,7 @@
 
     // 本页面函数
     const def = {
-        open_url_with_default_browser: function (url="", target="_self") { // 打开默认浏览器
-            let that = this;
-            //
-            func.js_call_py_or_go("open_url_with_default_browser", {
-                url: url,
-                target: target,
-            }).then(result => {});
-        }
+        //
     };
 
 
@@ -128,8 +121,8 @@
                 Framework
             </div>
             <div class="li-group-content break">
-                <button type="button" class="a-btn font-blue click" onclick={()=>def.open_url_with_default_browser("https://github.com/fyonecon/Ginthon?ap=app", "_blank")}>Ginthon(Python)</button>
-                <button type="button" class="a-btn font-blue click" onclick={()=>def.open_url_with_default_browser("https://github.com/fyonecon/Waigo?ap=app", "_blank")}>Waigo(Golang)</button>
+                <button type="button" class="a-btn font-blue click" onclick={()=>func.open_url_with_default_browser("https://github.com/fyonecon/Ginthon?ap=app")}>Ginthon(Python)</button>
+                <button type="button" class="a-btn font-blue click" onclick={()=>func.open_url_with_default_browser("https://github.com/fyonecon/Waigo?ap=app")}>Waigo(Golang)</button>
             </div>
         </li>
         <li class="li-group">
@@ -137,10 +130,10 @@
                 UI
             </div>
             <div class="li-group-content break">
-                <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>def.open_url_with_default_browser("https://svelte.js.cn/docs/svelte/overview", "_blank")}>SvelteKit</button>
-                <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>def.open_url_with_default_browser("https://www.skeleton.dev/docs/svelte/guides/mode", "_blank")}>SkeletonUI</button>
-                <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>def.open_url_with_default_browser("https://www.tailwindcss.cn/docs/installation", "_blank")}>Tailwind CSS</button>
-                <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>def.open_url_with_default_browser("https://icon-sets.iconify.design/solar/", "_blank")}>Iconify SVG</button>
+                <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>func.open_url_with_default_browser("https://svelte.js.cn/docs/svelte/overview")}>SvelteKit</button>
+                <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>func.open_url_with_default_browser("https://www.skeleton.dev/docs/svelte/guides/mode")}>SkeletonUI</button>
+                <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>func.open_url_with_default_browser("https://www.tailwindcss.cn/docs/installation")}>Tailwind CSS</button>
+                <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>func.open_url_with_default_browser("https://icon-sets.iconify.design/solar/")}>Iconify SVG</button>
             </div>
         </li>
     </ul>

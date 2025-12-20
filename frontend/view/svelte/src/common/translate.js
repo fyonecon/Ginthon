@@ -55,6 +55,14 @@ const lang_dict = {
         zh: "我的",
         en: "Me",
     },
+    user_tips: {
+        zh: "设置",
+        en: "Settings",
+    },
+    user_need_login: {
+        zh: "请登录...",
+        en: "Please login...",
+    },
     ThemeModel: {
         zh: "主题",
         en: "Themes",
@@ -109,6 +117,8 @@ const lang_dict = {
         zh: "暗",
         en: "Dark",
     },
+    //
+
 
     // =========
 //

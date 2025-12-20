@@ -47,6 +47,7 @@ html {
 
 .break-ellipsis {
 	text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 ::selection {

@@ -74,7 +74,7 @@
         z-index: 0;
         width: 220px;
         padding: 0 10px 10px 10px;
-        height: calc(100% - 92px - 40px);
+        height: calc(100% - 92px - 70px);
         top: 92px;
         left: 0;
     }
