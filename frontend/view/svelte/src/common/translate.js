@@ -69,8 +69,8 @@ const lang_dict = {
     },
     //
     ITHome: {
-        zh: "IT之家",
-        en: "ITHome",
+        zh: "爬IT之家",
+        en: "Spider ITHome",
     },
     //
     btn_cancel: {

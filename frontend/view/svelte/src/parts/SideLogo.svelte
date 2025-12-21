@@ -7,7 +7,7 @@
     let app_name = $state(config.app.app_name);
     let app_version = $state(config.app.app_version);
 
-    // 本页面函数
+    // 本页面函数：Svelte的HTML组件onXXX=中正确调用：={()=>def.xxx()}
     const def = {
         //
     };

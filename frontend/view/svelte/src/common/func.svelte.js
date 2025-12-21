@@ -6,6 +6,7 @@ import md5 from 'md5';
 import { setContext, getContext } from 'svelte';
 import config from "../config.js";
 import lang_dict from "../common/translate.js";
+import FetchGET from "./get.svelte.js";
 // import {AppServicesForWindow} from "../../bindings/datathink.top/Waigo/internal/bootstrap";
 
 // 复用函数
@@ -70,6 +71,15 @@ const func = {
         //
         if(browser){
             return page.url.href;
+        }else {
+            return "";
+        }
+    },
+    get_host: function(){
+        let that = this;
+        //
+        if(browser){
+            return page.url.host;
         }else {
             return "";
         }
@@ -820,6 +830,7 @@ const func = {
     },
     get_app_uid: function (){ // 随机app_uid
         let that = this;
+        //
         let app_uid = that.get_local_data(config.app.app_class+"app_uid");
         if (app_uid.length < 16){
             app_uid = that.md5(config.app.app_class+that.get_time_ms()+that.js_rand(1000000000000, 999999999999)+that.get_agent()+(navigator.language?navigator.language:"-"));
@@ -827,6 +838,34 @@ const func = {
         }else{
             return app_uid;
         }
+    },
+    ping: function (url) {
+        let that = this;
+        //
+        return new Promise((resolve, reject) => {
+            FetchGET(url, {}, 5).then(result => {
+                let state = 0;
+                let msg  = "";
+                if (result.state !== 404) {
+                    state = 1;
+                    msg  = "接口访问成功，但status状态可能是200、30X。";
+                } else {
+                    state = 404;
+                    msg  = "超时或者接口无效。";
+                }
+                resolve({
+                    state: state,
+                    msg: msg,
+                    result: result,
+                });
+            }).catch(err=>{
+                resolve({
+                    state: 404,
+                    msg: "",
+                    result: {},
+                });
+            });
+        });
     },
 
     //

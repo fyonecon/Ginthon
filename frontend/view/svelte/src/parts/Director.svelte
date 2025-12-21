@@ -17,7 +17,7 @@
     let before_click = $state('director-btn-not_click');
     let next_href = $state('');
     let next_click = $state('director-btn-not_click');
-    // 本页面函数
+    // 本页面函数：Svelte的HTML组件onXXX=中正确调用：={()=>def.xxx()}
     const def = {
         open_href: function(href="") { // 打开链接
             let that = this;

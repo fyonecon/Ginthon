@@ -7,7 +7,7 @@
     // 本页面参数
 
 
-    // 本页面函数
+    // 本页面函数：Svelte的HTML组件onXXX=中正确调用：={()=>def.xxx()}
     const def = {
         //
     };

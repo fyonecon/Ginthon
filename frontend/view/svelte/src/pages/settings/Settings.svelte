@@ -18,7 +18,7 @@
     let app_version = $state(config.app.app_version);
 
 
-    // 本页面函数
+    // 本页面函数：Svelte的HTML组件onXXX=中正确调用：={()=>def.xxx()}
     const def = {
         choose_language: function (lang=""){  // 显示和设置语言
             let that = this;

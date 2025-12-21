@@ -20,7 +20,7 @@
     let language_index = $state(func.get_local_data(config.app.app_class + "language_index"));
 
 
-    // 本页面函数
+    // 本页面函数：Svelte的HTML组件onXXX=中正确调用：={()=>def.xxx()}
     const def = {
         //
     };
