@@ -20,7 +20,15 @@
             //
             loading_tip = "Loading..."
             //
-            const _api_url = "http://127.0.0.1:9750/api/spider/ithome";
+            let port = "";
+            if (func.is_wails()){
+                port = "9850";
+            }else if(func.is_gthon()){
+                port = "9750";
+            }else{
+                port = "80";
+            }
+            const _api_url = "http://127.0.0.1:"+port+"/api/spider/ithome";
             const _app_token = func.get_local_data("app_token");
             const body_dict = {
                 app_token: _app_token,
