@@ -3,10 +3,12 @@ import { goto } from '$app/navigation';
 import { page } from '$app/state';
 import { browser } from '$app/environment';
 import md5 from 'md5';
+import Dexie from 'dexie';
 import { setContext, getContext } from 'svelte';
 import config from "../config.js";
 import lang_dict from "../common/translate.js";
 import FetchGET from "./get.svelte.js";
+import dexie_kv_db from "./db_kv.svelte.js";
 // import {AppServicesForWindow} from "../../bindings/datathink.top/Waigo/internal/bootstrap";
 
 // 复用函数
@@ -134,7 +136,7 @@ const func = {
     js_rand: function (min, max) { // [min, max]
         return Math.floor(Math.random() * (max - min + 1) + min);
     },
-    set_local_data: function (key, value){ // 新增或更新数据（总和最大4M，关闭页面值不会消失）
+    set_local_data: function (key, value){ // 新增或更新数据（总和最大5M，关闭页面值不会消失。尽量总条数小于50条，每条小于100KB。）
         let that = this;
         key = that.url_encode(key); // 支持中文和特殊字符
         //
@@ -864,6 +866,66 @@ const func = {
                     msg: "",
                     result: {},
                 });
+            });
+        });
+    },
+    set_db_data: function (key, value) { // 健值对方式存储数据到indexDB，单条大小无限制。
+        let that = this;
+        //
+        key = that.url_encode(key)
+            .replaceAll("%", "_")
+            .replaceAll("$", "-")
+            .replaceAll("!", "_-")
+            .replaceAll("^", "_-");
+        let data_dict_array = [
+            {
+                only_key: key,
+                any_type_value: value,
+                update_time: that.get_time_s_date("YmdHis")*1,  // 使用时间戳
+                remark: "func-set",
+            }
+        ];
+        return new Promise((resolve) => {
+            dexie_kv_db.update_db_data(data_dict_array).then(ids_array => {
+                if (ids_array.length >= 1){
+                    that.get_db_data(key).then(value=>{
+                        resolve(value);
+                    });
+                }else{
+                    resolve("");
+                }
+            });
+        });
+    },
+    get_db_data: function (key){
+        let that = this;
+        //
+        key = that.url_encode(key)
+            .replaceAll("%", "_")
+            .replaceAll("$", "-")
+            .replaceAll("!", "_-")
+            .replaceAll("^", "_-");
+        return new Promise((resolve) => {
+            dexie_kv_db.get_db_data(key).then(result => {
+                if (result){
+                    resolve(result.any_type_value);
+                }else{
+                    resolve("");
+                }
+            });
+        });
+    },
+    del_db_data: function (key){
+        let that = this;
+        //
+        key = that.url_encode(key)
+            .replaceAll("%", "_")
+            .replaceAll("$", "-")
+            .replaceAll("!", "_-")
+            .replaceAll("^", "_-");
+        return new Promise((resolve) => {
+            dexie_kv_db.del_db_data(key).then(state => {
+                resolve(state);
             });
         });
     },

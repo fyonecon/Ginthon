@@ -15,6 +15,7 @@
     let ping_youtube = $state("...");
     let ping_ithome = $state("...");
     let ping_host = $state("...");
+    let test_db_data = $state("...");
 
     // 本页面函数：Svelte的HTML组件onXXX=中正确调用：={()=>def.xxx()}
     const def = {
@@ -54,6 +55,16 @@
             });
             that.ping_url("http://"+func.get_host()).then(msg => {
                 ping_host = msg;
+            });
+        },
+        test_db: function(){
+            let that = this;
+            //
+            test_db_data = "Loading...";
+            let mark = func.get_time_date("Y-m-d H:i");
+            func.set_db_data("test_" + mark, "This db data. " + mark).then(value=>{
+                console.log(value);
+                test_db_data = value;
             });
         },
     };
@@ -102,6 +113,14 @@
                     <span class="ping-url">http://{func.get_host()}</span>
                     <span class="ping-res">{@html ping_host}</span>
                 </p>
+            </div>
+        </li>
+        <li class="li-group select-none">
+            <div class="li-group-title break">
+                indexDB <button type="button" class="btn btn-sm preset-filled-primary-500" onclick={()=>def.test_db()} title="Click">Start</button>
+            </div>
+            <div class="li-group-content">
+                <p>{test_db_data}</p>
             </div>
         </li>
 
