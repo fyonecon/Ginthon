@@ -28,7 +28,7 @@ const FetchGET = function (api_url, body_dict = {}, timeout_s = 10) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                mode: 'no-cors', // cors, no-cors, same-origin
+                mode: 'no-cors', // cors, no-cors, same-origin。GET请使用no-cors，POST请使用cors。
                 cache: 'no-cache', // default, no-cache, reload, force-cache, only-if-cached
                 signal: controller.signal, // 关键：绑定中断信号
             });

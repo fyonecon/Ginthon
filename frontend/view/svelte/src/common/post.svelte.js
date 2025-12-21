@@ -39,7 +39,7 @@ const FetchPOST = function (api_url, body_dict = {}, timeout_s = 20) {
                 method: 'POST',
                 headers: headers,
                 body: requestBody,
-                mode: 'no-cors', // cors, no-cors, same-origin
+                mode: 'cors', // cors, no-cors, same-origin。GET请使用no-cors，POST请使用cors。
                 cache: 'no-cache', // default, no-cache, reload, force-cache, only-if-cached
                 credentials: 'omit', // 控制是否发送 cookies
                 signal: controller.signal, // 关键：绑定中断信号
@@ -47,6 +47,8 @@ const FetchPOST = function (api_url, body_dict = {}, timeout_s = 20) {
 
             // 清除超时定时器
             clearTimeout(timeoutId);
+
+            console.log("response.ok=", response, response.ok);
 
             if (!response.ok) {
                 state = 0;
