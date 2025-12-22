@@ -187,7 +187,7 @@ def tray_create():
 
     # 创建菜单
     menu = pystray.Menu(
-        pystray.MenuItem(text="❇️ " + get_translate("show_window"), action=on_show_or_hide, default=True),
+        pystray.MenuItem(text="" + get_translate("show_window"), action=on_show_or_hide, default=True),
         pystray.Menu.SEPARATOR,
         # pystray.MenuItem(text="❗️ 关于"+CONFIG["app"]["app_name"], action=on_about, default=False),
         # pystray.Menu.SEPARATOR,
