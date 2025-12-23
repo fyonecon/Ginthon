@@ -22,7 +22,7 @@
 <section class="section-side_search select-none bg-neutral-200 dark:bg-neutral-800">
     <div class="side-search font-text">
         <label class="label">
-            <input class="side-search-input input w-full border-radius font-text select-text" type="text" maxlength="1000" placeholder="Input..." />
+            <input class="side-search-input input-style w-full border-radius font-text select-text" type="text" maxlength="2000" placeholder="Input..." value="" />
         </label>
     </div>
 </section>
@@ -41,11 +41,6 @@
     .side-search{
         height: 40px;
         padding: 0 2px;
-    }
-    .side-search-input{
-        height: 40px;
-        display: block;
-        background: rgba(200, 200, 200, 0.1);
     }
 
 </style>

@@ -20,15 +20,7 @@
             //
             loading_tip = "Loading..."
             //
-            let port = "";
-            if (func.is_wails()){
-                port = "9850";
-            }else if(func.is_gthon()){
-                port = "9750";
-            }else{
-                port = "80";
-            }
-            const _api_url = "http://127.0.0.1:"+port+"/api/spider/ithome";
+            const _api_url = config.api.api_host+"/api/spider/ithome";
             const _app_token = func.get_local_data("app_token");
             const body_dict = {
                 app_token: _app_token,
@@ -72,7 +64,7 @@
             <div class="li-group-title break">
                 爬IT之家首页 <button type="button" class="btn btn-sm preset-filled-primary-500" onclick={()=>def.read_ithome()} title="Click">Start</button>
             </div>
-            <div class="li-group-content">
+            <div class="li-group-content select-text">
                 <div style="height: 5px;"></div>
                 <div>{loading_tip}</div>
                 <ul>

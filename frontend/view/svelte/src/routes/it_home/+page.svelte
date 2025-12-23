@@ -1,12 +1,12 @@
 <script lang="ts">
     import { resolve } from '$app/paths';
     import func from "../../common/func.svelte.js";
-    import ITHome from "../../pages/ithome/ITHome.svelte";
+    import ITHome from "../../pages/it_home/ITHome.svelte";
 
 </script>
 
 <svelte:head>
-    <title>ITHome</title>
+    <title>{func.get_translate("ITHome")}</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
 </svelte:head>

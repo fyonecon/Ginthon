@@ -35,7 +35,7 @@
 
 </script>
 
-<div>
+<div class="select-text">
     <br/>
     <h2 class="break">{error_msg?error_msg:"404"}</h2>
     <br/>

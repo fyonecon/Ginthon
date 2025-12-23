@@ -37,6 +37,8 @@ const FetchGET = function (api_url, body_dict = {}, timeout_s = 10) {
             clearTimeout(timeoutId);
 
             if (!response.ok) {
+                console.warn("response.ok=", response, response.ok);
+
                 state = 0;
                 msg = "GET Status Error.";
                 content = {

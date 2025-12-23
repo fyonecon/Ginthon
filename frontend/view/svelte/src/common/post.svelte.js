@@ -48,9 +48,9 @@ const FetchPOST = function (api_url, body_dict = {}, timeout_s = 20) {
             // 清除超时定时器
             clearTimeout(timeoutId);
 
-            console.log("response.ok=", response, response.ok);
-
             if (!response.ok) {
+                console.warn("response.ok=", response, response.ok);
+
                 state = 0;
                 msg = `POST Status Error.`;
                 content = {

@@ -116,7 +116,7 @@
                 {theme_model}
             </div>
         </li>
-        <li class="li-group select-text">
+        <li class="li-group select-none">
             <div class="li-group-title break">
                 Framework
             </div>
@@ -125,7 +125,7 @@
                 <button type="button" class="a-btn font-blue click" onclick={()=>func.open_url_with_default_browser("https://github.com/fyonecon/Waigo?ap=app")}>Waigo(Golang)</button>
             </div>
         </li>
-        <li class="li-group">
+        <li class="li-group select-none">
             <div class="li-group-title break">
                 UI
             </div>

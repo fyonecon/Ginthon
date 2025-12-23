@@ -4,7 +4,7 @@ const config = {
     app: {
         app_name: "Ginthon",
         app_class: "ginthon_sv_", // ginthon_sv_ 、waigo_sv_
-        app_version: "1.6.2", // 1.0.0
+        app_version: "1.6.3", // 1.0.0
     },
     sys:{
         backend: "py", // go、py
@@ -12,6 +12,7 @@ const config = {
     },
     api: {
         js_call_py_url: "http://127.0.0.1:9750/api/js_call_py", // http://127.0.0.1:9750/api/js_call_py 、http://127.0.0.1:9850/api/js_call_go
+        api_host: "http://127.0.0.1:9750", // http://127.0.0.1:9750、http://127.0.0.1:9850
     },
 };
 export default config;

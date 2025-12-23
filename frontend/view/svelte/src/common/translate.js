@@ -39,6 +39,10 @@ const lang_dict = {
         zh: "404 页面不存在",
         en: "404 Not Found",
     },
+    Example: {
+        zh: "例子",
+        en: "Example",
+    },
     Home: {
         zh: "主页",
         en: "Home",
@@ -71,6 +75,10 @@ const lang_dict = {
     ITHome: {
         zh: "爬IT之家",
         en: "Spider ITHome",
+    },
+    PlayAudio: {
+        zh: "播放音频",
+        en: "Play Audio",
     },
     //
     btn_cancel: {
@@ -118,7 +126,14 @@ const lang_dict = {
         en: "Dark",
     },
     //
-
+    playing: {
+        zh: "正在播放...",
+        en: "Playing...",
+    },
+    play_paused: {
+        zh: "已暂停。",
+        en: "Paused.",
+    },
 
     // =========
 //

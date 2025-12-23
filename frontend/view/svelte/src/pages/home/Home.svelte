@@ -91,7 +91,7 @@
             <div class="li-group-title break">
                 Ping Network <button type="button" class="btn btn-sm preset-filled-primary-500" onclick={()=>def.ping_show()} title="Click">Start</button>
             </div>
-            <div class="li-group-content">
+            <div class="li-group-content select-text">
                 <div style="height: 5px;"></div>
                 <p class="li-ping-p break">
                     <span class="ping-url">https://www.google.com</span>
@@ -119,7 +119,7 @@
             <div class="li-group-title break">
                 indexDB <button type="button" class="btn btn-sm preset-filled-primary-500" onclick={()=>def.test_db()} title="Click">Start</button>
             </div>
-            <div class="li-group-content">
+            <div class="li-group-content select-text">
                 <p>{test_db_data}</p>
             </div>
         </li>
