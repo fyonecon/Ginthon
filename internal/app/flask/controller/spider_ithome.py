@@ -12,7 +12,7 @@ from internal.common.func import url_encode
 
 
 #
-def read_spider_ithome():
+def read_spider_it_home(request):
     it_url = "https://m.ithome.com"
 
     # 随机agent

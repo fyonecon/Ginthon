@@ -167,10 +167,14 @@ def cache_path():
     else: # 其他平台
         return ""
 
-# 转路径的反斜杠
+# 转路径的反斜杠，并删除最后一位是 /
 def converted_path(path:str):
     path = path.replace('\\', '/')
     path = re.sub(r'\\+', '/', path)
+    path = path.replace('//', '/')
+    if path.endswith('/'):
+        path = path[:-1]  # 移除最后一位 /
+        pass
     return path
 
 # 是否是网址
@@ -425,5 +429,4 @@ def get_translate(key="", lang=""):
         else:
             return lang_dict["_null"]["en"]
     pass
-
 

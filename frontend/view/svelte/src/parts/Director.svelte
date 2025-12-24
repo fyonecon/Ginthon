@@ -3,7 +3,8 @@
     import { page } from '$app/state';
     import { afterNavigate, beforeNavigate } from "$app/navigation";
     import config from "../config.js";
-    import { side_tab_data } from '../stores/side_tab.store.svelte.js';
+    import {browser} from "$app/environment";
+    import {onMount} from "svelte";
 
 
     // 历史记录算法 >>>>>>
@@ -46,12 +47,14 @@
                     * /home - /settings?id=1 - /settings/about - /spider - /settings?id=2
                     * 依次添加每个访问href，如果route一样，params不一样，则删除老的route，添加新的route。每次到主路由home就删除历史访问。
                     * */
+                    let now_href = now_director_dict.href;
                     let now_route = now_director_dict.route;
                     let now_params = now_director_dict.params;
                     for (let i = 0; i < the_direction_urls_array.length; i++) {
+                        let the_href = the_direction_urls_array[i].href;
                         let the_route = the_direction_urls_array[i].route;
                         let the_params = the_direction_urls_array[i].params;
-                        if (now_route === the_route) { // 已存在路由历史，则删除历史
+                        if (now_href === the_href) { // 已存在路由历史，则删除历史
                             // the_direction_urls_array.splice(i, 1);
                             // console.log("已存在路由=", now_route, i, the_direction_urls_array.length);
                             resolve(the_direction_urls_array);
@@ -84,14 +87,16 @@
                 the_direction_urls_array = func.string_to_json(the_direction_urls);
             }
             if (the_direction_urls_array.length > 0){
+                let now_href = now_director_dict.href;
                 let now_route = now_director_dict.route;
                 let now_params = now_director_dict.params;
                 let len = the_direction_urls_array.length;
                 //
                 for (let i = 0; i < the_direction_urls_array.length; i++){
+                    let the_href = the_direction_urls_array[i].href;
                     let the_route = the_direction_urls_array[i].route;
                     let the_params = the_direction_urls_array[i].params;
-                    if (now_route === the_route) { // 主路由一样，则删除历史
+                    if (now_href === the_href) { // 主路由一样，则删除历史
                         if (len>=2){ // 至少有两个访问记录
                             if (i === 0){ // 第一个 >>>
                                 the_before_director_dict = the_direction_urls_array[i];
@@ -141,9 +146,10 @@
                 //
                 try {
                     if (get_direction.before_director.route) {
+                        let the_before_href = get_direction.before_director.href;
                         let the_before_route = get_direction.before_director.route;
                         let the_before_params = get_direction.before_director.params;
-                        before_href = func.url_path(the_before_route+func.unicode_to_string(the_before_params));
+                        before_href = func.unicode_to_string(the_before_href);
                     }
                 }catch(err){
                     before_href = "";
@@ -151,9 +157,10 @@
                 //
                 try {
                     if (get_direction.next_director.route) {
+                        let the_next_href = get_direction.next_director.href;
                         let the_next_route = get_direction.next_director.route;
                         let the_next_params = get_direction.next_director.params;
-                        next_href = func.url_path(the_next_route+func.unicode_to_string(the_next_params));
+                        next_href = func.unicode_to_string(the_next_href);
                     }
                 }catch(err){
                     next_href = "";
@@ -188,7 +195,13 @@
 
     // 刷新页面数据
     afterNavigate(() => {
-        def.show_direction();
+        def.show_direction(); // 支持goto()链接带参数
+    });
+
+    // 页面装载完成后，只运行一次
+    onMount(() => {
+        //
+        def.show_direction(); // 支持goto()链接带参数
     });
 
 

@@ -1,47 +1,81 @@
-from internal.common.func import cache_path
-from internal.common.kits.local_database import local_database_get_data
+import os
 
+from internal.common.func import converted_path, url_decode
+from internal.common.kits.local_database import local_database_get_data
+from internal.common.request_input import request_input
 
 #
-def get_play_audio_list():
-    state = 1
-    msg = "完成"
 
-    list = [
-        {
-            "filename": "青花瓷",
-            "href": "http://192.168.101.198:9550/read_file?show_path=%E9%9F%B3%E4%B9%90%E7%A6%BB%E7%BA%BF4%2F%E5%91%A8%E6%9D%B0%E4%BC%A6%20-%20%E9%9D%92%E8%8A%B1%E7%93%B7.flac&token=4c30f4f1a3f23745bca4e053ec8384c6&url_timeout=8L6F4ORBc3j6fsaRhs9t47ZDPYJxC_@-V_@-1ediHGGBNOFbjPdQqCjunBvlG3Td6eh1sC1OLwq_@-FdUvU0bq9dPBLNU7jhKWEOW9JizupJI9nAj2YqCtEo9ICSbeYXpSiTb/7ia2qqq9jlg_@_&ap=preview ",
-            "cover": "",
-        },
-        {
-            "filename": "断了的弦",
-            "href": "http://192.168.101.198:9550/read_file?show_path=%E9%9F%B3%E4%B9%90%E7%A6%BB%E7%BA%BF4%2F%E6%96%AD%E4%BA%86%E7%9A%84%E5%BC%A6.flac&token=4c30f4f1a3f23745bca4e053ec8384c6&url_timeout=8L6F4ORBc3j6fsaRhs9t47ZDPYJxC_@-V_@-1ediHGGBNOFbjPdQqCjunBvlG3Td6eh1sC1OLwq_@-FdUvU0bq9dPBLNU7jhKWEOW9JizupJI9nAj2YqCtEo9ICSbeYXpSiTb/7ia2qqq9jlg_@_&ap=preview  ",
-            "cover": "",
-        },
-        {
-            "filename": "此生不换DJ",
-            "href": "http://192.168.101.198:9550/read_file?show_path=%E9%9F%B3%E4%B9%90%E7%A6%BB%E7%BA%BF4%2F%E6%AD%A4%E7%94%9F%E4%B8%8D%E6%8D%A2(DJ%E7%89%88).m4a&token=4c30f4f1a3f23745bca4e053ec8384c6&url_timeout=8L6F4ORBc3j6fsaRhs9t47ZDPYJxC_@-V_@-1ediHGGBNOFbjPdQqCjunBvlG3Td6eh1sC1OLwq_@-FdUvU0bq9dPBLNU7jhKWEOW9JizupJI9nAj2YqCtEo9ICSbeYXpSiTb/7ia2qqq9jlg_@_&ap=preview  ",
-            "cover": "",
-        },
-        {
-            "filename": "花海",
-            "href": "http://192.168.101.198:9550/read_file?show_path=%E9%9F%B3%E4%B9%90%E7%A6%BB%E7%BA%BF4%2F%E8%8A%B1%E6%B5%B7.flac&token=4c30f4f1a3f23745bca4e053ec8384c6&url_timeout=8L6F4ORBc3j6fsaRhs9t47ZDPYJxC_@-V_@-1ediHGGBNOFbjPdQqCjunBvlG3Td6eh1sC1OLwq_@-FdUvU0bq9dPBLNU7jhKWEOW9JizupJI9nAj2YqCtEo9ICSbeYXpSiTb/7ia2qqq9jlg_@_&ap=preview  ",
-            "cover": "",
-        },
-    ]
 
-    dir_key = "play_audio_dir-1"
-    _value, _state = local_database_get_data(dir_key)
+# 获取当前dir下的文件或目录
+def get_play_audio_list(request):
+    _now_dir = request_input(request, "now_dir")
+
+    # 转换地址格式
+    now_dir = converted_path(_now_dir)
+
+    # 目标地址
+    list_dirs = []
+    list_files = []
+    root_paths = []
+
+    # 读取文件列表
+    if len(now_dir) > 0:  # 有值就读取该目录
+        try:
+            # 读文件夹
+            with os.scandir(now_dir) as entries:
+                for entry in entries:
+                    if entry.is_file():
+                        if entry.name.find(".") == 0:  # 排除
+                            pass
+                        else:
+                            list_files.append(entry.name)
+                            pass
+                        print(f"文件: {entry.name}", entry)
+                    elif entry.is_dir():
+                        if entry.name.find(".") == 0:  # 排除
+                            pass
+                        else:
+                            list_dirs.append(entry.name)
+                            pass
+                        print(f"文件夹: {entry.name}", entry)
+                    pass
+                pass
+            pass
+            state = 1
+            msg = "OK"
+        except:
+            state = 1  # 1
+            msg = "Null"
+            pass
+        pass
+    else:  # 无值就展示已经设置的所有目录
+        play_audio_list_dir_key = "play_audio_list_dirs"
+        _value, _state = local_database_get_data(play_audio_list_dir_key)
+        if _state != -1:
+            play_audio_list_dir_array = _value.split("#@")
+            for the_dir in play_audio_list_dir_array:
+                if len(the_dir) >= 0:  # 清除空内容
+                    list_dirs.append(the_dir)
+                    pass
+                pass
+            root_paths = list_dirs
+            state = 1
+            msg = "Default Set Data"
+        else:
+            state = 0
+            msg = "Null set"
+        pass
+    pass
 
     #
     return {
         "state": state,
         "msg": msg,
         "content": {
-            "list_name": "歌单",
-            "count": len(list),
-            "list": [],
-            "dir": _value,
-            "_state": _state,
+            "list_dirs": list_dirs,
+            "list_files": list_files,
+            "view_path": now_dir,
+            "root_paths": root_paths,
         },
     }

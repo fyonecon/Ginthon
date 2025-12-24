@@ -27,6 +27,7 @@ code_salt = "2025"
 def local_database_set_data(data_key:str, data_value:str, data_timeout_s:int):
     filename = CONFIG["app"]["app_class"] + "local_"+md5(data_key+code_salt)+".lcl"
     the_file = local_path+filename
+    #
     timer = get_time_s() + data_timeout_s # 截止日期
     _value = url_encode(data_key) + "\n" + str(timer) + "\n" + str_encode(data_value, code_key)  # 写入3行数据
     if not os.path.exists(local_path):
@@ -40,6 +41,8 @@ def local_database_set_data(data_key:str, data_value:str, data_timeout_s:int):
 def local_database_get_data(data_key:str):
     filename = CONFIG["app"]["app_class"] + "local_" + md5(data_key + code_salt) + ".lcl"
     the_file = local_path + filename
+    print("[local_database_get_data]=", data_key, the_file, has_file(the_file))
+    #
     if has_file(the_file):
         _key = ""
         _timer = ""
@@ -72,9 +75,9 @@ def local_database_get_data(data_key:str):
         except:
             _last_time = _timer
             pass
-        #
+        # 处理文件过期情况
         now_time = get_time_s()
-        if _last_time <= now_time:
+        if now_time <= _last_time:
             return str_decode(_value, code_key), 1
         else:
             return "", local_database_del_data(data_key)
@@ -85,6 +88,7 @@ def local_database_get_data(data_key:str):
 def local_database_del_data(data_key:str):
     filename = CONFIG["app"]["app_class"] + "local_" + md5(data_key + code_salt) + ".lcl"
     the_file = local_path + filename
+    #
     if has_file(the_file):
         os.remove(the_file)
         return 1

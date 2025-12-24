@@ -138,8 +138,15 @@ def window_route(_WINDOW, FLASK):
         _app_class = data["app_class"]
         _app_version = data["app_version"]
         _window_token = data["window_token"]
-        _key = data["key"]
-        _data_dict = data["data_dict"]
+        # 检查必要参数
+        if data.get("key"):
+            _key = data["key"]
+        else:
+            _key = "test"
+        if data.get("data_dict"):
+            _data_dict = data["data_dict"]
+        else:
+            _data_dict = {}
         #
         window_token_state = check_rand_id(_window_token)
         js_call_py_auth_state = check_rand_token(app_class, salt_str, config, js_call_py_auth)

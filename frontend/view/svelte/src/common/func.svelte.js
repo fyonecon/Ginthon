@@ -13,6 +13,7 @@ import dexie_kv_db from "./db_kv.svelte.js";
 
 // 复用函数
 // 调用xxx = func.test();
+// @ts-ignore
 const func = {
     test: function(data_dict){
         let that = this;
@@ -928,6 +929,26 @@ const func = {
                 resolve(state);
             });
         });
+    },
+    //
+    converted_path: function (path = ""){ // 路径转成标准路径
+        path = path.replaceAll("\\", "/");
+        path = path.replaceAll("//", "/");
+        if (path.endsWith('/')) { // 删除最后一位是/
+            path = path.slice(0, -1);
+        }
+        return path;
+    },
+    filepath_to_filename: function(filepath = ""){ // 把目录或带目录的文件换成称呼
+        let that = this;
+        //
+        filepath = that.converted_path(filepath);
+        let filepath_array = filepath.split("/");
+        if (filepath.length > 0 && filepath){
+            return filepath_array[filepath_array.length - 1];
+        }else{
+            return "";
+        }
     },
 
     //

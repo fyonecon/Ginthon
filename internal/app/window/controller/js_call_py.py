@@ -246,11 +246,11 @@ def list_js_call_py(WINDOW, key, data_dict):
                 _timeout_s = 5*60
                 pass
             #
-            value = local_database_set_data(_key, _value, _timeout_s)
+            _value = local_database_set_data(_key, _value, _timeout_s)
             #
             state = 1
             msg = "OK"
-            content["data"] = value
+            content["data"] = _value
         else:
             state = 0
             msg = "data_dict参数不全"
@@ -263,10 +263,16 @@ def list_js_call_py(WINDOW, key, data_dict):
     elif key == "get_data":
         if data_dict.get("data_key"):
             _key = data_dict["data_key"]
-            value, state = local_database_get_data(_key)
+            _value, _state = local_database_get_data(_key)
             #
-            msg = "get_data"
-            content["data"] = value
+            if _state == -1:
+                state = 0
+                msg = "Not Set"
+                content["data"] = ""
+            else:
+                state = 1
+                msg = "OK"
+                content["data"] = _value
             pass
         else:
             state = 0
@@ -280,9 +286,13 @@ def list_js_call_py(WINDOW, key, data_dict):
     elif key == "del_data":
         if data_dict.get("data_key"):
             _key = data_dict["data_key"]
-            state = local_database_del_data(_key)
-            msg = "del_data"
+            _state = local_database_del_data(_key)
+            if _state == -1:
+                msg = "No File"
+            else:
+                msg = "Del OK"
             pass
+            state = 1
         else:
             state = 0
             msg = "data_dict参数不全"

@@ -2,7 +2,7 @@
     import { resolve } from '$app/paths';
     import { page } from '$app/state';
     import func from "../../common/func.svelte.js";
-    import {afterNavigate} from "$app/navigation";
+    import {afterNavigate, goto} from "$app/navigation";
     import {onMount} from "svelte";
     import {Dialog, Portal} from "@skeletonlabs/skeleton-svelte";
     import config from "../../config";
@@ -14,8 +14,18 @@
     let play_list_max_len = $state(2000); // 播放列表最大长度
 
     const animation = 'transition transition-discrete opacity-0 translate-y-[100px] starting:data-[state=open]:opacity-0 starting:data-[state=open]:translate-y-[100px] data-[state=open]:opacity-100 data-[state=open]:translate-y-0';
+    const icon_dir = '<svg class="svg-icon font-blue" xmlns="http://www.w3.org/2000/svg" width="24" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M4 20q-.825 0-1.412-.587T2 18V6q0-.825.588-1.412T4 4h5.175q.4 0 .763.15t.637.425L12 6h8q.825 0 1.413.588T22 8v10q0 .825-.587 1.413T20 20z"/></svg>';
+    const icon_audio = '<svg class="svg-icon font-blue" xmlns="http://www.w3.org/2000/svg" width="24" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M10.75 18.692q.816 0 1.379-.563q.563-.564.563-1.379v-3.98h2.731v-1.54h-3.5v4.087q-.236-.257-.53-.383q-.293-.126-.643-.126q-.815 0-1.379.563q-.563.564-.563 1.379t.563 1.379q.564.563 1.379.563M6.616 21q-.691 0-1.153-.462T5 19.385V4.615q0-.69.463-1.152T6.616 3H14.5L19 7.5v11.885q0 .69-.462 1.153T17.384 21zM14 8h4l-4-4z"/></svg>';
+    const icon_video = '<svg class="svg-icon font-blue" xmlns="http://www.w3.org/2000/svg" width="24" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M22.525 7.149a1 1 0 0 0-.972-.044L19 8.382V8c0-1.654-1.346-3-3-3H5C3.346 5 2 6.346 2 8v8c0 1.654 1.346 3 3 3h11c1.654 0 3-1.346 3-3v-.382l2.553 1.276a.99.99 0 0 0 .972-.043c.295-.183.475-.504.475-.851V8c0-.347-.18-.668-.475-.851M7 13.5a1.5 1.5 0 1 1-.001-2.999A1.5 1.5 0 0 1 7 13.5"/></svg>';
+    const icon_type = '<svg class="svg-icon font-blue" xmlns="http://www.w3.org/2000/svg" width="24" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M14 2.25a.25.25 0 0 1 .25.25v5.647c0 .414.336.75.75.75h4.5a.25.25 0 0 1 .25.25V19A2.75 2.75 0 0 1 17 21.75H7A2.75 2.75 0 0 1 4.25 19V5A2.75 2.75 0 0 1 7 2.25z"/><path fill="currentColor" d="M16.086 2.638c-.143-.115-.336.002-.336.186v4.323c0 .138.112.25.25.25h3.298c.118 0 .192-.124.124-.22L16.408 2.98a1.8 1.8 0 0 0-.322-.342"/></svg>';
     // 管理弹窗
     let dir_dialog_is_open = $state(false);
+    let input_value_set_dir = $state("");
+    let list_dirs = $state([]);
+    let list_files = $state([]);
+    let root_paths = $state([]);
+    let view_path = $state("");
+    let has_paths = $state([]);
 
 
     // 本页面函数：Svelte的HTML组件onXXX=中正确调用：={()=>def.xxx()}
@@ -24,29 +34,119 @@
             let that = this;
             //
             dir_dialog_is_open = false;
+            input_value_set_dir = "";
         },
         dir_open_dialog: function(){
             let that = this;
             //
             dir_dialog_is_open = true;
         },
+        get_play_audio_list: function(now_dir = ""){ // 获取文件夹和文件的tree结构
+            let that = this;
+            //
+            if (!now_dir){
+                now_dir = func.search_param("dir");
+            }
+            console.log("dir=", now_dir);
+            //
+            view_path = func.converted_path(now_dir); // 获取正确的路径
+            //
+            let api_url = config.api.api_host+"/api/get_play_audio_list";
+            const _app_token = func.get_local_data("app_token");
+            const body_dict = {
+                app_token: _app_token,
+                app_class: config.app.app_class,
+                now_dir: view_path,
+            };
+            return new Promise(resolve => {
+                console.log("Update Play List");
+                FetchPOST(api_url, body_dict).then(res=>{
+                    //
+                    if (res.state === 1){
+                        list_dirs = res.content.list_dirs;
+                        list_files = res.content.list_files;
+                        view_path = res.content.view_path;
+                        //
+                        if (!now_dir && res.content.root_paths.length > 0){
+                            root_paths = res.content.root_paths;
+                        }
+                        resolve(true);
+                    }else{
+                        console.log("API有问题=", api_url, res);
+                        resolve(false);
+                    }
+                });
+            });
+        },
+        get_local_dir: function(){ // 获取数据记录
+            let that = this;
+            // 设置多个dir本地记录
+            let play_audio_list_dir_key = "play_audio_list_dirs";
+            let play_audio_list_dir = "";
+            return new Promise(resolve => {
+                func.js_call_py_or_go("get_data", {data_key:play_audio_list_dir_key}).then(res=>{
+                    console.log("get_data=", res);
+                    if (res.state === 1){
+                        play_audio_list_dir = res.content.data;
+                    }
+                    // 获取老数据
+                    let play_audio_list_dir_array = play_audio_list_dir.split("#@");
+                    // console.log("play_audio_list_dir_array=", play_audio_list_dir_array, play_audio_list_dir);
+                    if (play_audio_list_dir && play_audio_list_dir_array.length > 0){
+                        play_audio_list_dir_array;
+                        resolve(play_audio_list_dir_array);
+                    }else{
+                        resolve([]);
+                    }
+                });
+            });
+        },
         set_local_dir: function(){ // 设置本地文件夹
             let that = this;
             //
-            let data_dict = {
-                data_key:"play_audio_dir-1",
-                data_value:"/Volumes/文档C（APFS_2025）/软件2025-2/音乐/音乐离线4",
-                data_timeout_s: 3600*24*356*20,
-            }
-            func.js_call_py_or_go("set_data", data_dict).then(res=>{
-                console.log(res);
+            let value = input_value_set_dir.trim().replaceAll("#@", "").replaceAll("～", ""); // 删除预设的特殊字符
+            // 设置多个dir本地记录
+            let play_audio_list_dir_key = "play_audio_list_dirs";
+            let play_audio_list_dir = "";
+            func.js_call_py_or_go("get_data", {data_key:play_audio_list_dir_key}).then(res=>{
+                // console.log("get_data=", res);
                 if (res.state === 1){
-                    that.close_dialog();
+                    play_audio_list_dir = res.content.data;
                 }else{
-                    console.warn("接口错误：", res);
+                    console.warn("无数据或接口错误-1：", res);
+                }
+                // 获取老数据
+                let play_audio_list_dir_array = play_audio_list_dir.split("#@");
+                let new_value = "";
+                if (value){
+                    if (play_audio_list_dir && play_audio_list_dir_array.length>0){
+                        new_value = play_audio_list_dir + "#@" + value;
+                    }else{
+                        new_value = value;
+                    }
+                    // 更新新数据
+                    let data_dict = {
+                        data_key: play_audio_list_dir_key,
+                        data_value: new_value,
+                        data_timeout_s: 3600*24*356*20,
+                    }
+                    // console.log("data_dict=", data_dict, [play_audio_list_dir_array, play_audio_list_dir]);
+                    func.js_call_py_or_go("set_data", data_dict).then(res2=>{
+                        // console.log("set_data=", res2);
+                        if (res.state === 1){
+                            that.close_dialog();
+                            that.get_play_audio_list(); // 更新数据
+                        }else{
+                            that.close_dialog();
+                            console.warn("无数据或接口错误-2：", res2);
+                        }
+                    });
+                }else{
+                    console.warn("输入不能为空：", value);
                 }
             });
         },
+
         //
         get_playing: function(){ // 获取当前播放
             let the_playing = func.get_local_data(player_prefix + "playing");
@@ -91,7 +191,8 @@
             const _app_token = func.get_local_data("app_token");
             const body_dict = {
                 app_token: _app_token,
-                app_class: config.app.app_class
+                app_class: config.app.app_class,
+                now_dir: "/Volumes/文档C（APFS_2025）/软件2025-2/音乐/",
             };
             return new Promise(resolve => {
                 console.log("Update Play List");
@@ -120,13 +221,20 @@
 
     // 刷新页面数据
     afterNavigate(() => {
-        //
+        def.get_local_dir().then(array=>{
+            has_paths = array;
+        });
+        def.get_play_audio_list();
     });
 
 
     // 页面装载完成后，只运行一次
     onMount(() => {
         //
+        def.get_local_dir().then(array=>{
+            has_paths = array;
+        });
+        def.get_play_audio_list();
     });
 
 
@@ -134,14 +242,6 @@
 
 <div>
     <ul class="ul-group font-text">
-        <li class="li-group select-none">
-            <div class="li-group-title break">
-                Update Play List
-            </div>
-            <div class="li-group-content select-text">
-                <button class="btn btn-sm select-none preset-filled-primary-500 font-text float-left mr-[10px] mb-[10px]" onclick={()=>def.fetch_play_list()}>Update List</button>
-            </div>
-        </li>
 
         <li class="li-group select-none">
             <div class="li-group-title break">
@@ -160,7 +260,7 @@
                                 </header>
                                 <Dialog.Description class="font-text">
                                     <label class="label">
-                                        <input class="input-style font-text select-text border-radius w-full" type="text" maxlength="2000" placeholder="Input..." value="" />
+                                        <input class="input-style font-text select-text border-radius w-full" type="text" maxlength="2000" placeholder="Input..." bind:value={input_value_set_dir}  />
                                     </label>
                                 </Dialog.Description>
                                 <footer class="flex justify-center gap-10 select-none  px-[10px] py-[10px]">
@@ -171,9 +271,53 @@
                         </Dialog.Positioner>
                     </Portal>
                 </Dialog>
-
             </div>
 
         </li>
     </ul>
+
+    <div class="list_dirs font-text">
+        <div class="list-path">已保存的文件夹：{(has_paths.length>0)?JSON.stringify(has_paths):""}</div>
+        <div class="list-path">正在访问文件夹：{view_path?view_path:"/"}</div>
+        <div class="list-path hide">{JSON.stringify(list_dirs)}</div>
+        <ul class="list-path-tree list-path-dirs">
+            <div>播放当前文件夹里面的所有歌曲</div>
+            {#each list_dirs as dir}
+                <li class="list-path-tree-li">
+                    <button class="list-path-tree-li-btn click" type="button" title="{dir}" data-dir="{dir}" onclick={()=>func.open_url(func.get_route()+"#dir="+encodeURIComponent(func.converted_path(view_path+"/"+dir)))} >{@html icon_dir} {dir}</button>
+                    <span>复制链接</span>
+                </li>
+            {/each}
+        </ul>
+        <ul class="list-path-tree list-path-files">
+            {#each list_files as file}
+                <li class="list-path-tree-li">
+                    <button class="list-path-tree-li-btn click" type="button" title="{file}" data-dir="{file}">{@html func.is_audio(file)?icon_audio:(func.is_video(file)?icon_video:icon_type)} {file}</button>
+                    <span>复制链接</span>
+                </li>
+            {/each}
+        </ul>
+    </div>
+
 </div>
+
+<style>
+    .list_dirs{
+        clear: both;
+        width: 100%;
+        padding: 10px 0;
+    }
+    .list-path{
+        margin-bottom: 10px;
+    }
+    .list-path-tree-li{
+        padding: 5px 0;
+        line-height: 24px;
+        opacity: 0.8;
+    }
+    .list-path-tree-li-btn{
+        padding: 5px 0;
+        line-height: 20px;
+        text-align: left;
+    }
+</style>

@@ -10,6 +10,7 @@ from internal.app.window.window_route import window_route
 from internal.bootstrap.flask_middleware import flask_middleware_html, flask_middleware_file, flask_middleware_api
 from internal.common.kits.main_dirpath import mian_virtual_dirpath
 from internal.common.func import print_log, back_404_data, back_500_data, back_404_data_api, back_404_data_html, back_404_data_file, get_file_ext, get_file_ext_mimetype
+from internal.common.request_input import request_input
 
 #
 CONFIG = {}
@@ -154,38 +155,16 @@ def must_route(window, FLASK):
         }
 
         # 接口接收的数据
-        if request.method == "GET":
-            _test = request.args.get("test")
-            if not _test:
-                data = {"test": None}
-                pass
-            else:
-                data = {"test": _test}
-                pass
-            pass
-        elif request.method == "POST":
-            try:
-                data = request.get_json()
-                if not data:
-                    data = {"test": None}
-                    pass
-            except:
-                data = {"test": None}
-                pass
-            pass
-        else:
-            return back_404_data_api("非法操作:api"), 404
+        test = request_input(request, "test")
 
         # test
-        if data["test"] is None:
+        if test is None:
             state = 1
             msg = "API is OK, but request data(test) is null."
-            test = data["test"]
             pass
         else:
             state = 1
             msg = "API is OK"
-            test = data["test"]
             pass
 
         # 返回的数据
