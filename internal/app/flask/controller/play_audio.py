@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 
 from internal.common.func import converted_path, url_decode
@@ -31,14 +32,14 @@ def get_play_audio_list(request):
                         else:
                             list_files.append(entry.name)
                             pass
-                        print(f"文件: {entry.name}", entry)
+                        # print(f"文件: {entry.name}", entry)
                     elif entry.is_dir():
                         if entry.name.find(".") == 0:  # 排除
                             pass
                         else:
                             list_dirs.append(entry.name)
                             pass
-                        print(f"文件夹: {entry.name}", entry)
+                        # print(f"文件夹: {entry.name}", entry)
                     pass
                 pass
             pass

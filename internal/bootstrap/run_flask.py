@@ -218,6 +218,7 @@ def run_flask(window, webview_pid, config):
         """全局处理 OPTIONS 请求"""
         if request.method == 'OPTIONS':
             response = jsonify()
+            response.headers.add("Author", CONFIG["app"]["author"])
             response.headers.add('Access-Control-Allow-Origin', '*')
             response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
             response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')

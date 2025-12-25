@@ -8,11 +8,12 @@
     import config from "../../config";
     import FetchPOST from "../../common/post.svelte";
     import {notice_data} from "../../stores/notice.store.svelte";
+    import {play_audio_data} from "../../stores/play_audio.store.svelte";
 
     // 本页面参数
     let route = $state(func.get_route());
     const player_prefix = "play_audio_";
-    let play_list_max_len = $state(2000); // 播放列表最大长度
+    let play_list_max_len = $state(1000); // 播放列表最大长度
 
     const animation = 'transition transition-discrete opacity-0 translate-y-[100px] starting:data-[state=open]:opacity-0 starting:data-[state=open]:translate-y-[100px] data-[state=open]:opacity-100 data-[state=open]:translate-y-0';
     const icon_dir = '<svg class="svg-icon font-blue" xmlns="http://www.w3.org/2000/svg" width="24" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M4 20q-.825 0-1.412-.587T2 18V6q0-.825.588-1.412T4 4h5.175q.4 0 .763.15t.637.425L12 6h8q.825 0 1.413.588T22 8v10q0 .825-.587 1.413T20 20z"/></svg>';
@@ -27,6 +28,8 @@
     let root_paths = $state([]);
     let view_path = $state("");
     let has_paths: unknown = $state([]);
+    let show_play_all_btn = $state("hide");
+    let now_audio_files = $state([]); // 当前文件白名单
 
 
     // 本页面函数：Svelte的HTML组件onXXX=中正确调用：={()=>def.xxx()}
@@ -41,6 +44,36 @@
             let that = this;
             //
             dir_dialog_is_open = true;
+        },
+        make_file_token: function(filepath = ""){
+            const _app_token = func.get_local_data("app_token");
+            return "file_token="+func.md5("filetoken#@"+filepath)+"&app_token=" + _app_token;
+        },
+        open_file: function(filename = ""){
+            let that = this;
+            //
+            let file_path = view_path + "/" + filename;
+            let href = config.api.api_host + "/dir/play_audio/" + encodeURIComponent(file_path) + "?"+that.make_file_token(file_path)+"&ap=dir ";
+            func.open_url_with_default_browser(href);
+        },
+        has_audio_file: function(files_array = []){
+            let that = this;
+            //
+            show_play_all_btn = "hide";
+            //
+            for (let i=0; i<files_array.length; i++){
+                let the_file = files_array[i];
+                let file_path = view_path+"/"+the_file;
+                if (func.is_audio(the_file)){
+                    show_play_all_btn = "show";
+                    let the_file_dict = {
+                        filename: the_file,
+                        href: config.api.api_host + "/dir/play_audio/" + encodeURIComponent(file_path) + "?"+that.make_file_token(file_path)+"&ap=player ",
+                        cover: "",
+                    };
+                    now_audio_files.push(the_file_dict);
+                }
+            }
         },
         get_play_audio_list: function(now_dir = ""){ // 获取文件夹和文件的tree结构
             let that = this;
@@ -71,6 +104,7 @@
                         list_files = res.content.list_files;
                         view_path = res.content.view_path;
                         //
+                        that.has_audio_file(list_files);
                         if (!now_dir && res.content.root_paths.length > 0){
                             root_paths = res.content.root_paths;
                         }
@@ -180,46 +214,17 @@
             func.set_local_data(player_prefix + "current_time", current_time);
         },
         //
-        fetch_play_list: function(){ // 更新播放列表+初始化正在播放的信息
+        play_all: function(){
             let that = this;
-            /* 参数格式
-            * list = [
-                  {
-                        filename: "",
-                        href: "",
-                        cover: "",
-                  },
-              ];
-            * */
             //
-            let api_url = config.api.api_host+"/api/get_play_audio_list";
-            const _app_token = func.get_local_data("app_token");
-            const body_dict = {
-                app_token: _app_token,
-                app_class: config.app.app_class,
-                now_dir: "/Volumes/文档C（APFS_2025）/软件2025-2/音乐/",
-            };
-            return new Promise(resolve => {
-                console.log("Update Play List");
-                FetchPOST(api_url, body_dict).then(res=>{
-                    if (res.state === 1){
-                        // console.log("api=", api, res.content.list, typeof res.content.list);
-                        let list = res.content.list;
-                        if (list.length > 0){
-                            that.set_current_time("0");
-                            that.set_playing(list[0])
-                            that.set_list(list);
-                            resolve(true);
-                        }else{
-                            func.notice("参数仍有错误");
-                            resolve(false);
-                        }
-                    }else{
-                        console.log("API有问题=", api_url, res);
-                        resolve(false);
-                    }
-                });
-            });
+            if (now_audio_files.length > 0){
+                that.set_current_time("0");
+                that.set_playing(now_audio_files[0]);
+                that.set_list(now_audio_files);
+                play_audio_data.play_state = true;
+            }else{
+                func.notice("空列表");
+            }
         },
     };
 
@@ -282,18 +287,23 @@
         <div class="list-path">正在访问文件夹：{view_path?view_path:"/"}</div>
         <div class="list-path hide">{JSON.stringify(list_dirs)}</div>
         <ul class="list-path-tree list-path-dirs">
-            <div>播放当前文件夹里面的所有歌曲</div>
+            <div class="show_play_operation select-none ">
+                <span class="{show_play_all_btn}">
+                    将当前文件夹全部音乐添加到播放列表
+                    <button type="button" class="show_play_all-btn click" onclick={()=>def.play_all()} title="Play All"><svg class="font-blue" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M18 9V7h-2V5h2V3h2v2h2v2h-2v2zM6 16h7v-3H6zm0-5h7V8H6zm-2 9q-.825 0-1.412-.587T2 18V6q0-.825.588-1.412T4 4h10.425q-.2.45-.312.963T14 6q0 .85.263 1.613T15 9v7h3v-5.1q.25.05.488.075T19 11q.85 0 1.613-.262T22 10v8q0 .825-.587 1.413T20 20z"/></svg></button>
+                </span>
+            </div>
             {#each list_dirs as dir}
                 <li class="list-path-tree-li">
-                    <button class="list-path-tree-li-btn click" type="button" title="{dir}" data-dir="{dir}" onclick={()=>func.open_url(func.get_route()+"#dir="+encodeURIComponent(func.converted_path(view_path+"/"+dir)))} >{@html icon_dir} {dir}</button>
+                    <button class="list-path-tree-li-btn click" type="button" title="{dir}" onclick={()=>func.open_url(func.get_route()+"#dir="+encodeURIComponent(func.converted_path(view_path+"/"+dir)))} >{@html icon_dir} {dir}</button>
                     <span>复制链接</span>
                 </li>
             {/each}
         </ul>
         <ul class="list-path-tree list-path-files">
-            {#each list_files as file}
+            {#each list_files as filename}
                 <li class="list-path-tree-li">
-                    <button class="list-path-tree-li-btn click" type="button" title="{file}" data-dir="{file}">{@html func.is_audio(file)?icon_audio:(func.is_video(file)?icon_video:icon_type)} {file}</button>
+                    <button class="list-path-tree-li-btn click" type="button" title="{filename}" onclick={()=>def.open_file(filename)}>{@html func.is_audio(filename)?icon_audio:(func.is_video(filename)?icon_video:icon_type)} {filename}</button>
                     <span>复制链接</span>
                 </li>
             {/each}
@@ -311,6 +321,9 @@
     .list-path{
         margin-bottom: 10px;
     }
+    .list-path-tree{
+        padding: 10px 10px;
+    }
     .list-path-tree-li{
         padding: 5px 0;
         line-height: 24px;
@@ -320,5 +333,20 @@
         padding: 5px 0;
         line-height: 20px;
         text-align: left;
+    }
+    .show_play_all-btn{
+        width: 30px;
+        height: 30px;
+        border-radius: 30px;
+        text-align: center;
+        background-color: rgba(180,180,180,0.4);
+    }
+    .show_play_all-btn > svg{
+        margin-top: 0px;
+        margin-left: 3px;
+    }
+    .show_play_operation{
+        height: 50px;
+        padding: 10px 10px;
     }
 </style>

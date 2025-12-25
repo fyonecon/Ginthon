@@ -4,6 +4,7 @@
     import FetchPOST from "../common/post.svelte";
     import {onMount, onDestroy} from "svelte";
     import config from "../config";
+    import {play_audio_data} from "../stores/play_audio.store.svelte";
 
 
     // 本页面参数
@@ -17,7 +18,7 @@
     let player_show_play = $state("show");
     let player_show_stop = $state("hide");
     let player_show_control = $state("hide");
-    let play_list_max_len = $state(2000); // 播放列表最大长度
+    let play_list_max_len = $state(1000); // 播放列表最大长度
 
     // 用于存储事件监听器引用，便于清理
     let eventListeners = {
@@ -131,6 +132,7 @@
             //
             console.log("Player Init");
             player_init_state = true;
+            play_audio_data.play_state = false;
 
             // 清理旧的事件监听器
             that.cleanup_event_listeners();
@@ -216,6 +218,7 @@
             play_error_timeout = 0;
             play_new_timeout = 0;
             play_current_timeout = 0;
+            play_audio_data.play_state = false;
         },
         play_stop: function(){ // 暂停播放
             let that = this;
@@ -223,6 +226,7 @@
             that.play_clear_timer();
             player_show_play = "show";
             player_show_stop = "hide";
+            //
             that.is_playing().then(state=>{
                 let current = myAudio.currentTime;
                 if (!current){
@@ -436,6 +440,16 @@
             });
         },
     };
+
+
+    // 检测$state()值变化
+    $effect(() => {
+        if (play_audio_data.play_state){
+            def.play_start();
+        }else {
+            // 跳过false情况
+        }
+    });
 
 
     // 刷新页面数据

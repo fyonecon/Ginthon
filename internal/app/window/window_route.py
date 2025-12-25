@@ -8,8 +8,9 @@ from internal.app.window.window_view import view_js_must_data, view_index
 from internal.common.app_auth import check_rand_id, check_rand_token
 from internal.bootstrap.flask_middleware import flask_middleware_html, flask_middleware_api, flask_middleware_file
 from internal.common.func import back_404_data_html, back_404_data_api, print_log, back_404_data_file, has_file, \
-    get_file_ext_mimetype, get_file_ext, md5
+    get_file_ext_mimetype, get_file_ext, converted_path, get_file_name, url_decode, md5
 from internal.common.kits.main_dirpath import mian_virtual_dirpath
+from internal.common.request_input import request_input
 from internal.config import get_config
 
 
@@ -19,13 +20,18 @@ def window_route(_WINDOW, FLASK):
     # 适配svelte、vue文件结构的html静态文件系统
     # http://127.0.0.1:9750
     @FLASK.route("/", methods=["GET", "POST", "OPTIONS"])
-    @FLASK.route("/<path:filename>", methods=["GET", "POST", "OPTIONS"])
+    @FLASK.route("/<path:filename>", methods=["GET", "POST", "OPTIONS"], endpoint="svelte_dist")
     def svelte_dist(filename=""):
         route_data = {
             "way": "file",
             "methods": ["GET", "POST", "OPTIONS"],
         }
-        #
+        # 防止与其它路由混合
+        if filename.startswith('dir/play_audio/'):
+            # 手动重定向到正确的处理函数
+            audio_file = filename.replace('dir/play_audio/', '', 1)
+            return play_audio(audio_file)
+        # #
         if len(filename) == 0:
             filename = "index.html"
             pass
@@ -48,7 +54,52 @@ def window_route(_WINDOW, FLASK):
             else:
                 return back_404_data_file("非法操作：build。"+file_path), reg_code
         else:
-            return back_404_data_file("无对应文件：" + filename), 404
+            return back_404_data_file("无对应文件-vue/svelte：" + filename), 404
+    # file
+
+    # 适配音乐播放及访问本地文件
+    # http://127.0.0.1:9750/dir/play_audio/xxx
+    @FLASK.route("/dir/play_audio/<path:filepath>", methods=["GET", "POST", "OPTIONS"], endpoint="play_audio")
+    def play_audio(filepath):
+        route_data = {
+            "way": "file",
+            "methods": ["GET", "POST", "OPTIONS"],
+        }
+        #
+        CONFIG = get_config("", "")
+        file_token = request_input(request, "file_token")
+        app_token = request_input(request, "app_token")
+        app_class = CONFIG["app"]["app_class"]
+        salt_str = "js_call_py_auth-2025"
+        #
+        file_token_state = md5("filetoken#@"+url_decode(filepath)) == file_token
+        app_token_state = check_rand_token(app_class, md5(salt_str + "nbPlus"), CONFIG, app_token)
+        #
+        if file_token_state and app_token_state:
+            # 还原真实文件
+            filepath = url_decode(filepath)
+            filepath = converted_path(filepath)
+            filename = get_file_name(filepath)
+            file_ext = get_file_ext(filename)
+            if len(file_ext) >= 1:  # 有文件
+                mimetype = get_file_ext_mimetype(file_ext)
+                file_path = filepath  # 限定根目录
+                #
+                if has_file(file_path):
+                    response_data, reg_code = flask_middleware_file(request, route_data, "", filename)
+                    if reg_code == 200:
+                        # 使用返回文件的方式返回html模板或文件
+                        return send_file(file_path, as_attachment=False, mimetype=mimetype, max_age=12 * 60,
+                                         download_name=filename), reg_code
+                    else:
+                        return back_404_data_file("非法操作：file"), reg_code
+                else:
+                    return back_404_data_file("无对应文件：" + filepath + "🌛" + filename), 404
+            else:
+                return back_404_data_file("无对应文件：" + filepath + "🌞" + filename), 404
+        else:
+            return back_404_data_file("非法Auth，token"), 404
+
     # file
 
 
@@ -99,7 +150,6 @@ def window_route(_WINDOW, FLASK):
         # 还原真实文件
         file_ext = get_file_ext(filename)
         if len(file_ext) >=1:  # 有文件
-            file_ext = get_file_ext(filename)
             mimetype = get_file_ext_mimetype(file_ext)
             file_path = mian_virtual_dirpath("frontend") + "/file" + "/" + filename  # 限定根目录
             #
@@ -111,9 +161,9 @@ def window_route(_WINDOW, FLASK):
                 else:
                     return back_404_data_file("非法操作：file"), reg_code
             else:
-                return back_404_data_file("无对应文件：" + filename), 404
+                return back_404_data_file("无对应文件-file：" + filename), 404
         else:
-            return back_404_data_file("无对应文件：" + filename), 404
+            return back_404_data_file("无对应文件-file：" + filename), 404
     # file
 
 

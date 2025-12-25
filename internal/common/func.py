@@ -138,11 +138,19 @@ def get_machine():
     else:
         return "null-cpu"
 
-# 取后文件缀（最后一个后缀）
+# 取文件后缀（最后一个后缀）
 # 为空或无后缀时返回""
 def get_file_ext(filename):
     filename = filename.lower()
+    filename = converted_path(filename)
     return os.path.splitext(filename)[1]
+
+# 取文件名（最后一个后缀）
+# 为空或无后缀时返回""
+def get_file_name(filepath):
+    filepath = filepath.lower()
+    filepath = converted_path(filepath)
+    return os.path.basename(filepath)
 
 # 获取mimetype
 def get_file_ext_mimetype(file_ext):
