@@ -9,7 +9,16 @@ import config from "../config.js";
 import lang_dict from "../common/translate.js";
 import FetchGET from "./get.svelte.js";
 import dexie_kv_db from "./db_kv.svelte.js";
+import {alert_data} from "../stores/alert.store.svelte.js";
+import {loading_data} from "../stores/loading.store.svelte.js";
+import {notice_data} from "../stores/notice.store.svelte.js";
 // import {AppServicesForWindow} from "../../bindings/datathink.top/Waigo/internal/bootstrap";
+
+
+//
+let loading_show_timer = $state(0);
+let alert_msg_timer = $state(0);
+
 
 // 复用函数
 // 调用xxx = func.test();
@@ -949,6 +958,85 @@ const func = {
         }else{
             return "";
         }
+    },
+    loading_show: function(msg="", timeout_ms = "long"){
+        let that = this;
+        //
+        clearTimeout(loading_show_timer);
+        if (timeout_ms === "long"){
+            // 长时间显示
+        }else{
+            if (timeout_ms <= 1000){
+                timeout_ms = 5000;
+            }
+            //
+            loading_show_timer = setTimeout(function () {
+                that.loading_hide();
+            }, timeout_ms);
+        }
+        loading_data.loading_show = "show";
+        loading_data.loading_msg = msg;
+    },
+    loading_hide: function(){
+        clearTimeout(loading_show_timer);
+        loading_data.loading_show = "hide";
+        loading_data.loading_msg = "";
+    },
+    alert_msg: function (msg, timeout_ms = 3000){
+        clearTimeout(alert_msg_timer);
+        if (timeout_ms === "long"){
+            // 长时间显示
+        }else{
+            if (timeout_ms <= 1000){
+                timeout_ms = 3000;
+            }
+            //
+            //
+            alert_msg_timer = setTimeout(function () {
+                alert_data.alert_show = "hide";
+                alert_data.alert_msg = "";
+            }, timeout_ms);
+        }
+        //
+        alert_data.alert_show = "show";
+        alert_data.alert_msg = msg;
+    },
+    notice: function (title="", msg="", timeout_ms = 5000, trigger="info"){
+        if (timeout_ms <= 1000){
+            timeout_ms = 3000;
+        }
+        switch (trigger) {
+            case "info":
+                notice_data.toaster.info({
+                    title: title,
+                    description: msg,
+                    duration: timeout_ms,
+                });
+                break;
+            case "warn" || "warning":
+                notice_data.toaster.warning({
+                    title: title,
+                    description: msg,
+                    duration: timeout_ms,
+                });
+                break;
+            case "error":
+                notice_data.toaster.error({
+                    title: title,
+                    description: msg,
+                    duration: timeout_ms,
+                });
+                break;
+            default:
+                notice_data.toaster.info({
+                    title: title,
+                    description: msg,
+                    duration: timeout_ms,
+                });
+                break;
+        }
+
+
     },
 
     //

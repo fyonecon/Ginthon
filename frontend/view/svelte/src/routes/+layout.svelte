@@ -17,6 +17,9 @@
     import {watch_theme_model_data} from "../stores/watch_theme_model.store.svelte.js";
     import Director from "../parts/Director.svelte";
     import PlayAudio from "../parts/PlayAudio.svelte";
+    import Loading from "../parts/Loading.svelte";
+    import Notice from "../parts/Notice.svelte";
+    import Alert from "../parts/Alert.svelte";
 
     // wails专用（在Ginthon中无任何作用，仅限代码跨平台同步）
     // import {Events} from "@wailsio/runtime";
@@ -154,4 +157,8 @@
 	<main class="main">{@render children()}</main>
 	<Foot />
     <PlayAudio />
+    <!--  全局交互组件  -->
+    <Loading />
+    <Notice />
+    <Alert />
 </div>

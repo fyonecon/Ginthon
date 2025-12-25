@@ -7,6 +7,7 @@
     import {Dialog, Portal} from "@skeletonlabs/skeleton-svelte";
     import config from "../../config";
     import FetchPOST from "../../common/post.svelte";
+    import {notice_data} from "../../stores/notice.store.svelte";
 
     // 本页面参数
     let route = $state(func.get_route());
@@ -25,7 +26,7 @@
     let list_files = $state([]);
     let root_paths = $state([]);
     let view_path = $state("");
-    let has_paths = $state([]);
+    let has_paths: unknown = $state([]);
 
 
     // 本页面函数：Svelte的HTML组件onXXX=中正确调用：={()=>def.xxx()}
@@ -44,6 +45,8 @@
         get_play_audio_list: function(now_dir = ""){ // 获取文件夹和文件的tree结构
             let that = this;
             //
+            func.loading_show();
+            //
             if (!now_dir){
                 now_dir = func.search_param("dir");
             }
@@ -61,6 +64,7 @@
             return new Promise(resolve => {
                 console.log("Update Play List");
                 FetchPOST(api_url, body_dict).then(res=>{
+                    func.loading_hide();
                     //
                     if (res.state === 1){
                         list_dirs = res.content.list_dirs;
@@ -113,7 +117,7 @@
                 if (res.state === 1){
                     play_audio_list_dir = res.content.data;
                 }else{
-                    console.warn("无数据或接口错误-1：", res);
+                    func.notice("无数据或接口错误-1：", res);
                 }
                 // 获取老数据
                 let play_audio_list_dir_array = play_audio_list_dir.split("#@");
@@ -133,16 +137,17 @@
                     // console.log("data_dict=", data_dict, [play_audio_list_dir_array, play_audio_list_dir]);
                     func.js_call_py_or_go("set_data", data_dict).then(res2=>{
                         // console.log("set_data=", res2);
+                        func.notice(res.msg);
                         if (res.state === 1){
                             that.close_dialog();
                             that.get_play_audio_list(); // 更新数据
                         }else{
                             that.close_dialog();
-                            console.warn("无数据或接口错误-2：", res2);
+                            func.notice("无数据或接口错误-2：", res2);
                         }
                     });
                 }else{
-                    console.warn("输入不能为空：", value);
+                    func.notice("输入不能为空：", value);
                 }
             });
         },
@@ -206,7 +211,7 @@
                             that.set_list(list);
                             resolve(true);
                         }else{
-                            console.warn("参数仍有错误");
+                            func.notice("参数仍有错误");
                             resolve(false);
                         }
                     }else{
@@ -225,16 +230,12 @@
             has_paths = array;
         });
         def.get_play_audio_list();
+        //
     });
-
 
     // 页面装载完成后，只运行一次
     onMount(() => {
         //
-        def.get_local_dir().then(array=>{
-            has_paths = array;
-        });
-        def.get_play_audio_list();
     });
 
 
