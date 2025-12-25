@@ -1035,8 +1035,6 @@ const func = {
                 });
                 break;
         }
-
-
     },
 
     //
