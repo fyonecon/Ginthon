@@ -55,6 +55,7 @@
                 href = the_playing.href;
                 player_show_play = "hide";
                 player_show_stop = "show";
+                player_show_control = "show";
                 // 渲染系统音乐通知栏
                 navigator.mediaSession.metadata = new MediaMetadata({
                     title: the_playing.filename || '未知歌曲', // 歌名
@@ -456,27 +457,16 @@
     afterNavigate(() => {
         //
         // def.create_player();
-
+        if (def.get_playing()){ // 有历史
+            player_show_control = "show";
+        }else{ // 无历史就加载新的
+            //
+        }
     });
 
     onMount(()=>{
         myAudio = new Audio();
-        if (def.get_playing()){ // 有历史
-            player_show_control = "show";
-        }else{ // 无历史就加载新的
-            // route = func.get_route();
-            // if (route === "/play_audio"){
-            //     def.fetch_play_list().then(_state=>{
-            //         if (_state){
-            //             player_show_control = "show";
-            //         }else{ // 无播放数据
-            //             player_show_control = "hide";
-            //         }
-            //     });
-            // }else{
-            //     console.log("路由不正确时不加载play_list=", route);
-            // }
-        }
+        //
     });
 
     onDestroy(()=>{
