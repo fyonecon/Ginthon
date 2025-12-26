@@ -456,7 +456,7 @@
     // 刷新页面数据
     afterNavigate(() => {
         //
-        // def.create_player();
+        // 展示播放按钮
         if (def.get_playing()){ // 有历史
             player_show_control = "show";
         }else{ // 无历史就加载新的
@@ -467,6 +467,12 @@
     onMount(()=>{
         myAudio = new Audio();
         //
+        // 展示播放按钮
+        if (def.get_playing()){ // 有历史
+            player_show_control = "show";
+        }else{ // 无历史就加载新的
+            //
+        }
     });
 
     onDestroy(()=>{
