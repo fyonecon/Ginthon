@@ -69,6 +69,10 @@ def get_play_audio_list(request):
         pass
     pass
 
+    # 排序
+    list_dirs.sort()
+    list_files.sort()
+
     #
     return {
         "state": state,
