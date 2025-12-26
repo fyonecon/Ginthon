@@ -1,6 +1,6 @@
 <script lang="ts">
     import {afterNavigate} from "$app/navigation";
-
+    import func from "../common/func.svelte.js";
 
     // 本页面参数
 
@@ -22,7 +22,7 @@
 <section class="section-side_search select-none bg-neutral-200 dark:bg-neutral-800">
     <div class="side-search font-text">
         <label class="label">
-            <input class="side-search-input input-style w-full border-radius font-text select-text" type="text" maxlength="2000" placeholder="Input..." value="" />
+            <input class="side-search-input input-style w-full border-radius font-text select-text" type="text" maxlength="2000" placeholder="{func.get_translate('input_placeholder_search')}" value="" />
         </label>
     </div>
 </section>

@@ -959,6 +959,13 @@ const func = {
             return "";
         }
     },
+    replaceLast: function (text, search, replacement) { // 替换字符串最后一个出现的小字符串
+        const lastIndex = text.lastIndexOf(search);
+        if (lastIndex === -1) {
+            return text; // 没有找到匹配项
+        }
+        return text.substring(0, lastIndex) + replacement + text.substring(lastIndex + search.length);
+    },
     loading_show: function(msg="", timeout_ms = "long"){
         let that = this;
         //

@@ -5,7 +5,7 @@
 GLOBAL_CONFIG_DICT = {
     "app": {
         "app_name": "Ginthon",
-        "app_version": "1.6.3",  # 1.0.0
+        "app_version": "1.6.4",  # 1.0.0
         "app_class": "ginthon_window_",
         "author": "fyonecon",
         "github": "https://github.com/fyonecon/Ginthon",

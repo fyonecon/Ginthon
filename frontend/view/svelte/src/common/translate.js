@@ -89,6 +89,14 @@ const lang_dict = {
         zh: "保存",
         en: "Save",
     },
+    btn_ok: {
+        zh: "是的",
+        en: "OK",
+    },
+    btn_update: {
+        zh: "更新",
+        en: "Update",
+    },
     a_click_tip_see_detail: {
         zh: "点击查看详情",
         en: "See Details",
@@ -133,6 +141,78 @@ const lang_dict = {
     play_paused: {
         zh: "已暂停。",
         en: "Paused.",
+    },
+    play_add_new_fir: {
+        zh: "添加本地文件夹",
+        en: "Add a new local folder",
+    },
+    play_update_play_list: {
+        zh: "更新播放列表",
+        en: "Update play list",
+    },
+    updated: {
+        zh: "已更新",
+        en: "Updated",
+    },
+    saved: {
+        zh: "已保存",
+        en: "Saved",
+    },
+    added: {
+        zh: "已添加",
+        en: "Added",
+    },
+    input_null: {
+        zh: "输入为空",
+        en: "Input is empty",
+    },
+    null_content: {
+        zh: "空内容",
+        en: "Content is empty",
+    },
+    error: {
+        zh: "出错",
+        en: "Error",
+    },
+    find_btn: {
+        zh: "查 找",
+        en: "Find",
+    },
+    search_btn: {
+        zh: "搜 索",
+        en: "Search",
+    },
+    input_placeholder_find: {
+        zh: "输入查找",
+        en: "Find...",
+    },
+    input_placeholder_search: {
+        zh: "输入关键词",
+        en: "Search keyword...",
+    },
+    remove: {
+        zh: "移除",
+        en: "Remove",
+    },
+    remove_help_1:{
+        zh: "移除该文件夹（不会从本机删除该文件夹）",
+        en: "Remove the folder (The folder will not be deleted from the local machine)",
+    },
+    del: {
+        zh: "删除",
+        en: "Del",
+    },
+    edit: {
+        zh: "编辑",
+        en: "Edit",
+    },
+    share: {
+        zh: "分享",
+        en: "Share",
+    },
+    qr: {
+        zh: "二维码",
+        en: "QRCode",
     },
 
     // =========

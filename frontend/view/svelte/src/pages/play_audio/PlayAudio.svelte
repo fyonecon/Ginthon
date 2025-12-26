@@ -7,7 +7,6 @@
     import {Dialog, Portal} from "@skeletonlabs/skeleton-svelte";
     import config from "../../config";
     import FetchPOST from "../../common/post.svelte";
-    import {notice_data} from "../../stores/notice.store.svelte";
     import {play_audio_data} from "../../stores/play_audio.store.svelte";
 
     // 本页面参数
@@ -16,20 +15,29 @@
     let play_list_max_len = $state(1000); // 播放列表最大长度
 
     const animation = 'transition transition-discrete opacity-0 translate-y-[100px] starting:data-[state=open]:opacity-0 starting:data-[state=open]:translate-y-[100px] data-[state=open]:opacity-100 data-[state=open]:translate-y-0';
-    const icon_dir = '<svg class="svg-icon font-blue" xmlns="http://www.w3.org/2000/svg" width="24" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M4 20q-.825 0-1.412-.587T2 18V6q0-.825.588-1.412T4 4h5.175q.4 0 .763.15t.637.425L12 6h8q.825 0 1.413.588T22 8v10q0 .825-.587 1.413T20 20z"/></svg>';
-    const icon_audio = '<svg class="svg-icon font-blue" xmlns="http://www.w3.org/2000/svg" width="24" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M10.75 18.692q.816 0 1.379-.563q.563-.564.563-1.379v-3.98h2.731v-1.54h-3.5v4.087q-.236-.257-.53-.383q-.293-.126-.643-.126q-.815 0-1.379.563q-.563.564-.563 1.379t.563 1.379q.564.563 1.379.563M6.616 21q-.691 0-1.153-.462T5 19.385V4.615q0-.69.463-1.152T6.616 3H14.5L19 7.5v11.885q0 .69-.462 1.153T17.384 21zM14 8h4l-4-4z"/></svg>';
-    const icon_video = '<svg class="svg-icon font-blue" xmlns="http://www.w3.org/2000/svg" width="24" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M22.525 7.149a1 1 0 0 0-.972-.044L19 8.382V8c0-1.654-1.346-3-3-3H5C3.346 5 2 6.346 2 8v8c0 1.654 1.346 3 3 3h11c1.654 0 3-1.346 3-3v-.382l2.553 1.276a.99.99 0 0 0 .972-.043c.295-.183.475-.504.475-.851V8c0-.347-.18-.668-.475-.851M7 13.5a1.5 1.5 0 1 1-.001-2.999A1.5 1.5 0 0 1 7 13.5"/></svg>';
-    const icon_type = '<svg class="svg-icon font-blue" xmlns="http://www.w3.org/2000/svg" width="24" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M14 2.25a.25.25 0 0 1 .25.25v5.647c0 .414.336.75.75.75h4.5a.25.25 0 0 1 .25.25V19A2.75 2.75 0 0 1 17 21.75H7A2.75 2.75 0 0 1 4.25 19V5A2.75 2.75 0 0 1 7 2.25z"/><path fill="currentColor" d="M16.086 2.638c-.143-.115-.336.002-.336.186v4.323c0 .138.112.25.25.25h3.298c.118 0 .192-.124.124-.22L16.408 2.98a1.8 1.8 0 0 0-.322-.342"/></svg>';
+    const icon_dir = '<svg class="svg-icon font-blue" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="currentColor" d="M4 20q-.825 0-1.412-.587T2 18V6q0-.825.588-1.412T4 4h5.175q.4 0 .763.15t.637.425L12 6h8q.825 0 1.413.588T22 8v10q0 .825-.587 1.413T20 20z"/></svg>';
+    const icon_audio = '<svg class="svg-icon font-blue" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="currentColor" d="M10.75 18.692q.816 0 1.379-.563q.563-.564.563-1.379v-3.98h2.731v-1.54h-3.5v4.087q-.236-.257-.53-.383q-.293-.126-.643-.126q-.815 0-1.379.563q-.563.564-.563 1.379t.563 1.379q.564.563 1.379.563M6.616 21q-.691 0-1.153-.462T5 19.385V4.615q0-.69.463-1.152T6.616 3H14.5L19 7.5v11.885q0 .69-.462 1.153T17.384 21zM14 8h4l-4-4z"/></svg>';
+    const icon_video = '<svg class="svg-icon font-blue" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="currentColor" d="M22.525 7.149a1 1 0 0 0-.972-.044L19 8.382V8c0-1.654-1.346-3-3-3H5C3.346 5 2 6.346 2 8v8c0 1.654 1.346 3 3 3h11c1.654 0 3-1.346 3-3v-.382l2.553 1.276a.99.99 0 0 0 .972-.043c.295-.183.475-.504.475-.851V8c0-.347-.18-.668-.475-.851M7 13.5a1.5 1.5 0 1 1-.001-2.999A1.5 1.5 0 0 1 7 13.5"/></svg>';
+    const icon_type = '<svg class="svg-icon font-blue" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="currentColor" d="M14 2.25a.25.25 0 0 1 .25.25v5.647c0 .414.336.75.75.75h4.5a.25.25 0 0 1 .25.25V19A2.75 2.75 0 0 1 17 21.75H7A2.75 2.75 0 0 1 4.25 19V5A2.75 2.75 0 0 1 7 2.25z"/><path fill="currentColor" d="M16.086 2.638c-.143-.115-.336.002-.336.186v4.323c0 .138.112.25.25.25h3.298c.118 0 .192-.124.124-.22L16.408 2.98a1.8 1.8 0 0 0-.322-.342"/></svg>';
     // 管理弹窗
-    let dir_dialog_is_open = $state(false);
-    let input_value_set_dir = $state("");
-    let list_dirs = $state([]);
-    let list_files = $state([]);
-    let root_paths = $state([]);
+    let add_dir_dialog_is_open = $state(false);
+    let update_play_list_dialog_is_open = $state(false);
+    let input_value_add_dir = $state("");
+    let input_value_find = $state("");
+    let list_dirs: string[] = $state([]);
+    let list_files: string[] = $state([]);
+    let root_paths: string[] = $state([]);
     let view_path = $state("");
+    let now_root_path = $state("");
     let has_paths: unknown = $state([]);
     let show_play_all_btn = $state("hide");
-    let now_audio_files = $state([]); // 当前文件白名单
+    let show_set_local_dir_btn = $state("show");
+    let now_audio_files: object[] = $state([]); // 当前文件白名单
+    let input_value_find_list_dirs: string[] = $state([]);
+    let input_value_find_list_files: string[] = $state([]);
+    let show_dir_remove_btn = $state("hide");
+    let remove_local_dir_dialog_is_open = $state(false);
+    let remove_local_dir_the_dir = $state("");
 
 
     // 本页面函数：Svelte的HTML组件onXXX=中正确调用：={()=>def.xxx()}
@@ -37,13 +45,27 @@
         close_dialog: function(){
             let that = this;
             //
-            dir_dialog_is_open = false;
-            input_value_set_dir = "";
+            add_dir_dialog_is_open = false;
+            update_play_list_dialog_is_open = false;
+            input_value_add_dir = "";
+            remove_local_dir_the_dir = "";
+            remove_local_dir_dialog_is_open = false;
         },
-        dir_open_dialog: function(){
+        add_dir_open_dialog: function(){
             let that = this;
             //
-            dir_dialog_is_open = true;
+            add_dir_dialog_is_open = true;
+        },
+        update_play_list_open_dialog: function(){
+            let that = this;
+            //
+            update_play_list_dialog_is_open = true;
+        },
+        remove_local_dir_open_dialog: function(dir = ""){
+            let that = this;
+            //
+            remove_local_dir_dialog_is_open = true;
+            remove_local_dir_the_dir = dir;
         },
         make_file_token: function(filepath = ""){
             const _app_token = func.get_local_data("app_token");
@@ -56,7 +78,7 @@
             let href = config.api.api_host + "/dir/play_audio/" + encodeURIComponent(file_path) + "?"+that.make_file_token(file_path)+"&ap=dir ";
             func.open_url_with_default_browser(href);
         },
-        has_audio_file: function(files_array = []){
+        has_audio_file: function(files_array:string[] = []){
             let that = this;
             //
             show_play_all_btn = "hide";
@@ -79,11 +101,16 @@
             let that = this;
             //
             func.loading_show();
+            list_dirs = [];
+            list_files = [];
+            input_value_find_list_dirs = [];
+            input_value_find_list_files = [];
+            input_value_find = "";
             //
             if (!now_dir){
                 now_dir = func.search_param("dir");
             }
-            console.log("dir=", now_dir);
+            func.console_log("dir=", now_dir);
             //
             view_path = func.converted_path(now_dir); // 获取正确的路径
             //
@@ -103,11 +130,20 @@
                         list_dirs = res.content.list_dirs;
                         list_files = res.content.list_files;
                         view_path = res.content.view_path;
+                        now_root_path = res.content.root_path;
                         //
                         that.has_audio_file(list_files);
+                        //
                         if (!now_dir && res.content.root_paths.length > 0){
                             root_paths = res.content.root_paths;
                         }
+                        //
+                        if (!now_dir){
+                            show_dir_remove_btn = "show";
+                        }else{
+                            show_dir_remove_btn = "hide";
+                        }
+                        //
                         resolve(true);
                     }else{
                         console.log("API有问题=", api_url, res);
@@ -123,7 +159,7 @@
             let play_audio_list_dir = "";
             return new Promise(resolve => {
                 func.js_call_py_or_go("get_data", {data_key:play_audio_list_dir_key}).then(res=>{
-                    console.log("get_data=", res);
+                    // console.log("get_data=", res);
                     if (res.state === 1){
                         play_audio_list_dir = res.content.data;
                     }
@@ -139,10 +175,78 @@
                 });
             });
         },
+        remove_local_dir: function(the_root_dir = ""){
+            let that = this;
+            //
+            func.loading_show();
+            //
+            let value = the_root_dir.trim().replaceAll("#@", "").replaceAll("～", ""); // 删除预设的特殊字符
+            // 设置多个dir本地记录
+            let play_audio_list_dir_key = "play_audio_list_dirs";
+            let play_audio_list_dir = "";
+            func.js_call_py_or_go("get_data", {data_key:play_audio_list_dir_key}).then(res=>{
+                if (res.state === 1){
+                    play_audio_list_dir = res.content.data;
+                }else{
+                    console.log(func.get_translate("error") + ", 1", res);
+                }
+                // 获取老数据
+                let play_audio_list_dir_array = play_audio_list_dir.split("#@");
+                let new_value = "";
+                if (value){
+                    if (play_audio_list_dir && play_audio_list_dir_array.length>=2){
+                        new_value = play_audio_list_dir
+                            .replaceAll("#@"+value, "")
+                            .replaceAll(value + "#@", "")
+                            .replaceAll(value, "")
+                        ;
+                    }else{ // 剩下<=1时，删除所有记录
+                        new_value = "";
+                    }
+                    //
+                    let data_dict = {
+                        data_key: play_audio_list_dir_key,
+                        data_value: new_value,
+                        data_timeout_s: 3600*24*356*20,
+                    }
+                    //
+                    if (new_value){ // 更新新数据
+                        func.js_call_py_or_go("set_data", data_dict).then(res2=>{
+                            func.notice(res2.msg);
+                            if (res2.state === 1){
+                                that.close_dialog();
+                                that.get_play_audio_list(); // 更新数据
+                            }else{
+                                func.loading_hide();
+                                that.close_dialog();
+                                console.log(func.get_translate("error") + ", 3-1", res2);
+                            }
+                        });
+                    }else{ // 删除数据
+                        func.js_call_py_or_go("del_data", data_dict).then(res2=>{
+                            func.notice(res2.msg);
+                            if (res2.state === 1){
+                                that.close_dialog();
+                                that.get_play_audio_list(); // 更新数据
+                            }else{
+                                func.loading_hide();
+                                that.close_dialog();
+                                console.log(func.get_translate("error") + ", 3-2", res2);
+                            }
+                        });
+                    }
+                }else{
+                    func.loading_hide();
+                    func.notice(func.get_translate("input_null"), value);
+                }
+            });
+        },
         set_local_dir: function(){ // 设置本地文件夹
             let that = this;
             //
-            let value = input_value_set_dir.trim().replaceAll("#@", "").replaceAll("～", ""); // 删除预设的特殊字符
+            func.loading_show();
+            //
+            let value = input_value_add_dir.trim().replaceAll("#@", "").replaceAll("～", ""); // 删除预设的特殊字符
             // 设置多个dir本地记录
             let play_audio_list_dir_key = "play_audio_list_dirs";
             let play_audio_list_dir = "";
@@ -151,7 +255,7 @@
                 if (res.state === 1){
                     play_audio_list_dir = res.content.data;
                 }else{
-                    func.notice("无数据或接口错误-1：", res);
+                    console.log(func.get_translate("error") + ", 1", res);
                 }
                 // 获取老数据
                 let play_audio_list_dir_array = play_audio_list_dir.split("#@");
@@ -168,20 +272,20 @@
                         data_value: new_value,
                         data_timeout_s: 3600*24*356*20,
                     }
-                    // console.log("data_dict=", data_dict, [play_audio_list_dir_array, play_audio_list_dir]);
                     func.js_call_py_or_go("set_data", data_dict).then(res2=>{
-                        // console.log("set_data=", res2);
-                        func.notice(res.msg);
-                        if (res.state === 1){
+                        func.notice(res2.msg);
+                        if (res2.state === 1){
                             that.close_dialog();
                             that.get_play_audio_list(); // 更新数据
                         }else{
                             that.close_dialog();
-                            func.notice("无数据或接口错误-2：", res2);
+                            func.loading_hide();
+                            console.log(func.get_translate("error") + ", 2-1", res2);
                         }
                     });
                 }else{
-                    func.notice("输入不能为空：", value);
+                    func.loading_hide();
+                    func.notice(func.get_translate("input_null"), value);
                 }
             });
         },
@@ -198,7 +302,7 @@
             let list = func.get_local_data(player_prefix + "list");
             return (list.length>0)?JSON.parse(decodeURIComponent(list)).slice(0, play_list_max_len):null;
         },
-        set_list: function(list_array = []){ // 新增或更新列表，最大1000长度
+        set_list: function(list_array:object[] = []){ // 新增或更新列表，最大1000长度
             let list = "";
             if (typeof list_array === "object"){
                 list = JSON.stringify(list_array.slice(0, play_list_max_len));
@@ -222,8 +326,69 @@
                 that.set_playing(now_audio_files[0]);
                 that.set_list(now_audio_files);
                 play_audio_data.play_state = true;
+                func.notice(func.get_translate("updated"));
             }else{
-                func.notice("空列表");
+                func.notice(func.get_translate("null_content"));
+            }
+            that.close_dialog();
+        },
+        //
+        input_find: function(){
+            let that = this;
+            //
+            if (input_value_find){
+                // 缓存数据
+                if (input_value_find_list_dirs.length === 0){
+                    input_value_find_list_dirs = list_dirs;
+                }
+                if (input_value_find_list_files.length === 0){
+                    input_value_find_list_files = list_files;
+                }
+                // 初始数据
+                list_dirs = [];
+                list_files = [];
+                let _list_dirs = [];
+                let _list_files = [];
+                // 重新显示数据
+                for (const key in input_value_find_list_dirs){
+                    let the_dir = input_value_find_list_dirs[key];
+                    if (the_dir.toLowerCase().indexOf(input_value_find.toLowerCase()) !== -1){
+                        list_dirs.push(the_dir);
+                        _list_dirs.push(the_dir);
+                    }
+                }
+                for (const key in input_value_find_list_files) {
+                     let the_file = input_value_find_list_files[key];
+                     if (the_file.toLowerCase().indexOf(input_value_find.toLowerCase()) !== -1){
+                        list_files.push(the_file);
+                         _list_files.push(the_file);
+                     }
+                }
+                // 重新生成播放列表
+                setTimeout(function (){
+                    console.log("has_audio_file", _list_files);
+                    that.has_audio_file(_list_files);
+                }, 500);
+            }else {
+                func.notice(func.get_translate("input_null"));
+                // 还原缓存数据
+                if (input_value_find_list_dirs.length > 0){
+                    list_dirs = input_value_find_list_dirs;
+                    input_value_find_list_dirs = [];
+                }
+                if (input_value_find_list_files.length > 0){
+                    list_files = input_value_find_list_files;
+                    input_value_find_list_files = [];
+                }
+            }
+        },
+        input_enter: function(event){
+            let that = this;
+            //
+            if (event.key === 'Enter') {
+                // console.log('Enter pressed:', input_value_find);
+                // 执行回车操作
+                that.input_find();
             }
         },
     };
@@ -247,64 +412,76 @@
 </script>
 
 <div>
-    <ul class="ul-group font-text">
-
-        <li class="li-group select-none">
-            <div class="li-group-title break">
-                设置本地文件夹
+    <!--  文件列表  -->
+    <div class="list_dirs font-text border-radius">
+<!--        <div class="list-path hide" title="已保存的文件夹">{(has_paths.length>0)?JSON.stringify(has_paths):""}</div>-->
+<!--        <div class="list-path" title="正在访问文件夹">{view_path?view_path:"/"}</div>-->
+<!--        <div class="show_play_operation select-none ">-->
+<!--            <div class="list_dirs-operation-do-item {show_play_all_btn}">-->
+<!--                将当前文件夹全部音乐添加到播放列表-->
+<!--                <button type="button" class="show_play_all-btn click" onclick={()=>def.play_all()} title="Play All">-->
+<!--                    <svg class="font-blue" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M18 9V7h-2V5h2V3h2v2h2v2h-2v2zM6 16h7v-3H6zm0-5h7V8H6zm-2 9q-.825 0-1.412-.587T2 18V6q0-.825.588-1.412T4 4h10.425q-.2.45-.312.963T14 6q0 .85.263 1.613T15 9v7h3v-5.1q.25.05.488.075T19 11q.85 0 1.613-.262T22 10v8q0 .825-.587 1.413T20 20z"/></svg>-->
+<!--                </button>-->
+<!--            </div>-->
+<!--        </div>-->
+        <div class="list_dirs-title break-ellipsis bg-neutral-200 dark:bg-neutral-800">
+            {view_path?"/... "+view_path.replace(func.replaceLast(now_root_path, func.filepath_to_filename(now_root_path), ""), "")+" /":"/"}
+        </div>
+        <div class="list_dirs-operation select-none">
+            <div class="list_dirs-operation-search font-mini">
+                <label>
+                    <input class="input-style select-text list_dirs-operation-search-input border-radius" type="text" maxlength="100" placeholder="{func.get_translate('input_placeholder_find')}" bind:value={input_value_find} onkeydown={()=>def.input_enter(event)} />
+                    <button class="list_dirs-operation-search-btn font-white border-radius click " type="button" title="Find" onclick={()=>def.input_find()}>{func.get_translate("find_btn")}</button>
+                </label>
             </div>
-            <div class="li-group-content select-text">
-                <button class="btn btn-sm select-none preset-filled-primary-500 font-text float-left mr-[10px] mb-[10px]" onclick={()=>def.dir_open_dialog()}>Set Local Dir</button>
-                <!--  -->
-                <Dialog closeOnInteractOutside={false} closeOnEscape={false} open={dir_dialog_is_open} onOpenChange={()=>{}}>
-                    <Portal>
-                        <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80  pywebview-drag-region can-drag select-none" />
-                        <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text">
-                            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {animation}  px-[10px] py-[10px] border-radius">
-                                <header class="flex justify-between items-center pywebview-drag-region can-drag select-none">
-                                    <Dialog.Title class="font-title font-bold">⚠️</Dialog.Title>
-                                </header>
-                                <Dialog.Description class="font-text">
-                                    <label class="label">
-                                        <input class="input-style font-text select-text border-radius w-full" type="text" maxlength="2000" placeholder="Input..." bind:value={input_value_set_dir}  />
-                                    </label>
-                                </Dialog.Description>
-                                <footer class="flex justify-center gap-10 select-none  px-[10px] py-[10px]">
-                                    <button title="Cancel" class="btn btn-base preset-tonal font-title" onclick={()=>def.close_dialog()}>{func.get_translate("btn_cancel")}</button>
-                                    <button title="Save" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>def.set_local_dir()}>{func.get_translate("btn_save")}</button>
-                                </footer>
-                            </Dialog.Content>
-                        </Dialog.Positioner>
-                    </Portal>
-                </Dialog>
+            <div class="list_dirs-operation-do">
+                <div class="list_dirs-operation-do-item {show_set_local_dir_btn}">
+                    <button type="button" class="operation-do-btn click bg-neutral-200 dark:bg-neutral-800" onclick={()=>def.add_dir_open_dialog()} title="{func.get_translate('play_add_new_fir')}">
+                        <svg class="font-blue" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 2048 2048"><path fill="currentColor" d="M1088 960h320v128h-320v320H960v-320H640V960h320V640h128zm-64-832q124 0 238 32t214 90t181 140t140 181t91 214t32 239t-32 238t-90 214t-140 181t-181 140t-214 91t-239 32t-238-32t-214-90t-181-140t-140-181t-91-214t-32-239t32-238t90-214t140-181t181-140t214-91t239-32m0 1664q106 0 204-27t183-78t156-120t120-155t77-184t28-204t-27-204t-78-183t-120-156t-155-120t-184-77t-204-28t-204 27t-183 78t-156 120t-120 155t-77 184t-28 204t27 204t78 183t120 156t155 120t184 77t204 28"/></svg>
+                    </button>
+                </div>
+                <div class="list_dirs-operation-do-item {show_play_all_btn}">
+                    <button type="button" class="operation-do-btn click bg-neutral-200 dark:bg-neutral-800" onclick={()=>def.update_play_list_open_dialog()} title="{func.get_translate('play_update_play_list')}">
+                        <svg class="font-blue" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7 3h10a1 1 0 0 0 0-2H7a1 1 0 0 0 0 2M0 2a2 2 0 1 0 4 0a2 2 0 1 0-4 0m6 6a1 1 0 0 0 1 1h10a1 1 0 0 0 0-2H7a1 1 0 0 0-1 1M0 8a2 2 0 1 0 4 0a2 2 0 1 0-4 0m10 5H7a1 1 0 0 0 0 2h3a1 1 0 0 0 0-2M0 14a2 2 0 1 0 4 0a2 2 0 1 0-4 0m24 5.55v-6.84a2 2 0 0 0-2.37-2l-6 1.12a2 2 0 0 0-1.63 2v4.93a.27.27 0 0 1-.08.19a.26.26 0 0 1-.19.06h-.23a2.6 2.6 0 0 0-1 .21a2.5 2.5 0 0 0 1 4.79a2.4 2.4 0 0 0 .75-.12A2.49 2.49 0 0 0 16 21.55v-7.31a.5.5 0 0 1 .41-.49l5-.93a.5.5 0 0 1 .59.49v3.45a.27.27 0 0 1-.08.19a.26.26 0 0 1-.19.06h-.23a2.6 2.6 0 0 0-1 .21a2.5 2.5 0 0 0 1 4.79a2.4 2.4 0 0 0 .75-.12A2.49 2.49 0 0 0 24 19.55"/></svg>
+                    </button>
+                </div>
             </div>
-
-        </li>
-    </ul>
-
-    <div class="list_dirs font-text">
-        <div class="list-path">已保存的文件夹：{(has_paths.length>0)?JSON.stringify(has_paths):""}</div>
-        <div class="list-path">正在访问文件夹：{view_path?view_path:"/"}</div>
-        <div class="list-path hide">{JSON.stringify(list_dirs)}</div>
-        <ul class="list-path-tree list-path-dirs">
-            <div class="show_play_operation select-none ">
-                <span class="{show_play_all_btn}">
-                    将当前文件夹全部音乐添加到播放列表
-                    <button type="button" class="show_play_all-btn click" onclick={()=>def.play_all()} title="Play All"><svg class="font-blue" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M18 9V7h-2V5h2V3h2v2h2v2h-2v2zM6 16h7v-3H6zm0-5h7V8H6zm-2 9q-.825 0-1.412-.587T2 18V6q0-.825.588-1.412T4 4h10.425q-.2.45-.312.963T14 6q0 .85.263 1.613T15 9v7h3v-5.1q.25.05.488.075T19 11q.85 0 1.613-.262T22 10v8q0 .825-.587 1.413T20 20z"/></svg></button>
-                </span>
-            </div>
+        </div>
+        <ul class="list-path-tree-ul">
+            <!--dirs-->
             {#each list_dirs as dir}
-                <li class="list-path-tree-li">
-                    <button class="list-path-tree-li-btn click" type="button" title="{dir}" onclick={()=>func.open_url(func.get_route()+"#dir="+encodeURIComponent(func.converted_path(view_path+"/"+dir)))} >{@html icon_dir} {dir}</button>
-                    <span>复制链接</span>
+                <li class="list-path-tree-li list-path-tree-li-dir border-radius">
+                    <div class="list-path-tree-li-icon">
+                        {@html icon_dir}
+                    </div>
+                    <div class="list-path-tree-li-content">
+                        <div class="li-name font-text break">
+                            <button class="list-path-tree-li-btn click break select-text" type="button" title="{dir}" onclick={()=>func.open_url(func.get_route()+"#dir="+encodeURIComponent(func.converted_path(view_path+"/"+dir)))} >{func.filepath_to_filename(dir)}</button>
+                        </div>
+                        <div class="li-operation font-text">
+                            <div class="li-operation-item {show_dir_remove_btn}">
+                                <button type="button" title="{func.get_translate('remove')}" class="li-operation-item-btn click" onclick={()=>def.remove_local_dir_open_dialog(func.converted_path(view_path+"/"+dir))}>
+                                    <svg class="font-red" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M7.5 12h9"/></g></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </li>
             {/each}
-        </ul>
-        <ul class="list-path-tree list-path-files">
+            <!--files-->
             {#each list_files as filename}
-                <li class="list-path-tree-li">
-                    <button class="list-path-tree-li-btn click" type="button" title="{filename}" onclick={()=>def.open_file(filename)}>{@html func.is_audio(filename)?icon_audio:(func.is_video(filename)?icon_video:icon_type)} {filename}</button>
-                    <span>复制链接</span>
+                <li class="list-path-tree-li list-path-tree-li-file border-radius">
+                    <div class="list-path-tree-li-icon">
+                        {@html func.is_audio(filename)?icon_audio:(func.is_video(filename)?icon_video:icon_type)}
+                    </div>
+                    <div class="list-path-tree-li-content">
+                        <div class="li-name font-text break">
+                            <button class="list-path-tree-li-btn click break select-text" type="button" title="{filename}" onclick={()=>def.open_file(filename)}>{filename}</button>
+                        </div>
+                        <div class="li-operation font-text">
+                            <span class="hide">复制链接</span>
+                        </div>
+                    </div>
                 </li>
             {/each}
         </ul>
@@ -312,41 +489,213 @@
 
 </div>
 
+<!-- 新增文件夹 -->
+<Dialog closeOnInteractOutside={false} closeOnEscape={false} open={add_dir_dialog_is_open} onOpenChange={()=>{}}>
+    <Portal>
+        <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80  pywebview-drag-region can-drag select-none"/>
+        <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text">
+            <Dialog.Content
+                    class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {animation}  px-[10px] py-[10px] border-radius">
+                <header class="flex justify-between items-center pywebview-drag-region can-drag select-none">
+                    <Dialog.Title class="font-title font-bold">⚠️</Dialog.Title>
+                </header>
+                <Dialog.Description class="font-text">
+                    <div class="font-text" style="margin-top: 10px; margin-bottom: 20px;opacity: 0.8;">
+                        {func.get_translate('play_add_new_fir')}
+                    </div>
+                    <label class="label">
+                        <input class="input-style font-text select-text border-radius w-full" type="text"
+                               maxlength="2000" placeholder="Input..." bind:value={input_value_add_dir}/>
+                    </label>
+                </Dialog.Description>
+                <footer class="flex justify-center gap-10 select-none  px-[10px] py-[10px]">
+                    <button title="Cancel" class="btn btn-base preset-tonal font-title"
+                            onclick={()=>def.close_dialog()}>{func.get_translate("btn_cancel")}</button>
+                    <button title="Save" type="button" class="btn btn-base preset-filled-primary-500 font-title"
+                            onclick={()=>def.set_local_dir()}>{func.get_translate("btn_save")}</button>
+                </footer>
+            </Dialog.Content>
+        </Dialog.Positioner>
+    </Portal>
+</Dialog>
+
+<!-- 更新播放列表 -->
+<Dialog closeOnInteractOutside={false} closeOnEscape={false} open={update_play_list_dialog_is_open} onOpenChange={()=>{}}>
+    <Portal>
+        <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80  pywebview-drag-region can-drag select-none" />
+        <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text">
+            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {animation}  px-[10px] py-[10px] border-radius">
+                <header class="flex justify-between items-center pywebview-drag-region can-drag select-none">
+                    <Dialog.Title class="font-title font-bold">⚠️</Dialog.Title>
+                </header>
+                <Dialog.Description class="font-text">
+                    {func.get_translate('play_update_play_list')}
+                </Dialog.Description>
+                <footer class="flex justify-center gap-10 select-none  px-[10px] py-[10px]">
+                    <button title="Cancel" class="btn btn-base preset-tonal font-title" onclick={()=>def.close_dialog()}>{func.get_translate("btn_cancel")}</button>
+                    <button title="Update" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>def.play_all()}>{func.get_translate("btn_update")}</button>
+                </footer>
+            </Dialog.Content>
+        </Dialog.Positioner>
+    </Portal>
+</Dialog>
+
+<!-- 删除已设置的本地文件夹 -->
+<Dialog closeOnInteractOutside={false} closeOnEscape={false} open={remove_local_dir_dialog_is_open} onOpenChange={()=>{}}>
+    <Portal>
+        <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80  pywebview-drag-region can-drag select-none" />
+        <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text">
+            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {animation}  px-[10px] py-[10px] border-radius">
+                <header class="flex justify-between items-center pywebview-drag-region can-drag select-none">
+                    <Dialog.Title class="font-title font-bold">⚠️</Dialog.Title>
+                </header>
+                <Dialog.Description class="font-text">
+                    {@html func.get_translate('remove_help_1') +":<br/>"+ func.filepath_to_filename(remove_local_dir_the_dir)}
+                </Dialog.Description>
+                <footer class="flex justify-center gap-10 select-none  px-[10px] py-[10px]">
+                    <button title="Cancel" class="btn btn-base preset-tonal font-title" onclick={()=>def.close_dialog()}>{func.get_translate("btn_cancel")}</button>
+                    <button title="Update" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>def.remove_local_dir(remove_local_dir_the_dir)}>{func.get_translate("remove")}</button>
+                </footer>
+            </Dialog.Content>
+        </Dialog.Positioner>
+    </Portal>
+</Dialog>
+
 <style>
     .list_dirs{
         clear: both;
-        width: 100%;
-        padding: 10px 0;
+        width: calc(100% - 20px);
+        border: 1px solid rgba(180,180,180,0.4);
+        margin-left: 10px;
+        margin-right: 10px;
     }
-    .list-path{
-        margin-bottom: 10px;
-    }
-    .list-path-tree{
+
+
+    .list_dirs-title{
+        height: 50px;
+        line-height: 30px;
+        overflow: hidden;
         padding: 10px 10px;
+        opacity: 0.8;
+        clear: both;
+    }
+
+
+    .list_dirs-operation{
+        height: 50px;
+        padding: 5px 5px;
+        clear: both;
+        border-bottom: 1px solid rgba(180,180,180,0.6);
+    }
+    .list_dirs-operation-search{
+        width: 240px;
+        height: 40px;
+        float: left;
+        overflow: hidden;
+    }
+    .list_dirs-operation-do{
+        width: calc(100% - 240px);
+        height: 40px;
+        float: left;
+        overflow: hidden;
+        padding-left: 10px;
+    }
+    .list_dirs-operation-search-input {
+        float: left;
+        height: 34px;
+        width: calc(100% - 80px - 10px);
+        margin: 3px 5px 3px 2px;
+    }
+    .list_dirs-operation-search-btn{
+        float: left;
+        width: 80px;
+        margin: 3px 0 3px 2px;
+        line-height: 34px;
+        background-color: var(--color-primary-400);
+    }
+    .list_dirs-operation-do-item{
+        height: 40px;
+        padding: 5px 5px;
+        float: right;
+    }
+
+
+    .list-path-tree-ul{
+        clear: both;
+        padding: 10px 10px 10px 10px;
     }
     .list-path-tree-li{
-        padding: 5px 0;
-        line-height: 24px;
         opacity: 0.8;
+        overflow: hidden;
+        border-bottom: 1px solid rgba(180,180,180,0.2);
+        clear: both;
+    }
+    .list-path-tree-li:hover{
+        background-color: rgba(180,180,180,0.1);
+    }
+    .list-path-tree-li:last-child{
+        border-bottom: 1px solid rgba(180,180,180,0);
+    }
+
+
+    .list-path-tree-li-icon{
+        width: 35px;
+        height: 40px;
+        padding-top: 5px;
+        float: left;
+    }
+    .list-path-tree-li-content{
+        width: calc(100% - 40px);
+        padding: 5px 0;
+        float: left;
     }
     .list-path-tree-li-btn{
-        padding: 5px 0;
-        line-height: 20px;
         text-align: left;
+        padding: 5px 5px;
+        overflow: hidden;
+        line-height: 20px;
+        max-height: 68px;
     }
-    .show_play_all-btn{
+
+
+    .li-name{
+        float: left;
+        width: calc(100% - 150px);
+        overflow: hidden;
+    }
+    .li-operation{
+        float: right;
+        width: 150px; /*edit del share qr (30+5)*4=140+10=150 */
+        overflow: hidden;
+        line-height: 30px;
+        padding-left: 10px;
+    }
+
+
+    .operation-do-btn{
         width: 30px;
         height: 30px;
         border-radius: 30px;
         text-align: center;
-        background-color: rgba(180,180,180,0.4);
+        /*background-color: rgba(180,180,180,0.4);*/
+
     }
-    .show_play_all-btn > svg{
-        margin-top: 0px;
+    .operation-do-btn > svg{
+        margin-top: 0;
         margin-left: 3px;
     }
-    .show_play_operation{
-        height: 50px;
-        padding: 10px 10px;
+
+
+    .li-operation-item{
+        width: 30px;
+        height: 30px;
+        border-radius: 30px;
+        float: right;
     }
+    .li-operation-item-btn > svg{
+        margin-top: 3px;
+        margin-left: 3px;
+    }
+
+
 </style>

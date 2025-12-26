@@ -89,8 +89,8 @@ def init_window(cmd_model):
         title=CONFIG["app"]["app_name"],
         url=pywebveiw_url,
         # html='<h2>Ginthon</h2>',
-        min_size=(520, 520),
-        width=960, height=700, # width=720, height=540     width=960, height=700
+        min_size=(520, 520), # 520px，如若更改，同时需要更改web端
+        width=960, height=700, # px   width=720, height=540     width=960, height=700
         hidden=False, # 打开时隐藏界面，默认 False
         frameless=False, # 默认 False 拖住class="pywebview-drag-region"
         confirm_close=False, # 关闭window时显示确认窗口（不支持在状态栏关闭时拦截） False True

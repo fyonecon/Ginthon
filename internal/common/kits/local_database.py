@@ -53,7 +53,7 @@ def local_database_get_data(data_key:str):
                 line = f.readline()
                 if not line:  # 读到文件末尾
                     break
-                print_log(f'第{line_num}行: {line.strip()}')
+                # print_log(f'第{line_num}行: {line.strip()}')
                 the_line_num = line_num
                 the_line_txt = line.strip()
                 if the_line_num == 1:
