@@ -421,6 +421,7 @@
             let api_url = config.api.api_host+"/api/get_play_audio_list";
             const _app_token = func.get_local_data("app_token");
             const body_dict = {
+                lang: func.get_lang(),
                 app_token: _app_token,
                 app_class: config.app.app_class
             };
@@ -544,6 +545,7 @@
         padding: 5px 5px;
         clear: both;
         border-radius: 40px;
+        z-index: 200;
     }
     .page-player-song_info{
         width: calc(220px - 10px - 100px);

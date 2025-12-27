@@ -16,8 +16,8 @@
         position: fixed;
         z-index: 100;
         width: 100%;
-        height: 100%;
-        top: 0;
+        height: calc(100% - 50px);
+        top: 50px;
         bottom: 0;
         left: 0;
         right: 0;

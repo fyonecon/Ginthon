@@ -23,6 +23,7 @@
             const _api_url = config.api.api_host+"/api/spider/ithome";
             const _app_token = func.get_local_data("app_token");
             const body_dict = {
+                lang: func.get_lang(),
                 app_token: _app_token,
                 app_class: config.app.app_class
             };

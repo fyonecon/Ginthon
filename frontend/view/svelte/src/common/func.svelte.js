@@ -543,6 +543,7 @@ const func = {
                         return result;
                     }
                 } catch (error) {
+                    that.notice("Fetch Error 1")
                     console.error('Fetch error 1:', error);
                     return {
                         "state": 0,
@@ -561,6 +562,7 @@ const func = {
                         resolve(result);
                     });
                 } catch (error) {
+                    that.notice("Fetch Error 2");
                     console.error('Fetch error 2:', error);
                     resolve({
                         "state": 0,
@@ -607,6 +609,7 @@ const func = {
                 }
                 window_token = that.get_local_data(_app_class+"window_token");
             }else{
+                that.notice("config Error");
                 resolve({
                     "state": 0,
                     "msg": "config参数错误",
@@ -737,6 +740,16 @@ const func = {
         //
         return make_lang_index(sys_language(lang))
     },
+    get_lang: function (){ // 直接获取lang
+        let that = this;
+        //
+        let lang = "";
+        let lang_data = that.get_local_data(config.app.app_class + "language_index");
+        if (lang_data.length >= 2) {
+            lang = lang_data
+        }
+        return that.get_lang_index(lang);
+    },
     // 获取翻译
      get_translate: function(key="", lang=""){
         let that = this;
@@ -819,6 +832,7 @@ const func = {
         let target = "_blank";
         if (that.is_gthon() || that.is_wails()){
             that.js_call_py_or_go("open_url_with_default_browser", {
+                lang: that.get_lang(),
                 url: url,
                 target: target,
             }).then(result => {});

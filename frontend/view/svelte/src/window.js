@@ -10,7 +10,9 @@ export function watch_window(){
     if (func.is_gthon()) {
         try {
             // 展示主窗口
-            func.js_call_py_or_go("window_show", {}).then((back_data) => {
+            func.js_call_py_or_go("window_show", {
+                lang: func.get_lang(),
+            }).then((back_data) => {
                 func.console_log("[视窗JS-Log]", "js_call_py.py返回值：", back_data);
             });
         } catch(e) {

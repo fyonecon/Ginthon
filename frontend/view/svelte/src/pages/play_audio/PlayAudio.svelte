@@ -80,7 +80,10 @@
         open_in_folder: function(filepath = ""){ // 本地打开文件夹/文件
             let that = this;
             //
-            func.js_call_py_or_go("open_in_folder", {filepath: filepath}).then(res=>{
+            func.js_call_py_or_go("open_in_folder", {
+                lang: func.get_lang(),
+                filepath: filepath
+            }).then(res=>{
                 // console.log("open_in_folder=", res);
                 func.notice(res.msg);
             });
@@ -124,6 +127,7 @@
             let api_url = config.api.api_host+"/api/get_play_audio_list";
             const _app_token = func.get_local_data("app_token");
             const body_dict = {
+                lang: func.get_lang(),
                 app_token: _app_token,
                 app_class: config.app.app_class,
                 now_dir: view_path,
@@ -161,7 +165,10 @@
             let play_audio_list_dir_key = "play_audio_list_dirs";
             let play_audio_list_dir = "";
             return new Promise(resolve => {
-                func.js_call_py_or_go("get_data", {data_key:play_audio_list_dir_key}).then(res=>{
+                func.js_call_py_or_go("get_data", {
+                    lang: func.get_lang(),
+                    data_key:play_audio_list_dir_key
+                }).then(res=>{
                     // console.log("get_data=", res);
                     if (res.state === 1){
                         play_audio_list_dir = res.content.data;
@@ -187,7 +194,10 @@
             // 设置多个dir本地记录
             let play_audio_list_dir_key = "play_audio_list_dirs";
             let play_audio_list_dir = "";
-            func.js_call_py_or_go("get_data", {data_key:play_audio_list_dir_key}).then(res=>{
+            func.js_call_py_or_go("get_data", {
+                lang: func.get_lang(),
+                data_key:play_audio_list_dir_key
+            }).then(res=>{
                 if (res.state === 1){
                     play_audio_list_dir = res.content.data;
                 }else{
@@ -208,6 +218,7 @@
                     }
                     //
                     let data_dict = {
+                        lang: func.get_lang(),
                         data_key: play_audio_list_dir_key,
                         data_value: new_value,
                         data_timeout_s: 3600*24*356*20,
@@ -253,7 +264,10 @@
             // 设置多个dir本地记录
             let play_audio_list_dir_key = "play_audio_list_dirs";
             let play_audio_list_dir = "";
-            func.js_call_py_or_go("get_data", {data_key:play_audio_list_dir_key}).then(res=>{
+            func.js_call_py_or_go("get_data", {
+                lang: func.get_lang(),
+                data_key:play_audio_list_dir_key
+            }).then(res=>{
                 // console.log("get_data=", res);
                 if (res.state === 1){
                     play_audio_list_dir = res.content.data;
@@ -271,6 +285,7 @@
                     }
                     // 更新新数据
                     let data_dict = {
+                        lang: func.get_lang(),
                         data_key: play_audio_list_dir_key,
                         data_value: new_value,
                         data_timeout_s: 3600*24*356*20,
