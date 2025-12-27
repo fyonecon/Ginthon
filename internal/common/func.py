@@ -42,6 +42,10 @@ def print_log(*args):
 def get_date(format="%Y-%m-%d %H:%M:%S %p %A %B"):
     return datetime.now(utc).strftime(format)
 
+# 秒时间戳转日期格式
+def time_s_to_date(format="%Y-%m-%d %H:%M:%S %p %A %B", time_s=0):
+    return datetime.fromtimestamp(time_s).strftime(format)
+
 # 获取纳秒时间
 def get_time_ns():
     return int(datetime.now(utc).timestamp() * 1000 * 1000 * 1000)
@@ -438,3 +442,18 @@ def get_translate(key="", lang=""):
             return lang_dict["_null"]["en"]
     pass
 
+# 将size转成可读size
+def format_file_size(size_bytes=0):
+    if size_bytes == 0:
+        return "0 B"
+    # 1024进制单位
+    units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+    # 找出合适的单位
+    unit_index = 0
+    size = float(size_bytes)
+    #
+    while size >= 1024 and unit_index < len(units) - 1:
+        size /= 1024
+        unit_index += 1
+    pass
+    return f"{size:.2f} {units[unit_index]}"

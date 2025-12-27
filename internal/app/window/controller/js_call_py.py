@@ -5,11 +5,12 @@ import webbrowser
 import webview
 
 from internal.app.window.controller.display_state import set_display_state
-from internal.common.func import is_url, print_log
+from internal.common.func import is_url, print_log, has_dir, has_file
 from internal.common.kits.local_database import local_database_set_data, local_database_get_data, \
     local_database_del_data
 from internal.common.kits.main_dirpath import mian_virtual_dirpath
 from internal.common.kits.notice import send_notice
+from internal.common.kits.shell import shell_open_in_folder
 from internal.config import get_config
 
 
@@ -293,6 +294,30 @@ def list_js_call_py(WINDOW, key, data_dict):
                 msg = "Del OK"
             pass
             state = 1
+        else:
+            state = 0
+            msg = "data_dict参数不全"
+            pass
+        pass
+
+    # 删除本地数据
+    # data_dict={filepath:""}
+    elif key == "open_in_folder":
+        if data_dict.get("filepath"):
+            _filepath = data_dict["filepath"]
+            if has_dir(_filepath) or has_file(_filepath):
+                _state = shell_open_in_folder(_filepath)
+                if _state:
+                    state = 1
+                    msg = "Open in folder"
+                else:
+                    state = 0
+                    msg = "Open Failed"
+                pass
+            else:
+                state = 0
+                msg = "filepath不存在"
+                pass
         else:
             state = 0
             msg = "data_dict参数不全"

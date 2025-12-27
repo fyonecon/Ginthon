@@ -26,7 +26,6 @@
     let input_value_find = $state("");
     let list_dirs: string[] = $state([]);
     let list_files: string[] = $state([]);
-    let root_paths: string[] = $state([]);
     let view_path = $state("");
     let now_root_path = $state("");
     let has_paths: unknown = $state([]);
@@ -71,12 +70,20 @@
             const _app_token = func.get_local_data("app_token");
             return "file_token="+func.md5("filetoken#@"+filepath)+"&app_token=" + _app_token;
         },
-        open_file: function(filename = ""){
+        open_file: function(filename = ""){ // 浏览器打开
             let that = this;
             //
             let file_path = view_path + "/" + filename;
             let href = config.api.api_host + "/dir/play_audio/" + encodeURIComponent(file_path) + "?"+that.make_file_token(file_path)+"&ap=dir ";
             func.open_url_with_default_browser(href);
+        },
+        open_in_folder: function(filepath = ""){ // 本地打开文件夹/文件
+            let that = this;
+            //
+            func.js_call_py_or_go("open_in_folder", {filepath: filepath}).then(res=>{
+                // console.log("open_in_folder=", res);
+                func.notice(res.msg);
+            });
         },
         has_audio_file: function(files_array:string[] = []){
             let that = this;
@@ -133,10 +140,6 @@
                         now_root_path = res.content.root_path;
                         //
                         that.has_audio_file(list_files);
-                        //
-                        if (!now_dir && res.content.root_paths.length > 0){
-                            root_paths = res.content.root_paths;
-                        }
                         //
                         if (!now_dir){
                             show_dir_remove_btn = "show";
@@ -444,7 +447,7 @@
         <!---->
         <ul class="list-path-tree-ul">
             <!--dirs-->
-            {#each list_dirs as dir}
+            {#each list_dirs as the_dir_info}
                 <li class="list-path-tree-li list-path-tree-li-dir border-radius">
                     <div class="list-path-tree-li-icon">
                         {@html icon_dir}
@@ -452,13 +455,27 @@
                     <div class="list-path-tree-li-content">
                         <!---->
                         <div class="li-name font-text break">
-                            <button class="list-path-tree-li-btn click break select-text" type="button" title="{dir}" onclick={()=>func.open_url(func.get_route()+"#dir="+encodeURIComponent(func.converted_path(view_path+"/"+dir)))} >{dir}</button>
+                            <button class="list-path-tree-li-btn click break select-text" type="button" title="{the_dir_info.name}" onclick={()=>func.open_url(func.get_route()+"#dir="+encodeURIComponent(func.converted_path(view_path+"/"+the_dir_info.name)))} >{the_dir_info.name}</button>
+                        </div>
+                        <!---->
+                        <div class="li-info font-text">
+                            <div class="li-info-item font-mini break-ellipsis" title="Folder Size">
+                                {the_dir_info.size?the_dir_info.size:""}
+                            </div>
+                            <div class="li-info-item font-mini break-ellipsis" title="Create time">
+                                {the_dir_info.create_time?the_dir_info.create_time:"-"}
+                            </div>
                         </div>
                         <!---->
                         <div class="li-operation font-text">
                             <div class="li-operation-item {show_dir_remove_btn}">
-                                <button type="button" title="{func.get_translate('remove')}" class="li-operation-item-btn click" onclick={()=>def.remove_local_dir_open_dialog(func.converted_path(view_path+"/"+dir))}>
+                                <button type="button" title="{func.get_translate('remove')}" class="li-operation-item-btn click" onclick={()=>def.remove_local_dir_open_dialog(func.converted_path(view_path+"/"+the_dir_info.name))}>
                                     <svg class="font-red" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M7.5 12h9"/></g></svg>
+                                </button>
+                            </div>
+                            <div class="li-operation-item">
+                                <button type="button" title="Open in folder" class="li-operation-item-btn click" onclick={()=>def.open_in_folder(func.converted_path(view_path+"/"+the_dir_info.name))} >
+                                    <svg class="font-blue" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M2.07 5.258C2 5.626 2 6.068 2 6.95V14c0 3.771 0 5.657 1.172 6.828S6.229 22 10 22h4c3.771 0 5.657 0 6.828-1.172S22 17.771 22 14v-2.202c0-2.632 0-3.949-.77-4.804a3 3 0 0 0-.224-.225C20.151 6 18.834 6 16.202 6h-.374c-1.153 0-1.73 0-2.268-.153a4 4 0 0 1-.848-.352C12.224 5.224 11.816 4.815 11 4l-.55-.55c-.274-.274-.41-.41-.554-.53a4 4 0 0 0-2.18-.903C7.53 2 7.336 2 6.95 2c-.883 0-1.324 0-1.692.07A4 4 0 0 0 2.07 5.257M12.25 10a.75.75 0 0 1 .75-.75h5a.75.75 0 0 1 0 1.5h-5a.75.75 0 0 1-.75-.75" clip-rule="evenodd"/></svg>
                                 </button>
                             </div>
                         </div>
@@ -466,19 +483,34 @@
                 </li>
             {/each}
             <!--files-->
-            {#each list_files as filename}
+            {#each list_files as the_file_info}
                 <li class="list-path-tree-li list-path-tree-li-file border-radius">
                     <!---->
                     <div class="list-path-tree-li-icon">
-                        {@html func.is_audio(filename)?icon_audio:(func.is_video(filename)?icon_video:icon_type)}
+                        {@html func.is_audio(the_file_info.name)?icon_audio:(func.is_video(the_file_info.name)?icon_video:icon_type)}
                     </div>
                     <!---->
                     <div class="list-path-tree-li-content">
+                        <!---->
                         <div class="li-name font-text break">
-                            <button class="list-path-tree-li-btn click break select-text" type="button" title="{filename}" onclick={()=>def.open_file(filename)}>{filename}</button>
+                            <button class="list-path-tree-li-btn click break select-text" type="button" title="{the_file_info.name}" onclick={()=>def.open_file(the_file_info.name)}>{the_file_info.name}</button>
                         </div>
+                        <!---->
+                        <div class="li-info font-text">
+                            <div class="li-info-item font-mini break-ellipsis" title="File Size">
+                                {the_file_info.size?the_file_info.size:""}
+                            </div>
+                            <div class="li-info-item font-mini break-ellipsis" title="Create time">
+                                {the_file_info.create_time?the_file_info.create_time:"-"}
+                            </div>
+                        </div>
+                        <!---->
                         <div class="li-operation font-text">
-                            <span class="hide">复制链接</span>
+                            <div class="li-operation-item hide">
+                                <button type="button" title="Open in folder" class="li-operation-item-btn click" onclick={()=>def.open_in_folder(func.converted_path(view_path+"/"+the_file_info.name))} >
+                                    <svg class="font-blue" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M2.07 5.258C2 5.626 2 6.068 2 6.95V14c0 3.771 0 5.657 1.172 6.828S6.229 22 10 22h4c3.771 0 5.657 0 6.828-1.172S22 17.771 22 14v-2.202c0-2.632 0-3.949-.77-4.804a3 3 0 0 0-.224-.225C20.151 6 18.834 6 16.202 6h-.374c-1.153 0-1.73 0-2.268-.153a4 4 0 0 1-.848-.352C12.224 5.224 11.816 4.815 11 4l-.55-.55c-.274-.274-.41-.41-.554-.53a4 4 0 0 0-2.18-.903C7.53 2 7.336 2 6.95 2c-.883 0-1.324 0-1.692.07A4 4 0 0 0 2.07 5.257M12.25 10a.75.75 0 0 1 .75-.75h5a.75.75 0 0 1 0 1.5h-5a.75.75 0 0 1-.75-.75" clip-rule="evenodd"/></svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </li>
@@ -660,15 +692,19 @@
 
     .li-name{
         float: left;
-        width: calc(100% - 150px);
+        width: calc(100% - 90px - 240px);
+        overflow: hidden;
+    }
+    .li-info{
+        float: left;
+        width: 240px;
         overflow: hidden;
     }
     .li-operation{
         float: right;
-        width: 150px; /*edit del share qr (30+5)*4=140+10=150 */
+        width: 90px; /*edit del share qr (30)*3=90 */
         overflow: hidden;
         line-height: 30px;
-        padding-left: 10px;
     }
 
 
@@ -686,10 +722,19 @@
     }
 
 
+    .li-info-item{
+        width: 120px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        float: left;
+    }
     .li-operation-item{
         width: 30px;
         height: 30px;
+        line-height: 30px;
         border-radius: 30px;
+        text-align: center;
         float: right;
     }
     .li-operation-item-btn > svg{

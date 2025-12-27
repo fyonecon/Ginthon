@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 
-from internal.common.func import converted_path, url_decode, has_dir
+from internal.common.func import converted_path, url_decode, has_dir, format_file_size, time_s_to_date
 from internal.common.kits.local_database import local_database_get_data
 from internal.common.request_input import request_input
 
@@ -38,7 +38,6 @@ def get_play_audio_list(request):
     # 目标地址
     list_dirs = []
     list_files = []
-    root_paths = []
     root_path = ""
 
     # 读取文件列表
@@ -54,14 +53,24 @@ def get_play_audio_list(request):
                                 if entry.name.find(".") == 0:  # 排除
                                     pass
                                 else:
-                                    list_files.append(entry.name)
+                                    file_info = {
+                                        "name": entry.name,
+                                        "size": format_file_size(entry.stat().st_size),
+                                        "create_time": time_s_to_date("%Y/%m/%d %H:%M", entry.stat().st_atime),
+                                    }
+                                    list_files.append(file_info)
                                     pass
                                 # print(f"文件: {entry.name}", entry)
                             elif entry.is_dir():
                                 if entry.name.find(".") == 0:  # 排除
                                     pass
                                 else:
-                                    list_dirs.append(entry.name)
+                                    dir_info = {
+                                        "name": entry.name,
+                                        "size": "",
+                                        "create_time": time_s_to_date("%Y/%m/%d %H:%M", entry.stat().st_atime),
+                                    }
+                                    list_dirs.append(dir_info)
                                     pass
                                 # print(f"文件夹: {entry.name}", entry)
                             pass
@@ -87,10 +96,14 @@ def get_play_audio_list(request):
             play_audio_list_dir_array = _value.split("#@")
             for the_dir in play_audio_list_dir_array:
                 if len(the_dir) >= 0:  # 清除空内容
-                    list_dirs.append(the_dir)
+                    dir_info = {
+                        "name": the_dir,
+                        "size": "",
+                        "create_time": "(Added Folder)",
+                    }
+                    list_dirs.append(dir_info)
                     pass
                 pass
-            root_paths = list_dirs
             state = 1
             msg = "Default Set Data"
         else:
@@ -100,18 +113,19 @@ def get_play_audio_list(request):
     pass
 
     # 排序
-    list_dirs.sort()
-    list_files.sort()
+    _list_dirs = list_dirs.copy()
+    _list_dirs.sort(key=lambda x: x["name"])
+    _list_files = list_files.copy()
+    _list_files.sort(key=lambda x: x["name"])
 
     #
     return {
         "state": state,
         "msg": msg,
         "content": {
-            "list_dirs": list_dirs,
-            "list_files": list_files,
+            "list_dirs": _list_dirs,
+            "list_files": _list_files,
             "view_path": now_dir,
-            "root_paths": root_paths,
             "root_path": root_path,
         },
     }

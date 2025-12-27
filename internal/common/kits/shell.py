@@ -1,7 +1,39 @@
 # -*- coding: utf-8 -*-
-
+import os
+import platform
 import subprocess
 import shutil
+
+
+# 打开本地文件或文件夹
+def shell_open_in_folder(filepath=""):
+    # 规范化路径
+    path = os.path.normpath(filepath)
+    # 检查路径是否存在
+    if not os.path.exists(path):
+        print(f"错误: 路径不存在 - {path}")
+        return False
+    #
+    system = platform.system()
+    try:
+        if system == "Windows":
+            # Windows系统 - os.startfile 可以打开文件和文件夹
+            os.startfile(path)
+        elif system == "Darwin":  # macOS
+            # macOS - open 命令可以打开文件和文件夹
+            subprocess.run(["open", path], check=True)
+        elif system == "Linux":
+            # Linux系统 - xdg-open 可以打开文件和文件夹
+            subprocess.run(["xdg-open", path], check=True)
+        else:
+            print(f"错误: 不支持的操作系统 - {system}")
+            return False
+
+        print(f"成功打开: {path}")
+        return True
+    except Exception as e:
+        print(f"打开失败: {e}")
+        return False
 
 
 # 运行二进制文件
