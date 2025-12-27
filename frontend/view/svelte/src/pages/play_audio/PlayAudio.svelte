@@ -94,7 +94,7 @@
             show_play_all_btn = "hide";
             //
             for (let i=0; i<files_array.length; i++){
-                let the_file = files_array[i];
+                let the_file = files_array[i].name;
                 let file_path = view_path+"/"+the_file;
                 if (func.is_audio(the_file)){
                     show_play_all_btn = "show";
