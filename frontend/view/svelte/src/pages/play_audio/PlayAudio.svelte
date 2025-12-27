@@ -370,23 +370,23 @@
                 // 重新显示数据
                 for (const key in input_value_find_list_dirs){
                     let the_dir = input_value_find_list_dirs[key];
-                    if (the_dir.toLowerCase().indexOf(input_value_find.toLowerCase()) !== -1){
+                    if (the_dir.name.toLowerCase().indexOf(input_value_find.toLowerCase()) !== -1){
                         list_dirs.push(the_dir);
                         _list_dirs.push(the_dir);
                     }
                 }
                 for (const key in input_value_find_list_files) {
                      let the_file = input_value_find_list_files[key];
-                     if (the_file.toLowerCase().indexOf(input_value_find.toLowerCase()) !== -1){
+                     if (the_file.name.toLowerCase().indexOf(input_value_find.toLowerCase()) !== -1){
                         list_files.push(the_file);
                          _list_files.push(the_file);
                      }
                 }
                 // 重新生成播放列表
                 setTimeout(function (){
-                    console.log("has_audio_file", _list_files);
+                    // console.log("has_audio_file", _list_files);
                     that.has_audio_file(_list_files);
-                }, 500);
+                }, 200);
             }else {
                 func.notice(func.get_translate("input_null"));
                 // 还原缓存数据
