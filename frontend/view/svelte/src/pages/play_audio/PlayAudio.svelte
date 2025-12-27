@@ -414,26 +414,20 @@
 <div>
     <!--  文件列表  -->
     <div class="list_dirs font-text border-radius">
-<!--        <div class="list-path hide" title="已保存的文件夹">{(has_paths.length>0)?JSON.stringify(has_paths):""}</div>-->
-<!--        <div class="list-path" title="正在访问文件夹">{view_path?view_path:"/"}</div>-->
-<!--        <div class="show_play_operation select-none ">-->
-<!--            <div class="list_dirs-operation-do-item {show_play_all_btn}">-->
-<!--                将当前文件夹全部音乐添加到播放列表-->
-<!--                <button type="button" class="show_play_all-btn click" onclick={()=>def.play_all()} title="Play All">-->
-<!--                    <svg class="font-blue" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M18 9V7h-2V5h2V3h2v2h2v2h-2v2zM6 16h7v-3H6zm0-5h7V8H6zm-2 9q-.825 0-1.412-.587T2 18V6q0-.825.588-1.412T4 4h10.425q-.2.45-.312.963T14 6q0 .85.263 1.613T15 9v7h3v-5.1q.25.05.488.075T19 11q.85 0 1.613-.262T22 10v8q0 .825-.587 1.413T20 20z"/></svg>-->
-<!--                </button>-->
-<!--            </div>-->
-<!--        </div>-->
+        <!---->
         <div class="list_dirs-title break-ellipsis bg-neutral-200 dark:bg-neutral-800">
-            {view_path?"/... "+view_path.replace(func.replaceLast(now_root_path, func.filepath_to_filename(now_root_path), ""), "")+" /":"/"}
+            {view_path?"/.../ "+view_path.replace(func.replaceLast(now_root_path, func.filepath_to_filename(now_root_path), ""), "")+" /":"/"}
         </div>
+        <!---->
         <div class="list_dirs-operation select-none">
+            <!---->
             <div class="list_dirs-operation-search font-mini">
                 <label>
                     <input class="input-style select-text list_dirs-operation-search-input border-radius" type="text" maxlength="100" placeholder="{func.get_translate('input_placeholder_find')}" bind:value={input_value_find} onkeydown={()=>def.input_enter(event)} />
                     <button class="list_dirs-operation-search-btn font-white border-radius click " type="button" title="Find" onclick={()=>def.input_find()}>{func.get_translate("find_btn")}</button>
                 </label>
             </div>
+            <!---->
             <div class="list_dirs-operation-do">
                 <div class="list_dirs-operation-do-item {show_set_local_dir_btn}">
                     <button type="button" class="operation-do-btn click bg-neutral-200 dark:bg-neutral-800" onclick={()=>def.add_dir_open_dialog()} title="{func.get_translate('play_add_new_fir')}">
@@ -447,6 +441,7 @@
                 </div>
             </div>
         </div>
+        <!---->
         <ul class="list-path-tree-ul">
             <!--dirs-->
             {#each list_dirs as dir}
@@ -455,9 +450,11 @@
                         {@html icon_dir}
                     </div>
                     <div class="list-path-tree-li-content">
+                        <!---->
                         <div class="li-name font-text break">
-                            <button class="list-path-tree-li-btn click break select-text" type="button" title="{dir}" onclick={()=>func.open_url(func.get_route()+"#dir="+encodeURIComponent(func.converted_path(view_path+"/"+dir)))} >{func.filepath_to_filename(dir)}</button>
+                            <button class="list-path-tree-li-btn click break select-text" type="button" title="{dir}" onclick={()=>func.open_url(func.get_route()+"#dir="+encodeURIComponent(func.converted_path(view_path+"/"+dir)))} >{dir}</button>
                         </div>
+                        <!---->
                         <div class="li-operation font-text">
                             <div class="li-operation-item {show_dir_remove_btn}">
                                 <button type="button" title="{func.get_translate('remove')}" class="li-operation-item-btn click" onclick={()=>def.remove_local_dir_open_dialog(func.converted_path(view_path+"/"+dir))}>
@@ -471,9 +468,11 @@
             <!--files-->
             {#each list_files as filename}
                 <li class="list-path-tree-li list-path-tree-li-file border-radius">
+                    <!---->
                     <div class="list-path-tree-li-icon">
                         {@html func.is_audio(filename)?icon_audio:(func.is_video(filename)?icon_video:icon_type)}
                     </div>
+                    <!---->
                     <div class="list-path-tree-li-content">
                         <div class="li-name font-text break">
                             <button class="list-path-tree-li-btn click break select-text" type="button" title="{filename}" onclick={()=>def.open_file(filename)}>{filename}</button>
@@ -505,7 +504,7 @@
                     </div>
                     <label class="label">
                         <input class="input-style font-text select-text border-radius w-full" type="text"
-                               maxlength="2000" placeholder="Input..." bind:value={input_value_add_dir}/>
+                               maxlength="2000" placeholder="{func.get_translate('input_placeholder_add_dir')}" bind:value={input_value_add_dir}/>
                     </label>
                 </Dialog.Description>
                 <footer class="flex justify-center gap-10 select-none  px-[10px] py-[10px]">
@@ -611,6 +610,7 @@
         width: 80px;
         margin: 3px 0 3px 2px;
         line-height: 34px;
+        border-radius: 30px;
         background-color: var(--color-primary-400);
     }
     .list_dirs-operation-do-item{

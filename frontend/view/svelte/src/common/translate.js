@@ -214,6 +214,10 @@ const lang_dict = {
         zh: "二维码",
         en: "QRCode",
     },
+    input_placeholder_add_dir: {
+        zh: "输入文件夹路径",
+        en: "Enter folder path",
+    },
 
     // =========
 //

@@ -21,7 +21,7 @@
         left: 0;
         right: 0;
         margin: auto auto;
-        background-color: rgba(50, 50, 50, 0.6);
+        background-color: rgba(50, 50, 50, 0);
     }
     .loading-info{
         position: absolute;

@@ -2,7 +2,7 @@
     import {loading_data} from "../stores/loading.store.svelte.js"
 </script>
 
-<div class="alert_loading-div select-none {loading_data.loading_show}">
+<div class="alert_loading-div select-none not-click {loading_data.loading_show}">
     <div class="select-none">
         <div class="loading-info border-radius font-text">
             <div class="alert_loading_msg break select-text">{loading_data.loading_msg}</div>
@@ -22,7 +22,7 @@
         left: 0;
         right: 0;
         margin: auto auto;
-        background-color: rgba(50, 50, 50, 0.6);
+        background-color: rgba(50, 50, 50, 0);
     }
     .loading-info{
         position: absolute;
