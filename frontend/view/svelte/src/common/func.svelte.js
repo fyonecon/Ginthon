@@ -96,7 +96,7 @@ const func = {
             return "";
         }
     },
-    get_route: function(){
+    get_route: function(){ // 获取当前路由，不含参数
         let that = this;
         //
         if(browser){
@@ -112,7 +112,7 @@ const func = {
             return "";
         }
     },
-    get_params: function(){
+    get_params: function(){ // 仅能获取?参数，不能获取#参数，#参数请用search_param()
         let that = this;
         //
         if(browser){
@@ -121,7 +121,7 @@ const func = {
             return "";
         }
     },
-    search_param: function(key){
+    search_param: function(key){ // // 获取当前url中的参数
         let that = this;
         //
         return that.search_href_param(that.get_params(), key);
@@ -424,28 +424,40 @@ const func = {
         }
     },
     is_video: function(filename){ // 是视频
-        let ext = filename.substring(filename.lastIndexOf("."));
-        ext = ext.toLowerCase();
-        let white_ext = [
-            ".mp4", ".mkv", ".avi", ".flv", ".mov", ".m4v", ".rmvb", ".rm", ".webm", ".asf", ".wmv",
-        ];
-        return white_ext.includes(ext);
+        try {
+            let ext = filename.substring(filename.lastIndexOf("."));
+            ext = ext.toLowerCase();
+            let white_ext = [
+                ".mp4", ".mkv", ".avi", ".flv", ".mov", ".m4v", ".rmvb", ".rm", ".webm", ".asf", ".wmv",
+            ];
+            return white_ext.includes(ext);
+        }catch (e) {
+            return false;
+        }
     },
     is_audio: function(filename){ // 是音频
-        let ext = filename.substring(filename.lastIndexOf("."));
-        ext = ext.toLowerCase();
-        let white_ext = [
-            ".mp3", ".wav", ".m3u", ".m4a", ".flac",
-        ];
-        return white_ext.includes(ext);
+        try {
+            let ext = filename.substring(filename.lastIndexOf("."));
+            ext = ext.toLowerCase();
+            let white_ext = [
+                ".mp3", ".wav", ".m3u", ".m4a", ".flac",
+            ];
+            return white_ext.includes(ext);
+        }catch (e) {
+            return false;
+        }
     },
     is_img: function(filename){ // 是图片
-        let ext = filename.substring(filename.lastIndexOf("."));
-        ext = ext.toLowerCase();
-        let white_ext = [
-            ".gif", ".png", ".jpg", ".jpeg", ".webp", ".ico", ".jpg2", ".tiff", ".tif", ".bmp", ".svg",
-        ];
-        return white_ext.includes(ext);
+        try {
+            let ext = filename.substring(filename.lastIndexOf("."));
+            ext = ext.toLowerCase();
+            let white_ext = [
+                ".gif", ".png", ".jpg", ".jpeg", ".webp", ".ico", ".jpg2", ".tiff", ".tif", ".bmp", ".svg",
+            ];
+            return white_ext.includes(ext);
+        }catch (e) {
+            return false;
+        }
     },
     is_mobile_screen: function (){ //-1非法，0PC，1mobile
         let width = window.screen.width;

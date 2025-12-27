@@ -12,6 +12,7 @@ def get_root_path(now_dir):
         play_audio_list_dir_key = "play_audio_list_dirs"
         _value, _state = local_database_get_data(play_audio_list_dir_key)
         if _state != -1:
+            #
             root_path = ""
             root_paths = []
             play_audio_list_dir_array = _value.split("#@")
@@ -19,8 +20,12 @@ def get_root_path(now_dir):
                 if the_dir == now_dir[0:len(the_dir)]:
                     root_paths.append(the_dir)
                     pass
-                # 数组中长度最短的就是root_path
+                pass
+            # 数组中长度最短的就是root_path
+            try:
                 root_path = min(root_paths, key=lambda x: (len(x), x))
+            except:
+                root_path = now_dir
             return root_path
         else:
             return ""

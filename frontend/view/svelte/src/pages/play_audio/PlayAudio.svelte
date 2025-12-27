@@ -470,7 +470,7 @@
                     <div class="list-path-tree-li-content">
                         <!---->
                         <div class="li-name font-text break">
-                            <button class="list-path-tree-li-btn click break select-text" type="button" title="{the_dir_info.name}" onclick={()=>func.open_url(func.get_route()+"#dir="+encodeURIComponent(func.converted_path(view_path+"/"+the_dir_info.name)))} >{the_dir_info.name}</button>
+                            <button class="list-path-tree-li-btn click break select-text" type="button" title="{the_dir_info.name}" onclick={()=>func.open_url(func.get_route()+"?dir="+encodeURIComponent(func.converted_path(view_path+"/"+the_dir_info.name)))} >{the_dir_info.name}</button>
                         </div>
                         <!---->
                         <div class="li-info font-text">

@@ -26,7 +26,7 @@
             if (href.length >= 1){
                 func.open_url(href, "_self");
             }else{ // 空
-                console.log("空链接");
+                // console.log("空链接");
             }
         },
         set_direction_history: function(now_director_dict) {  // 设置访问历史
@@ -37,38 +37,62 @@
             }
             // 插入新历史
             let the_direction_urls = func.get_local_data("director_urls");
-            let the_direction_urls_array = [];
+            let the_direction_urls_array: object[] = [];
             if (the_direction_urls) {
                 the_direction_urls_array = func.string_to_json(the_direction_urls);
             }
             return new Promise(resolve => {
                 if (the_direction_urls_array.length > 0) {
-                    /*
-                    * /home - /settings?id=1 - /settings/about - /spider - /settings?id=2
-                    * 依次添加每个访问href，如果route一样，params不一样，则删除老的route，添加新的route。每次到主路由home就删除历史访问。
-                    * */
+                    let splice_index = [];
+                    let new_director_dict:object[] = [];
+                    //
                     let now_href = now_director_dict.href;
                     let now_route = now_director_dict.route;
                     let now_params = now_director_dict.params;
-                    for (let i = 0; i < the_direction_urls_array.length; i++) {
-                        let the_href = the_direction_urls_array[i].href;
-                        let the_route = the_direction_urls_array[i].route;
-                        let the_params = the_direction_urls_array[i].params;
-                        if (now_href === the_href) { // 已存在路由历史，则删除历史
-                            // the_direction_urls_array.splice(i, 1);
-                            // console.log("已存在路由=", now_route, i, the_direction_urls_array.length);
-                            resolve(the_direction_urls_array);
-                            break;
-                        }else{
-                            if (i === the_direction_urls_array.length - 1) {
-                                the_direction_urls_array.push(now_director_dict);
-                                func.set_local_data("director_urls", func.json_to_string(the_direction_urls_array));
-                                resolve(the_direction_urls_array);
+                    //
+                    function only_route_name(){ // 路由去重
+                        return new Promise(resolve2 => {
+                            for (let i = 0; i < the_direction_urls_array.length; i++) {
+                                let the_href = the_direction_urls_array[i].href;
+                                let the_route = the_direction_urls_array[i].route;
+                                let the_params = the_direction_urls_array[i].params;
+                                // 去重
+                                if (now_href === the_href) { // 已存在路由历史，不再继续添加
+                                    resolve2(the_direction_urls_array);
+                                    break;
+                                }
+                                // 限制历史长度
+                                if (i>500){
+                                    resolve2(the_direction_urls_array);
+                                    break;
+                                }
+                                // 加入当前路由
+                                if (i === the_direction_urls_array.length - 1) {
+                                    the_direction_urls_array.push(now_director_dict);
+                                    resolve2(the_direction_urls_array);
+                                }
+                            }
+                        });
+                    }
+                    //
+                    only_route_name().then(_the_direction_urls_array=>{ // 删除路由的子链接
+                        for (let i = 0; i < _the_direction_urls_array.length; i++) {
+                            let the_href = _the_direction_urls_array[i].href;
+                            let the_route = _the_direction_urls_array[i].route;
+                            let the_params = _the_direction_urls_array[i].params;
+                            // 删除路由子链接
+                            if (now_route === the_route && now_params.length===0 && the_params.length>0){ // 跳过
+                                // console.log("1=", i, [now_route, the_route, now_params.length, the_params.length]);
                             }else{
-                                //
+                                new_director_dict.push(the_direction_urls_array[i]);
+                            }
+                            // 加入当前路由
+                            if (i === the_direction_urls_array.length - 1) {
+                                func.set_local_data("director_urls", func.json_to_string(new_director_dict));
+                                resolve(the_direction_urls_array);
                             }
                         }
-                    }
+                    });
                 }else{ // 空记录就新增一个
                     func.set_local_data("director_urls", func.json_to_string([now_director_dict]));
                     resolve([now_director_dict]);
@@ -260,6 +284,7 @@
     }
     .director-btn-not_click{
         color: rgba(180, 180, 180, 0.6);
+        /*cursor: not-allowed;*/
     }
     .director-btn > svg{
         float: inherit !important;
