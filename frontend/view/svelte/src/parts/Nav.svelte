@@ -36,7 +36,7 @@
     .section-nav {
         position: fixed;
         z-index: 0;
-        width: calc(100% - 220px - 80px);
+        width: calc(100% - 220px - 0px);
         height: 50px;
         top: 0;
         right: 0;
@@ -50,5 +50,6 @@
         padding-left: 10px;
         padding-right: 10px;
         opacity: 0.8;
+        text-align: center;
     }
 </style>

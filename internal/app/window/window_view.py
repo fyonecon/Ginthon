@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from internal.app.flask.app_token import make_app_token
 from internal.common.app_auth import make_rand_token, make_rand_id
 from internal.common.func import get_time_s, get_date, md5
 from internal.common.kits.main_dirpath import mian_virtual_dirpath
@@ -18,11 +18,9 @@ def view_js_must_data():
     '''
     #
     view_url = CONFIG["pywebview"]["view_url"]
-    app_class = CONFIG["app"]["app_class"]
-    salt_str = "js_call_py_auth-2025"
-    timeout_s = 2 * 365 * 24 * 3600
-    app_token = make_rand_token(app_class, md5(salt_str + "nbPlus"), timeout_s, CONFIG)  # page刷新时会生成一个新的
-    js_call_py_auth = make_rand_token(app_class, salt_str, timeout_s, CONFIG)  # 视窗软件启动时会生成一个新的
+    #
+    app_token = make_app_token("app")  # page刷新时会生成一个新的
+    js_call_py_auth =make_app_token("js_call_py")  # 视窗软件启动时会生成一个新的
     js_call_py_api = view_url + "/api/js_call_py"
     js_must_data = f'''
         localStorage.setItem("app_token", "{app_token}");

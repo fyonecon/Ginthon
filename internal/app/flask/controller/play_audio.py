@@ -17,8 +17,10 @@ def get_root_path(now_dir):
             root_paths = []
             play_audio_list_dir_array = _value.split("#@")
             for the_dir in play_audio_list_dir_array:
-                if the_dir == now_dir[0:len(the_dir)]:
-                    root_paths.append(the_dir)
+                if len(the_dir) <= len(now_dir):
+                    if the_dir == now_dir[0:len(the_dir)]:
+                        root_paths.append(the_dir)
+                        pass
                     pass
                 pass
             # 数组中长度最短的就是root_path

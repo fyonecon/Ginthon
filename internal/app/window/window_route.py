@@ -2,6 +2,7 @@
 
 from flask import send_file, request, redirect
 
+from internal.app.flask.app_token import check_app_token
 from internal.app.window.controller.js_call_py import list_js_call_py
 from internal.app.window.controller.tray_events import tray_events
 from internal.app.window.window_view import view_js_must_data, view_index
@@ -66,14 +67,10 @@ def window_route(_WINDOW, FLASK):
             "methods": ["GET", "POST", "OPTIONS"],
         }
         #
-        CONFIG = get_config("", "")
         file_token = request_input(request, "file_token")
-        app_token = request_input(request, "app_token")
-        app_class = CONFIG["app"]["app_class"]
-        salt_str = "js_call_py_auth-2025"
         #
         file_token_state = md5("filetoken#@"+url_decode(filepath)) == file_token
-        app_token_state = check_rand_token(app_class, md5(salt_str + "nbPlus"), CONFIG, app_token)
+        app_token_state = check_app_token(request, "app")
         #
         if file_token_state and app_token_state:
             # 还原真实文件
