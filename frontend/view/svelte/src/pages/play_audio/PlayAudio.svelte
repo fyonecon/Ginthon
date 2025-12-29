@@ -92,20 +92,21 @@
             let that = this;
             //
             show_play_all_btn = "hide";
-            //
-            for (let i=0; i<files_array.length; i++){
-                let the_file = files_array[i].name;
-                let file_path = view_path+"/"+the_file;
-                if (func.is_audio(the_file)){
-                    show_play_all_btn = "show";
-                    let the_file_dict = {
-                        filename: the_file,
-                        href: config.api.api_host + "/dir/play_audio/" + encodeURIComponent(file_path) + "?"+that.make_file_token(file_path)+"&ap=player ",
-                        cover: "",
-                    };
-                    now_audio_files.push(the_file_dict);
+            try {
+                for (let i=0; i<files_array.length; i++){
+                    let the_file = files_array[i].name;
+                    let file_path = view_path+"/"+the_file;
+                    if (func.is_audio(the_file)){
+                        show_play_all_btn = "show";
+                        let the_file_dict = {
+                            filename: the_file,
+                            href: config.api.api_host + "/dir/play_audio/" + encodeURIComponent(file_path) + "?"+that.make_file_token(file_path)+"&ap=player ",
+                            cover: "",
+                        };
+                        now_audio_files.push(the_file_dict);
+                    }
                 }
-            }
+            }catch (e) {}
         },
         get_play_audio_list: function(now_dir = ""){ // 获取文件夹和文件的tree结构
             let that = this;
@@ -384,7 +385,6 @@
                 }
                 // 重新生成播放列表
                 setTimeout(function (){
-                    // console.log("has_audio_file", _list_files);
                     that.has_audio_file(_list_files);
                 }, 200);
             }else {
