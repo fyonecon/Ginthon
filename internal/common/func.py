@@ -163,7 +163,7 @@ def get_file_ext_mimetype(file_ext):
     else:
         return "application/octet-stream"
 
-# 获取当前平台存储程序缓存的路径
+# 获取当前平台存储程序缓存的路径，结尾无/
 def cache_path():
     p = get_platform()
     if p == "win":

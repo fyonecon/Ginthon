@@ -37,7 +37,7 @@ def local_database_set_data(data_key:str, data_value:str, data_timeout_s:int):
         file.write(_value)
     return data_value
 
-# 读取数据
+# 读取数据。1有文件，-1无文件
 def local_database_get_data(data_key:str):
     filename = CONFIG["app"]["app_class"] + "local_" + md5(data_key + code_salt) + ".lcl"
     the_file = local_path + filename
@@ -84,7 +84,7 @@ def local_database_get_data(data_key:str):
     else:
         return "", -1
 
-# 删除数据（删除文件）
+# 删除数据（删除文件）。1有文件，-1无文件
 def local_database_del_data(data_key:str):
     filename = CONFIG["app"]["app_class"] + "local_" + md5(data_key + code_salt) + ".lcl"
     the_file = local_path + filename

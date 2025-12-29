@@ -65,7 +65,7 @@
                 {func.get_translate("ITHome")}
             </a>
         </li>
-        <li class="side_tab-menu-li {wails_hide}">
+        <li class="side_tab-menu-li">
             <a class="side_tab-menu-a border-radius break {route==='/play_audio'?' side_tab-menu-a-active ':' '} click" href={resolve(func.url_path('/play_audio'))} >
                 <svg class="svg-icon font-blue" xmlns="http://www.w3.org/2000/svg" width="20" height="24" viewBox="0 0 48 48"><defs><mask id="SVGENzItdvk"><g fill="none" stroke="#fff" stroke-width="4"><path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M26 14v14"/><path fill="#555555" stroke-linejoin="round" d="M14 28.666C14 26.64 15.934 25 18.32 25H26v4.334C26 31.36 24.066 33 21.68 33h-3.36C15.934 33 14 31.359 14 29.334z"/><path stroke-linecap="round" stroke-linejoin="round" d="m32 15l-6-1"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#SVGENzItdvk)"/></svg>
                 {func.get_translate("PlayAudio")}

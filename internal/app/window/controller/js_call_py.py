@@ -243,7 +243,7 @@ def list_js_call_py(WINDOW, key, data_dict):
             except:
                 pass
             #
-            if _timeout_s <= 5*60: # 最短10min
+            if _timeout_s <= 5*60: # 最短5min
                 _timeout_s = 5*60
                 pass
             #

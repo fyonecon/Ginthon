@@ -20,7 +20,7 @@
     import Loading from "../parts/Loading.svelte";
     import Notice from "../parts/Notice.svelte";
     import Alert from "../parts/Alert.svelte";
-    import {watch_window} from "../window.js";
+    import {watch_window} from "../watch_window.js";
 
 
     // 本页面参数

@@ -66,6 +66,7 @@ def get_play_audio_list(request):
                                     list_files.append(file_info)
                                     pass
                                 # print(f"文件: {entry.name}", entry)
+                                pass
                             elif entry.is_dir():
                                 if entry.name.find(".") == 0:  # 排除
                                     pass
