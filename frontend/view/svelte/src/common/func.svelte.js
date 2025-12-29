@@ -619,7 +619,7 @@ const func = {
                         api_url = "null-js_call_go_url";
                     }
                 }
-                window_token = that.get_local_data(_app_class+"window_token");
+                window_token = that.get_local_data("window_token");
             }else{
                 that.notice("config Error");
                 resolve({
