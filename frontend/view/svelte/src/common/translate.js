@@ -81,6 +81,15 @@ const lang_dict = {
         en: "Play Audio",
     },
     //
+    reload_window: {
+        zh: "重载页面",
+        en: "Reload Page",
+    },
+    reload_window_btn: {
+        zh: "重 载",
+        en: "Reload",
+    },
+    //
     btn_cancel: {
         zh: "取消",
         en: "Cancel",
