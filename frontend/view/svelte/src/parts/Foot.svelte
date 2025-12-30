@@ -21,8 +21,8 @@
 
 </script>
 
-<section class="section-foot select-none  pywebview-drag-region can-drag ">
-    <div class="center" style="opacity: 0.1;"></div>
+<section class="section-foot select-none pywebview-drag-region can-drag hide">
+    <div class="center">Foot</div>
 </section>
 
 <style>
@@ -30,7 +30,7 @@
         position: fixed;
         z-index: 0;
         width: calc(100% - 220px);
-        height: 5px;
+        height: 20px;
         bottom: 0;
         right: 0;
         overflow-x: hidden;

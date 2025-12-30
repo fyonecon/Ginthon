@@ -104,14 +104,12 @@ html {
 
 .click {
 	cursor: pointer;
-	user-select: none;
+    user-select: none;
 }
-
+.click:hover{
+    opacity: 0.9;
+}
 .click:active {
-	opacity: 0.6;
-}
-
-.click:hover {
 	opacity: 0.8;
 }
 
@@ -175,7 +173,7 @@ html {
 
 
 .border-radius {
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 
@@ -214,9 +212,13 @@ html {
 }
 
 .btn-base{
-    border-radius: 40px;
+    border-radius: 20px;
     padding: 5px 20px;
 }
+.btn-sm{
+    border-radius: 15px;
+}
+
 .box-shadow{
     box-shadow: 0 0 40px rgba(100, 100, 100, 0.5);
 }
@@ -225,10 +227,11 @@ html {
 .input-style{
     height: 40px;
     display: block;
-    background: rgba(180, 180, 180, 0.2);
+    background: rgba(160,160,160, 0.2);
     padding: 0 10px;
     outline: none;
-    border: 1px solid rgba(180, 180, 180, 0.2);
+    border: 1px solid rgba(160,160,160, 0.2);
+    opacity: 0.8;
 }
 .input-style:focus{
     outline: 2px solid var(--color-blue-500);
@@ -238,15 +241,42 @@ html {
 div[data-part="root"] {
     width: 280px;
     padding: 10px 10px;
-    /*box-shadow: 0 0 20px rgba(180,180,180, 0.2);*/
-    border: 1px solid rgba(180,180,180, 0.4);
+    /*box-shadow: 0 0 20px rgba(160,160,160, 0.2);*/
+    border: 1px solid rgba(160,160,160, 0.5);
     opacity: 0.8;
 }
 div[data-part="content"] {
-    /*box-shadow: 0 0 20px rgba(180,180,180, 0.2);*/
-    border: 1px solid rgba(180,180,180, 0.4);
+    /*box-shadow: 0 0 20px rgba(160,160,160, 0.2);*/
+    border: 1px solid rgba(160,160,160, 0.5);
 }
 
-.btn-sm{
-    border-radius: 30px;
+
+/*流水字，从右向左*/
+.text-marquee {
+    display: inline-block;
+    animation: text_marquee 10s linear infinite;
+}
+.text-marquee:hover {
+    animation-play-state: paused; /* 鼠标悬停暂停 */
+}
+@keyframes text_marquee {
+    0% {
+        transform: translateX(101%); /* 从右侧开始 */
+    }
+    100% {
+        transform: translateX(-101%); /* 移动到左侧 */
+    }
+}
+
+
+/*背景轮动颜色*/
+.bg-animation{
+    animation: play_animation 10s infinite ease-in-out;
+}
+@keyframes play_animation {
+    0%   {background-color: rgba(100,100,100,0.5);color: rgba(220,220,220,1)}
+    25%  {background-color: rgba(60,179,113,0.5);color: rgba(20,20,20,1)}
+    50%  {background-color: rgba(26,114,254,0.5);color: rgba(200,200,200,1)}
+    75%  {background-color: rgba(255,99,71,0.5);color: rgba(20,20,20,1)}
+    100% {background-color: rgba(100,100,100,0.5);color: rgba(220,220,220,1)}
 }

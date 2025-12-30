@@ -43,32 +43,32 @@
 </script>
 
 <div>
-    <ul class="ul-group font-text select-text">
+    <ul class="ul-group font-text">
         <li class="li-group">
             <div class="li-group-title break">
                 {func.get_translate("About")}
             </div>
-            <div class="li-group-content">
+            <div class="li-group-content select-text">
                 {config.app.app_name} UI v{config.app.app_version}
             </div>
         </li>
-        <li class="li-group select-none">
+        <li class="li-group">
             <div class="li-group-title break">
                 App UID
             </div>
-            <div class="li-group-content break">
+            <div class="li-group-content break select-text">
                 {app_uid?app_uid:"-"}
             </div>
         </li>
-        <li class="li-group select-text">
+        <li class="li-group">
             <div class="li-group-title break">
                 User Agent
             </div>
-            <div class="li-group-content break">
+            <div class="li-group-content break select-text">
                 {user_agent}
             </div>
         </li>
-        <li class="li-group select-none">
+        <li class="li-group">
             <div class="li-group-title break">
                 Href
             </div>
@@ -84,7 +84,7 @@
                 {params?params:"-"}
             </div>
         </li>
-        <li class="li-group select-none">
+        <li class="li-group">
             <div class="li-group-title break">
                 Route
             </div>
@@ -96,7 +96,7 @@
             <div class="li-group-title break">
                 Languages
             </div>
-            <div class="li-group-content break">
+            <div class="li-group-content break select-text">
                 {languages}
             </div>
         </li>
@@ -104,7 +104,7 @@
             <div class="li-group-title break">
                 Showing Language
             </div>
-            <div class="li-group-content break">
+            <div class="li-group-content break select-text">
                 {language_index}
             </div>
         </li>
@@ -112,24 +112,24 @@
             <div class="li-group-title break">
                 Themes
             </div>
-            <div class="li-group-content break">
+            <div class="li-group-content break select-text">
                 {theme_model}
             </div>
         </li>
-        <li class="li-group select-none">
+        <li class="li-group">
             <div class="li-group-title break">
                 Framework
             </div>
-            <div class="li-group-content break">
+            <div class="li-group-content break select-text">
                 <button type="button" class="a-btn font-blue click" onclick={()=>func.open_url_with_default_browser("https://github.com/fyonecon/Ginthon?ap=app")}>Ginthon(Python)</button>
                 <button type="button" class="a-btn font-blue click" onclick={()=>func.open_url_with_default_browser("https://github.com/fyonecon/Waigo?ap=app")}>Waigo(Golang)</button>
             </div>
         </li>
-        <li class="li-group select-none">
+        <li class="li-group">
             <div class="li-group-title break">
                 UI
             </div>
-            <div class="li-group-content break">
+            <div class="li-group-content break select-text">
                 <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>func.open_url_with_default_browser("https://svelte.js.cn/docs/svelte/overview")}>SvelteKit</button>
                 <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>func.open_url_with_default_browser("https://www.skeleton.dev/docs/svelte/guides/mode")}>SkeletonUI</button>
                 <button title="Open" type="button" class="a-btn font-blue click" onclick={()=>func.open_url_with_default_browser("https://www.tailwindcss.cn/docs/installation")}>Tailwind CSS</button>

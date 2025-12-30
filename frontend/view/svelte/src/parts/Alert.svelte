@@ -42,7 +42,7 @@
         overflow: hidden;
         margin-bottom: 10px;
         padding: 10px 10px;
-        box-shadow: 0 0 40px rgba(180, 180, 180, 0.2);
+        box-shadow: 0 0 40px rgba(150, 150, 150, 0.2);
     }
 
 </style>

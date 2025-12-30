@@ -112,8 +112,11 @@
         padding: 5px 5px;
     }
     .side_setting-menu-a-active{
-        background: rgba(180, 180, 180, 0.4);
+        background: rgba(160,160,160, 0.3) !important;
         /*color: var(--color-blue-400);*/
+    }
+    .side_setting-menu-a:hover{
+        background: rgba(160,160,160, 0.2);
     }
 
 </style>

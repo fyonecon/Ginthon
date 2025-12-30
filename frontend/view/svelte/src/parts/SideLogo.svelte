@@ -22,7 +22,7 @@
 </script>
 
 <section class="section-side_logo scroll-y-style select-none pywebview-drag-region can-drag bg-neutral-200 dark:bg-neutral-800">
-    <div class="side-logo select-none center">
+    <div class="side-logo center">
         <span class="font-class hide">{app_name}</span>
         <span class="font-mini hide"> v{app_version}</span>
     </div>

@@ -135,8 +135,8 @@ const lang_dict = {
     },
     //
     playing: {
-        zh: "正在播放...",
-        en: "Playing...",
+        zh: "正在播放",
+        en: "Playing",
     },
     play_paused: {
         zh: "已暂停。",

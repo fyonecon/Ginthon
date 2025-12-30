@@ -92,7 +92,7 @@
 
 </script>
 
-<div class="app bg-neutral-100 dark:bg-neutral-900" data-theme_model="{theme_model}">
+<div class="app select-none bg-neutral-100 dark:bg-neutral-900" data-theme_model="{theme_model}">
     <SideLogo />
     <SideSearch />
 	<SideTab />

@@ -231,9 +231,9 @@
 
 </script>
 
-<section class="section-director no-drag">
+<section class="section-director select-none">
     <!--  导航  -->
-    <div class="director-div select-none font-text">
+    <div class="director-div font-text">
         <button type="button" class="director-btn director-btn-left {before_click} border-radius font-blue" title="Before" data-href="{before_href}" onclick={()=>def.open_href(before_href)}>
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M15.488 4.43a.75.75 0 0 1 .081 1.058L9.988 12l5.581 6.512a.75.75 0 1 1-1.138.976l-6-7a.75.75 0 0 1 0-.976l6-7a.75.75 0 0 1 1.057-.081" clip-rule="evenodd"/></svg>
         </button>
@@ -277,13 +277,13 @@
         margin-top: 7px;
     }
     .director-btn-click:hover{
-        background-color: rgba(180, 180, 180, 0.2);
+        background-color: rgba(150,150,150, 0.2);
     }
     .director-btn-click:active{
-        background-color: rgba(180, 180, 180, 0.4);
+        background-color: rgba(150,150,150, 0.3);
     }
     .director-btn-not_click{
-        color: rgba(180, 180, 180, 0.6);
+        color: rgba(150,150,150, 0.6);
         /*cursor: not-allowed;*/
     }
     .director-btn > svg{

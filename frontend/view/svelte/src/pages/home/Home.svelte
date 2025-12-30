@@ -93,7 +93,7 @@
 
 <div>
     <ul class="ul-group font-text">
-        <li class="li-group select-none">
+        <li class="li-group">
             <div class="li-group-title break">
                 Ping Network <button type="button" class="btn btn-sm preset-filled-primary-500" onclick={()=>def.ping_show()} title="Click">Start</button>
             </div>
@@ -121,7 +121,7 @@
                 </p>
             </div>
         </li>
-        <li class="li-group select-none">
+        <li class="li-group">
             <div class="li-group-title break">
                 indexDB <button type="button" class="btn btn-sm preset-filled-primary-500" onclick={()=>def.test_db()} title="Click">Start</button>
             </div>

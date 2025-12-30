@@ -433,16 +433,16 @@
     <!--  文件列表  -->
     <div class="list_dirs font-text border-radius">
         <!---->
-        <div class="list_dirs-title break-ellipsis bg-neutral-200 dark:bg-neutral-800">
+        <div class="list_dirs-title pywebview-drag-region can-drag break-ellipsis bg-neutral-200 dark:bg-neutral-800">
             {view_path?"/.../ "+view_path.replace(func.replaceLast(now_root_path, func.filepath_to_filename(now_root_path), ""), "")+" /":"/"}
         </div>
         <!---->
-        <div class="list_dirs-operation select-none">
+        <div class="list_dirs-operation">
             <!---->
-            <div class="list_dirs-operation-search font-mini">
+            <div class="list_dirs-operation-search">
                 <label>
-                    <input class="input-style select-text list_dirs-operation-search-input border-radius" type="text" maxlength="100" placeholder="{func.get_translate('input_placeholder_find')}" bind:value={input_value_find} onkeydown={()=>def.input_enter(event)} />
-                    <button class="list_dirs-operation-search-btn font-white border-radius click " type="button" title="Find" onclick={()=>def.input_find()}>{func.get_translate("find_btn")}</button>
+                    <input class="input-style select-text list_dirs-operation-search-input border-radius  font-text" type="text" maxlength="100" placeholder="{func.get_translate('input_placeholder_find')}" bind:value={input_value_find} onkeydown={(event)=>def.input_enter(event)} onmouseenter={(e) => e.currentTarget.focus()} />
+                    <button class="list_dirs-operation-search-btn font-white border-radius click  font-mini" type="button" title="Find" onclick={()=>def.input_find()}>{func.get_translate("find_btn")}</button>
                 </label>
             </div>
             <!---->
@@ -473,7 +473,7 @@
                             <button class="list-path-tree-li-btn click break select-text" type="button" title="{the_dir_info.name}" onclick={()=>func.open_url(func.get_route()+"?dir="+encodeURIComponent(func.converted_path(view_path+"/"+the_dir_info.name)))} >{the_dir_info.name}</button>
                         </div>
                         <!---->
-                        <div class="li-info font-text">
+                        <div class="li-info font-text select-text">
                             <div class="li-info-item font-mini break-ellipsis" title="Folder Size">
                                 {the_dir_info.size?the_dir_info.size:""}
                             </div>
@@ -511,7 +511,7 @@
                             <button class="list-path-tree-li-btn click break select-text" type="button" title="{the_file_info.name}" onclick={()=>def.open_file(the_file_info.name)}>{the_file_info.name}</button>
                         </div>
                         <!---->
-                        <div class="li-info font-text">
+                        <div class="li-info font-text select-text">
                             <div class="li-info-item font-mini break-ellipsis" title="File Size">
                                 {the_file_info.size?the_file_info.size:""}
                             </div>
@@ -538,14 +538,14 @@
 <!-- 新增文件夹 -->
 <Dialog closeOnInteractOutside={false} closeOnEscape={false} open={add_dir_dialog_is_open} onOpenChange={()=>{}}>
     <Portal>
-        <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80  pywebview-drag-region can-drag select-none"/>
-        <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text">
+        <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80 select-none"/>
+        <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text select-none">
             <Dialog.Content
                     class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {animation}  px-[10px] py-[10px] border-radius">
-                <header class="flex justify-between items-center pywebview-drag-region can-drag select-none">
+                <header class="flex justify-between items-center pywebview-drag-region can-drag">
                     <Dialog.Title class="font-title font-bold">⚠️</Dialog.Title>
                 </header>
-                <Dialog.Description class="font-text">
+                <Dialog.Description class="font-text select-text">
                     <div class="font-text" style="margin-top: 10px; margin-bottom: 20px;opacity: 0.8;">
                         {func.get_translate('play_add_new_fir')}
                     </div>
@@ -568,13 +568,13 @@
 <!-- 更新播放列表 -->
 <Dialog closeOnInteractOutside={false} closeOnEscape={false} open={update_play_list_dialog_is_open} onOpenChange={()=>{}}>
     <Portal>
-        <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80  pywebview-drag-region can-drag select-none" />
-        <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text">
+        <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80 select-none" />
+        <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text select-none">
             <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {animation}  px-[10px] py-[10px] border-radius">
-                <header class="flex justify-between items-center pywebview-drag-region can-drag select-none">
+                <header class="flex justify-between items-center pywebview-drag-region can-drag">
                     <Dialog.Title class="font-title font-bold">⚠️</Dialog.Title>
                 </header>
-                <Dialog.Description class="font-text">
+                <Dialog.Description class="font-text select-text">
                     {func.get_translate('play_update_play_list')}
                 </Dialog.Description>
                 <footer class="flex justify-center gap-10 select-none  px-[10px] py-[10px]">
@@ -589,13 +589,13 @@
 <!-- 删除已设置的本地文件夹 -->
 <Dialog closeOnInteractOutside={false} closeOnEscape={false} open={remove_local_dir_dialog_is_open} onOpenChange={()=>{}}>
     <Portal>
-        <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80  pywebview-drag-region can-drag select-none" />
-        <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text">
+        <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80  select-none" />
+        <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text select-none">
             <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {animation}  px-[10px] py-[10px] border-radius">
-                <header class="flex justify-between items-center pywebview-drag-region can-drag select-none">
+                <header class="flex justify-between items-center pywebview-drag-region can-drag">
                     <Dialog.Title class="font-title font-bold">⚠️</Dialog.Title>
                 </header>
-                <Dialog.Description class="font-text">
+                <Dialog.Description class="font-text select-text">
                     {@html func.get_translate('remove_help_1') +":<br/>"+ func.filepath_to_filename(remove_local_dir_the_dir)}
                 </Dialog.Description>
                 <footer class="flex justify-center gap-10 select-none  px-[10px] py-[10px]">
@@ -611,7 +611,7 @@
     .list_dirs{
         clear: both;
         width: calc(100% - 20px);
-        border: 1px solid rgba(180,180,180,0.4);
+        border: 1px solid rgba(160,160,160, 0.3);
         margin-left: 10px;
         margin-right: 10px;
     }
@@ -631,7 +631,7 @@
         height: 50px;
         padding: 5px 5px;
         clear: both;
-        border-bottom: 1px solid rgba(180,180,180,0.6);
+        border-bottom: 1px solid rgba(160,160,160,0.3);
     }
     .list_dirs-operation-search{
         width: 240px;
@@ -657,7 +657,6 @@
         width: 80px;
         margin: 3px 0 3px 2px;
         line-height: 34px;
-        border-radius: 30px;
         background-color: var(--color-primary-400);
     }
     .list_dirs-operation-do-item{
@@ -674,15 +673,21 @@
     .list-path-tree-li{
         opacity: 0.8;
         overflow: hidden;
-        border-bottom: 1px solid rgba(180,180,180,0.2);
+        /*border-bottom: 1px solid rgba(160,160,160,0.2);*/
         clear: both;
     }
+    .list-path-tree-li:nth-child(odd){
+        background-color: rgba(160,160,160,0);
+    }
+    .list-path-tree-li:nth-child(even){
+        background-color: rgba(160,160,160,0.1);
+    }
     .list-path-tree-li:hover{
-        background-color: rgba(180,180,180,0.1);
+        background-color: rgba(160,160,160,0.2);
     }
-    .list-path-tree-li:last-child{
-        border-bottom: 1px solid rgba(180,180,180,0);
-    }
+    /*.list-path-tree-li:last-child{*/
+    /*    border-bottom: 1px solid rgba(160,160,160,0);*/
+    /*}*/
 
 
     .list-path-tree-li-icon{
@@ -728,8 +733,6 @@
         height: 30px;
         border-radius: 30px;
         text-align: center;
-        /*background-color: rgba(180,180,180,0.4);*/
-
     }
     .operation-do-btn > svg{
         margin-top: 0;
@@ -754,7 +757,7 @@
     }
     .li-operation-item-btn > svg{
         margin-top: 3px;
-        margin-left: 3px;
+        margin-left: 5px;
     }
 
 

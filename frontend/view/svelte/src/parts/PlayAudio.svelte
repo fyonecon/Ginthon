@@ -20,6 +20,7 @@
     let player_show_control = $state("hide");
     let play_list_max_len = $state(1000); // 播放列表最大长度
     let song_info_filename = $state("");
+    let song_info_filename_marquee = $state("");
     let play_songs_animation = $state("");
 
     // 用于存储事件监听器引用，便于清理
@@ -51,19 +52,22 @@
             let the_playing = that.get_playing();
             if (!the_playing){
                 console.warn("无播放资料（请先 def.fetch_play_list() ）：", the_playing);
-                that.set_playing("");
+                that.set_playing({});
                 return;
             }else {
                 href = the_playing.href;
                 player_show_play = "hide";
                 player_show_stop = "show";
                 player_show_control = "show";
-                song_info_filename = the_playing.filename || '未知歌曲'
-                play_songs_animation = "play-songs-animation";
+                song_info_filename = the_playing.filename || 'Null Song'
+                play_songs_animation = "bg-animation";
+                song_info_filename_marquee = "text-marquee";
+                //
+                func.notice("[" + func.get_translate("playing")+"] "+song_info_filename);
                 // 渲染系统音乐通知栏
                 navigator.mediaSession.metadata = new MediaMetadata({
-                    title: the_playing.filename || '未知歌曲', // 歌名
-                    artist: func.get_translate("playing"), // 艺术家
+                    title: the_playing.filename || 'Null Song', // 歌名
+                    artist: func.get_translate("playing")+"...", // 艺术家
                     // album: '-', // 专辑
                     artwork: [ // 封面
                         {src: the_playing.cover || '/launcher.png', sizes: '96x96', type: 'image/png'},
@@ -226,13 +230,16 @@
             play_audio_data.play_state = false;
             song_info_filename = "";
             play_songs_animation = "";
+            song_info_filename_marquee = "";
         },
         play_stop: function(){ // 暂停播放
             let that = this;
             //
+            let the_playing = that.get_playing();
             that.play_clear_timer();
             player_show_play = "show";
             player_show_stop = "hide";
+            song_info_filename =  the_playing.filename;
             //
             that.is_playing().then(state=>{
                 let current = myAudio.currentTime;
@@ -245,7 +252,7 @@
                 }
                 myAudio.pause();
                 // 渲染系统音乐通知栏
-                let the_playing = that.get_playing();
+
                 navigator.mediaSession.metadata = new MediaMetadata({
                     title: the_playing.filename || '未知歌曲', // 歌名
                     artist: func.get_translate("play_paused"), // 艺术家
@@ -405,48 +412,6 @@
         set_current_time: function(current_time = ""){ // 设置当前播放进度
             func.set_local_data(player_prefix + "current_time", current_time);
         },
-        //
-        fetch_play_list: function(){ // 更新播放列表+初始化正在播放的信息
-            let that = this;
-            /* 参数格式
-            * list = [
-                  {
-                        filename: "",
-                        href: "",
-                        cover: "",
-                  },
-              ];
-            * */
-            //
-            let api_url = config.api.api_host+"/api/get_play_audio_list";
-            const _app_token = func.get_local_data("app_token");
-            const body_dict = {
-                lang: func.get_lang(),
-                app_token: _app_token,
-                app_class: config.app.app_class
-            };
-            return new Promise(resolve => {
-                console.log("Update Play List");
-                FetchPOST(api_url, body_dict).then(res=>{
-                    if (res.state === 1){
-                        // console.log("api=", api, res.content.list, typeof res.content.list);
-                        let list = res.content.list;
-                        if (list.length > 0){
-                            that.set_current_time("0");
-                            that.set_playing(list[0])
-                            that.set_list(list);
-                            resolve(true);
-                        }else{
-                            console.warn("参数仍有错误");
-                            resolve(false);
-                        }
-                    }else{
-                        console.log("API有问题=", api_url, res);
-                        resolve(false);
-                    }
-                });
-            });
-        },
     };
 
 
@@ -475,8 +440,10 @@
         myAudio = new Audio();
         //
         // 展示播放按钮
-        if (def.get_playing()){ // 有历史
+        let the_playing = def.get_playing();
+        if (the_playing){ // 有历史
             player_show_control = "show";
+            song_info_filename =  the_playing.filename;
         }else{ // 无历史就加载新的
             //
         }
@@ -510,63 +477,74 @@
 
 </script>
 
-<section class="section-play_mp3 select-none border-radius bg-neutral-200 dark:bg-neutral-800 {player_show_control} ">
-    <div class="page-player-song_info break-ellipsis select-text">
-        <div class="page-player-song_info-name marquee-content" title="{song_info_filename}">
-            {song_info_filename?song_info_filename:"···"}
-        </div>
-    </div>
-    <div class="page-player-div select-text">
-<!--        <button type="button" class="player-btn font-mini font-blue click hide" onclick={()=>def.fetch_play_list()} title="Update List">List</button>-->
+<section class="section-player-box select-none border-radius bg-neutral-200 dark:bg-neutral-800 {player_show_control} ">
+    <div class="page-player-song_btns">
         <button type="button" class="player-btn font-mini font-blue click " onclick={()=>def.play_before()} title="Before">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M14.91 6.71a.996.996 0 0 0-1.41 0L8.91 11.3a.996.996 0 0 0 0 1.41l4.59 4.59a.996.996 0 1 0 1.41-1.41L11.03 12l3.88-3.88c.38-.39.38-1.03 0-1.41"/></svg>
         </button>
         <button type="button" class="player-btn font-mini font-blue click {player_show_play}" onclick={()=>def.play_start()} title="Play">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48"><path fill="currentColor" d="m16.75 8.412l24.417 12.705a3.25 3.25 0 0 1 0 5.766L16.75 39.588A3.25 3.25 0 0 1 12 36.705v-25.41a3.25 3.25 0 0 1 4.549-2.98z"/></svg>
         </button>
-        <button type="button" class="player-btn font-mini font-blue click {player_show_stop}" onclick={()=>def.play_stop()} title="Stop">
+        <button type="button" class="player-btn font-mini font-blue click {player_show_stop} {play_songs_animation} " onclick={()=>def.play_stop()} title="Stop">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="4" height="14" x="6" y="5" fill="currentColor" rx="1"/><rect width="4" height="14" x="14" y="5" fill="currentColor" rx="1"/></svg>
         </button>
         <button type="button" class="player-btn font-mini font-blue click" onclick={()=>def.play_next()} title="Next">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="m19 12l12 12l-12 12"/></svg>
         </button>
     </div>
+    <div class="page-player-song_name break-ellipsis">
+        <div class="page-player-song_name_txt select-text {song_info_filename_marquee}" title="{song_info_filename}">
+            {song_info_filename?song_info_filename:"···"}
+        </div>
+    </div>
 </section>
 
 
 <style>
-    .section-play_mp3{
+    .section-player-box{
         position: fixed;
         bottom: 10px;
         right: 15px;
-        width: 220px;
+        width: 110px; /* 220 120 */
         height: 40px;
         overflow: hidden;
-        padding: 5px 5px;
+        /*padding: 5px 5px;*/
         clear: both;
-        border-radius: 40px;
+        border-radius: 20px;
         z-index: 200;
+        /*宽度缩放动画*/
+        transition: width 0.5s ease-in-out;
     }
-    .page-player-song_info{
-        width: calc(220px - 10px - 100px);
+    .section-player-box:hover{
+        width: 220px;
+    }
+    .page-player-song_name{
+        width: calc(220px - 15px - 100px);
         line-height: 30px;
+        height: 30px;
         overflow: hidden;
-        float: left;
+        float: right;
         opacity: 0.8;
         text-align: center;
-        padding: 0 5px;
-        border-radius: 30px;
+        border-radius: 20px;
+        margin-left: 5px;
+        margin-right: 5px;
+        margin-top: 5px;
     }
-    .page-player-div{
+    .page-player-song_btns{
         width: 100px;
-        float: left;
+        float: right;
+        height: 30px;
+        margin-top: 5px;
+        border-radius: 20px;
+        margin-right: 5px;
     }
     .player-btn{
         width: 30px;
         height: 30px;
         border-radius: 30px;
         text-align: center;
-        background-color: rgba(180,180,180,0.2);
+        background-color: rgba(160,160,160,0.2);
         float: left;
         margin-right: 5px;
     }
@@ -576,39 +554,6 @@
     .player-btn > svg{
         margin-top: 0;
         margin-left: 3px;
-    }
-
-
-    /*背景轮动颜色*/
-    .play-songs-animation{
-        animation: play_songs_animation 10s infinite ease-in-out;
-    }
-    @keyframes play_songs_animation {
-        0%   {background-color: rgba(100,100,100,0.8);color: rgba(180,180,180,1)}
-        20%  {background-color: rgba(85,85,85,0.5);color: rgba(200,200,200,1)}
-        50%  {background-color: rgba(26,114,254, 0.5);color: rgba(210,210,210,1)}
-        80%  {background-color: rgba(85,85,85,0.5);color: rgba(200,200,200,1)}
-        100% {background-color: rgba(100,100,100,0.8);color: rgba(180,180,180,1)}
-    }
-
-
-    /*流水字，从右向左*/
-    .marquee-content {
-        display: inline-block;
-        animation: marquee 10s linear infinite;
-    }
-
-    .marquee-content:hover {
-        animation-play-state: paused; /* 鼠标悬停暂停 */
-    }
-
-    @keyframes marquee {
-        0% {
-            transform: translateX(110%); /* 从右侧开始 */
-        }
-        100% {
-            transform: translateX(-110%); /* 移动到左侧 */
-        }
     }
 
 </style>

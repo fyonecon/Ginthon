@@ -38,7 +38,7 @@
 <div>
     <h3>{route}</h3>
     <ul class="ul-group font-text">
-        <li class="li-group select-none">
+        <li class="li-group">
             <div class="li-group-title break">
                 test
             </div>

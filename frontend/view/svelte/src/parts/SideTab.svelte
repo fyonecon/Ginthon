@@ -99,6 +99,7 @@
         max-height: calc(72px + 10px);
         overflow: hidden;
         clear: both;
+        margin-bottom: 1px;
     }
     .side_tab-menu-a{
         line-height: 24px;
@@ -108,8 +109,11 @@
         clear: both;
     }
     .side_tab-menu-a-active{
-        background: rgba(180, 180, 180, 0.4);
+        background: rgba(160,160,160, 0.3) !important;
         /*color: var(--color-blue-400);*/
+    }
+    .side_tab-menu-a:hover{
+        background: rgba(160,160,160, 0.2);
     }
 
 </style>

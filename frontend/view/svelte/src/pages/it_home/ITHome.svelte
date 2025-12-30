@@ -61,7 +61,7 @@
 <div>
 
     <ul class="ul-group font-text">
-        <li class="li-group select-none">
+        <li class="li-group">
             <div class="li-group-title break">
                 爬IT之家首页 <button type="button" class="btn btn-sm preset-filled-primary-500" onclick={()=>def.read_ithome()} title="Click">Start</button>
             </div>

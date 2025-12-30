@@ -24,9 +24,9 @@
 </script>
 
 
-<section class="section-nav pywebview-drag-region can-drag">
+<section class="section-nav select-none pywebview-drag-region can-drag">
     <!--  标题  -->
-    <div class="nav-title-div select-none font-title font-bold" data-nav_value="{side_tab_data.tab_value}">
+    <div class="nav-title-div font-title font-bold" data-nav_value="{side_tab_data.tab_value}">
         {side_tab_data.tab_name}
     </div>
 
