@@ -2,9 +2,8 @@
 
 import sys
 import os
-from pathlib import Path
 
-from internal.common.func import cache_path, converted_path
+from internal.common.func import cache_path, converted_path, data_path
 from internal.config import get_config
 
 
@@ -22,6 +21,11 @@ def mian_virtual_dirpath(sub_path="frontend"):
 def main_cache_dirpath(sub_path="running"):
     _cache_path = cache_path() + "/" + get_config("sys", "cache_path_main_dir")  # 结尾无/
     return _cache_path+"/"+sub_path
+
+# 缓存真实路径
+def main_data_dirpath(sub_path="running"):
+    _data_dirpath = data_path() + "/" + get_config("sys", "data_path_main_dir")
+    return _data_dirpath+"/"+sub_path
 
 # 获取前端资源路径
 # frontend_dir = mian_virtual_dirpath("frontend")

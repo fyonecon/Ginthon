@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
+import warnings
 
 import webview
 import psutil
 import os
 import threading
+
+from objc._objc import ObjCPointerWarning
 
 from internal.bootstrap.run_services import run_services
 from internal.bootstrap.run_flask import run_flask
@@ -84,6 +87,14 @@ def init_window(cmd_model):
         cmd_model = "build"
         pywebveiw_url = _view_url
         pass
+
+    # 忽略pywebveiw自签ssl警告（mac）
+    ssl_state = CONFIG["flask"]["ssl"]
+    if ssl_state:
+        # warnings.filterwarnings("ignore", category=RuntimeWarning, module="webview.platforms.cocoa")
+        warnings.filterwarnings("ignore", category=ObjCPointerWarning)
+        pass
+
     # 创建视窗
     _window = webview.create_window(
         title=CONFIG["app"]["app_name"],

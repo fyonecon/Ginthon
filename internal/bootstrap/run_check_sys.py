@@ -6,7 +6,7 @@ import sys
 import psutil
 
 from internal.config import get_config
-from internal.common.func import create_dir_level_1, get_platform, get_date
+from internal.common.func import create_data_dir_level_1, get_platform, get_date
 
 #
 CONFIG = {}
@@ -77,9 +77,10 @@ def run_check_sys():
     CONFIG = get_config("", "")
 
     # 检查缓存目录，不存在就立即创建该目录
-    create_dir_level_1("running")
-    create_dir_level_1("log")
-    create_dir_level_1("local_database")
+    data_path_dirs_name = CONFIG["sys"]["data_path_dirs_name"]
+    for name in data_path_dirs_name:
+        create_data_dir_level_1(name)
+        pass
 
     # 至少物理双核
     cpu_count = psutil.cpu_count(logical=False)

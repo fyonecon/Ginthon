@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask, jsonify, send_file
-from internal.app.flask.flask_route_api import flask_route_api
-from internal.app.flask.flask_route_html import flask_route_html
-from internal.app.flask.flask_route_file import flask_route_file
-from flask import make_response, request
+from flask import request
 
+from internal.app.flask.flask_route_api import flask_route_api
+from internal.app.flask.flask_route_file import flask_route_file
+from internal.app.flask.flask_route_html import flask_route_html
 from internal.app.window.window_route import window_route
-from internal.bootstrap.flask_middleware import flask_middleware_html, flask_middleware_file, flask_middleware_api
+from internal.bootstrap.flask_middleware import flask_middleware_file, flask_middleware_api
+from internal.common.func import print_log, back_404_data, back_500_data, back_404_data_api, back_404_data_file, \
+    get_file_ext, get_file_ext_mimetype
 from internal.common.kits.main_dirpath import mian_virtual_dirpath
-from internal.common.func import print_log, back_404_data, back_500_data, back_404_data_api, back_404_data_html, back_404_data_file, get_file_ext, get_file_ext_mimetype
+from internal.common.kits.ssl_self import read_ssl_context
 from internal.common.request_input import request_input
 
 #
@@ -208,7 +210,14 @@ def run_flask(window, webview_pid, config):
     global CONFIG
     CONFIG = config
     #
-    print_log("### Flask => ", "http://127.0.0.1" + ":" + str(CONFIG["flask"]["port"])+"/api")
+    ssl_state = CONFIG["flask"]["ssl"]
+    if ssl_state:
+        s = "s"
+        pass
+    else:
+        s = ""
+        pass
+    print_log("### Flask => ", "http"+s+"://127.0.0.1" + ":" + str(CONFIG["flask"]["port"])+"/api")
     #
     FLASK = Flask(__name__)
 
@@ -234,8 +243,16 @@ def run_flask(window, webview_pid, config):
     flask_route_html(window, FLASK)
     flask_route_api(window, FLASK)
     flask_route_file(window, FLASK)
-    #
-    FLASK.run(debug=CONFIG["flask"]["debug"], port=CONFIG["flask"]["port"])
+
+    # 启动Flask
+    no_ssl_host = "0.0.0.0" # 0.0.0.0
+    ssl_host = "127.0.0.1" # 0.0.0.0、127.0.0.1
+    if ssl_state:
+        FLASK.run(debug=CONFIG["flask"]["debug"], ssl_context=read_ssl_context(host=ssl_host), host=ssl_host, port=CONFIG["flask"]["port"])
+        pass
+    else:
+        FLASK.run(debug=CONFIG["flask"]["debug"], host=no_ssl_host, port=CONFIG["flask"]["port"])
+        pass
 
     # 检测端口在check_sys中，此处不再检测。
 

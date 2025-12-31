@@ -2,13 +2,13 @@
 
 import os.path
 
-from internal.common.func import cache_path
+from internal.common.func import cache_path, data_path
 from internal.config import get_config
 
 #
 CONFIG = get_config("", "")
-_cache_path = cache_path() + "/" + CONFIG["sys"]["cache_path_main_dir"] # 结尾无/
-txt_path = _cache_path+"/running/" # /结尾
+_data_dirpath = data_path() + "/" + get_config("sys", "data_path_main_dir") # 结尾无/
+txt_path = _data_dirpath+"/running/" # /结尾
 
 # 写txt文件
 # txt_filename文件格式：xxx.txt。model:"w"覆盖，"a"尾部追加（\n）

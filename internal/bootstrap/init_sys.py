@@ -7,18 +7,21 @@ from internal.common.kits.txt_data import txt_remove, txt_write
 from internal.config import get_config
 from internal.bootstrap.run_check_sys import run_check_sys
 from internal.bootstrap.init_window import init_window
-from internal.common.func import rand_range_string, print_log, has_file, cache_path
+from internal.common.func import rand_range_string, print_log, has_file, cache_path, data_path
+
 
 # 代码习惯基于Golang。
 
 # 程序主入口
 def init_sys(cmd_model):
     # 获取前端资源路径
-    cache_dirpath = cache_path() + "/" + get_config("sys", "cache_path_main_dir")
+    _cache_dirpath = cache_path() + "/" + get_config("sys", "cache_path_main_dir") # 结尾无/
+    _data_dirpath = data_path() + "/" + get_config("sys", "data_path_main_dir") # 结尾无/
     frontend_dirpath = mian_virtual_dirpath("frontend")
     print("### 两个重要目录 => ", {
         "frontend_dirpath": frontend_dirpath,
-        "cache_dirpath": cache_dirpath,
+        "cache_dirpath": _cache_dirpath,
+        "data_dirpath": _data_dirpath,
         "frontend-launcher.png": has_file(frontend_dirpath+"/icon.png"),
     })
     #

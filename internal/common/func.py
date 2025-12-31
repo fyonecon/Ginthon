@@ -89,17 +89,16 @@ def has_dir(full_dirpath):
         else:
             return False
 
-# 创建文件夹（只能在main.py目录或子目录创建）,dirpath开头和结尾都不带 /
+# 创建数据持久化文件夹（只能在main.py目录或子目录创建）,dirpath开头和结尾都不带 /
 # 只能创建1级子文件夹
-def create_dir_level_1(dirpath):
-    _cache_path = cache_path() + "/" + get_config("sys", "cache_path_main_dir") # 结尾无/
+def create_data_dir_level_1(dirpath):
+    _data_dirpath = data_path() + "/" + get_config("sys", "data_path_main_dir") # 结尾无/
     # 没有主文件就直接创建
-    if not has_dir(_cache_path):
-        os.mkdir(_cache_path)
+    if not has_dir(_data_dirpath):
+        os.mkdir(_data_dirpath)
         pass
     # 创建子文件夹
-    full_path = _cache_path+"/"+dirpath
-    # print("create_dir_level_1=", _cache_path, full_path)
+    full_path = _data_dirpath+"/"+dirpath
     if not has_dir(full_path): # 不存在
         os.mkdir(full_path)
         return True, full_path
@@ -166,15 +165,33 @@ def get_file_ext_mimetype(file_ext):
 # 获取当前平台存储程序缓存的路径，结尾无/
 def cache_path():
     p = get_platform()
+    home = Path.home()
     if p == "win":
-        localappdata = os.environ.get("LOCALAPPDATA", "")
+        localappdata = os.environ.get("LOCALAPPDATA",  home / 'AppData' / 'Roaming')
         local_path = Path(localappdata)
         return converted_path(str(local_path))
     elif p == "linux":
-        xdg_cache_home = Path(os.environ.get('XDG_CACHE_HOME', Path.home() / '.cache'))
+        xdg_cache_home = Path(os.environ.get('XDG_CACHE_HOME', home / '.cache'))
         return str(xdg_cache_home)
     elif p == "mac":
-        user_cache_dir = Path.home() / "Library" / "Caches"
+        user_cache_dir = home / "Library" / "Caches"
+        return str(user_cache_dir)
+    else: # 其他平台
+        return ""
+
+# 获取当前平台存储程序数据持久化的路径，结尾无/
+def data_path():
+    p = get_platform()
+    home = Path.home()
+    if p == "win":
+        localappdata = os.environ.get("LOCALAPPDATA", home / 'AppData' / 'Local')
+        local_path = Path(localappdata)
+        return converted_path(str(local_path))
+    elif p == "linux":
+        xdg_cache_home = Path(os.environ.get('XDG_CACHE_HOME', home / '.local' / 'share'))
+        return str(xdg_cache_home)
+    elif p == "mac":
+        user_cache_dir = home / "Library" / "Application Support"
         return str(user_cache_dir)
     else: # 其他平台
         return ""

@@ -12,14 +12,14 @@ CONFIG = get_config("", "")
 # display=hiding showing
 def set_display_state(display="hiding"):
     global CONFIG
-    running_id_filename = "display_state.cache"
-    txt_remove(running_id_filename)
-    txt_write(running_id_filename, display)
+    running_filename = "display_state.cache"
+    txt_remove(running_filename)
+    txt_write(running_filename, display)
     return display
 
 # 读取当前窗口隐藏状态
 def get_display_state():
     global CONFIG
 
-    running_id_filename = "display_state.cache"
-    return txt_read(running_id_filename)
+    running_filename = "display_state.cache"
+    return txt_read(running_filename)

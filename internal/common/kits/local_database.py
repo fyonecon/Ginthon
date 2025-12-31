@@ -6,7 +6,7 @@
 import os.path
 
 from internal.common.func import cache_path, md5, str_encode, has_file, str_decode, get_time_s, url_encode, has_dir, \
-    print_log
+    print_log, data_path
 from internal.config import get_config
 
 # 截取固定长度的字符串，从第1位
@@ -17,8 +17,8 @@ def truncate_string(text, length):
 
 #
 CONFIG = get_config("", "")
-_cache_path = cache_path() + "/" + CONFIG["sys"]["cache_path_main_dir"] # 结尾无/
-local_path = _cache_path+"/local_database/" # /结尾
+_data_dirpath = data_path() + "/" + get_config("sys", "data_path_main_dir") # 结尾无/
+local_path = _data_dirpath+"/local_database/" # /结尾
 code_key = truncate_string("gt-py3_2025@localdatabase", 16) # 大于16位
 code_salt = "2025"
 #
