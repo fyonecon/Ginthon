@@ -31,9 +31,9 @@ def test(txt):
 
 # 打印控制台信息
 def print_log(*args):
-    debug = get_config("sys", "debug") # True False
-    if debug:
-        print(args)
+    _debug = get_config("", "")["sys"]["debug"] # True False
+    if _debug:
+        print("[PY-CMD-Log]", args)
     else:
         pass
     pass

@@ -18,7 +18,7 @@ def init_sys(cmd_model):
     _cache_dirpath = cache_path() + "/" + get_config("sys", "cache_path_main_dir") # 结尾无/
     _data_dirpath = data_path() + "/" + get_config("sys", "data_path_main_dir") # 结尾无/
     frontend_dirpath = mian_virtual_dirpath("frontend")
-    print("### 两个重要目录 => ", {
+    print("### 核对重要目录 => ", {
         "frontend_dirpath": frontend_dirpath,
         "cache_dirpath": _cache_dirpath,
         "data_dirpath": _data_dirpath,

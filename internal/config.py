@@ -21,7 +21,7 @@ GLOBAL_CONFIG_DICT = {
             # 其它
         ],
         "running_id_filename": "running_id.cache", #
-        "debug": False,  # True False
+        "debug": False, # True False ，显示终端日志
     },
     "check": { # check_sys
         "min_cpu_cores": 2,  # 物理核心数

@@ -2,10 +2,12 @@
 
 import os
 import threading
+import warnings
 from time import sleep
 
 import pystray
 import requests
+import urllib3
 from PIL import Image
 import io
 
@@ -79,7 +81,8 @@ def request_window(do):
         "User-Agent": CONFIG["app"]["app_class"] + CONFIG["app"]["app_version"],
     }
     # POST
-    response = requests.post(url=url, timeout=4, headers=headers, json=data)
+    print_log("url=", url, data)
+    response = requests.post(url=url, timeout=4, headers=headers, json=data, verify=False) # verify=False忽略SSL证书验证
     back_data = response.json()
     print_log("back_data=", back_data)
     #
@@ -103,8 +106,9 @@ def on_show_or_hide(icon, item_text):
             icon.notify(title="未知状态："+str(state), message=msg)
             pass
         pass
-    except:
-        print("on_show_or_hide 错误：", "接口不通，可能是视窗主程序未启动")
+    except Exception as err:
+        print_log(err)
+        print("on_show_or_hide 错误：", "接口不通，可能是视窗主程序未启动 或 api不能访问")
         pass
     pass
 
@@ -184,6 +188,9 @@ def load_icon(icon_binary):
 def tray_create():
     global CONFIG
     CONFIG = get_config("", "")
+
+    # 选择性禁用“SSL报错”
+    warnings.filterwarnings('ignore', message='Unverified HTTPS request', category=urllib3.exceptions.InsecureRequestWarning)
 
     # 创建菜单
     menu = pystray.Menu(
