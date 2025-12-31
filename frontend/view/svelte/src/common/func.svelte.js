@@ -146,7 +146,7 @@ const func = {
     js_rand: function (min, max) { // [min, max]
         return Math.floor(Math.random() * (max - min + 1) + min);
     },
-    set_local_data: function (key, value){ // 新增或更新数据（总和最大5M，关闭页面值不会消失。尽量总条数小于50条，每条小于100KB。）
+    set_local_data: function (key, value){ // 新增或更新数据（总和最大5M，关闭页面值不会消失。尽量总条数小于50条，每条小于100KB。）。数据持久化请使用func.js_call_go_or_py("set_data", {data_key:"", data_value:"", data_timeout_s:2*365*24*3600}).then(res=>{let data=res.content.data;}); 。
         let that = this;
         key = that.url_encode(key); // 支持中文和特殊字符
         //
@@ -188,24 +188,6 @@ const func = {
         }else {
             return false;
         }
-    },
-    set_page_data: function(key, value){ // 新增或更新数据（跨路由<页面>值，除非在浏览器关闭页面或刷新页面）
-        let that = this;
-        key = that.url_encode(key); // 支持中文和特殊字符
-        //
-        return setContext(key, value);
-    },
-    get_page_data: function(key){
-        let that = this;
-        key = that.url_encode(key);
-        //
-        return getContext(key);
-    },
-    del_page_data: function(key){
-        let that = this;
-        key = that.url_encode(key);
-        //
-        return that.set_page_data(key, null);
     },
     get_time_s: function () {
         return Math.floor((new Date()).getTime()/1000);
@@ -905,7 +887,7 @@ const func = {
             });
         });
     },
-    set_db_data: function (key, value) { // 健值对方式存储数据到indexDB，单条大小无限制。
+    set_db_data: function (key, value) { // 健值对方式存储数据到indexDB，单条大小无限制。数据持久化请使用func.js_call_go_or_py("set_data", {data_key:"", data_value:"", data_timeout_s:2*365*24*3600}).then(res=>{let data=res.content.data;}); 。
         let that = this;
         //
         key = that.url_encode(key)

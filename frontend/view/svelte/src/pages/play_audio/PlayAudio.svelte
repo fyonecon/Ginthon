@@ -311,15 +311,29 @@
 
         //
         get_playing: function(){ // 获取当前播放
-            let the_playing = func.get_local_data(player_prefix + "playing");
-            return the_playing?JSON.parse(decodeURIComponent(the_playing)):null;
+            return new Promise(resolve => {
+                func.js_call_py_or_go("get_data", {data_key:player_prefix + "playing"}).then(res=>{
+                    let the_playing = res.content.data;
+                    resolve(the_playing?JSON.parse(decodeURIComponent(the_playing)):null);
+                });
+            });
         },
         set_playing: function(the_playing = {}){ // 新增或更新当前播放
-            return func.set_local_data(player_prefix + "playing", encodeURIComponent(JSON.stringify(the_playing)));
+            return new Promise(resolve => {
+                func.js_call_py_or_go("set_data", {data_key:player_prefix + "playing", data_value:encodeURIComponent(JSON.stringify(the_playing)), data_timeout_s:180*24*3600 }).then(res=>{
+                    let the_playing = res.content.data;
+                    resolve(the_playing?JSON.parse(decodeURIComponent(the_playing)):null);
+                });
+            });
         },
         get_list: function(){ // 获取列表，最大1000长度
-            let list = func.get_local_data(player_prefix + "list");
-            return (list.length>0)?JSON.parse(decodeURIComponent(list)).slice(0, play_list_max_len):null;
+            return new Promise(resolve => {
+                func.js_call_py_or_go("get_data", {data_key:player_prefix + "list" }).then(res=>{
+                    let list = res.content.data;
+                    resolve((list.length>0)?JSON.parse(decodeURIComponent(list)).slice(0, play_list_max_len):null);
+                });
+            });
+
         },
         set_list: function(list_array:object[] = []){ // 新增或更新列表，最大1000长度
             let list = "";
@@ -328,8 +342,14 @@
             }else{
                 list = list_array;
             }
-            func.set_local_data(player_prefix + "list", encodeURIComponent(list));
+            return new Promise(resolve => {
+                func.js_call_py_or_go("set_data", {data_key:player_prefix + "list", data_value:encodeURIComponent(list), data_timeout_s:2*365*24*3600 }).then(res=>{
+                    let the_playing = res.content.data;
+                    resolve(the_playing?JSON.parse(decodeURIComponent(the_playing)):null);
+                });
+            });
         },
+        //
         get_current_time: function(){ // 获取当前播放进度
             return func.get_local_data(player_prefix + "current_time");
         },
@@ -337,13 +357,13 @@
             func.set_local_data(player_prefix + "current_time", current_time);
         },
         //
-        play_all: function(){
+        play_new_list: function(now_audio_files: object[] = []){
             let that = this;
             //
             if (now_audio_files.length > 0){
                 that.set_current_time("0");
-                that.set_playing(now_audio_files[0]);
-                that.set_list(now_audio_files);
+                that.set_playing(now_audio_files[0]).then(the_playing=>{});
+                that.set_list(now_audio_files).then(list=>{});
                 play_audio_data.play_state = true;
                 func.notice(func.get_translate("updated"));
             }else{
@@ -417,6 +437,7 @@
         def.get_local_dir().then(array=>{
             has_paths = array;
         });
+        now_audio_files = [];
         def.get_play_audio_list();
         //
     });
@@ -579,7 +600,7 @@
                 </Dialog.Description>
                 <footer class="flex justify-center gap-10 select-none  px-[10px] py-[10px]">
                     <button title="Cancel" class="btn btn-base preset-tonal font-title" onclick={()=>def.close_dialog()}>{func.get_translate("btn_cancel")}</button>
-                    <button title="Update" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>def.play_all()}>{func.get_translate("btn_update")}</button>
+                    <button title="Update" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>def.play_new_list(now_audio_files)}>{func.get_translate("btn_update")}</button>
                 </footer>
             </Dialog.Content>
         </Dialog.Positioner>

@@ -49,91 +49,92 @@
             }
             // 从本地读取当前音乐
             let href = "";
-            let the_playing = that.get_playing();
-            if (!the_playing){
-                console.warn("无播放资料（请先 def.fetch_play_list() ）：", the_playing);
-                that.set_playing({});
-                return;
-            }else {
-                href = the_playing.href;
-                player_show_play = "hide";
-                player_show_stop = "show";
-                player_show_control = "show";
-                song_info_filename = the_playing.filename || 'Null Song'
-                play_songs_animation = "bg-animation";
-                song_info_filename_marquee = "text-marquee";
+            that.get_playing().then(the_playing=>{
+                if (!the_playing){
+                    console.warn("无播放资料（请先 def.fetch_play_list() ）：", the_playing);
+                    that.set_playing({}).then(list=>{});
+                    return;
+                }else {
+                    href = the_playing.href;
+                    player_show_play = "hide";
+                    player_show_stop = "show";
+                    player_show_control = "show";
+                    song_info_filename = the_playing.filename || 'Null Song'
+                    play_songs_animation = "bg-animation";
+                    song_info_filename_marquee = "text-marquee";
+                    //
+                    func.notice("[" + func.get_translate("playing")+"] "+song_info_filename);
+                    // 渲染系统音乐通知栏
+                    navigator.mediaSession.metadata = new MediaMetadata({
+                        title: the_playing.filename || 'Null Song', // 歌名
+                        artist: func.get_translate("playing")+"...", // 艺术家
+                        // album: '-', // 专辑
+                        artwork: [ // 封面
+                            {src: the_playing.cover || '/launcher.png', sizes: '96x96', type: 'image/png'},
+                        ]
+                    });
+                    navigator.mediaSession.playbackState = 'playing';
+                }
+                // 从中断的地方继续
+                myAudio.src = href;
+                myAudio.autoplay = false;
+                myAudio.loop = false;
+                myAudio.volume = 1; // 音量(0, 1]
+                myAudio.currentTime = parseFloat(that.get_current_time()); // 从中断的地方继续播放
                 //
-                func.notice("[" + func.get_translate("playing")+"] "+song_info_filename);
-                // 渲染系统音乐通知栏
-                navigator.mediaSession.metadata = new MediaMetadata({
-                    title: the_playing.filename || 'Null Song', // 歌名
-                    artist: func.get_translate("playing")+"...", // 艺术家
-                    // album: '-', // 专辑
-                    artwork: [ // 封面
-                        {src: the_playing.cover || '/launcher.png', sizes: '96x96', type: 'image/png'},
-                    ]
+                if (!player_init_state){
+                    that.player_init();
+                }
+                myAudio.play().catch(err => {
+                    console.warn("播放失败:", err);
                 });
-                navigator.mediaSession.playbackState = 'playing';
-            }
-            // 从中断的地方继续
-            myAudio.src = href;
-            myAudio.autoplay = false;
-            myAudio.loop = false;
-            myAudio.volume = 1; // 音量(0, 1]
-            myAudio.currentTime = parseFloat(that.get_current_time()); // 从中断的地方继续播放
-            //
-            if (!player_init_state){
-                that.player_init();
-            }
-            myAudio.play().catch(err => {
-                console.warn("播放失败:", err);
+                //
+                // 设置操作处理器 - 包括上一曲、下一曲
+                try {
+                    // 上一曲
+                    navigator.mediaSession.setActionHandler('previoustrack', () => {
+                        // console.log('系统上一曲键被点击');
+                        that.play_before();
+                    });
+                    // 下一曲
+                    navigator.mediaSession.setActionHandler('nexttrack', () => {
+                        // console.log('系统下一曲键被点击');
+                        that.play_next();
+                    });
+                    // 播放
+                    navigator.mediaSession.setActionHandler('play', () => {
+                        // console.log('系统播放键被点击');
+                        that.play_start();
+                    });
+                    // 暂停
+                    navigator.mediaSession.setActionHandler('pause', () => {
+                        // console.log('系统暂停键被点击');
+                        that.play_stop();
+                    });
+
+                    // 快退
+                    navigator.mediaSession.setActionHandler('seekbackward', (details) => {
+                        // console.log('快退', details);
+                        if (myAudio) {
+                            const skipTime = details.seekOffset || 5;
+                            myAudio.currentTime = Math.max(0, myAudio.currentTime - skipTime);
+                            that.set_current_time((myAudio.currentTime - skipTime)+"");
+                        }
+                    });
+                    // 快进
+                    navigator.mediaSession.setActionHandler('seekforward', (details) => {
+                        // console.log('快进', details);
+                        if (myAudio) {
+                            const skipTime = details.seekOffset || 5;
+                            myAudio.currentTime = Math.min(myAudio.duration, myAudio.currentTime + skipTime);
+                            that.set_current_time((myAudio.currentTime + skipTime)+"");
+                        }
+                    });
+
+                } catch (error) {
+                    console.warn('某些媒体操作不被支持:', error);
+                }
             });
-            //
-            // 设置操作处理器 - 包括上一曲、下一曲
-            try {
-                // 上一曲
-                navigator.mediaSession.setActionHandler('previoustrack', () => {
-                    // console.log('系统上一曲键被点击');
-                    that.play_before();
-                });
-                // 下一曲
-                navigator.mediaSession.setActionHandler('nexttrack', () => {
-                    // console.log('系统下一曲键被点击');
-                    that.play_next();
-                });
-                // 播放
-                navigator.mediaSession.setActionHandler('play', () => {
-                    // console.log('系统播放键被点击');
-                    that.play_start();
-                });
-                // 暂停
-                navigator.mediaSession.setActionHandler('pause', () => {
-                    // console.log('系统暂停键被点击');
-                    that.play_stop();
-                });
-
-                // 快退
-                navigator.mediaSession.setActionHandler('seekbackward', (details) => {
-                    // console.log('快退', details);
-                    if (myAudio) {
-                        const skipTime = details.seekOffset || 5;
-                        myAudio.currentTime = Math.max(0, myAudio.currentTime - skipTime);
-                        that.set_current_time((myAudio.currentTime - skipTime)+"");
-                    }
-                });
-                // 快进
-                navigator.mediaSession.setActionHandler('seekforward', (details) => {
-                    // console.log('快进', details);
-                    if (myAudio) {
-                        const skipTime = details.seekOffset || 5;
-                        myAudio.currentTime = Math.min(myAudio.duration, myAudio.currentTime + skipTime);
-                        that.set_current_time((myAudio.currentTime + skipTime)+"");
-                    }
-                });
-
-            } catch (error) {
-                console.warn('某些媒体操作不被支持:', error);
-            }
         },
         //
         player_init: function(){ // 初始化
@@ -235,34 +236,36 @@
         play_stop: function(){ // 暂停播放
             let that = this;
             //
-            let the_playing = that.get_playing();
-            that.play_clear_timer();
-            player_show_play = "show";
-            player_show_stop = "hide";
-            song_info_filename =  the_playing.filename;
-            //
-            that.is_playing().then(state=>{
-                let current = myAudio.currentTime;
-                if (!current){
-                    //跳过
-                }else{
-                    if (state){
-                        that.set_current_time(myAudio.currentTime+"");
+            that.get_playing().then(the_playing=>{
+                that.play_clear_timer();
+                player_show_play = "show";
+                player_show_stop = "hide";
+                song_info_filename =  the_playing.filename;
+                //
+                that.is_playing().then(state=>{
+                    let current = myAudio.currentTime;
+                    if (!current){
+                        //跳过
+                    }else{
+                        if (state){
+                            that.set_current_time(myAudio.currentTime+"");
+                        }
                     }
-                }
-                myAudio.pause();
-                // 渲染系统音乐通知栏
+                    myAudio.pause();
+                    // 渲染系统音乐通知栏
 
-                navigator.mediaSession.metadata = new MediaMetadata({
-                    title: the_playing.filename || '未知歌曲', // 歌名
-                    artist: func.get_translate("play_paused"), // 艺术家
-                    // album: '-', // 专辑
-                    artwork: [ // 封面
-                        {src: the_playing.cover || '/launcher.png', sizes: '96x96', type: 'image/png'},
-                    ]
+                    navigator.mediaSession.metadata = new MediaMetadata({
+                        title: the_playing.filename || '未知歌曲', // 歌名
+                        artist: func.get_translate("play_paused"), // 艺术家
+                        // album: '-', // 专辑
+                        artwork: [ // 封面
+                            {src: the_playing.cover || '/launcher.png', sizes: '96x96', type: 'image/png'},
+                        ]
+                    });
+                    navigator.mediaSession.playbackState = 'paused';
                 });
-                navigator.mediaSession.playbackState = 'paused';
             });
+
         },
         play_next: function(){ // 下一首
             let that = this;
@@ -272,41 +275,40 @@
             // 渲染系统音乐通知栏
             navigator.mediaSession.playbackState = 'playing';
             //
-            let the_playing = that.get_playing();
-            let list = that.get_list();
-            //
-            if (the_playing && list){
-                let the_href = the_playing.href;
-                function calc_playing() {
-                    return new Promise(resolve => {
-                        for (let i=0; i<list.length; i++){
-                            let _the_href = list[i].href;
-                            let _the_filename = list[i].filename;
-                            let _the_cover = list[i].cover;
-                            // 存在
-                            if (the_href === _the_href){
-                                if (i+1 === list.length){ // 当前是最后一个，
-                                    that.set_playing(list[0]); // 下一个就是第一个
-                                }else{
-                                    that.set_playing(list[i+1]);
+            that.get_playing().then(the_playing=>{
+                that.get_list().then(list=>{
+                    if (the_playing && list){
+                        let the_href = the_playing.href;
+                        function calc_playing() {
+                            return new Promise(resolve => {
+                                for (let i=0; i<list.length; i++){
+                                    let _the_href = list[i].href;
+                                    let _the_filename = list[i].filename;
+                                    let _the_cover = list[i].cover;
+                                    // 存在
+                                    if (the_href === _the_href){
+                                        if (i+1 === list.length){ // 当前是最后一个，
+                                            that.set_playing(list[0]).then(list=>{resolve(true);}); // 下一个就是第一个
+                                        }else{
+                                            that.set_playing(list[i+1]).then(list=>{resolve(true);});
+                                        }
+                                        break;
+                                    }
+                                    // 不存在就从第一个开始
+                                    if (i+1 === list.length){ // 循环完成
+                                        that.set_playing(list[0]).then(list=>{resolve(true);});
+                                    }
                                 }
-                                resolve(true);
-                                break;
-                            }
-                            // 不存在就从第一个开始
-                            if (i+1 === list.length){ // 循环完成
-                                that.set_playing(list[0]);
-                                resolve(true);
-                            }
+                            });
                         }
-                    });
-                }
-                calc_playing().then(state=>{
-                    that.play_start();
+                        calc_playing().then(state=>{
+                            that.play_start();
+                        });
+                    }else{
+                        console.log("参数不全，1");
+                    }
                 });
-            }else{
-                console.log("参数不全，1");
-            }
+            });
         },
         play_before: function(){ // 上一首
             let that = this;
@@ -315,42 +317,41 @@
             that.set_current_time("0");
             navigator.mediaSession.playbackState = 'playing';
             //
-            let the_playing = that.get_playing();
-            let list = that.get_list();
-            //
-            if (the_playing && list){
-                let the_href = the_playing.href;
-                function calc_playing() {
-                    return new Promise(resolve => {
-                        for (let i=0; i<list.length; i++){
-                            let _the_href = list[i].href;
-                            let _the_filename = list[i].filename;
-                            let _the_cover = list[i].cover;
-                            // 存在
-                            if (the_href === _the_href){
-                                if (i === 0){ // 当前是第一个
-                                    that.set_playing(list[list.length-1]); // 上一个就是最后一个
-                                }else{
-                                    that.set_playing(list[i-1]);
+            that.get_playing().then(the_playing=>{
+                that.get_list().then(list=>{
+                    if (the_playing && list){
+                        let the_href = the_playing.href;
+                        function calc_playing() {
+                            return new Promise(resolve => {
+                                for (let i=0; i<list.length; i++){
+                                    let _the_href = list[i].href;
+                                    let _the_filename = list[i].filename;
+                                    let _the_cover = list[i].cover;
+                                    // 存在
+                                    if (the_href === _the_href){
+                                        if (i === 0){ // 当前是第一个
+                                            that.set_playing(list[list.length-1]).then(list=>{resolve(true);}); // 上一个就是最后一个
+                                        }else{
+                                            that.set_playing(list[i-1]).then(list=>{resolve(true);});
+                                        }
+                                        break;
+                                    }
+                                    // 不存在就从最后一个开始
+                                    if (i+1 === list.length){ // 循环完成
+                                        that.set_playing(list[i]).then(list=>{resolve(true);});
+                                    }
                                 }
-                                resolve(true);
-                                break;
-                            }
-                            // 不存在就从最后一个开始
-                            if (i+1 === list.length){ // 循环完成
-                                that.set_playing(list[i]);
-                                resolve(true);
-                            }
+                            });
                         }
-                    });
-                }
-                navigator.mediaSession.playbackState = 'playing';
-                calc_playing().then(state=>{
-                    that.play_start();
+                        navigator.mediaSession.playbackState = 'playing';
+                        calc_playing().then(state=>{
+                            that.play_start();
+                        });
+                    }else{
+                        console.log("参数不全，1");
+                    }
                 });
-            }else{
-                console.log("参数不全，1");
-            }
+            });
         },
         //
         is_playing: function(){ // 是否在播放
@@ -386,16 +387,51 @@
             let current = myAudio.currentTime; // s
             return Math.floor((current/duration)*100)/100;
         },
+        //
+        // get_playing: function(){ // 获取当前播放
+        //     let the_playing = func.get_local_data(player_prefix + "playing");
+        //     return the_playing?JSON.parse(decodeURIComponent(the_playing)):null;
+        // },
+        // set_playing: function(the_playing:object = {}){ // 新增或更新当前播放
+        //     return func.set_local_data(player_prefix + "playing", encodeURIComponent(JSON.stringify(the_playing)));
+        // },
+        // get_list: function(){ // 获取列表，最大1000长度
+        //     let list = func.get_local_data(player_prefix + "list");
+        //     return (list.length>0)?JSON.parse(decodeURIComponent(list)).slice(0, play_list_max_len):null;
+        // },
+        // set_list: function(list_array:object[] = []){ // 新增或更新列表，最大1000长度
+        //     let list = "";
+        //     if (typeof list_array === "object"){
+        //         list = JSON.stringify(list_array.slice(0, play_list_max_len));
+        //     }else{
+        //         list = list_array;
+        //     }
+        //     func.set_local_data(player_prefix + "list", encodeURIComponent(list));
+        // },
         get_playing: function(){ // 获取当前播放
-            let the_playing = func.get_local_data(player_prefix + "playing");
-            return the_playing?JSON.parse(decodeURIComponent(the_playing)):null;
+            return new Promise(resolve => {
+                func.js_call_py_or_go("get_data", {data_key:player_prefix + "playing"}).then(res=>{
+                    let the_playing = res.content.data;
+                    resolve(the_playing?JSON.parse(decodeURIComponent(the_playing)):null);
+                });
+            });
         },
-        set_playing: function(the_playing:object = {}){ // 新增或更新当前播放
-            return func.set_local_data(player_prefix + "playing", encodeURIComponent(JSON.stringify(the_playing)));
+        set_playing: function(the_playing = {}){ // 新增或更新当前播放
+            return new Promise(resolve => {
+                func.js_call_py_or_go("set_data", {data_key:player_prefix + "playing", data_value:encodeURIComponent(JSON.stringify(the_playing)), data_timeout_s:180*24*3600 }).then(res=>{
+                    let the_playing = res.content.data;
+                    resolve(the_playing?JSON.parse(decodeURIComponent(the_playing)):null);
+                });
+            });
         },
         get_list: function(){ // 获取列表，最大1000长度
-            let list = func.get_local_data(player_prefix + "list");
-            return (list.length>0)?JSON.parse(decodeURIComponent(list)).slice(0, play_list_max_len):null;
+            return new Promise(resolve => {
+                func.js_call_py_or_go("get_data", {data_key:player_prefix + "list" }).then(res=>{
+                    let list = res.content.data;
+                    resolve((list.length>0)?JSON.parse(decodeURIComponent(list)).slice(0, play_list_max_len):null);
+                });
+            });
+
         },
         set_list: function(list_array:object[] = []){ // 新增或更新列表，最大1000长度
             let list = "";
@@ -404,13 +440,32 @@
             }else{
                 list = list_array;
             }
-            func.set_local_data(player_prefix + "list", encodeURIComponent(list));
+            return new Promise(resolve => {
+                func.js_call_py_or_go("set_data", {data_key:player_prefix + "list", data_value:encodeURIComponent(list), data_timeout_s:2*365*24*3600 }).then(res=>{
+                    let the_playing = res.content.data;
+                    resolve(the_playing?JSON.parse(decodeURIComponent(the_playing)):null);
+                });
+            });
         },
+        //
         get_current_time: function(){ // 获取当前播放进度
             return func.get_local_data(player_prefix + "current_time");
         },
         set_current_time: function(current_time = ""){ // 设置当前播放进度
             func.set_local_data(player_prefix + "current_time", current_time);
+        },
+        play_new_list: function(now_audio_files: object[] = []){ // 从新列表播放
+            let that = this;
+            //
+            if (now_audio_files.length > 0){
+                that.set_current_time("0");
+                that.set_playing(now_audio_files[0]).then(the_playing=>{});
+                that.set_list(now_audio_files).then(list=>{});
+                play_audio_data.play_state = true;
+                func.notice(func.get_translate("updated"));
+            }else{
+                func.notice(func.get_translate("null_content"));
+            }
         },
     };
 
@@ -427,27 +482,24 @@
 
     // 刷新页面数据
     afterNavigate(() => {
-        //
         // 展示播放按钮
-        if (def.get_playing()){ // 有历史
-            player_show_control = "show";
-        }else{ // 无历史就加载新的
-            //
-        }
+        def.get_playing().then(the_playing=>{
+            if (the_playing){ // 有历史
+                player_show_control = "show";
+                song_info_filename =  the_playing.filename;
+            }else{ // 无历史就加载新的
+                //
+            }
+        });
     });
 
+
+    // 页面装载完成后，只运行一次
     onMount(()=>{
         myAudio = new Audio();
         //
-        // 展示播放按钮
-        let the_playing = def.get_playing();
-        if (the_playing){ // 有历史
-            player_show_control = "show";
-            song_info_filename =  the_playing.filename;
-        }else{ // 无历史就加载新的
-            //
-        }
     });
+
 
     onDestroy(()=>{
         // 清理所有定时器

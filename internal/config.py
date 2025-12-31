@@ -44,7 +44,7 @@ GLOBAL_CONFIG_DICT = {
         "dev_url": "http://localhost:9770/", # 开发环境：页面地址，默认 http://localhost:9770/ (此端口可在vite.config.js里面改)
         "secret_key": "2025nian11yue21rizhouwu22dian23", # 密钥, len>=16
         "ssl": True,  # True False。pywebview与flask ssl一起开启或关闭。
-        "debug": False,  # True False
+        "debug": True,  # True False
     },
     "pytray": {
         "api_url": "http://127.0.0.1:9750/api/tray",
