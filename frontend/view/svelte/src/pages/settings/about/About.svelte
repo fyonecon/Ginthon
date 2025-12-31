@@ -1,23 +1,23 @@
 <script lang="ts">
-    import { resolve } from '$app/paths';
-    import { page } from '$app/state';
     import func from "../../../common/func.svelte.js";
     import config from "../../../config.js";
     import { afterNavigate, beforeNavigate } from "$app/navigation";
     import {browser} from "$app/environment";
     import {watch_theme_model_data} from "../../../stores/watch_theme_model.store.svelte.js";
     import {onMount} from "svelte";
+    import {watch_lang_data} from "../../../stores/watch_lang.store.svelte";
+    import {app_uid_data} from "../../../stores/app_uid.store.svelte";
 
 
     // 本页面数据
     let route = $state(func.get_route());
-    let app_uid = $state(func.get_app_uid());
+    let app_uid = $state("");
     let user_agent = $state(func.get_agent());
     let href = $state(func.get_href());
     let params = $state(func.get_params());
     let languages = $state(navigator.languages);
-    let theme_model = $state(watch_theme_model_data.theme_model);
-    let language_index = $state(func.get_local_data(config.app.app_class + "language_index"));
+    let theme_model = $state("");
+    let language_index = $state("");
 
 
     // 本页面函数：Svelte的HTML组件onXXX=中正确调用：={()=>def.xxx()}
@@ -28,9 +28,12 @@
 
     // 路由变化之后
     afterNavigate(() => {
-        const key_theme_model = config.app.app_class + "theme_model";
-        let mode = func.get_local_data(key_theme_model);
-        theme_model = mode?mode:watch_theme_model_data.theme_model;
+        func.get_app_uid().then(_app_uid=>{
+            app_uid = _app_uid;
+        });
+        theme_model = watch_theme_model_data.theme_model;
+        language_index = watch_lang_data.lang_index;
+        //
     });
 
 

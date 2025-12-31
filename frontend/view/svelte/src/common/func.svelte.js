@@ -12,6 +12,9 @@ import dexie_kv_db from "./db_kv.svelte.js";
 import {alert_data} from "../stores/alert.store.svelte.js";
 import {loading_data} from "../stores/loading.store.svelte.js";
 import {notice_data} from "../stores/notice.store.svelte.js";
+import {watch_lang_data} from "../stores/watch_lang.store.svelte.js";
+import {watch_theme_model_data} from "../stores/watch_theme_model.store.svelte.js";
+import {app_uid_data} from "../stores/app_uid.store.svelte.js";
 // import {AppServicesForWindow} from "../../bindings/datathink.top/Waigo/internal/bootstrap";
 
 
@@ -146,7 +149,7 @@ const func = {
     js_rand: function (min, max) { // [min, max]
         return Math.floor(Math.random() * (max - min + 1) + min);
     },
-    set_local_data: function (key, value){ // 新增或更新数据（总和最大5M，关闭页面值不会消失。尽量总条数小于50条，每条小于100KB。）。数据持久化请使用func.js_call_go_or_py("set_data", {data_key:"", data_value:"", data_timeout_s:2*365*24*3600}).then(res=>{let data=res.content.data;}); 。
+    set_local_data: function (key, value){ // 新增或更新数据（总和最大5M，关闭页面值不会消失。尽量总条数小于50条，每条小于100KB。）。数据持久化请使用func.js_call_py_or_go("set_data", {data_key:"", data_value:"", data_timeout_s:2*365*24*3600}).then(res=>{let data=res.content.data;}); 。
         let that = this;
         key = that.url_encode(key); // 支持中文和特殊字符
         //
@@ -738,7 +741,7 @@ const func = {
         let that = this;
         //
         let lang = "";
-        let lang_data = that.get_local_data(config.app.app_class + "language_index");
+        let lang_data = watch_lang_data.lang_index;
         if (lang_data.length >= 2) {
             lang = lang_data
         }
@@ -751,7 +754,7 @@ const func = {
          if(lang.length >= 2){ // lang参数优先
              // that.console_log("自定义lang=", lang);
          }else{
-             let lang_data = that.get_local_data(config.app.app_class + "language_index");
+             let lang_data = watch_lang_data.lang_index;
              if (lang_data.length >= 2) {
                  lang = lang_data
              }
@@ -851,13 +854,22 @@ const func = {
     get_app_uid: function (){ // 随机app_uid
         let that = this;
         //
-        let app_uid = that.get_local_data(config.app.app_class+"app_uid");
-        if (app_uid.length < 16){
-            app_uid = that.md5(config.app.app_class+that.get_time_ms()+that.js_rand(1000000000000, 999999999999)+that.get_agent()+(navigator.language?navigator.language:"-"));
-            return that.set_local_data(config.app.app_class + "app_uid", app_uid)?app_uid:"uid..";
-        }else{
-            return app_uid;
-        }
+        let app_uid_key = config.app.app_class+"app_uid";
+        return new Promise(resolve => {
+            func.js_call_py_or_go("get_data", {data_key:app_uid_key}).then(res=>{
+                let _app_uid=res.content.data;
+                if (_app_uid){
+                    app_uid_data.app_uid = _app_uid;
+                    resolve(_app_uid);
+                }else{
+                    _app_uid = that.md5(config.app.app_class+that.get_time_ms()+that.js_rand(1000000000000, 999999999999)+that.get_agent()+(navigator.language?navigator.language:"-"));
+                    func.js_call_py_or_go("set_data", {data_key:app_uid_key, data_value:_app_uid, data_timeout_s:10*365*24*3600}).then(res=>{
+                        app_uid_data.app_uid = res.content.data;
+                        resolve(res.content.data);
+                    });
+                }
+            });
+        });
     },
     ping: function (url) {
         let that = this;
@@ -887,7 +899,7 @@ const func = {
             });
         });
     },
-    set_db_data: function (key, value) { // 健值对方式存储数据到indexDB，单条大小无限制。数据持久化请使用func.js_call_go_or_py("set_data", {data_key:"", data_value:"", data_timeout_s:2*365*24*3600}).then(res=>{let data=res.content.data;}); 。
+    set_db_data: function (key, value) { // 健值对方式存储数据到indexDB，单条大小无限制。数据持久化请使用func.js_call_py_or_go("set_data", {data_key:"", data_value:"", data_timeout_s:2*365*24*3600}).then(res=>{let data=res.content.data;}); 。
         let that = this;
         //
         key = that.url_encode(key)

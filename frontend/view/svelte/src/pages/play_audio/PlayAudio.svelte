@@ -645,6 +645,8 @@
         padding: 10px 10px;
         opacity: 0.8;
         clear: both;
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;
     }
 
 

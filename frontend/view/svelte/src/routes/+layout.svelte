@@ -21,10 +21,14 @@
     import Notice from "../parts/Notice.svelte";
     import Alert from "../parts/Alert.svelte";
     import {watch_window} from "../watch_window.js";
+    import {watch_lang_data} from "../stores/watch_lang.store.svelte";
+    import config from "../config";
+    import {app_uid_data} from "../stores/app_uid.store.svelte";
 
 
     // 本页面参数
-    let theme_model = $state(watch_theme_model_data.theme_model);
+    let theme_model = $state("");
+    let lang_index = $state("");
 
 
     // 本页面函数
@@ -38,26 +42,30 @@
                     url_params: "?error_url=" + encodeURIComponent(func.get_href()) + "&error_msg=404 Route"
                 });
             } else {
-                let href = page.url.href;
-                let host = page.url.host;
-                let port = page.url.port;
-                let route = page.route;
-                let params = page.params;
-                let search = page.url.search;
-                let status = page.status;
-                let origin = page.url.origin;
-                let url_pathname = page.url.pathname;
-                let url_param = page.url.searchParams;
-                let app_uid = func.get_app_uid();
-
-                func.console_log('当前页面参数=', {
-                    href, host, port, route, params,
-                    status, origin, url_pathname, url_param, search,
-                    lang: navigator.language, langs: navigator.languages,
-                    app_uid: app_uid,
-                });
+                // let href = page.url.href;
+                // let host = page.url.host;
+                // let port = page.url.port;
+                // let route = page.route;
+                // let params = page.params;
+                // let search = page.url.search;
+                // let status = page.status;
+                // let origin = page.url.origin;
+                // let url_pathname = page.url.pathname;
+                // let url_param = page.url.searchParams;
+                // let app_uid = func.get_app_uid();
             }
         },
+        auto_set_theme_model: function () { // 自动切换主题
+            const theme_model_key = config.app.app_class+"theme_model";
+            func.js_call_py_or_go("get_data", {data_key:theme_model_key}).then(res=>{
+                let mode=res.content.data;
+                if (!mode) {
+                    mode = func.get_theme_model();
+                }
+                watch_theme_model_data.theme_model = mode;
+                document.documentElement.setAttribute('data-mode', mode);
+            });
+        }
     };
 
 
@@ -69,7 +77,28 @@
 	// 路由变化之后
 	afterNavigate(() => {
         def.watch_404(); // 检测路由变化
-        theme_model = watch_theme_model_data.theme_model; // 检测主题变化
+        //
+        func.get_app_uid().then(_app_uid=>{
+            app_uid_data.app_uid = _app_uid;
+        });
+        //
+        const lang_key = config.app.app_class+"language_index";
+        func.js_call_py_or_go("get_data", {data_key:lang_key}).then(res=>{
+            let lang = res.content.data?res.content.data:func.get_lang();
+            watch_lang_data.lang_index = lang;
+            lang_index = lang; // 监测本地语言
+        });
+        //
+        const theme_model_key = config.app.app_class+"theme_model";
+        func.js_call_py_or_go("get_data", {data_key:theme_model_key}).then(res=>{
+            let mode=res.content.data?res.content.data:func.get_theme_model();
+            watch_theme_model_data.theme_model = mode;
+            theme_model = mode; // 检测主题变化
+        }); // 更新主题模式
+        let theme_event = window.matchMedia('(prefers-color-scheme: dark)');
+        theme_event.addEventListener('change', function (event){
+            def.auto_set_theme_model();
+        });
         //
 	});
 
