@@ -47,7 +47,7 @@ GLOBAL_CONFIG_DICT = {
         "debug": False,  # True False 打开webkit console控制台
     },
     "pytray": {
-        "api_url": "http://127.0.0.1:9750/api/tray",
+        "api_url": "https://127.0.0.1:9750/api/tray",
         "icon": "./frontend/icon.png", # 状态栏托盘图标
         "debug": False,  # True False
     },
