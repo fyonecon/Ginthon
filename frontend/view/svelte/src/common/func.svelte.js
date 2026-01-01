@@ -3,8 +3,6 @@ import { goto } from '$app/navigation';
 import { page } from '$app/state';
 import { browser } from '$app/environment';
 import md5 from 'md5';
-import Dexie from 'dexie';
-import { setContext, getContext } from 'svelte';
 import config from "../config.js";
 import lang_dict from "../common/translate.js";
 import FetchGET from "./get.svelte.js";
@@ -13,9 +11,7 @@ import {alert_data} from "../stores/alert.store.svelte.js";
 import {loading_data} from "../stores/loading.store.svelte.js";
 import {notice_data} from "../stores/notice.store.svelte.js";
 import {watch_lang_data} from "../stores/watch_lang.store.svelte.js";
-import {watch_theme_model_data} from "../stores/watch_theme_model.store.svelte.js";
 import {app_uid_data} from "../stores/app_uid.store.svelte.js";
-// import {AppServicesForWindow} from "../../bindings/datathink.top/Waigo/internal/bootstrap";
 
 
 //
@@ -25,7 +21,6 @@ let alert_msg_timer = $state(0);
 
 // 复用函数
 // 调用xxx = func.test();
-// @ts-ignore
 const func = {
     test: function(data_dict){
         let that = this;
@@ -59,9 +54,7 @@ const func = {
                 goto(url_pathname + url_params, {
                     replaceState: true, // 清除历史记录
                     invalidateAll: true // 重新加载数据
-                }).then(r => {
-                    //
-                });
+                }).then();
             }
             browser_redirect();
         }else{
@@ -491,7 +484,12 @@ const func = {
         temp.innerHTML = html;
         return temp.innerText || temp.textContent;
     },
-    // js调用PY或GO（API法），兼容
+    /**
+     * js调用PY或GO（API法），兼容
+     * @param {string} key 要查找的功能
+     * @param {object} data_dict 传递的data字典
+     * @returns {Promise<object>} 返回object固定格式
+     */
     js_call_py_or_go: function (key, data_dict){
         let that = this;
         // js远程调用
@@ -652,7 +650,7 @@ const func = {
         // const isHidden = document.visibilityState === 'hidden';
         // 添加事件监听器
         document.addEventListener('visibilitychange', () => {
-            let display = "hiding";
+            let display = "";
             if (document.hidden) {
                 display = "hiding";
             } else {
