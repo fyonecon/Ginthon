@@ -2,15 +2,15 @@
     import { resolve } from '$app/paths';
     import { page } from '$app/state';
     import func from "../../common/func.svelte.js";
-    import FetchPOST from "../../common/post.svelte.js";
+    import FetchPOST from "../../common/post.svelte";
     import config from "../../config";
     import {onMount} from "svelte";
     import {afterNavigate} from "$app/navigation";
 
 
     // 本页面参数
-    let loading_tip: string = $state("...");
-    let news_array: string[] = $state([]);
+    let loading_tip = $state("...");
+    let news_array = $state([]);
 
 
     // 本页面函数：Svelte的HTML组件onXXX=中正确调用：={()=>def.xxx()}

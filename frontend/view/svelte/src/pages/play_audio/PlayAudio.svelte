@@ -6,7 +6,7 @@
     import {onMount} from "svelte";
     import {Dialog, Portal} from "@skeletonlabs/skeleton-svelte";
     import config from "../../config";
-    import FetchPOST from "../../common/post.svelte.js";
+    import FetchPOST from "../../common/post.svelte";
     import {play_audio_data} from "../../stores/play_audio.store.svelte";
 
     // 本页面参数

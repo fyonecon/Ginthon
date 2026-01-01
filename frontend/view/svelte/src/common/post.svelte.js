@@ -2,13 +2,13 @@
 // state=404代表接口无效，0代表接口有效但无数据。
 
 /**
- * js调用PY或GO（API法），兼容
- * @param {string} api_url 要查找的功能
- * @param {object} body_dict 传递的data字典
- * @param {number} timeout_s 传递的data字典
- * @returns {Promise<object>} 返回object固定格式
+ * POST
+ * @param {string} api_url 接口
+ * @param {object} body_dict 数据data字典
+ * @param {number} timeout_s 超时
+ * @returns {Promise<object>} 返回固定格式
  */
-const FetchPOST = function (api_url, body_dict = {}, timeout_s = 20){
+const FetchPOST = function (api_url, body_dict = {}, timeout_s = 20) {
     let state = 0;
     let msg = "";
     let content = {};
@@ -27,7 +27,9 @@ const FetchPOST = function (api_url, body_dict = {}, timeout_s = 20){
         try {
             // 准备请求体
             let requestBody;
-            if (body_dict instanceof FormData) {
+            if (typeof body_dict === 'string') {
+                requestBody = body_dict;
+            } else if (body_dict instanceof FormData) {
                 // 如果是 FormData，不要设置 Content-Type，浏览器会自动设置
                 requestBody = body_dict;
             } else {
@@ -37,10 +39,8 @@ const FetchPOST = function (api_url, body_dict = {}, timeout_s = 20){
             // 准备 headers
             const headers = {};
             if (!(body_dict instanceof FormData)) {
-                // @ts-ignore
                 headers['Content-Type'] = 'application/json';
             }
-            // @ts-ignore
             headers['Accept'] = 'application/json, text/plain, */*';
 
             const response = await fetch(api_url, {
@@ -97,7 +97,7 @@ const FetchPOST = function (api_url, body_dict = {}, timeout_s = 20){
                         content: {
                             "api_url": api_url,
                             "error": "响应解析失败",
-                            "parseError": parseError
+                            "parseError": parseError.message
                         }
                     });
                     return;
@@ -111,7 +111,6 @@ const FetchPOST = function (api_url, body_dict = {}, timeout_s = 20){
             clearTimeout(timeoutId);
 
             // 判断错误类型
-            // @ts-ignore
             if (error.name === 'AbortError') {
                 state = 404;
                 msg = "POST Timeout.";
@@ -125,8 +124,8 @@ const FetchPOST = function (api_url, body_dict = {}, timeout_s = 20){
                 msg = "POST Broken.";
                 content = {
                     "api_url": api_url,
-                    "error": "未知错误",
-                    "error_type": "UnknownError"
+                    "error": error.message || "未知错误",
+                    "error_type": error.name || "UnknownError"
                 };
             }
 

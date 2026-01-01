@@ -1,10 +1,10 @@
 <script lang="ts">
     import func from "../common/func.svelte.js";
     import {afterNavigate} from "$app/navigation";
+    import FetchPOST from "../common/post.svelte";
     import {onMount, onDestroy} from "svelte";
     import config from "../config";
     import {play_audio_data} from "../stores/play_audio.store.svelte";
-    import viteConfig from "../../vite.config";
 
 
     // 本页面参数
@@ -387,7 +387,7 @@
             let current = myAudio.currentTime; // s
             return Math.floor((current/duration)*100)/100;
         },
-        get_playing: function(): Promise<object>{ // 获取当前播放
+        get_playing: function(): object{ // 获取当前播放
             return new Promise(resolve => {
                 func.js_call_py_or_go("get_data", {data_key:player_prefix + "playing"}).then(res=>{
                     let the_playing = res.content.data;
@@ -395,7 +395,7 @@
                 });
             });
         },
-        set_playing: function(the_playing = {}): Promise<object>{ // 新增或更新当前播放
+        set_playing: function(the_playing = {}){ // 新增或更新当前播放
             return new Promise(resolve => {
                 func.js_call_py_or_go("set_data", {data_key:player_prefix + "playing", data_value:encodeURIComponent(JSON.stringify(the_playing)), data_timeout_s:180*24*3600 }).then(res=>{
                     let the_playing = res.content.data;
@@ -412,7 +412,7 @@
             });
 
         },
-        set_list: function(list_array:object[] = []): Promise<object[]>{ // 新增或更新列表，最大1000长度
+        set_list: function(list_array:object[] = []){ // 新增或更新列表，最大1000长度
             let list = "";
             if (typeof list_array === "object"){
                 list = JSON.stringify(list_array.slice(0, play_list_max_len));
@@ -427,13 +427,13 @@
             });
         },
         //
-        get_current_time: function(): string{ // 获取当前播放进度
+        get_current_time: function(){ // 获取当前播放进度
             return func.get_local_data(player_prefix + "current_time");
         },
-        set_current_time: function(current_time = ""): void{ // 设置当前播放进度
+        set_current_time: function(current_time = ""){ // 设置当前播放进度
             func.set_local_data(player_prefix + "current_time", current_time);
         },
-        play_new_list: function(now_audio_files: object[] = []): void{ // 从新列表播放
+        play_new_list: function(now_audio_files: object[] = []){ // 从新列表播放
             let that = this;
             //
             if (now_audio_files.length > 0){

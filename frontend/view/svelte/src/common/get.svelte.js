@@ -3,11 +3,11 @@
 // state=404代表接口无效，0代表接口有效但无数据。
 
 /**
- * js调用PY或GO（API法），兼容
- * @param {string} api_url 要查找的功能
- * @param {object} body_dict 传递的data字典
- * @param {number} timeout_s 传递的data字典
- * @returns {Promise<object>} 返回object固定格式
+ * GET
+ * @param {string} api_url 接口
+ * @param {object} body_dict 数据data字典
+ * @param {number} timeout_s 超时
+ * @returns {Promise<object>} 返回固定格式
  */
 const FetchGET = function (api_url, body_dict = {}, timeout_s = 10) {
     let state = 0;
