@@ -4,9 +4,7 @@ import sys
 from time import sleep
 
 from internal.app.window.controller.py_run_js import list_py_run_js
-from internal.common.app_auth import make_rand_id, make_rand_token
 from internal.common.func import func
-from internal.config import get_config
 
 def on_initialized():
     func.print_log('pywebview window is on_initialized')

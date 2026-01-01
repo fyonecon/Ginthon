@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from internal.app.flask.app_token import make_app_token
-from internal.common.app_auth import make_rand_token, make_rand_id
+from internal.common.app_auth import rand_id
 from internal.common.func import func
 from internal.common.kits.main_dirpath import main_dirpath
 import os
@@ -12,7 +12,7 @@ def view_js_must_data():
     #
     CONFIG = get_config("", "")
     #
-    window_token = make_rand_id(CONFIG)  # 视窗软件启动时会生成一个新的
+    window_token = rand_id.make(CONFIG)  # 视窗软件启动时会生成一个新的
     js_token = f'''
         localStorage.setItem("window_token", "{window_token}");
     '''

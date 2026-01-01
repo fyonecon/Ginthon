@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from internal.common.app_auth import make_rand_id, make_rand_token
 from internal.common.func import func
 from internal.config import get_config
 
@@ -25,17 +24,7 @@ def list_py_run_js(window, key, data_dict):
         state = 1
         msg = "默认Key"
         pass
-    # elif key == "window_token": # 默认
-    #     window_token = make_rand_id(CONFIG)  # 视窗软件启动时会生成一个新的
-    #     js_content = f'''
-    #         localStorage.setItem("window_token", "{window_token}");
-    #     '''
-    #     #
-    #     state = 1
-    #     msg = "写入window_token"
-    #     pass
-    # 其它
-    #
+
     # else
     else: # 默认
         js_content = rf"""

@@ -13,7 +13,7 @@ from internal.bootstrap.run_flask import run_flask
 from internal.bootstrap.run_tray import run_tray
 from internal.config import get_config
 from internal.common.func import func
-from internal.common.app_auth import make_auth, make_rand_id
+from internal.common.app_auth import view_auth, rand_id
 from internal.app.window.controller.on_events import on_closed,on_closing,on_shown,on_loaded,on_minimized,on_maximized,on_restored,on_resized,on_moved,on_before_load,on_before_show,on_initialized
 
 #
@@ -33,9 +33,9 @@ def get_view_url(view_class=""):
     else:
         # 单页HTML
         view_url = CONFIG["pywebview"]["view_url"]
-        rand_id = make_rand_id(CONFIG)
-        view_auth = make_auth(CONFIG)
-        view_url = view_url + "/view/" + rand_id + "?" + "view_auth=" + view_auth + "&version=" + CONFIG["app"]["app_version"] + "&ap=" + CONFIG["app"][ "app_name"]
+        _rand_id = rand_id.make(CONFIG)
+        _view_auth = view_auth.make(CONFIG)
+        view_url = view_url + "/view/" + _rand_id + "?" + "view_auth=" + _view_auth + "&version=" + CONFIG["app"]["app_version"] + "&ap=" + CONFIG["app"][ "app_name"]
         return view_url
 
 

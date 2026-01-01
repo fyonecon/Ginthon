@@ -12,7 +12,7 @@ from PIL import Image
 import io
 
 from internal.bootstrap.run_check_sys import check_port_occupied
-from internal.common.app_auth import make_rand_token, make_auth
+from internal.common.app_auth import rand_token, view_auth
 from internal.common.func import func
 from internal.common.kits.ICON import ICON_Binary
 from internal.common.kits.time_interval import time_interval
@@ -72,7 +72,7 @@ class tray_create_func:
         app_class = CONFIG["app"]["app_class"]
         salt_str = "pystray2025"
         timeout_s = 2 * 365 * 24 * 60 * 60
-        tray_rand_token = make_rand_token(app_class, salt_str, timeout_s, CONFIG)
+        tray_rand_token = rand_token.make(app_class, salt_str, timeout_s, CONFIG)
 
         # API
         url = CONFIG["pytray"]["api_url"] + "/" + tray_rand_token
@@ -81,7 +81,7 @@ class tray_create_func:
             "app_class": CONFIG["app"]["app_class"],
             "app_version": CONFIG["app"]["app_version"],
             "do": do,
-            "view_auth": make_auth(CONFIG)
+            "view_auth": view_auth.make(CONFIG)
         }
         headers = {
             "Content-Type": "application/json",

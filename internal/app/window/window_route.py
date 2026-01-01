@@ -6,7 +6,7 @@ from internal.app.flask.app_token import check_app_token
 from internal.app.window.controller.js_call_py import list_js_call_py
 from internal.app.window.controller.tray_events import tray_events
 from internal.app.window.window_view import view_js_must_data, view_index
-from internal.common.app_auth import check_rand_id, check_rand_token
+from internal.common.app_auth import rand_id, rand_token
 from internal.bootstrap.flask_middleware import flask_middleware_html, flask_middleware_api, flask_middleware_file
 from internal.common.func import func
 from internal.common.kits.main_dirpath import main_dirpath
@@ -116,13 +116,13 @@ def window_route(_WINDOW, FLASK):
 
 
     # 视窗单页型静态文件系统 http://127.0.0.1:9750/view/xxx
-    @FLASK.route("/view/<rand_id>", methods=["GET", "POST", "OPTIONS"])
-    def view(rand_id, filename="index.html"):
+    @FLASK.route("/view/<_rand_id>", methods=["GET", "POST", "OPTIONS"])
+    def view(_rand_id, filename="index.html"):
         route_data = {
             "way": "html",
             "methods": ["GET", "POST", "OPTIONS"],
         }
-        rand_id_state = check_rand_id(rand_id)
+        rand_id_state = rand_id.check(_rand_id)
         if rand_id_state:  # 正确
             html_data = view_index(_WINDOW, filename)
             #
@@ -194,8 +194,8 @@ def window_route(_WINDOW, FLASK):
         else:
             _data_dict = {}
         #
-        window_token_state = check_rand_id(_window_token)
-        js_call_py_auth_state = check_rand_token(app_class, salt_str, config, js_call_py_auth)
+        window_token_state = rand_id.check(_window_token)
+        js_call_py_auth_state = rand_token.check(app_class, salt_str, config, js_call_py_auth)
         if js_call_py_auth_state and window_token_state:
             back_data = list_js_call_py(_WINDOW, key=_key, data_dict=_data_dict)
             #
@@ -236,7 +236,7 @@ def window_route(_WINDOW, FLASK):
         #
         salt_str = "pystray2025"
         CONFIG = get_config("", "")
-        tray_rand_token_state, msg = check_rand_token(_app_class, salt_str, CONFIG, tray_rand_token)
+        tray_rand_token_state, msg = rand_token.check(_app_class, salt_str, CONFIG, tray_rand_token)
         #
         if tray_rand_token_state:  # 正确
             state, msg = tray_events(_WINDOW, do)
