@@ -62,9 +62,6 @@ GLOBAL_CONFIG_DICT = {
 # 读取配置信息
 def get_config(group="", key=""):
     if GLOBAL_CONFIG_DICT.get(group):
-        if GLOBAL_CONFIG_DICT[group].get(key):
-            return GLOBAL_CONFIG_DICT[group][key]
-        else:
-            return GLOBAL_CONFIG_DICT[group]
+        return GLOBAL_CONFIG_DICT[group][key]
     else:
         return GLOBAL_CONFIG_DICT

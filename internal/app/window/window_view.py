@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from internal.app.flask.app_token import make_app_token
 from internal.common.app_auth import make_rand_token, make_rand_id
-from internal.common.func import get_time_s, get_date, md5
-from internal.common.kits.main_dirpath import mian_virtual_dirpath
+from internal.common.func import func
+from internal.common.kits.main_dirpath import main_dirpath
 import os
 
 from internal.config import get_config
@@ -46,9 +46,9 @@ def view_index(_WINDOW, filename):
     #
     view_url = CONFIG["pywebview"]["view_url"]
     view_file_html = CONFIG["pywebview"]["view_file_html"]
-    file_path = mian_virtual_dirpath("frontend") + "/"+view_file_html+"/"+filename
+    file_path = main_dirpath.virtual_dirpath("frontend") + "/"+view_file_html+"/"+filename
     #
-    js_must_data_url = view_url+"/"+ "js_must_data.js" + "?cache=" + str(get_time_s()) + "&app_version=" + CONFIG["app"]["app_version"]
+    js_must_data_url = view_url+"/"+ "js_must_data.js" + "?cache=" + str(func.get_time_s()) + "&app_version=" + CONFIG["app"]["app_version"]
     #
     html = read_html(file_path)
     # loaded后执行

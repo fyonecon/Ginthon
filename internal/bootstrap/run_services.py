@@ -3,14 +3,14 @@
 import threading
 
 from internal.app.services.services_for_time_interval import services_for_time_interval
-from internal.common.func import get_date
+from internal.common.func import func
 
 #
 CONFIG = {}
 
 # 启动服务
 def run_services(window, webview_pid, config):
-    print("### 后台服务 => ", get_date("%Y-%m-%d %H:%M:%S"))
+    print("### 后台服务 => ", func.get_date("%Y-%m-%d %H:%M:%S"))
 
     # 读取配置信息
     global CONFIG

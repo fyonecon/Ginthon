@@ -2,9 +2,9 @@
 
 import os
 
-from internal.app.window.controller.display_state import get_display_state, set_display_state
-from internal.common.func import print_log
-from internal.common.kits.watch_pid import kill_process_by_pid
+from internal.app.window.controller.display_state import display_state
+from internal.common.func import func
+from internal.common.kits.watch_processes import watch_processes
 
 
 #
@@ -14,9 +14,9 @@ def tray_events(_WINDOW, do):
     if do == "app@show_or_hide":
         state = 1
         msg = "show_or_hide"
-        display = get_display_state()
-        print_log("tray_events", do, display)
-        set_display_state("showing")
+        display = display_state.get()
+        func.print_log("tray_events", do, display)
+        display_state.set("showing")
         _WINDOW.show()
         # if display == "showing":
         #     set_display_state("hiding")
@@ -35,7 +35,7 @@ def tray_events(_WINDOW, do):
         msg = "exit"
         # 杀掉主程序（全部程序）
         main_pid = os.getpid()
-        kill_process_by_pid(main_pid)
+        watch_processes.kill_process_by_pid(main_pid)
         #
         pass
     else:  # 未知状态

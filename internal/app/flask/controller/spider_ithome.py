@@ -9,7 +9,7 @@ import os
 import re
 import time
 
-from internal.common.func import url_encode
+from internal.common.func import func
 
 
 #
@@ -74,7 +74,7 @@ def read_spider_it_home(request):
     #             "news_index": index,
     #             "news_id": news_id,
     #             "news_href": news_href,
-    #             "news_title": url_encode(news_title),
+    #             "news_title": func.url_encode(news_title),
     #             "news_time": news_time,
     #             "comments_num": comments_num,
     #         }

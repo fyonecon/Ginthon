@@ -4,13 +4,12 @@ import threading
 import webbrowser
 import webview
 
-from internal.app.window.controller.display_state import set_display_state
-from internal.common.func import is_url, print_log, has_dir, has_file
-from internal.common.kits.local_database import local_database_set_data, local_database_get_data, \
-    local_database_del_data
-from internal.common.kits.main_dirpath import mian_virtual_dirpath
-from internal.common.kits.notice import send_notice
-from internal.common.kits.shell import shell_open_in_folder
+from internal.app.window.controller.display_state import display_state
+from internal.common.func import func
+from internal.common.kits.local_database import local_database
+from internal.common.kits.main_dirpath import main_dirpath
+from internal.common.kits.notice import notice
+from internal.common.kits.shell import shell
 from internal.config import get_config
 
 
@@ -23,7 +22,7 @@ def list_js_call_py(WINDOW, key, data_dict):
     msg = "（null）"
     content = {}
 
-    print_log("list_js_call_py=", [key, data_dict])
+    func.print_log("list_js_call_py=", [key, data_dict])
 
     # 默认
     # data_dict={}
@@ -61,7 +60,7 @@ def list_js_call_py(WINDOW, key, data_dict):
                 print("独立窗口已关闭：", [title, url])
                 pass
             #
-            if is_url(url):
+            if func.is_url(url):
                 # 创建线程
                 t1 = threading.Thread(target=new_window)
                 # 启动线程
@@ -85,7 +84,7 @@ def list_js_call_py(WINDOW, key, data_dict):
         if data_dict.get("url") and data_dict.get("target"):
             url = data_dict["url"]
             target = data_dict["target"]
-            if is_url(url):
+            if func.is_url(url):
                 if target == "_self":
                     webbrowser.open_new_tab(url)
                 elif target == "_blank":
@@ -107,7 +106,7 @@ def list_js_call_py(WINDOW, key, data_dict):
     elif key == "open_url_with_master_window":
         if data_dict.get("url"):
             url = data_dict["url"]
-            if is_url(url):
+            if func.is_url(url):
                 WINDOW.load_url(url)
                 state = 1
                 msg = "YES"
@@ -126,10 +125,10 @@ def list_js_call_py(WINDOW, key, data_dict):
             display = data_dict["display"]
             if display == "hiding":
                 state = 1
-                msg = set_display_state("hiding")
+                msg = display_state.set("hiding")
             elif display == "showing":
                 state = 1
-                msg = set_display_state("showing")
+                msg = display_state.set("showing")
             else :
                 state = 0
                 msg = "url格式不正确"
@@ -186,7 +185,7 @@ def list_js_call_py(WINDOW, key, data_dict):
     # data_dict={}
     elif key == "window_hide":
         WINDOW.hide()
-        display = set_display_state("hiding")
+        display = display_state.set("hiding")
         #
         state = 1
         msg = "OK"
@@ -198,7 +197,7 @@ def list_js_call_py(WINDOW, key, data_dict):
     elif key == "window_show":
         WINDOW.show()
         # WINDOW.focus()
-        display = set_display_state("showing")
+        display = display_state.set("showing")
         #
         state = 1
         msg = "OK"
@@ -213,7 +212,7 @@ def list_js_call_py(WINDOW, key, data_dict):
                 "title": "（？）",
                 "msg": "（？？？）",
                 "group": get_config("app", "app_class"),  # 分组或ID
-                "icon": mian_virtual_dirpath("frontend") + "/icon.png",  # 图标 .png、.ico
+                "icon": main_dirpath.virtual_dirpath("frontend") + "/icon.png",  # 图标 .png、.ico
                 "open_url": "",  # 要打开的网址
                 "app_path": "",  # 要打开的app的绝对地址
                 "timeout_s": 5,  # 通知显示的时间
@@ -222,7 +221,7 @@ def list_js_call_py(WINDOW, key, data_dict):
         #
         title = data_dict["title"]
         msg = data_dict["msg"]
-        send_notice(title, msg, data_dict)
+        notice.send(title, msg, data_dict)
         #
         state = 1
         msg = "OK"
@@ -247,7 +246,7 @@ def list_js_call_py(WINDOW, key, data_dict):
                 _timeout_s = 5*60
                 pass
             #
-            _value = local_database_set_data(_key, _value, _timeout_s)
+            _value = local_database.set_data(_key, _value, _timeout_s)
             #
             state = 1
             msg = "OK"
@@ -264,7 +263,7 @@ def list_js_call_py(WINDOW, key, data_dict):
     elif key == "get_data":
         if data_dict.get("data_key"):
             _key = data_dict["data_key"]
-            _value, _state = local_database_get_data(_key)
+            _value, _state = local_database.get_data(_key)
             #
             if _state == -1:
                 state = 0
@@ -287,7 +286,7 @@ def list_js_call_py(WINDOW, key, data_dict):
     elif key == "del_data":
         if data_dict.get("data_key"):
             _key = data_dict["data_key"]
-            _state = local_database_del_data(_key)
+            _state = local_database.del_data(_key)
             if _state == -1:
                 msg = "No File"
             else:
@@ -305,8 +304,8 @@ def list_js_call_py(WINDOW, key, data_dict):
     elif key == "open_in_folder":
         if data_dict.get("filepath"):
             _filepath = data_dict["filepath"]
-            if has_dir(_filepath) or has_file(_filepath):
-                _state = shell_open_in_folder(_filepath)
+            if func.has_dir(_filepath) or func.has_file(_filepath):
+                _state = shell.open_in_folder(_filepath)
                 if _state:
                     state = 1
                     msg = "Open in folder"

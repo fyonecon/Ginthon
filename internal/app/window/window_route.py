@@ -8,10 +8,9 @@ from internal.app.window.controller.tray_events import tray_events
 from internal.app.window.window_view import view_js_must_data, view_index
 from internal.common.app_auth import check_rand_id, check_rand_token
 from internal.bootstrap.flask_middleware import flask_middleware_html, flask_middleware_api, flask_middleware_file
-from internal.common.func import back_404_data_html, back_404_data_api, print_log, back_404_data_file, has_file, \
-    get_file_ext_mimetype, get_file_ext, converted_path, get_file_name, url_decode, md5
-from internal.common.kits.main_dirpath import mian_virtual_dirpath
-from internal.common.request_input import request_input
+from internal.common.func import func
+from internal.common.kits.main_dirpath import main_dirpath
+from internal.common.request_data import request_data
 from internal.config import get_config
 
 
@@ -37,25 +36,25 @@ def window_route(_WINDOW, FLASK):
             filename = "index.html"
             pass
         # 还原真实文件
-        file_ext = get_file_ext(filename)
+        file_ext = func.get_file_ext(filename)
         if len(file_ext) == 0:  # 是路由就转成实际文件名
             filename = filename + ".html"
             pass
         config = get_config("", "")
         view_file_html = config["pywebview"]["view_file_html"] # "view/svelte/dist"、"view/vue/dist"
-        file_ext = get_file_ext(filename)
-        mimetype = get_file_ext_mimetype(file_ext)
-        file_path = mian_virtual_dirpath("frontend") + "/" + view_file_html + "/" + filename  # 限定根目录
+        file_ext = func.get_file_ext(filename)
+        mimetype = func.get_file_ext_mimetype(file_ext)
+        file_path = main_dirpath.virtual_dirpath("frontend") + "/" + view_file_html + "/" + filename  # 限定根目录
         #
-        if has_file(file_path):
+        if func.has_file(file_path):
             response_data, reg_code = flask_middleware_file(request, route_data, "", filename)
             if reg_code == 200:
                 # 使用返回文件的方式返回html模板或文件
                 return send_file(file_path, as_attachment=False, mimetype=mimetype, max_age=12 * 60, download_name=filename), reg_code
             else:
-                return back_404_data_file("非法操作：build。"+file_path), reg_code
+                return func.back_404_data_file("非法操作：build。"+file_path), reg_code
         else:
-            return back_404_data_file("无对应文件-vue/svelte：" + filename), 404
+            return func.back_404_data_file("无对应文件-vue/svelte：" + filename), 404
     # file
 
     # 适配音乐播放及访问本地文件
@@ -67,35 +66,35 @@ def window_route(_WINDOW, FLASK):
             "methods": ["GET", "POST", "OPTIONS"],
         }
         #
-        file_token = request_input(request, "file_token")
+        file_token = request_data.input(request, "file_token")
         #
-        file_token_state = md5("filetoken#@"+url_decode(filepath)) == file_token
+        file_token_state = func.md5("filetoken#@"+func.url_decode(filepath)) == file_token
         app_token_state = check_app_token(request, "app")
         #
         if file_token_state and app_token_state:
             # 还原真实文件
-            filepath = url_decode(filepath)
-            filepath = converted_path(filepath)
-            filename = get_file_name(filepath)
-            file_ext = get_file_ext(filename)
+            filepath = func.url_decode(filepath)
+            filepath = func.converted_path(filepath)
+            filename = func.get_file_name(filepath)
+            file_ext = func.get_file_ext(filename)
             if len(file_ext) >= 1:  # 有文件
-                mimetype = get_file_ext_mimetype(file_ext)
+                mimetype = func.get_file_ext_mimetype(file_ext)
                 file_path = filepath  # 限定根目录
                 #
-                if has_file(file_path):
+                if func.has_file(file_path):
                     response_data, reg_code = flask_middleware_file(request, route_data, "", filename)
                     if reg_code == 200:
                         # 使用返回文件的方式返回html模板或文件
                         return send_file(file_path, as_attachment=False, mimetype=mimetype, max_age=12 * 60,
                                          download_name=filename), reg_code
                     else:
-                        return back_404_data_file("非法操作：file"), reg_code
+                        return func.back_404_data_file("非法操作：file"), reg_code
                 else:
-                    return back_404_data_file("无对应文件：" + filepath + "🌛" + filename), 404
+                    return func.back_404_data_file("无对应文件：" + filepath + "🌛" + filename), 404
             else:
-                return back_404_data_file("无对应文件：" + filepath + "🌞" + filename), 404
+                return func.back_404_data_file("无对应文件：" + filepath + "🌞" + filename), 404
         else:
-            return back_404_data_file("非法Auth，token"), 404
+            return func.back_404_data_file("非法Auth，token"), 404
 
     # file
 
@@ -112,7 +111,7 @@ def window_route(_WINDOW, FLASK):
         if reg_code == 200:
             return response_data, reg_code
         else:
-            return back_404_data_html("非法操作:must_data"), reg_code
+            return func.back_404_data_html("非法操作:must_data"), reg_code
     # file
 
 
@@ -131,9 +130,9 @@ def window_route(_WINDOW, FLASK):
             if reg_code == 200:
                 return response_data, reg_code
             else:
-                return back_404_data_html("非法操作：view"), reg_code
+                return func.back_404_data_html("非法操作：view"), reg_code
         else:  # 非法ID
-            return back_404_data_html("非法ID"), 404
+            return func.back_404_data_html("非法ID"), 404
     # html
 
 
@@ -145,22 +144,22 @@ def window_route(_WINDOW, FLASK):
             "methods": ["GET", "POST", "OPTIONS"],
         }
         # 还原真实文件
-        file_ext = get_file_ext(filename)
+        file_ext = func.get_file_ext(filename)
         if len(file_ext) >=1:  # 有文件
-            mimetype = get_file_ext_mimetype(file_ext)
-            file_path = mian_virtual_dirpath("frontend") + "/file" + "/" + filename  # 限定根目录
+            mimetype = func.get_file_ext_mimetype(file_ext)
+            file_path = main_dirpath.virtual_dirpath("frontend") + "/file" + "/" + filename  # 限定根目录
             #
-            if has_file(file_path):
+            if func.has_file(file_path):
                 response_data, reg_code = flask_middleware_file(request, route_data, "", filename)
                 if reg_code == 200:
                     # 使用返回文件的方式返回html模板或文件
                     return send_file(file_path, as_attachment=False, mimetype=mimetype, max_age=12 * 60,  download_name=filename), reg_code
                 else:
-                    return back_404_data_file("非法操作：file"), reg_code
+                    return func.back_404_data_file("非法操作：file"), reg_code
             else:
-                return back_404_data_file("无对应文件-file：" + filename), 404
+                return func.back_404_data_file("无对应文件-file：" + filename), 404
         else:
-            return back_404_data_file("无对应文件-file：" + filename), 404
+            return func.back_404_data_file("无对应文件-file：" + filename), 404
     # file
 
 
@@ -175,7 +174,7 @@ def window_route(_WINDOW, FLASK):
         # 处理接收的数据
         data = request.get_json()
         if not data:
-            return back_404_data_api("空的请求参数")
+            return func.back_404_data_api("空的请求参数")
         #
         config = get_config("", "")
         #
@@ -214,7 +213,7 @@ def window_route(_WINDOW, FLASK):
         if reg_code == 200:
             return response_data, reg_code
         else:
-            return back_404_data_api("非法操作:auth"), reg_code
+            return func.back_404_data_api("非法操作:auth"), reg_code
 
 
     # 状态栏托盘专用 http://127.0.0.1:9750/api/tray/xxx
@@ -227,7 +226,7 @@ def window_route(_WINDOW, FLASK):
         # 处理接收的数据
         data = request.get_json()
         if not data:
-            return back_404_data_api("空的请求参数")
+            return func.back_404_data_api("空的请求参数")
         #
         _app_class = data["app_class"]
         # _app_version = data["app_version"]
@@ -262,7 +261,7 @@ def window_route(_WINDOW, FLASK):
         if reg_code == 200:
             return response_data, reg_code
         else:
-            return back_404_data_api("非法操作:tray"), reg_code
+            return func.back_404_data_api("非法操作:tray"), reg_code
 
     #
     pass

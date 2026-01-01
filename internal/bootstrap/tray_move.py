@@ -1,12 +1,12 @@
 import shutil
 import os
 
-from internal.common.func import has_file, get_platform
+from internal.common.func import func
 
 # 移动tray文件
 def tray_file_move():
     # 兼容处理
-    plt = get_platform()
+    plt = func.get_platform()
     if plt == "mac" or plt == "linux":
         file = "./dist/Tray"  # 源文件路径
         pass
@@ -17,7 +17,7 @@ def tray_file_move():
     new_dir = "./frontend/tray/"
     # 确保目标文件夹存在
     os.makedirs(new_dir, exist_ok=True)
-    if has_file(file):
+    if func.has_file(file):
         # 构建目标文件路径
         target_file = os.path.join(new_dir, os.path.basename(file))
         # 移动文件

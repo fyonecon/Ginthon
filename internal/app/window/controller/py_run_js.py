@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from internal.common.app_auth import make_rand_id, make_rand_token
-from internal.common.func import print_log, md5
+from internal.common.func import func
 from internal.config import get_config
 
 
@@ -48,7 +48,7 @@ def list_py_run_js(window, key, data_dict):
     # ===
     result = window.evaluate_js(js_content, callback=True)
     content["result"] = result
-    print_log("py_run_js.py：", key, [state, msg, result])
+    func.print_log("py_run_js.py：", key, [state, msg, result])
     return {
         "state": state,
         "msg": msg,

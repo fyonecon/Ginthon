@@ -2,8 +2,7 @@
 
 from time import sleep
 
-from internal.common.func import print_log, get_date
-from internal.common.kits.time_interval import do_time_interval
+from internal.common.kits.time_interval import time_interval
 
 #
 CONFIG = {}
@@ -23,5 +22,5 @@ def services_for_time_interval(_WINDOW, _webview_pid, _config):
         # print_log("do_timer=1=", get_date("%Y-%m-%d %H:%M:%S"))
         #
         pass
-    do_time_interval(6, do_timer1, tag, CONFIG)
+    time_interval.do_time_interval(6, do_timer1, tag, CONFIG)
     pass

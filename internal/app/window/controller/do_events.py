@@ -4,7 +4,7 @@ import webbrowser
 import webview
 import threading
 
-from internal.common.func import is_url
+from internal.common.func import func
 
 # 改变url
 def load_new_url(window, new_url):
@@ -49,7 +49,7 @@ def open_new_window(url, title):
         print("独立窗口已关闭：", [title, url])
         pass
     #
-    if is_url(url):
+    if func.is_url(url):
         # 创建线程
         t1 = threading.Thread(target=new_window)
         # 启动线程
@@ -63,7 +63,7 @@ def open_new_window(url, title):
 # 打开默认浏览器
 # _self新标签中打开，_blank新窗口中打开
 def open_default_browser(url, target="_self"):
-    if is_url(url):
+    if func.is_url(url):
         if target == "_self":
             webbrowser.open_new_tab(url)
         elif target == "_blank":

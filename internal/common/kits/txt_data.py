@@ -2,51 +2,61 @@
 
 import os.path
 
-from internal.common.func import cache_path, data_path
+from internal.common.func import func
 from internal.config import get_config
 
 #
 CONFIG = get_config("", "")
-_data_dirpath = data_path() + "/" + get_config("sys", "data_path_main_dir") # 结尾无/
+_data_dirpath = func.data_path() + "/" + get_config("sys", "data_path_main_dir") # 结尾无/
 txt_path = _data_dirpath+"/running/" # /结尾
 
-# 写txt文件
-# txt_filename文件格式：xxx.txt。model:"w"覆盖，"a"尾部追加（\n）
-def txt_write(txt_filename, txt_content, model="w"):
-    the_file = txt_path + CONFIG["app"]["app_class"] + txt_filename
-    if not os.path.exists(txt_path):
-        os.makedirs(txt_path, exist_ok=True)
-        pass
-    if model in ["w", "a"]:
-        with open(the_file, model, encoding="utf-8") as file:
-            file.write(txt_content)
-        return True
-    else:
-        return False
+#
+class txt_data:
 
-# 读txt文件
-def txt_read(txt_filename):
-    the_file = txt_path + CONFIG["app"]["app_class"] + txt_filename
-    txt_content = ""
-    if os.path.exists(the_file): # 存在文件或文件夹
-        if os.path.isfile(the_file): # 是文件
-            with open(the_file, "r", encoding="utf-8") as file:
-                txt_content = file.read()
-                pass
-        else:
+    # 写txt文件
+    # txt_filename文件格式：xxx.txt。model:"w"覆盖，"a"尾部追加（\n）
+    @staticmethod
+    def write(txt_filename, txt_content, model="w"):
+        the_file = txt_path + CONFIG["app"]["app_class"] + txt_filename
+        if not os.path.exists(txt_path):
+            os.makedirs(txt_path, exist_ok=True)
             pass
-    else:
-        pass
-    return txt_content
-
-# 删txt文件
-def txt_remove(txt_filename):
-    the_file = txt_path + CONFIG["app"]["app_class"] + txt_filename
-    if os.path.exists(the_file): # 存在文件或文件夹
-        if os.path.isfile(the_file): # 是文件
-            os.remove(the_file)
+        if model in ["w", "a"]:
+            with open(the_file, model, encoding="utf-8") as file:
+                file.write(txt_content)
             return True
         else:
             return False
-    else:
-        return False
+
+    # 读txt文件
+    @staticmethod
+    def read(txt_filename):
+        the_file = txt_path + CONFIG["app"]["app_class"] + txt_filename
+        txt_content = ""
+        if os.path.exists(the_file):  # 存在文件或文件夹
+            if os.path.isfile(the_file):  # 是文件
+                with open(the_file, "r", encoding="utf-8") as file:
+                    txt_content = file.read()
+                    pass
+            else:
+                pass
+        else:
+            pass
+        return txt_content
+
+    # 删txt文件
+    @staticmethod
+    def remove(txt_filename):
+        the_file = txt_path + CONFIG["app"]["app_class"] + txt_filename
+        if os.path.exists(the_file):  # 存在文件或文件夹
+            if os.path.isfile(the_file):  # 是文件
+                os.remove(the_file)
+                return True
+            else:
+                return False
+        else:
+            return False
+
+    #
+    pass
+

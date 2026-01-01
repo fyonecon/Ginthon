@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 import os
 
-from internal.common.func import converted_path, url_decode, has_dir, format_file_size, time_s_to_date
-from internal.common.kits.local_database import local_database_get_data
-from internal.common.request_input import request_input
+from internal.common.func import func
+from internal.common.kits.local_database import local_database
+from internal.common.request_data import request_data
 
 # 判断当前访问路径是否属于已设置的最短root_path
 def get_root_path(now_dir):
     if len(now_dir) >= 1:
         #
         play_audio_list_dir_key = "play_audio_list_dirs"
-        _value, _state = local_database_get_data(play_audio_list_dir_key)
+        _value, _state = local_database.get_data(play_audio_list_dir_key)
         if _state != -1:
             #
             root_path = ""
@@ -37,10 +37,10 @@ def get_root_path(now_dir):
 
 # 获取当前dir下的文件或目录
 def get_play_audio_list(request):
-    _now_dir = request_input(request, "now_dir")
+    _now_dir = request_data.input(request, "now_dir")
 
     # 转换地址格式
-    now_dir = converted_path(_now_dir)
+    now_dir = func.converted_path(_now_dir)
 
     # 目标地址
     list_dirs = []
@@ -53,7 +53,7 @@ def get_play_audio_list(request):
         if len(root_path) >= 1:
             try:
                 # 读文件夹
-                if has_dir(now_dir):
+                if func.has_dir(now_dir):
                     with os.scandir(now_dir) as entries:
                         for entry in entries:
                             if entry.is_file():
@@ -62,8 +62,8 @@ def get_play_audio_list(request):
                                 else:
                                     file_info = {
                                         "name": entry.name,
-                                        "size": format_file_size(entry.stat().st_size),
-                                        "create_time": time_s_to_date("%Y/%m/%d %H:%M", entry.stat().st_atime),
+                                        "size": func.format_file_size(entry.stat().st_size),
+                                        "create_time": func.time_s_to_date("%Y/%m/%d %H:%M", entry.stat().st_atime),
                                     }
                                     list_files.append(file_info)
                                     pass
@@ -76,7 +76,7 @@ def get_play_audio_list(request):
                                     dir_info = {
                                         "name": entry.name,
                                         "size": "",
-                                        "create_time": time_s_to_date("%Y/%m/%d %H:%M", entry.stat().st_atime),
+                                        "create_time": func.time_s_to_date("%Y/%m/%d %H:%M", entry.stat().st_atime),
                                     }
                                     list_dirs.append(dir_info)
                                     pass
@@ -99,7 +99,7 @@ def get_play_audio_list(request):
         pass
     else:  # 无值就展示已经设置的所有目录
         play_audio_list_dir_key = "play_audio_list_dirs"
-        _value, _state = local_database_get_data(play_audio_list_dir_key)
+        _value, _state = local_database.get_data(play_audio_list_dir_key)
         if _state != -1:
             play_audio_list_dir_array = _value.split("#@")
             for the_dir in play_audio_list_dir_array:

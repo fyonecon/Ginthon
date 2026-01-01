@@ -2,7 +2,7 @@
 
 from flask import make_response, request, jsonify
 
-from internal.common.func import get_file_ext, get_file_ext_mimetype
+from internal.common.func import func
 from internal.config import get_config
 
 #
@@ -112,18 +112,18 @@ def flask_response_header(response, way, reg_code=200, filename=""):
     #
     if way == "html" or way == "view": # html
         response.headers["Content-Disposition"] = "inline"
-        response.headers["Content-Type"] = get_file_ext_mimetype(".html")
+        response.headers["Content-Type"] = func.get_file_ext_mimetype(".html")
         response.headers["Cache-Control"] = "max-age=120"  # s
         response.headers["filename"] = filename
     elif way == "json" or way == "api": # api
         response.headers["Content-Disposition"] = "inline"
-        response.headers["Content-Type"] = get_file_ext_mimetype(".json")
+        response.headers["Content-Type"] = func.get_file_ext_mimetype(".json")
         response.headers["Cache-Control"] = "max-age=120"  # s
     else: # 文件，file
         response.headers["Content-Disposition"] = "attachment"
         response.headers["Cache-Control"] = "max-age=120"  # s
         response.headers["filename"] = filename
-        file_ext = get_file_ext(filename)
-        response.headers["Content-Type"] = get_file_ext_mimetype(file_ext)
+        file_ext = func.get_file_ext(filename)
+        response.headers["Content-Type"] = func.get_file_ext_mimetype(file_ext)
     #
     return response

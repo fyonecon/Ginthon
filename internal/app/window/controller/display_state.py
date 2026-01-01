@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from internal.common.kits.txt_data import txt_remove, txt_write, txt_read
+from internal.common.kits.txt_data import txt_data
 from internal.config import get_config
 
 #
@@ -8,18 +8,25 @@ CONFIG = get_config("", "")
 
 # 原理：使用js监测窗口的display，然后js_call_py实现state值持久化保存在本地
 
-# 记录当前窗口隐藏状态
-# display=hiding showing
-def set_display_state(display="hiding"):
-    global CONFIG
-    running_filename = "display_state.cache"
-    txt_remove(running_filename)
-    txt_write(running_filename, display)
-    return display
+class display_state:
 
-# 读取当前窗口隐藏状态
-def get_display_state():
-    global CONFIG
+    # 记录当前窗口隐藏状态
+    # display=hiding showing
+    @staticmethod
+    def set(display="hiding"):
+        global CONFIG
+        running_filename = "display_state.cache"
+        txt_data.remove(running_filename)
+        txt_data.write(running_filename, display)
+        return display
 
-    running_filename = "display_state.cache"
-    return txt_read(running_filename)
+    # 读取当前窗口隐藏状态
+    @staticmethod
+    def get():
+        global CONFIG
+        running_filename = "display_state.cache"
+        return txt_data.read(running_filename)
+
+    #
+    pass
+

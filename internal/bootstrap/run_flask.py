@@ -8,11 +8,10 @@ from internal.app.flask.flask_route_file import flask_route_file
 from internal.app.flask.flask_route_html import flask_route_html
 from internal.app.window.window_route import window_route
 from internal.bootstrap.flask_middleware import flask_middleware_file, flask_middleware_api
-from internal.common.func import print_log, back_404_data, back_500_data, back_404_data_api, back_404_data_file, \
-    get_file_ext, get_file_ext_mimetype
-from internal.common.kits.main_dirpath import mian_virtual_dirpath
-from internal.common.kits.ssl_self import read_ssl_context
-from internal.common.request_input import request_input
+from internal.common.func import func
+from internal.common.kits.main_dirpath import main_dirpath
+from internal.common.kits.ssl_self import ssl_self
+from internal.common.request_data import request_data
 
 #
 CONFIG = {}
@@ -49,7 +48,7 @@ def must_route(window, FLASK):
     #         _test = data["test"]
     #         pass
     #     else:
-    #         return back_404_data_html("非法操作:index"), 404
+    #         return func.back_404_data_html("非法操作:index"), 404
     #
     #     # 返回的数据
     #     html_data = '''
@@ -95,7 +94,7 @@ def must_route(window, FLASK):
     #     if reg_code == 200:
     #         return response_data, reg_code
     #     else:
-    #         return back_404_data_html("非法操作:index"), reg_code
+    #         return func.back_404_data_html("非法操作:index"), reg_code
 
 
     # 图标
@@ -106,16 +105,16 @@ def must_route(window, FLASK):
             "methods": ["GET", "POST", "OPTIONS"],
         }
         filename = "favicon.ico"
-        file_ext = get_file_ext(filename)
-        mimetype = get_file_ext_mimetype(file_ext)
-        file_path = mian_virtual_dirpath("frontend") + "/" + filename
+        file_ext = func.get_file_ext(filename)
+        mimetype = func.get_file_ext_mimetype(file_ext)
+        file_path = main_dirpath.virtual_dirpath("frontend") + "/" + filename
         # 用中间件验证参数
         response_data, reg_code = flask_middleware_file(request, route_data, "", filename)
         if reg_code == 200:
             return send_file(file_path, as_attachment=False, mimetype=mimetype, max_age=12 * 60,
                              download_name=filename), reg_code
         else:
-            return back_404_data_file("非法操作:white_file"), reg_code
+            return func.back_404_data_file("非法操作:white_file"), reg_code
         # ico图标
 
     # 图标
@@ -126,16 +125,16 @@ def must_route(window, FLASK):
             "methods": ["GET", "POST", "OPTIONS"],
         }
         filename = "icon.png"
-        file_ext = get_file_ext(filename)
-        mimetype = get_file_ext_mimetype(file_ext)
-        file_path = mian_virtual_dirpath("frontend") + "/" + filename
+        file_ext = func.get_file_ext(filename)
+        mimetype = func.get_file_ext_mimetype(file_ext)
+        file_path = main_dirpath.virtual_dirpath("frontend") + "/" + filename
         # 用中间件验证参数
         response_data, reg_code = flask_middleware_file(request, route_data, "", filename)
         if reg_code == 200:
             return send_file(file_path, as_attachment=False, mimetype=mimetype, max_age=12 * 60,
                              download_name=filename), reg_code
         else:
-            return back_404_data_file("非法操作:white_file"), reg_code
+            return func.back_404_data_file("非法操作:white_file"), reg_code
         # ico图标
 
 
@@ -157,7 +156,7 @@ def must_route(window, FLASK):
         }
 
         # 接口接收的数据
-        test = request_input(request, "test")
+        test = request_data.input(request, "test")
 
         # test
         if test is None:
@@ -187,19 +186,19 @@ def must_route(window, FLASK):
         if reg_code == 200:
             return response_data, reg_code
         else:
-            return back_404_data_api("非法操作:api"), reg_code
+            return func.back_404_data_api("非法操作:api"), reg_code
 
 
     # 404
     @FLASK.errorhandler(404)
     def error_404(error):
-        return back_404_data(), 404
+        return func.back_404_data(), 404
 
 
     # 500
     @FLASK.errorhandler(500)
     def error_500(error):
-        return back_500_data(), 500
+        return func.back_500_data(), 500
 
     pass
 
@@ -217,7 +216,7 @@ def run_flask(window, webview_pid, config):
     else:
         s = ""
         pass
-    print_log("### Flask => ", "http"+s+"://127.0.0.1" + ":" + str(CONFIG["flask"]["port"])+"/api")
+    func.print_log("### Flask => ", "http"+s+"://127.0.0.1" + ":" + str(CONFIG["flask"]["port"])+"/api")
     #
     FLASK = Flask(__name__)
 
@@ -248,7 +247,7 @@ def run_flask(window, webview_pid, config):
     no_ssl_host = "0.0.0.0" # 0.0.0.0
     ssl_host = "127.0.0.1" # 0.0.0.0、127.0.0.1
     if ssl_state:
-        FLASK.run(debug=CONFIG["flask"]["debug"], ssl_context=read_ssl_context(host=ssl_host), host=ssl_host, port=CONFIG["flask"]["port"])
+        FLASK.run(debug=CONFIG["flask"]["debug"], ssl_context=ssl_self.read_ssl_context(host=ssl_host), host=ssl_host, port=CONFIG["flask"]["port"])
         pass
     else:
         FLASK.run(debug=CONFIG["flask"]["debug"], host=no_ssl_host, port=CONFIG["flask"]["port"])

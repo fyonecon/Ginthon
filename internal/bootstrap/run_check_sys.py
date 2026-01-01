@@ -6,14 +6,14 @@ import sys
 import psutil
 
 from internal.config import get_config
-from internal.common.func import create_data_dir_level_1, get_platform, get_date
+from internal.common.func import func
 
 #
 CONFIG = {}
 
 # 检查最小系统版本
 def check_min_sys_version():
-    _sys = get_platform()
+    _sys = func.get_platform()
     if _sys == "win":
         def min_win_version():
             min_win = 10
@@ -79,7 +79,7 @@ def run_check_sys():
     # 检查缓存目录，不存在就立即创建该目录
     data_path_dirs_name = CONFIG["sys"]["data_path_dirs_name"]
     for name in data_path_dirs_name:
-        create_data_dir_level_1(name)
+        func.create_data_dir_level_1(name)
         pass
 
     # 至少物理双核
@@ -98,7 +98,7 @@ def run_check_sys():
     # 检测强制更新时间（这是软件及扩展更新的要求）
     start_time = CONFIG["sys"]["app_state_start_time"]
     end_time = CONFIG["sys"]["app_state_end_time"]
-    now_time = int(get_date("%Y%m%d%H%M%S"))
+    now_time = int(func.get_date("%Y%m%d%H%M%S"))
     time_state = (now_time >= start_time) and (now_time <= end_time)
 
     # 判断端口是否被占用
