@@ -17,11 +17,11 @@ def view_js_must_data():
         localStorage.setItem("window_token", "{window_token}");
     '''
     #
-    view_url = CONFIG["pywebview"]["view_url"]
+    api_host = CONFIG["pywebview"]["api_host"]
     #
     app_token = make_app_token("app")  # page刷新时会生成一个新的
     js_call_py_auth =make_app_token("js_call_py")  # 视窗软件启动时会生成一个新的
-    js_call_py_api = view_url + "/api/js_call_py"
+    js_call_py_api = api_host + "/api/js_call_py"
     js_must_data = f'''
         localStorage.setItem("app_token", "{app_token}");
         localStorage.setItem("js_call_py_api", "{js_call_py_api}"); 

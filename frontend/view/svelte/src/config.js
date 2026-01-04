@@ -1,5 +1,7 @@
 
 // 自定义的前端配置文件
+import {csr} from "./routes/+page.js";
+
 const config = {
     debug: false, // true、false
     app: {
@@ -9,6 +11,7 @@ const config = {
     },
     sys:{
         backend: "py", // go、py
+        base_route: "/view", // 等同于svelte.config.js中paths的base "", "/view"，结尾无/
         home_route: "/home", // 主页默认页的路由 ""、"/home"
     },
     api: {

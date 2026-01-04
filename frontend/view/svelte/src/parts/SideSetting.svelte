@@ -34,7 +34,7 @@
     <ul class="side_setting-ul select-none font-text">
         <li class="li-group-user select-none click">
             <a class="side_setting-menu-a border-radius break {(route==='/settings' || route.indexOf('/settings/') === 0)?' side_setting-menu-a-active ':' '} click" href={resolve(func.url_path('/settings'))} >
-                <div class="li-group-user-avatar font-text" style="background-image: url('../../user.png');" title="Avatar"></div>
+                <svg class="li-group-user-avatar font-text" xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 16 16"><path fill="#2A7DFF" d="M11 7c0 1.66-1.34 3-3 3S5 8.66 5 7s1.34-3 3-3s3 1.34 3 3"/><path fill="#2A7DFF" fill-rule="evenodd" d="M16 8c0 4.42-3.58 8-8 8s-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8M4 13.75C4.16 13.484 5.71 11 7.99 11c2.27 0 3.83 2.49 3.99 2.75A6.98 6.98 0 0 0 14.99 8c0-3.87-3.13-7-7-7s-7 3.13-7 7c0 2.38 1.19 4.49 3.01 5.75" clip-rule="evenodd"/></svg>
                 <div class="li-group-user-info">
                     <div class="li-group-user-info-item li-group-user-nickname font-text break-ellipsis">
                         {user_nickname}

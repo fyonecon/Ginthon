@@ -18,20 +18,18 @@ from internal.config import get_config
 def window_route(_WINDOW, FLASK):
 
     # 适配svelte、vue文件结构的html静态文件系统
-    # http://127.0.0.1:9750
-    @FLASK.route("/", methods=["GET", "POST", "OPTIONS"])
-    @FLASK.route("/<path:filename>", methods=["GET", "POST", "OPTIONS"], endpoint="svelte_dist")
-    def svelte_dist(filename=""):
+    # http://127.0.0.1:9750/view
+    @FLASK.route("/view", methods=["GET", "POST", "OPTIONS"])
+    @FLASK.route("/view/", methods=["GET", "POST", "OPTIONS"])
+    def redirect_view():
+        return redirect('/view/home')
+    @FLASK.route("/view/<path:filename>", methods=["GET", "POST", "OPTIONS"], endpoint="view_dist")
+    def view_dist(filename=""):
         route_data = {
             "way": "file",
             "methods": ["GET", "POST", "OPTIONS"],
         }
-        # 防止与其它路由混合
-        if filename.startswith('dir/play_audio/'):
-            # 手动重定向到正确的处理函数
-            audio_file = filename.replace('dir/play_audio/', '', 1)
-            return play_audio(audio_file)
-        # #
+        #
         if len(filename) == 0:
             filename = "index.html"
             pass
@@ -57,46 +55,26 @@ def window_route(_WINDOW, FLASK):
             return func.back_404_data_file("无对应文件-vue/svelte：" + filename), 404
     # file
 
-    # 适配音乐播放及访问本地文件
-    # http://127.0.0.1:9750/dir/play_audio/xxx
-    @FLASK.route("/dir/play_audio/<path:filepath>", methods=["GET", "POST", "OPTIONS"], endpoint="play_audio")
-    def play_audio(filepath):
-        route_data = {
-            "way": "file",
-            "methods": ["GET", "POST", "OPTIONS"],
-        }
-        #
-        file_token = request_data.input(request, "file_token")
-        #
-        file_token_state = func.md5("filetoken#@"+func.url_decode(filepath)) == file_token
-        app_token_state = check_app_token(request, "app")
-        #
-        if file_token_state and app_token_state:
-            # 还原真实文件
-            filepath = func.url_decode(filepath)
-            filepath = func.converted_path(filepath)
-            filename = func.get_file_name(filepath)
-            file_ext = func.get_file_ext(filename)
-            if len(file_ext) >= 1:  # 有文件
-                mimetype = func.get_file_ext_mimetype(file_ext)
-                file_path = filepath  # 限定根目录
-                #
-                if func.has_file(file_path):
-                    response_data, reg_code = flask_middleware_file(request, route_data, "", filename)
-                    if reg_code == 200:
-                        # 使用返回文件的方式返回html模板或文件
-                        return send_file(file_path, as_attachment=False, mimetype=mimetype, max_age=12 * 60,
-                                         download_name=filename), reg_code
-                    else:
-                        return func.back_404_data_file("非法操作：file"), reg_code
-                else:
-                    return func.back_404_data_file("无对应文件：" + filepath + "🌛" + filename), 404
-            else:
-                return func.back_404_data_file("无对应文件：" + filepath + "🌞" + filename), 404
-        else:
-            return func.back_404_data_file("非法Auth，token"), 404
 
-    # file
+    # 视窗单页型静态文件系统 http://127.0.0.1:9750/view/xxx
+    # @FLASK.route("/view/<_rand_id>", methods=["GET", "POST", "OPTIONS"], endpoint="view_static")
+    # def view_static(_rand_id, filename="index.html"):
+    #     route_data = {
+    #         "way": "html",
+    #         "methods": ["GET", "POST", "OPTIONS"],
+    #     }
+    #     rand_id_state = rand_id.check(_rand_id)
+    #     if rand_id_state:  # 正确
+    #         html_data = view_index(_WINDOW, filename)
+    #         #
+    #         response_data, reg_code = flask_middleware_html(request, route_data, html_data, filename)
+    #         if reg_code == 200:
+    #             return response_data, reg_code
+    #         else:
+    #             return func.back_404_data_html("非法操作：view"), reg_code
+    #     else:  # 非法ID
+    #         return func.back_404_data_html("非法ID"), 404
+    # # html
 
 
     # view_js必要参数
@@ -113,27 +91,6 @@ def window_route(_WINDOW, FLASK):
         else:
             return func.back_404_data_html("非法操作:must_data"), reg_code
     # file
-
-
-    # 视窗单页型静态文件系统 http://127.0.0.1:9750/view/xxx
-    @FLASK.route("/view/<_rand_id>", methods=["GET", "POST", "OPTIONS"])
-    def view(_rand_id, filename="index.html"):
-        route_data = {
-            "way": "html",
-            "methods": ["GET", "POST", "OPTIONS"],
-        }
-        rand_id_state = rand_id.check(_rand_id)
-        if rand_id_state:  # 正确
-            html_data = view_index(_WINDOW, filename)
-            #
-            response_data, reg_code = flask_middleware_html(request, route_data, html_data, filename)
-            if reg_code == 200:
-                return response_data, reg_code
-            else:
-                return func.back_404_data_html("非法操作：view"), reg_code
-        else:  # 非法ID
-            return func.back_404_data_html("非法ID"), 404
-    # html
 
 
     # 静态文件系统 http://127.0.0.1:9750/file/test.txt

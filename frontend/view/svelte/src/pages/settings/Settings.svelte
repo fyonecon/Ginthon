@@ -355,7 +355,8 @@
                 {func.get_translate("reload_window")?func.get_translate("reload_window"):"Reload Page"}
             </div>
             <div class="li-group-content">
-                <button type="button" title="Reload Page" class="click reload_window_btn border-radius font-text font-white" onclick={()=>func.open_url_no_cache("./?reload=page")}>{func.get_translate("reload_window_btn")?func.get_translate("reload_window_btn"):"Reload"}</button>
+                <a title="Reload Page" class="click reload_window_btn border-radius font-text font-white"  href={resolve(func.url_path('/?reload=page'))}>{func.get_translate("reload_window_btn")?func.get_translate("reload_window_btn"):"Reload"}</a>
+<!--                <button type="button" title="Reload Page" class="click reload_window_btn border-radius font-text font-white" onclick={()=>func.open_url_no_cache("./?reload=page")}>{func.get_translate("reload_window_btn")?func.get_translate("reload_window_btn"):"Reload"}</button>-->
             </div>
         </li>
 

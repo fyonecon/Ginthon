@@ -7,7 +7,7 @@ from internal.app.flask.flask_route_api import flask_route_api
 from internal.app.flask.flask_route_file import flask_route_file
 from internal.app.flask.flask_route_html import flask_route_html
 from internal.app.window.window_route import window_route
-from internal.bootstrap.flask_middleware import flask_middleware_file, flask_middleware_api
+from internal.bootstrap.flask_middleware import flask_middleware_file, flask_middleware_api, flask_middleware_html
 from internal.common.func import func
 from internal.common.kits.main_dirpath import main_dirpath
 from internal.common.kits.ssl_self import ssl_self
@@ -21,80 +21,65 @@ CONFIG = {}
 def must_route(window, FLASK):
 
     # index http://127.0.0.1:9750/
-    # @FLASK.route("/", methods=["GET", "POST", "OPTIONS"]) # 路由名
-    # def index(filename="virtual.html"): # 触发函数（函数名尽量和路由名一致）
-    #     # route验证参数
-    #     route_data = {
-    #         "way": "html", # 当前接口请求的数据请求的类型：html、json、file
-    #         "methods": ["GET", "POST", "OPTIONS"], # 可接受的请求方法：["GET", "POST", "OPTIONS"]
-    #     }
-    #
-    #     # 接口接收的数据
-    #     if request.method == "GET":
-    #         _test = request.args.get("test")
-    #         if not _test:
-    #             _test = "Null"
-    #             pass
-    #         pass
-    #     elif request.method == "POST":
-    #         try:
-    #             data = request.get_json()
-    #             if not data:
-    #                 data = {"test": "NULL"}
-    #                 pass
-    #         except:
-    #             data = {"test": "NULL"}
-    #             pass
-    #         _test = data["test"]
-    #         pass
-    #     else:
-    #         return func.back_404_data_html("非法操作:index"), 404
-    #
-    #     # 返回的数据
-    #     html_data = '''
-    #         <html>
-    #         <head>
-    #         <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    #         <link rel="apple-touch-icon" href="/icon.png">
-    #         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    #         <title>HTML is OK</title>
-    #         <style>
-    #             html {
-    #                 background-color: rgba(115,115,115,0.4);
-    #             }
-    #             body {
-    #                 background-color: transparent;
-    #                 padding: 0 0;
-    #                 margin: 10px 10px;
-    #             }
-    #             .hide{
-    #                 display: none !important;
-    #             }
-    #             .click{
-    #                 cursor: pointer;
-    #             }
-    #             .click:active{
-    #                 opacity: 0.6;
-    #             }
-    #             .select-none{
-    #                 -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;
-    #                 user-select: none;
-    #             }
-    #             .break{
-    #                 overflow: hidden;
-    #                 word-wrap: break-word;
-    #                 overflow-wrap: break-word;
-    #             }
-    #         </style>
-    #         </head>
-    #         <body><p id="info" class="break select-none">YES</p><p>test='''+_test+'''</p><script>function show_info() {let info = [window.location.host, !!window.localStorage, !!window.indexedDB, navigator.webdriver, navigator.languages, window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light", "✅", window.navigator.userAgent]; document.getElementById("info").innerHTML = info; console.log(info);}show_info();</script></body></html>
-    #     '''
-    #     # 用中间件验证参数
-    #     response_data, reg_code = flask_middleware_html(request, route_data, html_data, filename)
-    #     if reg_code == 200:
-    #         return response_data, reg_code
-    #     else:
-    #         return func.back_404_data_html("非法操作:index"), reg_code
+    @FLASK.route("/", methods=["GET", "POST", "OPTIONS"]) # 路由名
+    def index(filename="virtual.html"): # 触发函数（函数名尽量和路由名一致）
+        # route验证参数
+        route_data = {
+            "way": "html", # 当前接口请求的数据请求的类型：html、json、file
+            "methods": ["GET", "POST", "OPTIONS"], # 可接受的请求方法：["GET", "POST", "OPTIONS"]
+        }
+
+        # 接口接收的数据
+        _test = request_data.input(request, "test")
+        if _test is None:
+            _test = "Null"
+            pass
+
+        # 返回的数据
+        html_data = '''
+            <html>
+            <head>
+            <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+            <link rel="apple-touch-icon" href="/icon.png">
+            <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+            <title>HTML is OK</title>
+            <style>
+                html {
+                    background-color: rgba(115,115,115,0.4);
+                }
+                body {
+                    background-color: transparent;
+                    padding: 0 0;
+                    margin: 10px 10px;
+                }
+                .hide{
+                    display: none !important;
+                }
+                .click{
+                    cursor: pointer;
+                }
+                .click:active{
+                    opacity: 0.6;
+                }
+                .select-none{
+                    -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;
+                    user-select: none;
+                }
+                .break{
+                    overflow: hidden;
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                }
+            </style>
+            </head>
+            <body><p id="info" class="break select-none">YES</p><p>test='''+_test+'''</p><script>function show_info() {let info = [window.location.host, !!window.localStorage, !!window.indexedDB, navigator.webdriver, navigator.languages, window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light", "✅", window.navigator.userAgent]; document.getElementById("info").innerHTML = info; console.log(info);}show_info();</script></body></html>
+        '''
+        # 用中间件验证参数
+        response_data, reg_code = flask_middleware_html(request, route_data, html_data, filename)
+        if reg_code == 200:
+            return response_data, reg_code
+        else:
+            return func.back_404_data_html("非法操作:index"), reg_code
 
 
     # 图标

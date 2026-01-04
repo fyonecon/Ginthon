@@ -1,9 +1,4 @@
-import { dev } from '$app/environment';
-
-// we don't need any JS on this page, though we'll load
-// it in dev so that we get hot module replacement
-export const csr = dev;
-
-// since there's no dynamic data here, we can prerender
-// it so that it gets served as a static asset in production
+// 本页面
 export const prerender = true;
+export const csr = true; // 确保客户端渲染
+export const ssr = false // false关闭服务端渲染，false关闭SEO。（false可以让js正确访问“window”对象）

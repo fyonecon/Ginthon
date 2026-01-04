@@ -4,7 +4,7 @@
 
     // 重新定向 /到 /home 页面
     func.redirect_pathname({
-        url_pathname: func.url_path(config.sys.home_route),
+        url_pathname: func.url_path(config.sys.base_route+config.sys.home_route),
         url_params: func.get_params(),
     });
 
