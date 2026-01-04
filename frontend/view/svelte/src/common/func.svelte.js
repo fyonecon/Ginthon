@@ -86,7 +86,7 @@ const func = {
             return "";
         }
     },
-    get_host: function(){
+    get_host: function(){ // 含port
         let that = this;
         //
         if(browser){

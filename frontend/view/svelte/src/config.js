@@ -1,3 +1,4 @@
+
 // 自定义的前端配置文件
 const config = {
     debug: false, // true、false
@@ -8,7 +9,7 @@ const config = {
     },
     sys:{
         backend: "py", // go、py
-        home_route: "/home" // 主页默认页的路由 “”、"/home”
+        home_route: "/home", // 主页默认页的路由 ""、"/home"
     },
     api: {
         js_call_py_url: "https://127.0.0.1:9750/api/js_call_py", // http(s)://127.0.0.1:9750/api/js_call_py 、http(s)://127.0.0.1:9850/api/js_call_go
