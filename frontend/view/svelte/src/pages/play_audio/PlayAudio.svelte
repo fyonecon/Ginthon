@@ -6,8 +6,8 @@
     import {onMount} from "svelte";
     import {Dialog, Portal} from "@skeletonlabs/skeleton-svelte";
     import config from "../../config";
-    import FetchPOST from "../../common/post.svelte";
-    import {play_audio_data} from "../../stores/play_audio.store.svelte";
+    import FetchPOST from "../../common/post.svelte.js";
+    import {play_audio_data} from "../../stores/play_audio.store.svelte.js";
 
     // 本页面参数
     let route = $state(func.get_route());

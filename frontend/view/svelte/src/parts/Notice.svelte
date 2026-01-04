@@ -1,6 +1,6 @@
 <script lang="ts">
     import { Toast, createToaster } from '@skeletonlabs/skeleton-svelte';
-    import {notice_data} from "../stores/notice.store.svelte";
+    import {notice_data} from "../stores/notice.store.svelte.js";
 
 </script>
 

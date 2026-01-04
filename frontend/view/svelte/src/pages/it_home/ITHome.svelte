@@ -2,7 +2,7 @@
     import { resolve } from '$app/paths';
     import { page } from '$app/state';
     import func from "../../common/func.svelte.js";
-    import FetchPOST from "../../common/post.svelte";
+    import FetchPOST from "../../common/post.svelte.js";
     import config from "../../config";
     import {onMount} from "svelte";
     import {afterNavigate} from "$app/navigation";

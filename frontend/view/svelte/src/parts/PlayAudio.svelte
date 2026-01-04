@@ -1,10 +1,10 @@
 <script lang="ts">
     import func from "../common/func.svelte.js";
     import {afterNavigate} from "$app/navigation";
-    import FetchPOST from "../common/post.svelte";
+    import FetchPOST from "../common/post.svelte.js";
     import {onMount, onDestroy} from "svelte";
     import config from "../config";
-    import {play_audio_data} from "../stores/play_audio.store.svelte";
+    import {play_audio_data} from "../stores/play_audio.store.svelte.js";
 
 
     // 本页面参数

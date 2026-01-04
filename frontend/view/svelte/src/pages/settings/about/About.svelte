@@ -5,8 +5,7 @@
     import {browser} from "$app/environment";
     import {watch_theme_model_data} from "../../../stores/watch_theme_model.store.svelte.js";
     import {onMount} from "svelte";
-    import {watch_lang_data} from "../../../stores/watch_lang.store.svelte";
-    import {app_uid_data} from "../../../stores/app_uid.store.svelte";
+    import {watch_lang_data} from "../../../stores/watch_lang.store.svelte.js";
 
 
     // 本页面数据
