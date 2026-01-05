@@ -7,7 +7,7 @@ const config = {
     app: {
         app_name: "Ginthon",
         app_class: "ginthon_sv_", // ginthon_sv_ 、waigo_sv_
-        app_version: "1.6.4", // 1.0.0
+        app_version: "1.6.5", // 1.0.0
     },
     sys:{
         backend: "py", // go、py

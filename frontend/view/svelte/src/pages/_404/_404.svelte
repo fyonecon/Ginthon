@@ -5,6 +5,8 @@
     import config from "../../config.js";
     import {afterNavigate} from "$app/navigation";
     import {onMount} from "svelte";
+    import {runtime_ok} from "../../common/runtime_ok.svelte.js";
+
     // 链接携带的信息
     const error_url = func.search_param("error_url")
     const error_msg = func.search_param("error_msg");
@@ -27,9 +29,16 @@
     });
 
 
+    // 页面函数执行的入口，实时更新数据
+    function page_start(){
+        if (!runtime_ok()){return;} // 系统基础条件检测
+        // 开始
+    }
+
+
     // 刷新页面数据
     afterNavigate(() => {
-        //
+        page_start();
     });
 
 

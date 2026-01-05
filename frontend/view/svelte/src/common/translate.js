@@ -227,6 +227,10 @@ const lang_dict = {
         zh: "输入文件夹路径",
         en: "Enter folder path",
     },
+    runtime_error_alert: {
+        zh: "⚠️ 系统运行条件不符合，已经阻止访问内容.",
+        en: "⚠️ The system operating conditions do not meet the requirements, and access to the content has been blocked.",
+    },
 
     // =========
 //

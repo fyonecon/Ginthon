@@ -6,6 +6,7 @@
     import {watch_theme_model_data} from "../../../stores/watch_theme_model.store.svelte.js";
     import {onMount} from "svelte";
     import {watch_lang_data} from "../../../stores/watch_lang.store.svelte.js";
+    import {runtime_ok} from "../../../common/runtime_ok.svelte.js";
 
 
     // 本页面数据
@@ -25,14 +26,28 @@
     };
 
 
-    // 路由变化之后
-    afterNavigate(() => {
+    // 检测$state()值变化
+    $effect(() => {
+        //
+    });
+
+
+    // 页面函数执行的入口，实时更新数据
+    function page_start(){
+        if (!runtime_ok()){return;} // 系统基础条件检测
+        // 开始
         func.get_app_uid().then(_app_uid=>{
             app_uid = _app_uid;
         });
         theme_model = watch_theme_model_data.theme_model;
         language_index = watch_lang_data.lang_index;
         //
+    }
+
+
+    // 刷新页面数据
+    afterNavigate(() => {
+        page_start();
     });
 
 

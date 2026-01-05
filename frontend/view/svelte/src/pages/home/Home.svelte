@@ -4,7 +4,7 @@
     import func from "../../common/func.svelte.js";
     import {afterNavigate} from "$app/navigation";
     import {onMount} from "svelte";
-    import {Dialog, Portal} from "@skeletonlabs/skeleton-svelte";
+    import {runtime_ok} from "../../common/runtime_ok.svelte.js";
 
 
     // 本页面参数
@@ -76,16 +76,22 @@
     });
 
 
+    // 页面函数执行的入口，实时更新数据
+    function page_start(){
+        if (!runtime_ok()){return;} // 系统基础条件检测
+        // 开始
+    }
+
+
     // 刷新页面数据
     afterNavigate(() => {
-        //
+        page_start();
     });
 
 
     // 页面装载完成后，只运行一次
     onMount(() => {
         //
-        // def.ping_show();
     });
 
 

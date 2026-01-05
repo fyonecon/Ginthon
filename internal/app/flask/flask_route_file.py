@@ -9,6 +9,7 @@ from internal.common.request_data import request_data
 
 # 自定义路由，文件专用
 def flask_route_file(_WINDOW, FLASK):
+
     # 适配音乐播放及访问本地文件
     # http://127.0.0.1:9750/dir/play_audio/xxx
     @FLASK.route("/dir/play_audio/<path:filepath>", methods=["GET", "POST", "OPTIONS"], endpoint="play_audio")
@@ -19,18 +20,18 @@ def flask_route_file(_WINDOW, FLASK):
         }
         #
         file_token = request_data.input(request, "file_token")
+        # 还原真实文件
+        filepath = func.url_decode(filepath)
+        filepath = func.converted_path(filepath)
+        if func.get_platform() == "mac":  # 解决目录无前缀
+            filepath = "/" + filepath
+            filepath = filepath.replace("//", "/")
+            pass
         #
-        # file_token_state = func.md5("filetoken#@" + func.url_decode(filepath)) == file_token
+        file_token_state = func.md5("file=" + func.url_encode(filepath)) == file_token
         app_token_state = check_app_token(request, "app")
         #
-        if app_token_state:
-            # 还原真实文件
-            filepath = func.url_decode(filepath)
-            filepath = func.converted_path(filepath)
-            if func.get_platform() == "mac": # 解决目录无前缀
-                filepath = "/"+filepath
-                filepath = filepath.replace("//", "/")
-                pass
+        if file_token_state and app_token_state:
             filename = func.get_file_name(filepath)
             file_ext = func.get_file_ext(filename)
             if len(file_ext) >= 1:  # 有文件

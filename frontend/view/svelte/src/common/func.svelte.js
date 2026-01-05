@@ -1010,7 +1010,7 @@ const func = {
         loading_data.loading_show = "hide";
         loading_data.loading_msg = "";
     },
-    alert_msg: function (msg, timeout_ms = 3000){
+    alert_msg: function (msg, timeout_ms){
         clearTimeout(alert_msg_timer);
         if (timeout_ms === "long"){
             // 长时间显示

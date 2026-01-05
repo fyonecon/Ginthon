@@ -224,8 +224,8 @@ class func:
         path = path.replace('\\', '/')
         path = re.sub(r'\\+', '/', path)
         path = path.replace('//', '/')
-        if path.endswith('/'):
-            path = path[:-1]  # 移除最后一位 /
+        if len(path)>=2 and path.endswith('/'):   # 移除最后一位/，但不包括只有/
+            path = path[:-1]
             pass
         return path
 

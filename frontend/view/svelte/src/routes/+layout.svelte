@@ -20,6 +20,7 @@
     import SideTab from '../parts/SideTab.svelte';
     import Nav from '../parts/Nav.svelte';
     import Foot from '../parts/Foot.svelte';
+    import {runtime_ok} from "../common/runtime_ok.svelte.js";
 
 
     /** @type {{children: import('svelte').Snippet}} */
@@ -64,31 +65,39 @@
     };
 
 
-	// 路由变化之前
-	beforeNavigate(() => {
-		//
-	});
-
-	// 路由变化之后
-	afterNavigate(() => {
-        def.watch_404_route(); // 检测路由变化
-        func.get_app_uid().then(_app_uid=>{ // 设置app_uid
-            app_uid_data.app_uid = _app_uid;
-        });
-        def.auto_set_language_index();
-        def.auto_set_theme_model();
-        //
-	});
-
     // 监控所有变化
     $effect(() => {
         // console.log("layout=effect=", page.route);
     });
 
+
+	// 路由变化之前
+	beforeNavigate(() => {
+		//
+	});
+
+
+	// 路由变化之后
+	afterNavigate(() => {
+        if (!runtime_ok()){func.alert_msg(func.get_translate("runtime_error_alert"), "long");return;} // 系统基础条件检测
+        //
+        def.watch_404_route(); // 检测路由变化
+        def.auto_set_language_index();
+        def.auto_set_theme_model();
+        //
+	});
+
+
     // 页面装载完成后，只运行一次
     onMount(() => {
+        if (!runtime_ok()){func.alert_msg(func.get_translate("runtime_error_alert"), "long");return;} // 系统基础条件检测
+        //
         func.js_watch_window_display(); // 监测窗口是否隐藏
         watch_window();
+        //
+        func.get_app_uid().then(_app_uid=>{ // 设置app_uid
+            app_uid_data.app_uid = _app_uid;
+        });
         //
         let theme_event = window.matchMedia('(prefers-color-scheme: dark)');
         theme_event.addEventListener('change', function (event){ // 监测主题变化
@@ -97,10 +106,12 @@
         //
     });
 
+
     //
     onDestroy(() => {
         //
     });
+
 
 </script>
 

@@ -8,6 +8,7 @@
     import {onMount} from "svelte";
     import {watch_lang_data} from "../../stores/watch_lang.store.svelte.js";
     import {watch_theme_model_data} from "../../stores/watch_theme_model.store.svelte.js";
+    import {runtime_ok} from "../../common/runtime_ok.svelte.js";
 
 
     // 本页面数据
@@ -85,14 +86,22 @@
     });
 
 
-    // 刷新页面数据
-    afterNavigate(() => {
+    // 页面函数执行的入口，实时更新数据
+    function page_start(){
+        if (!runtime_ok()){return;} // 系统基础条件检测
+        // 开始
         func.js_call_py_or_go("get_data", {data_key:lang_key}).then(res=>{
             language_index = res.content.data;
         }); // 更新语言选中
         func.js_call_py_or_go("get_data", {data_key:theme_model_key}).then(res=>{
             theme_model = res.content.data;
         }); // 更新主题模式
+    }
+
+
+    // 刷新页面数据
+    afterNavigate(() => {
+        page_start();
     });
 
 

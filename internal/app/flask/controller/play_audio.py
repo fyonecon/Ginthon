@@ -62,6 +62,7 @@ def get_play_audio_list(request):
                                 else:
                                     file_info = {
                                         "name": entry.name,
+                                        "token": func.md5("file=" + func.url_encode(now_dir+"/"+entry.name)),
                                         "size": func.format_file_size(entry.stat().st_size),
                                         "create_time": func.time_s_to_date("%Y/%m/%d %H:%M", entry.stat().st_atime),
                                     }
@@ -75,6 +76,7 @@ def get_play_audio_list(request):
                                 else:
                                     dir_info = {
                                         "name": entry.name,
+                                        "token": func.md5("dir=" + func.url_encode(now_dir+"/"+entry.name)),
                                         "size": "",
                                         "create_time": func.time_s_to_date("%Y/%m/%d %H:%M", entry.stat().st_atime),
                                     }
@@ -106,6 +108,7 @@ def get_play_audio_list(request):
                 if len(the_dir) >= 0:  # 清除空内容
                     dir_info = {
                         "name": the_dir,
+                        "token": "",
                         "size": "",
                         "create_time": "(Added Folder)",
                     }

@@ -8,6 +8,7 @@
     import config from "../../config";
     import FetchPOST from "../../common/post.svelte.js";
     import {play_audio_data} from "../../stores/play_audio.store.svelte.js";
+    import {runtime_ok} from "../../common/runtime_ok.svelte.js";
 
     // 本页面参数
     let route = $state(func.get_route());
@@ -66,15 +67,15 @@
             remove_local_dir_dialog_is_open = true;
             remove_local_dir_the_dir = dir;
         },
-        make_file_token: function(filepath = ""){
+        make_file_token: function(token = ""){
             const _app_token = func.get_local_data("app_token");
-            return "file_token="+func.md5("filetoken#@"+filepath)+"&app_token=" + _app_token;
+            return "file_token="+token+"&app_token=" + _app_token;
         },
-        open_file: function(filename = ""){ // 浏览器打开
+        open_file: function(filename = "", token=""){ // 浏览器打开
             let that = this;
             //
             let file_path = view_path + "/" + filename;
-            let href = config.api.api_host + "/dir/play_audio/" + encodeURIComponent(file_path) + "?"+that.make_file_token(file_path)+"&ap=dir ";
+            let href = config.api.api_host + "/dir/play_audio/" + encodeURIComponent(file_path) + "?"+that.make_file_token(token)+"&ap=dir ";
             func.open_url_with_default_browser(href);
         },
         open_in_folder: function(filepath = ""){ // 本地打开文件夹/文件
@@ -95,12 +96,13 @@
             try {
                 for (let i=0; i<files_array.length; i++){
                     let the_file = files_array[i].name;
+                    let the_token = files_array[i].token;
                     let file_path = view_path+"/"+the_file;
                     if (func.is_audio(the_file)){
                         show_play_all_btn = "show";
                         let the_file_dict = {
                             filename: the_file,
-                            href: config.api.api_host + "/dir/play_audio/" + encodeURIComponent(file_path) + "?"+that.make_file_token(file_path)+"&ap=player ",
+                            href: config.api.api_host + "/dir/play_audio/" + encodeURIComponent(file_path) + "?"+that.make_file_token(the_token)+"&ap=player ",
                             cover: "",
                         };
                         now_audio_files.push(the_file_dict);
@@ -432,15 +434,30 @@
     };
 
 
-    // 刷新页面数据
-    afterNavigate(() => {
+    // 检测$state()值变化
+    $effect(() => {
+        //
+    });
+
+
+    // 页面函数执行的入口，实时更新数据
+    function page_start(){
+        if (!runtime_ok()){return;}
+        // 开始
         def.get_local_dir().then(array=>{
             has_paths = array;
         });
         now_audio_files = [];
         def.get_play_audio_list();
         //
+    }
+
+
+    // 刷新页面数据
+    afterNavigate(() => {
+        page_start();
     });
+
 
     // 页面装载完成后，只运行一次
     onMount(() => {
@@ -529,7 +546,7 @@
                     <div class="list-path-tree-li-content">
                         <!---->
                         <div class="li-name font-text break">
-                            <button class="list-path-tree-li-btn click break select-text" type="button" title="{the_file_info.name}" onclick={()=>def.open_file(the_file_info.name)}>{the_file_info.name}</button>
+                            <button class="list-path-tree-li-btn click break select-text" type="button" title="{the_file_info.name}" onclick={()=>def.open_file(the_file_info.name, the_file_info.token)}>{the_file_info.name}</button>
                         </div>
                         <!---->
                         <div class="li-info font-text select-text">
@@ -736,6 +753,7 @@
     .li-name{
         float: left;
         width: calc(100% - 90px - 240px);
+        min-width: 100px;
         overflow: hidden;
     }
     .li-info{
