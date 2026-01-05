@@ -8,13 +8,30 @@ from internal.config import get_config
 
 # 证书保存地址
 _data_dirpath = func.data_path() + "/" + get_config("sys", "data_path_main_dir") # 结尾无/
+_cert_file = _data_dirpath + "/flask_ssl/cert.pem"
+_key_file = _data_dirpath + "/flask_ssl/key.pem"
 
+#
 class ssl_self:
+
+    # 是否过期
+    @staticmethod
+    def signed_cert_timeout(timeout_day = 80, cert_file=_cert_file, key_file=_key_file):
+        now_time_ms = func.get_time_ms()
+        timeout_ms = timeout_day*24*60*60*1000
+        #
+        if (func.get_file_create_time_ms(cert_file)+timeout_ms-now_time_ms >= 0) and (func.get_file_create_time_ms(key_file)+timeout_ms-now_time_ms >= 0): # 未过期
+            return False
+        else: # 已过期
+            # 过期就删除ssl证书文件
+            func.remove_file(cert_file)
+            func.remove_file(key_file)
+            #
+            return True
 
     # 生成新的ssl
     @staticmethod
-    def create_signed_cert(host="0.0.0.0", cert_file=_data_dirpath + "/flask_ssl" + "/cert.pem",
-                                key_file=_data_dirpath + "/flask_ssl" + "/key.pem"):
+    def create_signed_cert(host="0.0.0.0", cert_file=_cert_file, key_file=_key_file):
         """创建自签名证书"""
         # 创建密钥对
         k = crypto.PKey()
@@ -48,14 +65,22 @@ class ssl_self:
     @staticmethod
     def read_ssl_context(host="0.0.0.0"):
         # 检查证书文件是否存在
-        ssl_cert = _data_dirpath + "/flask_ssl" + "/cert.pem"
-        ssl_key = _data_dirpath + "/flask_ssl" + "/key.pem"
+        ssl_cert = _cert_file
+        ssl_key = _key_file
         if not os.path.exists(ssl_cert) or not os.path.exists(ssl_key):
             cert, key = ssl_self.create_signed_cert(host, ssl_cert, ssl_key)
             pass
         else:
-            cert = ssl_cert
-            key = ssl_key
+            # 老证书是否过期
+            ssl_timeout = ssl_self.signed_cert_timeout(40, ssl_cert, ssl_key)
+            print("ssl_timeout=", ssl_timeout)
+            if not ssl_timeout:  # 可用
+                cert = ssl_cert
+                key = ssl_key
+                pass
+            else: # 已过期，需要重新创建
+                cert, key = ssl_self.create_signed_cert(host, ssl_cert, ssl_key)
+                pass
             pass
         # 验证证书文件
         try:

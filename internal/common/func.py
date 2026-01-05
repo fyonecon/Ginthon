@@ -12,7 +12,7 @@ import platform
 import re
 import locale
 
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone, timedelta, UTC
 from pathlib import Path
 
 from internal.common.kits.FILETYPE_DICT import FILETYPE_Dict
@@ -21,9 +21,7 @@ from internal.common.translate import lang_dict
 from internal.config import get_config
 from urllib.parse import urlparse, quote, unquote
 
-# 时区
-utc = timezone(timedelta(hours=8))
-
+#
 class func:
 
     # test
@@ -45,7 +43,7 @@ class func:
     # 时间日期
     @staticmethod
     def get_date(format="%Y-%m-%d %H:%M:%S %p %A %B"):
-        return datetime.now(utc).strftime(format)
+        return datetime.now().strftime(format)
 
     # 秒时间戳转日期格式
     @staticmethod
@@ -55,17 +53,17 @@ class func:
     # 获取纳秒时间
     @staticmethod
     def get_time_ns():
-        return int(datetime.now(utc).timestamp() * 1000 * 1000 * 1000)
+        return int(datetime.now().timestamp() * 1000 * 1000 * 1000)
 
     # 获取毫秒时间
     @staticmethod
     def get_time_ms():
-        return int(datetime.now(utc).timestamp() * 1000 * 1000)
+        return int(datetime.now().timestamp() * 1000 * 1000)
 
     # 获取秒时间
     @staticmethod
     def get_time_s():
-        return int(datetime.now(utc).timestamp() * 1000)
+        return int(datetime.now().timestamp() * 1000)
 
     # 获取系统首选语言
     @staticmethod
@@ -101,6 +99,30 @@ class func:
                 return True
             else:
                 return False
+
+    # 创建文件夹
+    @staticmethod
+    def make_dir(full_dirpath):
+        if not func.has_dir(full_dirpath):
+            os.mkdir(full_dirpath)
+            pass
+        return func.has_dir(full_dirpath)
+
+    # 删除文件夹
+    @staticmethod
+    def remove_dir(full_dirpath):
+        if func.has_dir(full_dirpath):
+            os.remove(full_dirpath)
+            pass
+        return not func.has_dir(full_dirpath)
+
+     # 删除文件
+    @staticmethod
+    def remove_file(full_filepath):
+        if func.has_file(full_filepath):
+            os.remove(full_filepath)
+            pass
+        return not func.has_file(full_filepath)
 
     # 创建数据持久化文件夹（只能在main.py目录或子目录创建）,dirpath开头和结尾都不带 /
     # 只能创建1级子文件夹
@@ -519,6 +541,32 @@ class func:
             unit_index += 1
         pass
         return f"{size:.2f} {units[unit_index]}"
+
+    # 获取文件的创建时间，返回 s时间戳
+    @staticmethod
+    def get_file_create_time_ms(filepath):
+        if func.has_file(filepath):
+            stat_info = os.stat(filepath)
+            system = platform.system()
+            if system == "Windows":
+                # Windows: st_ctime 是创建时间
+                create_time = stat_info.st_ctime
+                pass
+            elif system == "Darwin":  # macOS
+                # macOS 10.13+ 可以使用 st_birthtime
+                if hasattr(stat_info, 'st_birthtime'):
+                    create_time = stat_info.st_birthtime
+                else:
+                    create_time = stat_info.st_ctime
+                pass
+            else:  # Linux 和其他Unix
+                # Linux通常不存储创建时间，使用st_ctime（状态修改时间）
+                create_time = stat_info.st_ctime
+                pass
+            #
+            return int(create_time * 1000 * 1000)
+        else:
+            return -1
 
     #
     pass
