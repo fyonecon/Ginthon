@@ -10,7 +10,7 @@ from internal.app.window.window_route import window_route
 from internal.bootstrap.flask_middleware import flask_middleware_file, flask_middleware_api, flask_middleware_html
 from internal.common.func import func
 from internal.common.kits.main_dirpath import main_dirpath
-from internal.common.kits.ssl_self import ssl_self
+from internal.common.kits.ssl_127 import ssl_127
 from internal.common.request_data import request_data
 
 #
@@ -232,7 +232,7 @@ def run_flask(window, webview_pid, config):
     no_ssl_host = "0.0.0.0" # 0.0.0.0
     ssl_host = "127.0.0.1" # 0.0.0.0、127.0.0.1
     if ssl_state:
-        FLASK.run(debug=CONFIG["flask"]["debug"], ssl_context=ssl_self.read_ssl_context(host=ssl_host), host=ssl_host, port=CONFIG["flask"]["port"])
+        FLASK.run(debug=CONFIG["flask"]["debug"], ssl_context=ssl_127.read_ssl_context(host=ssl_host), host=ssl_host, port=CONFIG["flask"]["port"])
         pass
     else:
         FLASK.run(debug=CONFIG["flask"]["debug"], host=no_ssl_host, port=CONFIG["flask"]["port"])

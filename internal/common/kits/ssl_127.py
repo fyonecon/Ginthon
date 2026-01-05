@@ -11,8 +11,8 @@ _data_dirpath = func.data_path() + "/" + get_config("sys", "data_path_main_dir")
 _cert_file = _data_dirpath + "/flask_ssl/cert.pem"
 _key_file = _data_dirpath + "/flask_ssl/key.pem"
 
-#
-class ssl_self:
+# 管理本地IP SSL证书
+class ssl_127:
 
     # 是否过期
     @staticmethod
@@ -44,7 +44,7 @@ class ssl_self:
         cert.get_subject().L = "Piking"
         cert.get_subject().O = "Gthon Open Source"
         cert.get_subject().emailAddress = "https://github.com/fyonecon/Ginthon"
-        cert.get_subject().CN = host  # 使用 localhost、127.0.0.1、0.0.0.0、www.xxx.com
+        cert.get_subject().CN = host  # 使用 localhost、127.0.0.1、0.0.0.0等本地IP
         cert.set_serial_number(1000)
         cert.gmtime_adj_notBefore(0)
         cert.gmtime_adj_notAfter(9 * 365 * 24 * 60 * 60)  # 9年有效期
@@ -68,18 +68,18 @@ class ssl_self:
         ssl_cert = _cert_file
         ssl_key = _key_file
         if not os.path.exists(ssl_cert) or not os.path.exists(ssl_key):
-            cert, key = ssl_self.create_signed_cert(host, ssl_cert, ssl_key)
+            cert, key = ssl_127.create_signed_cert(host, ssl_cert, ssl_key)
             pass
         else:
             # 老证书是否过期
-            ssl_timeout = ssl_self.signed_cert_timeout(40, ssl_cert, ssl_key)
+            ssl_timeout = ssl_127.signed_cert_timeout(40, ssl_cert, ssl_key)
             print("ssl_timeout=", ssl_timeout)
             if not ssl_timeout:  # 可用
                 cert = ssl_cert
                 key = ssl_key
                 pass
             else: # 已过期，需要重新创建
-                cert, key = ssl_self.create_signed_cert(host, ssl_cert, ssl_key)
+                cert, key = ssl_127.create_signed_cert(host, ssl_cert, ssl_key)
                 pass
             pass
         # 验证证书文件
@@ -93,14 +93,14 @@ class ssl_self:
                 pass
             # 验证格式
             if "-----BEGIN CERTIFICATE-----" not in cert_content:
-                cert, key = ssl_self.create_signed_cert(host, ssl_cert, ssl_key)
+                cert, key = ssl_127.create_signed_cert(host, ssl_cert, ssl_key)
                 pass
             if "-----BEGIN PRIVATE KEY-----" not in key_content:
-                cert, key = ssl_self.create_signed_cert(host, ssl_cert, ssl_key)
+                cert, key = ssl_127.create_signed_cert(host, ssl_cert, ssl_key)
                 pass
         except Exception as e:
             print(f"读取证书文件时出错: {e}")
-            cert, key = ssl_self.create_signed_cert(host, ssl_cert, ssl_key)
+            cert, key = ssl_127.create_signed_cert(host, ssl_cert, ssl_key)
 
         # 使用 SSL 上下文
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
