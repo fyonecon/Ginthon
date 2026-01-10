@@ -3,7 +3,7 @@
 ```
 代码习惯基于Golang（无复杂继承和类）。
 
-Ginthon基于pywebview、flask等。无PyQT。Apache License。
+Ginthon基于pywebview、flask等。无PyQT。ApacheV2 License。
 
 前端默认Svelte5。
 
