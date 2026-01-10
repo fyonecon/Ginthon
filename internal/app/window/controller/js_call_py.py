@@ -204,6 +204,86 @@ def list_js_call_py(WINDOW, key, data_dict):
         content["display"] = display
         pass
 
+    # 改变窗口大小
+    # data_dict={size_tag: "", width: 0, height: 0}
+    elif key == "change_window_size":
+        # 同init_window参数
+        init_width = 960
+        init_height = 700
+        # 获取屏幕尺寸
+        import screeninfo
+        screen_width = init_width
+        screen_height = init_height
+        for monitor in screeninfo.get_monitors():
+            if monitor.is_primary:
+                screen_width = monitor.width
+                screen_height = monitor.height
+                #
+                break
+        # 设置屏幕尺寸
+        size_tag = data_dict["size_tag"]
+        if size_tag == "size_init": # 还原窗口
+            width = init_width
+            height = init_height
+            WINDOW.resize(width=width, height=height)
+            # 屏幕居中
+            x = (screen_width - width) // 2
+            y = (screen_height - height) // 2
+            WINDOW.move(x, y)
+        elif size_tag == "size_full_height": # 上下对齐
+            width = screen_width/3*2
+            height = screen_height
+            if width < init_width:
+                width = init_width
+                pass
+            WINDOW.resize(width=width, height=height)
+            # 屏幕居中
+            x = (screen_width - width) // 2
+            y = 0
+            WINDOW.move(x, y)
+        elif size_tag == "size_full_window":  # 上下左右对齐
+            width = screen_width
+            height = screen_height
+            WINDOW.resize(width=width, height=height)
+            # 屏幕居中
+            x = 0
+            y = 0
+            WINDOW.move(x, y)
+        elif size_tag == "size_full_screen": # 全屏
+            WINDOW.toggle_fullscreen()
+        elif size_tag == "size_center":
+            # 屏幕居中
+            win_width = WINDOW.width
+            win_height = WINDOW.height
+            x = (screen_width - win_width) // 2
+            y = (screen_height - win_height) // 2
+            WINDOW.move(x, y)
+        else:
+            # 自定义尺寸
+            width = int(data_dict["width"])
+            height = int(data_dict["height"])
+            # 校验
+            if width > screen_width or width < 320:
+                width = screen_width
+                pass
+            if height > screen_height or height < 320:
+                height = screen_height
+                pass
+            WINDOW.resize(width=width, height=height)
+            # 屏幕居中
+            x = (screen_width - width) // 2
+            y = (screen_height - height) // 2
+            WINDOW.move(x, y)
+            #
+            pass
+        #
+        state = 1
+        msg = "OK"
+        content["size_tag"] = size_tag
+        content["window_size"] = [WINDOW.width, WINDOW.height]
+        content["screen_size"] = [screen_width, screen_height]
+        pass
+
     # 显示系统通知
     # data_dict={}
     elif key == "send_notice":

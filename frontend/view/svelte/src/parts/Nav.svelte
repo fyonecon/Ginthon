@@ -7,11 +7,29 @@
 
 
     // 本页面参数
+    let size_tag = $state("size_init");
 
 
     // 本页面函数：Svelte的HTML组件onXXX=中正确调用：={()=>def.xxx()}
     const def = {
-        //
+        change_window_size: function(){
+            if (size_tag === "size_init"){
+                size_tag = "size_full_height";
+            }else if (size_tag === "size_full_height"){
+                size_tag = "size_full_window"; // 上下左右对齐，非全屏
+            }else{
+                size_tag = "size_init";
+            }
+            //
+            func.js_call_py_or_go("change_window_size", {
+                size_tag: size_tag,
+                width: 0,
+                height: 0
+            }).then(res=>{
+                console.log("change_window_size=", res);
+            });
+
+        },
     };
 
 
@@ -26,7 +44,7 @@
 
 <section class="section-nav select-none pywebview-drag-region can-drag">
     <!--  标题  -->
-    <div class="nav-title-div font-title font-bold" data-nav_value="{side_tab_data.tab_value}">
+    <div class="nav-title-div font-title font-bold" data-nav_value="{side_tab_data.tab_value}" ondblclick={()=>def.change_window_size()} role="button" tabindex="0">
         {side_tab_data.tab_name}
     </div>
 
@@ -51,5 +69,6 @@
         padding-right: 10px;
         opacity: 0.8;
         text-align: center;
+        cursor: default;
     }
 </style>

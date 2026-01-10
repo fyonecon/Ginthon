@@ -238,6 +238,9 @@ html {
 }
 
 
+div[data-part="group"] {
+    top: 50px !important;
+}
 div[data-part="root"] {
     width: 280px;
     padding: 10px 10px;
