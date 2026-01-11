@@ -12,6 +12,8 @@ Ginthon基于pywebview、flask等。无PyQT。ApacheV2 License。
 开源地址：https://github.com/fyonecon/Ginthon 。
 ```
 
+### 老一辈艺术家坚持手搓：
+
 Python版基座请戳：https://github.com/fyonecon/Ginthon 。
 
 Golang版基座请戳：https://github.com/fyonecon/Waigo 。
