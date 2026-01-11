@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-# 翻译表
+# 翻译对照表
+# 调用：func.get_translate("test", lang)
 lang_dict = {
     "test": { # 示例
         "zh": "测试",
