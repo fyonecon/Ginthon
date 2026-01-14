@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import platform
 import warnings
 
 import webview
@@ -67,6 +68,28 @@ def join_events(_window):
 
     return
 
+# 创建临时窗口获得浏览器UA
+def make_ua(txt = ""):
+    os_info = {
+        'Windows': 'Windows NT 10.0; Win64; '+func.get_machine(),
+        'Darwin': 'Macintosh; '+func.get_machine()+' Mac OS X 15.0',
+        'Linux': 'X11; Linux '+func.get_machine()
+    }.get(platform.system(), '')
+
+    # WebKit 核心版本
+    webkit_version = '604.1'
+
+    # 浏览器版本（使用当前稳定的 Chrome 版本）
+    chrome_version = '143.0.0.0'
+
+    # 构建标准 WebKit UA
+    webkit_ua = (
+        f'Mozilla/5.0 ({os_info}) '
+        f'AppleWebKit/{webkit_version} (KHTML, like Gecko) '
+        f'Chrome/{chrome_version} Safari/{webkit_version}'
+    )
+    return f"{webkit_ua} "+txt
+
 
 # 视窗（pywebview必须运行在主线程上）
 def init_window(cmd_model):
@@ -129,7 +152,7 @@ def init_window(cmd_model):
     _window.events.closed += on_closed
 
     # 启动视窗
-    webview.start(func=join_events, args=_window, ssl=CONFIG["pywebview"]["ssl"], debug=CONFIG["pywebview"]["debug"], user_agent="desktop/gthon_v"+CONFIG["app"]["app_version"]+"/"+func.get_platform()+"_"+func.get_machine()+"_"+cmd_model+"/ApacheV2")
+    webview.start(func=join_events, args=_window, ssl=CONFIG["pywebview"]["ssl"], debug=CONFIG["pywebview"]["debug"], user_agent=make_ua("gthon"+"/v"+CONFIG["app"]["app_version"]+"/"+cmd_model))
 
     # 主动杀掉join_events服务进程
     try:

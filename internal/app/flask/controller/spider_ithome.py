@@ -14,7 +14,7 @@ from internal.common.func import func
 
 #
 def read_spider_it_home(request):
-    it_url = "https://m.ithome.com"
+    it_url = "https://www.ithome.com/blog/"
     array = []
 
     # 

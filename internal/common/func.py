@@ -174,11 +174,11 @@ class func:
     def get_machine():
         machine = platform.machine()
         if machine == 'arm64' or machine == 'ARM64':
-            return "arm"
+            return "ARM64"
         elif machine == 'x86_64' or machine == 'AMD64' or machine == 'amd64':
-            return "x86"
+            return "AMD64"
         else:
-            return "null-cpu"
+            return "Null-CPU"
 
     # 取文件后缀（最后一个后缀）
     # 为空或无后缀时返回""
