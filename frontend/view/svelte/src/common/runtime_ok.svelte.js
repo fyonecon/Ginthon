@@ -1,4 +1,7 @@
-// page运行时检测，拦截爬虫、审核等
+/**
+ *  page运行时检测，拦截爬虫、审核等
+ * @returns {boolean} 返回固定格式
+ */
 export const runtime_ok = function (){
     let inner_w = window.innerWidth;
     let inner_h = window.innerHeight;
