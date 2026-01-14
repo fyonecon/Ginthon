@@ -488,6 +488,8 @@ class func:
                 return "ru"
             elif _language.find("es", 0) == 0:  # 西班牙语
                 return "es"
+            elif _language.find("ko", 0) == 0:  # 韩语或朝鲜语
+                return "ko"
             elif _language.find("vi", 0) == 0:  # 越语
                 return "vi"
             else:  # 默认英文

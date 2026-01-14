@@ -309,6 +309,30 @@
                         </Dialog.Positioner>
                     </Portal>
                 </Dialog>
+                <!--        ko        -->
+                <Dialog closeOnInteractOutside={false} closeOnEscape={false} onOpenChange={()=>{}}>
+                    <Dialog.Trigger class="btn btn-sm select-none preset-outlined-surface-500 font-text float-left mr-[10px] mb-[10px] hide">
+                        <svg class="{(language_index==='vi')?'':'hide'} font-green" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 48 48"><path fill="currentColor" fill-rule="evenodd" d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20m10.742-26.33a1 1 0 1 0-1.483-1.34L21.28 29.567l-6.59-6.291a1 1 0 0 0-1.382 1.446l7.334 7l.743.71l.689-.762z" clip-rule="evenodd"/></svg>
+                        Korean
+                    </Dialog.Trigger>
+                    <Portal>
+                        <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80 select-none" />
+                        <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text select-none">
+                            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {animation}  px-[10px] py-[10px] border-radius">
+                                <header class="flex justify-between items-center pywebview-drag-region can-drag">
+                                    <Dialog.Title class="font-title font-bold">⚠️</Dialog.Title>
+                                </header>
+                                <Dialog.Description class="font-text select-text" >
+                                    {func.get_translate("confirm_change_language_tip", "ko")}
+                                </Dialog.Description>
+                                <footer class="flex justify-center gap-10 select-none  px-[10px] py-[10px]">
+                                    <Dialog.CloseTrigger class="btn btn-base preset-tonal font-title">{func.get_translate("btn_cancel")}</Dialog.CloseTrigger>
+                                    <button title="Save" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>def.choose_language("ko")}>{func.get_translate("btn_save")}</button>
+                                </footer>
+                            </Dialog.Content>
+                        </Dialog.Positioner>
+                    </Portal>
+                </Dialog>
                 <!--        vi        -->
                 <Dialog closeOnInteractOutside={false} closeOnEscape={false} onOpenChange={()=>{}}>
                     <Dialog.Trigger class="btn btn-sm select-none preset-outlined-surface-500 font-text float-left mr-[10px] mb-[10px] hide">

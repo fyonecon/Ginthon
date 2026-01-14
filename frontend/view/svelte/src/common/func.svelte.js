@@ -720,6 +720,9 @@ const func = {
             else if (_language.indexOf("es") >= 0){ // 西班牙语
                 return "es";
             }
+            else if (_language.indexOf("ko") >= 0){ // 韩语或朝鲜语
+                return "ko";
+            }
             else if (_language.indexOf("vi") >= 0){ // 越语
                 return "vi";
             }

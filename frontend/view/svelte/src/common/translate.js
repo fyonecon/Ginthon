@@ -1,14 +1,15 @@
 // 翻译表
 const lang_dict = {
     test: { // 示例
-        zh: "测试",
-        en: "Test",
-        jp: "",
-        fr: "",
-        de: "",
-        ru: "",
-        es: "",
-        vi: "",
+        zh: "测试", // 简体中文（包含繁体）
+        en: "Test", // 英文
+        jp: "", // 日语
+        fr: "", // 法语
+        de: "", // 德语
+        ru: "", // 俄语或乌克兰语
+        es: "", // 西班牙语
+        ko: "", // 言韩语或朝鲜语
+        vi: "", // 越南语
     },
     _null: { // 必须
         zh: " -空- ",
@@ -18,6 +19,7 @@ const lang_dict = {
         de: " -Null- ",
         ru: " -Null- ",
         es: " -Null- ",
+        ko: " -Null- ",
         vi: " -Null- ",
     },
     // =========
@@ -123,6 +125,7 @@ const lang_dict = {
         de: "Sprache wechseln?  (Die Seite wird aktualisiert.)",
         ru: "Переключить язык? (Страница будет обновлена.)",
         es: "¿Cambiar de idioma? (la página se actualizará).",
+        ko: "언어 전환?페이지가 새로 고쳐집니다.",
         vi: "Đổi ngôn ngữ? (Trang sẽ được làm mới.)",
     },
     //
