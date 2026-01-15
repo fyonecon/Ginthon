@@ -1,6 +1,7 @@
 <script lang="ts">
     import config from "../config.js";
     import {afterNavigate} from "$app/navigation";
+    import func from "../common/func.svelte";
 
 
     // 本页面参数
@@ -22,7 +23,7 @@
 </script>
 
 <section class="section-side_logo scroll-y-style select-none pywebview-drag-region can-drag bg-neutral-200 dark:bg-neutral-800">
-    <div class="side-logo center">
+    <div class="side-logo center" ondblclick={()=>func.change_window_size()} role="button" tabindex="0">
         <span class="font-class hide">{app_name}</span>
         <span class="font-mini hide"> v{app_version}</span>
     </div>
@@ -48,6 +49,7 @@
         overflow: hidden;
         width: calc(100% - 0px);
         padding: 0 10px;
+        cursor: default;
     }
 
 </style>

@@ -18,11 +18,11 @@ import FetchPOST from "./post.svelte.js";
 //
 let loading_show_timer = $state(0);
 let alert_msg_timer = $state(0);
+let size_tag = $state("size_init");
 
 
 // 复用函数
 // 调用xxx = func.test();
-// @ts-ignore
 const func = {
     test: function(data_dict){
         let that = this;
@@ -264,7 +264,7 @@ const func = {
     },
     is_dingding: function (){
         let ua = window.navigator.userAgent.toLowerCase();
-        return ua.indexOf("ding talk")!==-1;
+        return ua.indexOf("dingtalk")!==-1;
     },
     is_work_weixin: function (){
         let ua = window.navigator.userAgent.toLowerCase();
@@ -274,13 +274,17 @@ const func = {
         let ua = window.navigator.userAgent.toLowerCase();
         return ua.indexOf("lark")!==-1;
     },
-    make_uid: function (app_class){
+    make_uid: function (app_class=""){
         let that = this;
         let rand = that.js_rand(10000000000, 999999999999);
         let ua = window.navigator.userAgent.toLowerCase();
-        let app_date = that.time_date("YmdHisW");
-        let href = window.location.href.toLowerCase();
-        return [that.md5(app_class+"@"+ua+"@"+app_date+"@"+href+"@"+window.innerWidth+"@"+rand), app_date];
+        let lang = (navigator.language?navigator.language:"-").toLowerCase();
+        let app_date = that.get_time_date("YmdHisW");
+        let href = "";
+        if (browser){
+            href = window.location.href.toLowerCase();
+        }
+        return that.md5(app_class+"@"+ua+"@"+app_date+"@"+href+"@"+window.innerWidth+"@"+rand+"@"+lang);
     },
     get_theme_model: function (){ // 获取浏览器当前处于light还是dark
         if (browser){
@@ -810,7 +814,7 @@ const func = {
                     app_uid_data.app_uid = _app_uid;
                     resolve(_app_uid);
                 }else{
-                    _app_uid = that.md5(config.app.app_class+that.get_time_ms()+that.js_rand(1000000000000, 999999999999)+that.get_agent()+(navigator.language?navigator.language:"-"));
+                    _app_uid = that.md5(that.make_uid(config.app.app_class));
                     func.js_call_py_or_go("set_data", {data_key:app_uid_key, data_value:_app_uid, data_timeout_s:10*365*24*3600}).then(res=>{
                         app_uid_data.app_uid = res.content.data;
                         resolve(res.content.data);
@@ -1010,6 +1014,26 @@ const func = {
                 });
                 break;
         }
+    },
+    change_window_size: function(){
+        let that = this;
+        //
+        if (size_tag === "size_init"){
+            size_tag = "size_full_height";
+        }else if (size_tag === "size_full_height"){
+            size_tag = "size_full_window"; // 上下左右对齐，非全屏
+        }else{
+            size_tag = "size_init";
+        }
+        //
+        that.js_call_py_or_go("change_window_size", {
+            size_tag: size_tag,
+            width: 0,
+            height: 0
+        }).then(res=>{
+            console.log("change_window_size=", res);
+        });
+
     },
 
     //

@@ -28,6 +28,7 @@
 
 
     // 本页面参数
+    let page_display = $state("hide");
     let theme_model = $state("");
     let lang_index = $state("");
 
@@ -79,7 +80,7 @@
 
 	// 路由变化之后
 	afterNavigate(() => {
-        if (!runtime_ok()){func.alert_msg(func.get_translate("runtime_error_alert"), "long");return;} // 系统基础条件检测
+        if (!runtime_ok()){func.alert_msg(func.get_translate("runtime_error_alert"), "long");page_display="hide";return;}else{if (func.is_weixin() || func.is_work_weixin() || func.is_qq() || func.is_feishu() || func.is_dingding()){func.alert_msg(func.get_translate("runtime_cn_chat_alert"), "long");page_display="hide";return;}else{page_display="show";}} // 系统基础条件检测
         //
         def.watch_404_route(); // 检测路由变化
         def.auto_set_language_index();
@@ -90,7 +91,7 @@
 
     // 页面装载完成后，只运行一次
     onMount(() => {
-        if (!runtime_ok()){func.alert_msg(func.get_translate("runtime_error_alert"), "long");return;} // 系统基础条件检测
+        if (!runtime_ok()){return;} // 系统基础条件检测
         //
         func.js_watch_window_display(); // 监测窗口是否隐藏
         watch_window();
@@ -115,16 +116,20 @@
 
 </script>
 
-<div class="app select-none bg-neutral-100 dark:bg-neutral-900" data-theme_model="{theme_model}" data-language_index="{lang_index}">
+<div class="app {page_display} select-none bg-neutral-100 dark:bg-neutral-900" data-theme_model="{theme_model}" data-language_index="{lang_index}">
+    <!-- 内容 -->
     <SideLogo />
     <SideSearch />
 	<SideTab />
     <SideSetting />
-	<Nav />
     <Director />
-	<main class="main">{@render children()}</main>
+	<Nav />
+	<main class="main {page_display}">{@render children()}</main>
 	<Foot />
     <PlayAudio />
+</div>
+
+<div class="alert select-none">
     <!--  全局交互组件  -->
     <Loading />
     <Notice />
