@@ -12,6 +12,7 @@ import {loading_data} from "../stores/loading.store.svelte.js";
 import {notice_data} from "../stores/notice.store.svelte.js";
 import {watch_lang_data} from "../stores/watch_lang.store.svelte.js";
 import {app_uid_data} from "../stores/app_uid.store.svelte.js";
+import FetchPOST from "./post.svelte.js";
 
 
 //
@@ -497,63 +498,6 @@ const func = {
         let that = this;
         // js远程调用
         const post_request = function (api_url, body_dict) {
-            // 基础 POST 请求
-            async function FetchPOST(url, data) {
-                const config = {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: typeof data === 'string' ? data : JSON.stringify(data),
-                    mode: 'cors', // cors, no-cors, same-origin
-                    cache: 'no-cache', // default, no-cache, reload, force-cache, only-if-cached
-                    timeout: 4, // 自定义超时 s
-                };
-                try {
-                    const response = await fetch(url, config);
-                    // 检查响应状态
-                    if (!response.ok) {
-                        // throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                        return {
-                            "state": 0,
-                            "msg": "请求失败1",
-                            "content": {
-                                "body_dict": body_dict,
-                                "error status": response.status,
-                                "error text": response.statusText,
-                            }
-                        };
-                    }else{
-                        // 根据 Content-Type 解析响应
-                        const contentType = response.headers.get('content-type');
-                        let result;
-                        if (contentType && contentType.includes('application/json')) {
-                            result = await response.json();
-                        } else if (contentType && contentType.includes('text/')) {
-                            result = await response.text();
-                        } else if (contentType && contentType.includes('form-data')) {
-                            result = await response.formData();
-                        } else if (contentType && contentType.includes('blob')) {
-                            result = await response.blob();
-                        } else {
-                            result = await response.text();
-                        }
-                        return result;
-                    }
-                } catch (error) {
-                    that.notice("Fetch Error 1")
-                    console.error('Fetch error 1:', error);
-                    return {
-                        "state": 0,
-                        "msg": "请求失败2",
-                        "content": {
-                            "data_dict": body_dict,
-                            "error": error,
-                        }
-                    };
-                }
-            }
-            //
             return new Promise(resolve => {
                 try {
                     FetchPOST(api_url+"?cache="+that.get_time_ms(), body_dict).then(result=>{
