@@ -13,6 +13,6 @@
     <meta name="description" content="" />
 </svelte:head>
 
-<section class="section-main center scroll-y-style ">
+<section class="section-main center scroll-y-style bg-neutral-100 dark:bg-neutral-900">
     <Page404 />
 </section>

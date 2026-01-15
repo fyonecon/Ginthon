@@ -10,6 +10,6 @@
 	<meta name="description" content="" />
 </svelte:head>
 
-<section class="section-main scroll-y-style ">
+<section class="section-main scroll-y-style bg-neutral-100 dark:bg-neutral-900">
     <User/>
 </section>

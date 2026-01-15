@@ -116,7 +116,7 @@
 
 </script>
 
-<div class="app {page_display} select-none bg-neutral-100 dark:bg-neutral-900" data-theme_model="{theme_model}" data-language_index="{lang_index}">
+<div class="app {page_display} select-none" data-theme_model="{theme_model}" data-language_index="{lang_index}">
     <!-- 内容 -->
     <SideLogo />
     <SideSearch />
@@ -124,7 +124,7 @@
     <SideSetting />
     <Director />
 	<Nav />
-	<main class="main {page_display}">{@render children()}</main>
+	<main class="main {page_display} ">{@render children()}</main>
 	<Foot />
     <PlayAudio />
 </div>

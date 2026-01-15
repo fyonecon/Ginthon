@@ -24,7 +24,7 @@
 </script>
 
 
-<section class="section-nav select-none pywebview-drag-region can-drag">
+<section class="section-nav select-none pywebview-drag-region can-drag bg-neutral-100 dark:bg-neutral-900">
     <!--  标题  -->
     <div class="nav-title-div font-title font-bold" data-nav_value="{side_tab_data.tab_value}" ondblclick={()=>func.change_window_size()} role="button" tabindex="0">
         {side_tab_data.tab_name}
@@ -33,17 +33,7 @@
 </section>
 
 <style>
-    .section-nav {
-        position: fixed;
-        z-index: 0;
-        width: calc(100% - 220px - 0px);
-        min-width: 300px;
-        height: 50px;
-        top: 0;
-        left: 220px;
-        overflow-x: hidden;
-        overflow-y: hidden;
-    }
+
     .nav-title-div{
         height: 50px;
         line-height: 50px;

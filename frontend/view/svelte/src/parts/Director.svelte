@@ -231,7 +231,7 @@
 
 </script>
 
-<section class="section-director select-none">
+<section class="section-director select-none bg-neutral-100 dark:bg-neutral-900">
     <!--  导航  -->
     <div class="director-div font-text">
         <button type="button" class="director-btn director-btn-left {before_click} border-radius font-blue" title="Before" data-href="{before_href}" onclick={()=>def.open_href(before_href)}>
@@ -244,16 +244,6 @@
 </section>
 
 <style>
-    .section-director {
-        position: fixed;
-        z-index: 1;
-        width: 80px;
-        height: 50px;
-        top: 0;
-        left: 220px;
-        overflow-x: hidden;
-        overflow-y: hidden;
-    }
 
     .director-div{
         position: absolute;
