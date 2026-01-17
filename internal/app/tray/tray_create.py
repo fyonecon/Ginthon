@@ -21,6 +21,7 @@ from internal.config import get_config
 
 #
 CONFIG = {}
+HAS_START = 0 # 是否成功Ping过
 HOST_STATE = 1
 
 # 辅助函数
@@ -29,21 +30,24 @@ class tray_create_func:
     # 检测视窗服务是否可用，不可用则主动退出状态栏托盘程序
     @staticmethod
     def tray_ping_window():
+        global HAS_START
         global HOST_STATE
         tag = "tray_ping_window"
 
         def do_timer():
+            global HAS_START
             global HOST_STATE
             main_pid = os.getpid()
             # 判断端口是否被占用
             flask_port = CONFIG["flask"]["port"]
             flask_port_state = check_port_occupied('127.0.0.1', flask_port, timeout=1)
             if flask_port_state:  # 占用
+                HAS_START = 1
                 HOST_STATE = 1
                 pass
             else:  # 空闲
                 host = "127.0.0.1:" + str(flask_port)
-                if HOST_STATE >= 2:
+                if HOST_STATE >= 1:
                     # Exit
                     print("🔴 主动退出程序=视窗可能未启动=PID=", main_pid, HOST_STATE, host)
                     watch_processes.kill_process_by_pid(main_pid)
