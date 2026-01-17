@@ -179,8 +179,9 @@ class tray_create_func:
     @staticmethod
     def load_icon(icon_binary):
         # 适用图片文件
-        # if os.path.exists("./frontend/launcher.png"): # mac/linux .png, win .ico
-        #     image = Image.open("./frontend/launcher.png")
+        # _img = "../../../"+get_config("pystray", "icon")
+        # if os.path.exists(_img): # mac/linux .png, win .ico
+        #     image = Image.open(_img)
         #     return image.resize((64, 64), Image.Resampling.LANCZOS)
         # else:
         #     # 创建默认图标
@@ -188,7 +189,7 @@ class tray_create_func:
         #     return image
 
         # 图片转成二进制
-        # with open("./frontend/launcher.png", "rb") as f:
+        # with open(_img, "rb") as f:
         #     icon_binary = f.read()
 
         # 使用 BytesIO 将二进制数据转换为图像（win、mac、linux均可使用）
