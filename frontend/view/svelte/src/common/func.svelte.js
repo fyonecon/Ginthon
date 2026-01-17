@@ -756,7 +756,7 @@ const func = {
             //
         }
     },
-    open_url_no_cache: function (url="./?reload=no-cache", target="_self"){ // 强制刷新页面或跳转或更新页面全部数据
+    open_url_no_cache: function (url="./?reload=no-cache", target="_self"){ // 强制刷新页面或跳转或更新页面全部数据，仅针对ssr=true时
         let that = this;
         if (browser){
             // url请携带新参数
