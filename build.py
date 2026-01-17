@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 跨平台开发构建脚本
-根据 dev.json 配置执行步骤
+根据 build.json 配置执行步骤
 支持 Windows、macOS、Linux
 """
 
