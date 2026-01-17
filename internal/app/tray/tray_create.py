@@ -179,7 +179,7 @@ class tray_create_func:
     @staticmethod
     def load_icon(icon_binary):
         # 适用图片文件
-        # _img = "../../../"+get_config("pystray", "icon")
+        # _img = get_config("pytray", "icon")
         # if os.path.exists(_img): # mac/linux .png, win .ico
         #     image = Image.open(_img)
         #     return image.resize((64, 64), Image.Resampling.LANCZOS)
@@ -222,10 +222,10 @@ def tray_create():
 
     # 创建托盘图标
     icon = pystray.Icon(
-        CONFIG["app"]["app_name"],  # app_name
-        tray_create_func.load_icon(ICON_Binary),  # 图标
-        "" + CONFIG["app"]["app_name"],  # hover tips
-        menu  # 菜单
+        name=CONFIG["app"]["app_name"],  # app_name
+        icon=tray_create_func.load_icon(ICON_Binary),  # 图标
+        title="" + CONFIG["app"]["app_name"],  # hover tips
+        menu=menu  # 菜单
     )
 
     # 创建线程

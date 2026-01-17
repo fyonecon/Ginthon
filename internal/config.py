@@ -49,7 +49,7 @@ GLOBAL_CONFIG_DICT = {
     },
     "pytray": {
         "api_url": "https://127.0.0.1:9750/api/tray",
-        "icon": "/frontend/icon.png", # 状态栏托盘图标（路径从根目录开始）
+        "icon": "./frontend/icon.png", # 状态栏托盘图标（仅在生成二进制图片时使用）
         "debug": False,  # True False
     },
     "mysql1": {
