@@ -126,6 +126,7 @@ def init_window(cmd_model):
         width=960, height=700, # px   width=720, height=540     width=960, height=700
         hidden=False, # 打开时隐藏界面，默认 False
         frameless=False, # 默认 False 拖住class="pywebview-drag-region"
+        easy_drag=False,
         confirm_close=False, # 关闭window时显示确认窗口（不支持在状态栏关闭时拦截） False True
         text_select=True, # False True
         transparent=False,

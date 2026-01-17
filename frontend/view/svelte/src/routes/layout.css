@@ -85,10 +85,12 @@ html {
 
 .can-drag {
 	--wails-draggable: drag;
+    -webkit-app-region: drag;
 }
 
 .no-drag {
 	--wails-draggable: no-drag !important;
+    -webkit-app-region: no-drag !important;
 }
 
 .hide {
