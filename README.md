@@ -18,6 +18,8 @@ Python版基座请戳：https://github.com/fyonecon/Ginthon 。
 
 Golang版基座请戳：https://github.com/fyonecon/Waigo 。
 
+Go和PY都是以“尽量返回默认值来代替‘抛出Err’”+“尽量复用函数”+“尽量不使用继承”为原则。
+
 ---
 
 ### 程序要求：
