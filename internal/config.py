@@ -14,10 +14,10 @@ GLOBAL_CONFIG_DICT = {
     "sys": {
         "app_state_start_time": 20251231010101, # 最早时间 YmdHis
         "app_state_end_time": 20341201010101, #  截止时间，一个版本：9年。（这是软件及扩展更新的要求）
-        "cache_path_main_dir": "top.datathink.Ginthon", # 缓存主目录名，默认 top.datathink.Ginthon ，结尾无/
-        "data_path_main_dir": "top.datathink.Ginthon", # 数据持久化主目录名，默认 top.datathink.Ginthon，结尾无/
-        "data_path_dirs_name": [ # 系统数据持久化一级目录
-            "running", "log", "local_database", "flask_ssl", "user",  # 必要
+        "cache_path_name": "top.datathink.Ginthon", # 缓存主目录名，默认 top.datathink.Ginthon ，结尾无/
+        "data_path_name": "top.datathink.Ginthon", # 数据持久化主目录名，默认 top.datathink.Ginthon，结尾无/
+        "data_path_names_array": [ # 系统数据持久化一级目录
+            "running", "local_database", "flask_ssl", "user",  # 必要目录
             # 其它
         ],
         "running_id_filename": "running_id.cache", #

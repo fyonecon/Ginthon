@@ -15,14 +15,11 @@ from internal.common.func import func
 # 程序主入口
 def init_sys(cmd_model):
     # 获取前端资源路径
-    _cache_dirpath = func.cache_path() + "/" + get_config("sys", "cache_path_main_dir") # 结尾无/
-    _data_dirpath = func.data_path() + "/" + get_config("sys", "data_path_main_dir") # 结尾无/
-    frontend_dirpath = main_dirpath.virtual_dirpath("frontend")
     print("### 核对重要目录 => ", {
-        "frontend_dirpath": frontend_dirpath,
-        "cache_dirpath": _cache_dirpath,
-        "data_dirpath": _data_dirpath,
-        "frontend-launcher.png": func.has_file(frontend_dirpath+"/icon.png"),
+        "frontend_dirpath": main_dirpath.virtual_dirpath("frontend"),
+        "cache_dirpath": func.get_local_cache_path(),
+        "data_dirpath": func.get_local_data_path(""),
+        "frontend-launcher.png": func.has_file(main_dirpath.virtual_dirpath("frontend")+"/"+"icon.png"),
     })
     #
     CONFIG = get_config("", "")

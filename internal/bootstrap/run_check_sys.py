@@ -77,8 +77,8 @@ def run_check_sys():
     CONFIG = get_config("", "")
 
     # 检查缓存目录，不存在就立即创建该目录
-    data_path_dirs_name = CONFIG["sys"]["data_path_dirs_name"]
-    for name in data_path_dirs_name:
+    data_path_names_array = CONFIG["sys"]["data_path_names_array"]
+    for name in data_path_names_array:
         func.create_data_dir_level_1(name)
         pass
 

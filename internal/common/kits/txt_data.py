@@ -7,8 +7,7 @@ from internal.config import get_config
 
 #
 CONFIG = get_config("", "")
-_data_dirpath = func.data_path() + "/" + get_config("sys", "data_path_main_dir") # 结尾无/
-txt_path = _data_dirpath+"/running/" # /结尾
+txt_path = func.get_local_data_path("running")+"/" # /结尾
 
 #
 class txt_data:

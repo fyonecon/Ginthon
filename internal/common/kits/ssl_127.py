@@ -7,9 +7,8 @@ from internal.common.func import func
 from internal.config import get_config
 
 # 证书保存地址
-_data_dirpath = func.data_path() + "/" + get_config("sys", "data_path_main_dir") # 结尾无/
-_cert_file = _data_dirpath + "/flask_ssl/cert.pem"
-_key_file = _data_dirpath + "/flask_ssl/key.pem"
+_cert_file = func.get_local_data_path("flask_ssl")+"/"+"cert.pem"
+_key_file = func.get_local_data_path("flask_ssl")+"/"+"key.pem"
 
 # 管理本地IP SSL证书
 class ssl_127:

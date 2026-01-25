@@ -24,8 +24,7 @@ class local_database_func:
 
 #
 CONFIG = get_config("", "")
-_data_dirpath = func.data_path() + "/" + get_config("sys", "data_path_main_dir") # 结尾无/
-local_path = _data_dirpath+"/local_database/" # /结尾
+local_path = func.get_local_data_path("local_database")+"/" # /结尾
 code_key = local_database_func.truncate_string("gt-py3_2025@localdatabase", 16) # 大于16位
 code_salt = "2025"
 #

@@ -240,6 +240,18 @@ class func:
         else:  # 其他平台
             return ""
 
+    # 获取本地缓存目录，结尾无/
+    @staticmethod
+    def get_local_cache_path():
+        _data_dirpath = func.cache_path() + "/" + get_config("sys", "cache_path_name")  # 结尾无/
+        return _data_dirpath
+
+    # 获取本地数据目录，结尾无/
+    @staticmethod
+    def get_local_data_path(data_path_name=""):
+        _data_dirpath = func.data_path() + "/" + get_config("sys", "data_path_name")  # 结尾无/
+        return _data_dirpath + "/" + data_path_name
+
     # 转路径的反斜杠，并删除最后一位是 /
     @staticmethod
     def converted_path(path: str):
