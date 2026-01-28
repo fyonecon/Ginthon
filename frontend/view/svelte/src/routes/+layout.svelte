@@ -21,6 +21,7 @@
     import Nav from '../parts/Nav.svelte';
     import Foot from '../parts/Foot.svelte';
     import {runtime_ok} from "../common/runtime_ok.svelte.js";
+    import {runtime_ok_data} from "../stores/runtime_ok.store.svelte.js";
 
 
     /** @type {{children: import('svelte').Snippet}} */
@@ -66,7 +67,7 @@
     };
 
 
-    // 监控所有变化
+    // 监控所有$state()值变化
     $effect(() => {
         // console.log("layout=effect=", page.route);
     });
@@ -75,17 +76,36 @@
 	// 路由变化之前
 	beforeNavigate(() => {
 		//
+        runtime_ok_data.state = 0; // init
 	});
 
 
 	// 路由变化之后
 	afterNavigate(() => {
-        if (!runtime_ok()){func.alert_msg(func.get_translate("runtime_error_alert"), "long");page_display="hide";return;}else{if (func.is_weixin() || func.is_work_weixin() || func.is_qq() || func.is_feishu() || func.is_dingding()){func.alert_msg(func.get_translate("runtime_cn_chat_alert"), "long");page_display="hide";return;}else{page_display="show";}} // 系统基础条件检测
-        //
-        def.watch_404_route(); // 检测路由变化
+        // 必要运行
         def.auto_set_language_index();
         def.auto_set_theme_model();
-        //
+        // 系统基础条件检测
+        if (!runtime_ok()){ // false
+            func.alert_msg(func.get_translate("runtime_error_alert"), "long");
+            page_display="hide";
+            runtime_ok_data.state = -1;
+            //
+            return
+        }else{ // 附加条件检测
+            if (func.is_weixin() || func.is_work_weixin() || func.is_qq() || func.is_feishu() || func.is_dingding()){ // false
+                func.alert_msg(func.get_translate("runtime_cn_chat_alert"), "long");
+                page_display="hide";
+                runtime_ok_data.state = -2;
+                //
+                return
+            }else{ // ok
+                runtime_ok_data.state = 1;
+                page_display="show";
+                //
+                def.watch_404_route(); // 检测路由变化
+            }
+        }
 	});
 
 

@@ -8,7 +8,7 @@
     import config from "../../config";
     import FetchPOST from "../../common/post.svelte.js";
     import {play_audio_data} from "../../stores/play_audio.store.svelte.js";
-    import {runtime_ok} from "../../common/runtime_ok.svelte.js";
+    import {runtime_ok_data} from "../../stores/runtime_ok.store.svelte.js";
 
     // 本页面参数
     let route = $state(func.get_route());
@@ -434,15 +434,9 @@
     };
 
 
-    // 检测$state()值变化
-    $effect(() => {
-        //
-    });
-
-
     // 页面函数执行的入口，实时更新数据
     function page_start(){
-        if (!runtime_ok()){return;}
+        console.log("page_start()=", route);
         // 开始
         def.get_local_dir().then(array=>{
             has_paths = array;
@@ -453,9 +447,20 @@
     }
 
 
+    // 检测$state()值变化
+    $effect(() => {
+        let runtime_ok_state = runtime_ok_data.state;
+        if (runtime_ok_state === 1){ // ok
+            page_start();
+        }else{ // false
+            func.console_log("页面起始函数无法启动，原因：", runtime_ok_state);
+        }
+    });
+
+
     // 刷新页面数据
     afterNavigate(() => {
-        page_start();
+        //
     });
 
 

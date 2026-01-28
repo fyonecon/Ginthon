@@ -6,10 +6,11 @@
     import config from "../../config";
     import {onMount} from "svelte";
     import {afterNavigate} from "$app/navigation";
-    import {runtime_ok} from "../../common/runtime_ok.svelte.js";
+    import {runtime_ok_data} from "../../stores/runtime_ok.store.svelte.js";
 
 
     // 本页面参数
+    let route = $state(func.get_route());
     let loading_tip = $state("...");
     let news_array = $state([]);
 
@@ -45,22 +46,27 @@
     };
 
 
-    // 检测$state()值变化
-    $effect(() => {
-        //
-    });
-
-
     // 页面函数执行的入口，实时更新数据
     function page_start(){
-        if (!runtime_ok()){return;} // 系统基础条件检测
+        console.log("page_start()=", route);
         // 开始
     }
 
 
+    // 检测$state()值变化
+    $effect(() => {
+        let runtime_ok_state = runtime_ok_data.state;
+        if (runtime_ok_state === 1){ // ok
+            page_start();
+        }else{ // false
+            func.console_log("页面起始函数无法启动，原因：", runtime_ok_state);
+        }
+    });
+
+
     // 刷新页面数据
     afterNavigate(() => {
-        page_start();
+        //
     });
 
 

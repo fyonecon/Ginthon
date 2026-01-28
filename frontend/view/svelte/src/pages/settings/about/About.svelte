@@ -2,11 +2,10 @@
     import func from "../../../common/func.svelte.js";
     import config from "../../../config.js";
     import { afterNavigate, beforeNavigate } from "$app/navigation";
-    import {browser} from "$app/environment";
     import {watch_theme_model_data} from "../../../stores/watch_theme_model.store.svelte.js";
     import {onMount} from "svelte";
     import {watch_lang_data} from "../../../stores/watch_lang.store.svelte.js";
-    import {runtime_ok} from "../../../common/runtime_ok.svelte.js";
+    import {runtime_ok_data} from "../../../stores/runtime_ok.store.svelte.js";
 
 
     // 本页面数据
@@ -26,15 +25,9 @@
     };
 
 
-    // 检测$state()值变化
-    $effect(() => {
-        //
-    });
-
-
     // 页面函数执行的入口，实时更新数据
     function page_start(){
-        if (!runtime_ok()){return;} // 系统基础条件检测
+        console.log("page_start()=", route);
         // 开始
         func.get_app_uid().then(_app_uid=>{
             app_uid = _app_uid;
@@ -45,9 +38,20 @@
     }
 
 
+    // 检测$state()值变化
+    $effect(() => {
+        let runtime_ok_state = runtime_ok_data.state;
+        if (runtime_ok_state === 1){ // ok
+            page_start();
+        }else{ // false
+            func.console_log("页面起始函数无法启动，原因：", runtime_ok_state);
+        }
+    });
+
+
     // 刷新页面数据
     afterNavigate(() => {
-        page_start();
+        //
     });
 
 
