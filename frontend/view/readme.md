@@ -29,18 +29,18 @@ server: {
 
 项目所在文件夹：/frontend/view/svelte/
 ```
-pnpm install
+npm install
 
-pnpm run dev
+npm run dev
 
-pnpm run build
+npm run build
 ```
 
 ### Svelte打包静态网站：
 静态网站请参考：
 https://svelte.dev/docs/kit/adapters
 ```
-pnpm i -D @sveltejs/adapter-static
+npm i -D @sveltejs/adapter-static
 ```
 在/frontend/view/svelte/svelte.config.js添加如下内容:
 ```
@@ -98,7 +98,7 @@ export default config;
 
 在/frontend/view/目录运行：
 ```
-pnpm create vue@latest vue
+npm create vue@latest vue
 ```
 
 更改端口为9770（本地开发环境用）:
@@ -114,11 +114,11 @@ server: {
 
 项目所在文件夹：/frontend/view/vue/
 ```
-pnpm install
+npm install
 
-pnpm run dev
+npm run dev
 
-pnpm run build
+npm run build
 ```
 
 将如下js添加至/vue/src/index.html的头部head之中：
