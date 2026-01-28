@@ -128,7 +128,7 @@ class func:
     # 只能创建1级子文件夹
     @staticmethod
     def create_data_dir_level_1(dirpath):
-        _data_dirpath = func.data_path() + "/" + get_config("sys", "data_path_main_dir")  # 结尾无/
+        _data_dirpath = func.data_path() + "/" + get_config("sys", "data_path_name")  # 结尾无/
         # 没有主文件就直接创建
         if not func.has_dir(_data_dirpath):
             os.mkdir(_data_dirpath)

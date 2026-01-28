@@ -3,8 +3,8 @@
     "step_01": "pyinstaller --clean tray.spec",
     "step_02": "python ./internal/bootstrap/tray_move.py",
     "step_0": "cd ./frontend/view/svelte",
-    "step_2": "pnpm install",
-    "step_3": "pnpm run build",
+    "step_2": "npm install",
+    "step_3": "npm run build",
     "step_4": "cd ../../../",
     "step_5": "pip install -r requirements.txt",
     "step_6": "pip freeze > requirements.txt",
@@ -12,7 +12,7 @@
     "step_8": "python --version"
   },
   "custom_commands": {
-    "npm": "pnpm",
+    "npm": "npm",
     "python": "python",
     "pip": "pip"
   },
