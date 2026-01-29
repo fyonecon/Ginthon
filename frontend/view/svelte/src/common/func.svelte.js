@@ -1033,7 +1033,38 @@ const func = {
         }).then(res=>{
             console.log("change_window_size=", res);
         });
-
+    },
+    //
+    open_url_404: function (root_route="./", error_msg="", error_url=""){ // 规范打开404页面，root_route根据页面所在路由计算
+        let that = this;
+        //
+        let href = root_route+"_404?error_msg="+encodeURIComponent(error_msg)+"&error_url=" + encodeURIComponent(error_url);
+        that.open_url(href, "_self");
+    },
+    url_timeout_encode: function (route, timeout){ // 生成url的时间戳标记， timeout=s
+        let that = this;
+        let mark = route+"#@"+that.get_time_s()+"#@"+timeout;
+        return encodeURIComponent(that.string_to_unicode(mark+"#@"+that.md5(mark)+"#@"+that.js_rand(10000000, 9999999999)));
+    },
+    url_timeout_decode: function (route, url_timeout){ // true未过期，false过期
+        let that = this;
+        let now_time = that.get_time_s();
+        let param = decodeURIComponent(that.unicode_to_string(url_timeout));
+        let array = param.split("#@");
+        try {
+            let len = now_time-array[1]*1;
+            let _route = array[0];
+            let timeout = array[2]*1;
+            let mark_md5 = array[3];
+            let mark = array[0]+"#@"+array[1]+"#@"+array[2];
+            if (route === _route && mark_md5 === that.md5(mark)){
+                return len <= timeout && len >= 0;
+            }else{
+                return false;
+            }
+        }catch (e) {
+            return false;
+        }
     },
 
     //
