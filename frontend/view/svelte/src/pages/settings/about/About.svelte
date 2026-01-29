@@ -47,7 +47,7 @@
 
     // 刷新页面数据
     afterNavigate(() => {
-        if (!runtime_ok() || !browser_ok()){return;}
+        if (!runtime_ok() || !browser_ok()){return;} // 系统基础条件检测
         //
         page_start();
     });
