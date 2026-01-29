@@ -64,14 +64,14 @@ Go和PY都是以“尽量返回默认值来代替‘抛出Err’”+“尽量复
 ```
 删除.venv文件夹，重新初始化项目依赖即可.
 ```
-5. 安装pnpm依赖及项目node_modules：
+5. 安装npm依赖及项目node_modules：
 > cd ./frontend/view/svelte
 > 
-> npm install pnpm
+> (npm install pnpm 已废弃)
 > 
 > npx sv add tailwindcss
 > 
-> pnpm install
+> npm install
 >
 
 ### 【手动】开发环境逐步运行项目：
@@ -80,9 +80,9 @@ Go和PY都是以“尽量返回默认值来代替‘抛出Err’”+“尽量复
 > 
 > npx sv add tailwindcss
 > 
-> pnpm install
+> (pnpm install 已废弃)
 > 
-> pnpm run dev
+> npm run dev
 
 2. 开发环境直接运行状态栏托盘：
 > python tray.py
