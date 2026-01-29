@@ -14,7 +14,9 @@
     let ping_bing = $state("...");
     let ping_youtube = $state("...");
     let ping_ithome = $state("...");
+    let ping_github = $state("...");
     let ping_host = $state("...");
+    let ping_hosts = $state("...");
     let test_db_data = $state("...");
 
     // 本页面函数：Svelte的HTML组件onXXX=中正确调用：={()=>def.xxx()}
@@ -39,7 +41,9 @@
             ping_bing = loading_img;
             ping_youtube = loading_img;
             ping_ithome = loading_img;
+            ping_github = loading_img;
             ping_host = loading_img;
+            ping_hosts = loading_img;
             //
             that.ping_url("https://www.google.com").then(msg => {
                 ping_google = msg;
@@ -53,8 +57,14 @@
             that.ping_url("https://www.ithome.com").then(msg => {
                 ping_ithome = msg;
             });
+            that.ping_url("https://www.github.com").then(msg => {
+                ping_github = msg;
+            });
             that.ping_url("http://"+func.get_host()).then(msg => {
                 ping_host = msg;
+            });
+            that.ping_url("https://"+func.get_host()).then(msg => {
+                ping_hosts = msg;
             });
         },
         test_db: function(){
@@ -127,8 +137,16 @@
                     <span class="ping-res">{@html ping_ithome}</span>
                 </p>
                 <p class="li-ping-p break">
+                    <span class="ping-url">https://github.com</span>
+                    <span class="ping-res">{@html ping_github}</span>
+                </p>
+                <p class="li-ping-p break">
                     <span class="ping-url">http://{func.get_host()}</span>
                     <span class="ping-res">{@html ping_host}</span>
+                </p>
+                <p class="li-ping-p break">
+                    <span class="ping-url">https://{func.get_host()}</span>
+                    <span class="ping-res">{@html ping_hosts}</span>
                 </p>
             </div>
         </li>
