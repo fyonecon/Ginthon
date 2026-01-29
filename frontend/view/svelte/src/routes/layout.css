@@ -15,6 +15,22 @@ html {
 /*亮暗主题切换*/
 @custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
 
+/**/
+@media only screen and (max-width: 279px) {
+    body:after{
+        width: 700px; height: 100%;
+        content:"Width >= 280 PX";
+        position:fixed; top: 0;
+        text-align: left;
+        padding: 0 0 0 20px;
+        font-size: 24px; color: rgba(220,220,220,1); line-height: 300px;
+        background: rgba(0,0,0,0.6);
+        cursor: not-allowed;
+        letter-spacing: 2px;
+        z-index: 999900000;
+    }
+}
+
 .app {
 	font-size: 14px;
     clear: both;

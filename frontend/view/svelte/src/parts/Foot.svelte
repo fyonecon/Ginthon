@@ -1,6 +1,6 @@
 <script lang="ts">
-    import func from "../common/func.svelte.js";
-    import config from "../config.js";
+    import func from "../common/func.svelte";
+    import config from "../config";
     import {afterNavigate} from "$app/navigation";
 
 

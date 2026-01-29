@@ -1,11 +1,11 @@
 <script lang="ts">
     import { resolve } from '$app/paths';
-    import { page } from '$app/state';
-    import func from "../../common/func.svelte.js";
-    import config from "../../config.js";
+    import func from "../../common/func.svelte";
+    import config from "../../config";
     import {afterNavigate} from "$app/navigation";
     import {onMount} from "svelte";
-    import {runtime_ok_data} from "../../stores/runtime_ok.store.svelte.js";
+    import {browser_ok, runtime_ok} from "../../common/middleware.svelte";
+
 
     // 链接携带的信息
     const error_url = func.search_param("error_url")
@@ -32,18 +32,15 @@
 
     // 检测$state()值变化
     $effect(() => {
-        let runtime_ok_state = runtime_ok_data.state;
-        if (runtime_ok_state === 1){ // ok
-            page_start();
-        }else{ // false
-            func.console_log("页面起始函数无法启动，原因：", runtime_ok_state);
-        }
+        //
     });
 
 
     // 刷新页面数据
     afterNavigate(() => {
+        if (!runtime_ok() || !browser_ok()){return;} // 系统基础条件检测
         //
+        page_start();
     });
 
 

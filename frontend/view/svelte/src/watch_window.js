@@ -1,5 +1,5 @@
-import func from "./common/func.svelte.js";
-import config from "./config.js"
+import func from "./common/func.svelte";
+import config from "./config"
 
 // wails专用（在Ginthon中无任何作用，仅限代码跨平台同步）
 // import {Events} from "@wailsio/runtime";

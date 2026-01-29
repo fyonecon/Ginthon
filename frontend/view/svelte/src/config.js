@@ -1,7 +1,4 @@
-
 // 自定义的前端配置文件
-import {csr} from "./routes/+page.js";
-
 const config = {
     debug: false, // true、false
     app: {

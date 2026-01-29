@@ -3,16 +3,16 @@ import { goto } from '$app/navigation';
 import { page } from '$app/state';
 import { browser } from '$app/environment';
 import md5 from 'md5';
-import config from "../config.js";
-import lang_dict from "../common/translate.js";
-import FetchGET from "./get.svelte.js";
-import dexie_kv_db from "./db_kv.svelte.js";
-import {alert_data} from "../stores/alert.store.svelte.js";
-import {loading_data} from "../stores/loading.store.svelte.js";
-import {notice_data} from "../stores/notice.store.svelte.js";
-import {watch_lang_data} from "../stores/watch_lang.store.svelte.js";
-import {app_uid_data} from "../stores/app_uid.store.svelte.js";
-import FetchPOST from "./post.svelte.js";
+import config from "../config";
+import lang_dict from "../common/translate";
+import FetchGET from "./get.svelte";
+import dexie_kv_db from "./db_kv.svelte";
+import {alert_data} from "../stores/alert.store.svelte";
+import {loading_data} from "../stores/loading.store.svelte";
+import {notice_data} from "../stores/notice.store.svelte";
+import {watch_lang_data} from "../stores/watch_lang.store.svelte";
+import {app_uid_data} from "../stores/app_uid.store.svelte";
+import FetchPOST from "./post.svelte";
 
 
 //

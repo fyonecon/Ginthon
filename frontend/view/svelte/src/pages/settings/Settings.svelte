@@ -1,14 +1,13 @@
 <script lang="ts">
     import { resolve } from '$app/paths';
-    import { page } from '$app/state';
-    import func from "../../common/func.svelte.js";
-    import config from "../../config.js";
-    import { afterNavigate, beforeNavigate } from "$app/navigation";
+    import func from "../../common/func.svelte";
+    import config from "../../config";
+    import { afterNavigate} from "$app/navigation";
     import { Dialog, Portal } from '@skeletonlabs/skeleton-svelte';
     import {onMount} from "svelte";
-    import {watch_lang_data} from "../../stores/watch_lang.store.svelte.js";
-    import {watch_theme_model_data} from "../../stores/watch_theme_model.store.svelte.js";
-    import {runtime_ok_data} from "../../stores/runtime_ok.store.svelte.js";
+    import {watch_lang_data} from "../../stores/watch_lang.store.svelte";
+    import {watch_theme_model_data} from "../../stores/watch_theme_model.store.svelte";
+    import {browser_ok, runtime_ok} from "../../common/middleware.svelte";
 
 
     // 本页面数据
@@ -96,18 +95,15 @@
 
     // 检测$state()值变化
     $effect(() => {
-        let runtime_ok_state = runtime_ok_data.state;
-        if (runtime_ok_state === 1){ // ok
-            page_start();
-        }else{ // false
-            func.console_log("页面起始函数无法启动，原因：", runtime_ok_state);
-        }
+        //
     });
 
 
     // 刷新页面数据
     afterNavigate(() => {
+        if (!runtime_ok() || !browser_ok()){return;}
         //
+        page_start();
     });
 
 

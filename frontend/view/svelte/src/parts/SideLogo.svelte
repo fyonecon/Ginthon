@@ -1,5 +1,5 @@
 <script lang="ts">
-    import config from "../config.js";
+    import config from "../config";
     import {afterNavigate} from "$app/navigation";
     import func from "../common/func.svelte";
 

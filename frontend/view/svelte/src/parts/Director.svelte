@@ -1,8 +1,8 @@
 <script lang="ts">
-    import func from "..//common/func.svelte.js";
+    import func from "..//common/func.svelte";
     import { page } from '$app/state';
     import { afterNavigate, beforeNavigate } from "$app/navigation";
-    import config from "../config.js";
+    import config from "../config";
     import {browser} from "$app/environment";
     import {onMount} from "svelte";
 

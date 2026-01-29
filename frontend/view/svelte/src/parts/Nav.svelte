@@ -1,9 +1,9 @@
 <script lang="ts">
-    import func from "..//common/func.svelte.js";
+    import func from "..//common/func.svelte";
     import { page } from '$app/state';
     import { afterNavigate, beforeNavigate } from "$app/navigation";
-    import config from "../config.js";
-    import { side_tab_data } from '../stores/side_tab.store.svelte.js';
+    import config from "../config";
+    import { side_tab_data } from '../stores/side_tab.store.svelte';
 
 
     // 本页面参数
