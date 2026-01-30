@@ -303,19 +303,20 @@ html {
 }
 
 
-div[data-part="group"] {
+div[data-part="group"] { /*notice*/
     top: 50px !important;
 }
-div[data-part="root"] {
+div[data-part="root"] { /*notice*/
     width: 280px;
     padding: 10px 10px;
     /*box-shadow: 0 0 20px rgba(160,160,160, 0.2);*/
     border: 1px solid rgba(160,160,160, 0.5);
     opacity: 0.8;
 }
-div[data-part="content"] {
+div[data-part="content"] { /*confirm*/
     /*box-shadow: 0 0 20px rgba(160,160,160, 0.2);*/
     border: 1px solid rgba(160,160,160, 0.5);
+    max-width: 300px;
 }
 
 
