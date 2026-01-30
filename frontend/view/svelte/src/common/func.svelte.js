@@ -967,7 +967,7 @@ const func = {
             // 长时间显示
         }else{
             if (timeout_ms <= 1000){
-                timeout_ms = 3000;
+                timeout_ms = 1000;
             }
             //
             //
@@ -982,7 +982,7 @@ const func = {
     },
     notice: function (title="", msg="", timeout_ms = 5000, trigger="info"){
         if (timeout_ms <= 1000){
-            timeout_ms = 3000;
+            timeout_ms = 1000;
         }
         switch (trigger) {
             case "info":
@@ -1063,6 +1063,14 @@ const func = {
                 return false;
             }
         }catch (e) {
+            return false;
+        }
+    },
+    is_url: function (string=""){ // http(s) ftp(s)
+        try {
+            new URL(string);
+            return true;
+        } catch (err) {
             return false;
         }
     },
