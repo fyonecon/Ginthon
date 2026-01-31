@@ -1049,9 +1049,10 @@ const func = {
     url_timeout_decode: function (route, url_timeout){ // true未过期，false过期
         let that = this;
         let now_time = that.get_time_s();
-        let param = decodeURIComponent(that.unicode_to_string(url_timeout));
-        let array = param.split("#@");
         try {
+            let param = decodeURIComponent(that.unicode_to_string(url_timeout));
+            let array = param.split("#@");
+            //
             let len = now_time-array[1]*1;
             let _route = array[0];
             let timeout = array[2]*1;

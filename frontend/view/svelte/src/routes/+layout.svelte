@@ -22,6 +22,7 @@
     import Nav from '../parts/Nav.svelte';
     import Foot from '../parts/Foot.svelte';
     import {browser_ok, runtime_ok} from "../common/middleware.svelte";
+    import {browser} from "$app/environment";
 
 
     /** @type {{children: import('svelte').Snippet}} */
@@ -106,19 +107,34 @@
     // 页面装载完成后，只运行一次
     onMount(() => {
         if (!runtime_ok() || !browser_ok()){return;} // 系统基础条件检测
-        //
-        func.js_watch_window_display(); // 监测窗口是否隐藏
-        watch_window();
+
+        // 监测页面标签是否处于显示
+        if (browser){
+            document.addEventListener("visibilitychange", () => {
+                if (document.hidden) { // onHide
+                    console.log("onHide");
+                } else { // onShow
+                    console.log("onShow");
+                }
+            });
+        }
+
         //
         func.get_app_uid().then(_app_uid=>{ // 设置app_uid
             app_uid_data.app_uid = _app_uid;
         });
+
+        //
+        func.js_watch_window_display(); // 监测窗口是否隐藏
+        watch_window();
+
         //
         let theme_event = window.matchMedia('(prefers-color-scheme: dark)');
         theme_event.addEventListener('change', function (event){ // 监测主题变化
             def.auto_set_theme_model();
         });
         //
+
     });
 
 
