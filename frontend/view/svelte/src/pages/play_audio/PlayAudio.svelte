@@ -8,6 +8,7 @@
     import FetchPOST from "../../common/post.svelte";
     import {play_audio_data} from "../../stores/play_audio.store.svelte";
     import {browser_ok, runtime_ok} from "../../common/middleware.svelte";
+    import {input_enter_data} from "../../stores/input_enter.store.svelte";
 
     // 本页面参数
     let route = $state(func.get_route());
@@ -37,6 +38,7 @@
     let show_dir_remove_btn = $state("hide");
     let remove_local_dir_dialog_is_open = $state(false);
     let remove_local_dir_the_dir = $state("");
+    let input_object: any; // input标签dom对象
 
 
     // 本页面函数：Svelte的HTML组件onXXX=中正确调用：={()=>def.xxx()}
@@ -421,13 +423,18 @@
                 }
             }
         },
-        input_enter: function(event){
+        input_enter: function(event: any){
             let that = this;
-            //
+            // 处理Enter
             if (event.key === 'Enter') {
-                // console.log('Enter pressed:', input_value_find);
-                // 执行回车操作
-                that.input_find();
+                if (input_enter_data.input_doing === 1 || input_enter_data.input_doing === 2){ // 输入法输入完成
+                    func.console_log("输入法输入完成=", input_enter_data.input_doing);
+                    input_enter_data.input_doing = -1; // init
+                    // 执行回车操作
+                    that.input_find();
+                }else{ // 输入法正在输入
+                    func.console_log("输入法正在输入=", input_enter_data.input_doing);
+                }
             }
         },
     };
@@ -436,6 +443,8 @@
     // 页面函数执行的入口，实时更新数据
     function page_start(){
         console.log("page_start()=", route);
+        // 监听输入法输入事件
+        func.watch_input_enter(input_object);
         // 开始
         def.get_local_dir().then(array=>{
             has_paths = array;
@@ -480,7 +489,12 @@
             <!---->
             <div class="list_dirs-operation-search">
                 <label>
-                    <input class="input-style select-text list_dirs-operation-search-input border-radius  font-text" type="text" maxlength="100" placeholder="{func.get_translate('input_placeholder_find')}" bind:value={input_value_find} onkeydown={(event)=>def.input_enter(event)} onmouseenter={(e) => e.currentTarget.focus()} />
+                    <input class="input-style select-text list_dirs-operation-search-input border-radius  font-text" type="text" maxlength="100" placeholder="{func.get_translate('input_placeholder_find')}"
+                           bind:value={input_value_find}
+                           onkeydown={(event)=>def.input_enter(event)}
+                           onmouseenter={(e) => e.currentTarget.focus()}
+                           bind:this={input_object}
+                    />
                     <button class="list_dirs-operation-search-btn font-white border-radius click  font-mini" type="button" title="Find" onclick={()=>def.input_find()}>{func.get_translate("find_btn")}</button>
                 </label>
             </div>

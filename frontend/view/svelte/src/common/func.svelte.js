@@ -13,6 +13,7 @@ import {notice_data} from "../stores/notice.store.svelte";
 import {watch_lang_data} from "../stores/watch_lang.store.svelte";
 import {app_uid_data} from "../stores/app_uid.store.svelte";
 import FetchPOST from "./post.svelte";
+import {input_enter_data} from "../stores/input_enter.store.svelte.js";
 
 
 //
@@ -138,7 +139,11 @@ const func = {
         let regExp = new RegExp("([?]|&|#)" + key + "=([^&|^#]*)(&|$|#)");
         let result = url_str.match(regExp);
         if (result) {
-            return decodeURIComponent(result[2]); // 转义还原参数
+            try {
+                return decodeURIComponent(result[2]); // 转义还原参数
+            }catch (e) {
+                return result[2];
+            }
         }else {
             return ""; // 没有匹配的键即返回空
         }
@@ -1073,6 +1078,42 @@ const func = {
             return true;
         } catch (err) {
             return false;
+        }
+    },
+    watch_input_enter: function(input_object){ // 监测输入法是否已经输入完成，请将此函数放置在page_start()里面
+        // 判断用户输入框是否已经输入完成。 1直接完成输入，2预选词输入完成，-1开始输入，0词预选状态。1和2都是输入完成，请区分具体数值。
+        // 1️⃣let input_object: any; // input标签dom对象
+        // 2️⃣bind:this={input_object} // 获取当前input_object对象
+        // 3️⃣func.watch_input_enter(input_object); // 监听输入法输入事件
+        // 4️⃣def.input_enter(){执行具体Enter回调}
+        if (browser){
+            //
+            input_object.addEventListener('compositionstart',function(e){
+                input_enter_data.input_doing = -1;
+                // console.log("compositionstart=", input_enter_data.input_doing);
+            },false);
+            input_object.addEventListener('input',function(e){
+                if (input_enter_data.input_doing === -1){ // 词预选状态
+                    input_enter_data.input_doing = 0;
+                } else if (input_enter_data.input_doing === 1 || input_enter_data.input_doing === 2) { // 直接输入状态，顺便初始化input_doing
+                    input_enter_data.input_doing = 1;
+                } else {
+                    input_enter_data.input_doing = 0;
+                }
+                // console.log("input=", input_enter_data.input_doing);
+            },false);
+            input_object.addEventListener('compositionend',function(e){
+                if (input_enter_data.input_doing === 0){ // 预选词已确定时触发
+                    input_enter_data.input_doing = 2;
+                }else if (input_enter_data.input_doing === 1) { // 输入完成时触发
+                    input_enter_data.input_doing = 1;
+                }else {
+                    input_enter_data.input_doing = 0;
+                }
+                // console.log("compositionend=", input_enter_data.input_doing);
+            },false);
+        }else{
+            console.warn("此方法只适用于浏览器:input_enter_complete");
         }
     },
 

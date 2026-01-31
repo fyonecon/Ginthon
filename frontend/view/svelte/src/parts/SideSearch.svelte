@@ -1,25 +1,35 @@
 <script lang="ts">
     import {afterNavigate} from "$app/navigation";
     import func from "../common/func.svelte.js";
+    import {input_enter_data} from "../stores/input_enter.store.svelte";
 
     // 本页面参数
     let input_value_search = $state("");
+    let input_object: any; // input标签dom对象
 
 
     // 本页面函数：Svelte的HTML组件onXXX=中正确调用：={()=>def.xxx()}
     const def = {
-        input_enter: function(event){
+        input_enter: function(event: any){
             let that = this;
             //
             if (event.key === 'Enter') {
-                console.log('Enter pressed:', input_value_search);
-                // 执行回车操作
-                let the_value = input_value_search.trim();
-                if (the_value){
-                    //
-                    func.notice("Enter: "+ the_value);
-                }else{
-                    func.notice(func.get_translate("input_null"));
+                let that = this;
+                // 处理Enter
+                if (event.key === 'Enter') {
+                    if (input_enter_data.input_doing === 1 || input_enter_data.input_doing === 2){ // 输入法输入完成
+                        func.console_log("输入法输入完成=", input_enter_data.input_doing);
+                        input_enter_data.input_doing = -1; // init
+                        // 执行回车操作
+                        let the_value = input_value_search.trim();
+                        if (the_value){
+                            func.notice("Enter: "+ the_value);
+                        }else{
+                            func.notice(func.get_translate("input_null"));
+                        }
+                    }else{ // 输入法正在输入
+                        func.console_log("输入法正在输入=", input_enter_data.input_doing);
+                    }
                 }
             }
         },
@@ -28,7 +38,8 @@
 
     // 刷新页面数据
     afterNavigate(() => {
-        //
+        // 监听输入法输入事件
+        func.watch_input_enter(input_object);
     });
 
 
@@ -37,7 +48,12 @@
 <section class="section-side_search select-none bg-neutral-200 dark:bg-neutral-800">
     <div class="side-search font-text">
         <label class="label">
-            <input class="side-search-input input-style w-full border-radius font-text select-text" type="text" maxlength="2000" placeholder="{func.get_translate('input_placeholder_search')}" bind:value={input_value_search} onkeydown={(event)=>def.input_enter(event)} onmouseenter={(e) => e.currentTarget.focus()} />
+            <input class="side-search-input input-style w-full border-radius font-text select-text" type="text" maxlength="2000" placeholder="{func.get_translate('input_placeholder_search')}"
+                   bind:value={input_value_search}
+                   onkeydown={(event)=>def.input_enter(event)}
+                   onmouseenter={(e) => e.currentTarget.focus()}
+                   bind:this={input_object}
+            />
         </label>
     </div>
 </section>
