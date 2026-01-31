@@ -1,11 +1,11 @@
 <script lang="ts">
     import { resolve } from '$app/paths';
-    import func from "../../common/func.svelte";
+    import func from "../../common/func.svelte.js";
     import {afterNavigate} from "$app/navigation";
     import {onMount} from "svelte";
     import {browser_ok, runtime_ok} from "../../common/middleware.svelte";
 
-
+    
     // 本页面参数
     let route = $state(func.get_route());
 
@@ -18,7 +18,7 @@
 
     // 页面函数执行的入口，实时更新数据
     function page_start(){
-        console.log("page_start()=", route);
+        func.console_log("page_start()=", route);
         // 开始
     }
 
