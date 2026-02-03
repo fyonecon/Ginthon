@@ -8,8 +8,9 @@ const config = {
     },
     sys:{
         backend: "py", // go、py
-        base_route: "/view", // 等同于svelte.config.js中paths的base "", "/view"，结尾无/
-        home_route: "/home", // 主页默认页的路由 ""、"/home"
+        base_route: "/view", // 此值请同样svelte.config.js中paths的base：""、"/view"、'/view_static'，结尾无/
+        home_route: "/home", // 主页默认页的路由：空""、"/purehome"
+        home_route_white_word: "@home", // 默认刷新时打开的页面，与search里面“@白名单”匹配：空"@"、"@purehome"
     },
     api: {
         js_call_py_url: "https://127.0.0.1:9750/api/js_call_py", // http(s)://127.0.0.1:9750/api/js_call_py 、http(s)://127.0.0.1:9850/api/js_call_go
