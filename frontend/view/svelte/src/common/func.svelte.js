@@ -43,6 +43,11 @@ const func = {
             //
         }
     },
+    title: function(_title="-"){
+        if (browser){
+            document.title = _title;
+        }
+    },
     url_path: function(pathname){ // URL的path路径前缀，适配后端服务器输出规则。默认""，推荐"."。pathname开头/ 。
         return ""+pathname;
     },
@@ -950,8 +955,8 @@ const func = {
         if (timeout_ms === "long"){
             // 长时间显示
         }else{
-            if (timeout_ms <= 1000){
-                timeout_ms = 5000;
+            if (timeout_ms <= 400){
+                timeout_ms = 400;
             }
             //
             loading_show_timer = setTimeout(function () {
@@ -971,8 +976,8 @@ const func = {
         if (timeout_ms === "long"){
             // 长时间显示
         }else{
-            if (timeout_ms <= 1000){
-                timeout_ms = 1000;
+            if (timeout_ms <= 400){
+                timeout_ms = 400;
             }
             //
             //
@@ -986,8 +991,8 @@ const func = {
         alert_data.alert_msg = msg;
     },
     notice: function (title="", msg="", timeout_ms = 5000, trigger="info"){
-        if (timeout_ms <= 1000){
-            timeout_ms = 1000;
+        if (timeout_ms <= 400){
+            timeout_ms = 400;
         }
         switch (trigger) {
             case "info":
