@@ -1,39 +1,65 @@
 // 中间件
 
+import {browser} from "$app/environment";
+
 const runtime_func = {
     browser_fn_state: function (){
         return !(navigator.webdriver || !window.localStorage || !window.indexedDB);
     },
     screen_state: function (){
-        let inner_w = window.innerWidth;
-        let inner_h = window.innerHeight;
-        let screen_w = window.screen.width;
-        let screen_h = window.screen.height;
-        //
-        return !(inner_w < 220 || inner_h < 220 || screen_w < 220 || screen_h < 220);
+        if (browser){
+            let inner_w = window.innerWidth;
+            let inner_h = window.innerHeight;
+            let screen_w = window.screen.width;
+            let screen_h = window.screen.height;
+            //
+            return !(inner_w < 220 || inner_h < 220 || screen_w < 220 || screen_h < 220);
+        }else{
+            return true;
+        }
     },
 };
 
 const browser_func = {
     is_weixin: function (){
-        let ua = window.navigator.userAgent.toLowerCase();
-        return ua.match(/micromessenger/i) === 'micromessenger';
+        if (browser){
+            let ua = window.navigator.userAgent.toLowerCase();
+            return ua.indexOf("micromessenger")!==-1;
+        }else{
+            return false;
+        }
     },
     is_qq: function (){
-        let ua = window.navigator.userAgent.toLowerCase();
-        return ((ua.indexOf("qq")!==-1) && !(ua.indexOf("qqbrowser")!==-1));
+        if (browser){
+            let ua = window.navigator.userAgent.toLowerCase();
+            return ((ua.indexOf("qq")!==-1) && !(ua.indexOf("qqbrowser")!==-1));
+        }else{
+            return false;
+        }
     },
     is_dingding: function (){
-        let ua = window.navigator.userAgent.toLowerCase();
-        return ua.indexOf("dingtalk")!==-1;
+        if (browser){
+            let ua = window.navigator.userAgent.toLowerCase();
+            return ua.indexOf("dingtalk")!==-1;
+        }else{
+            return false;
+        }
     },
     is_work_weixin: function (){
-        let ua = window.navigator.userAgent.toLowerCase();
-        return ua.indexOf("wxwork")!==-1;
+        if (browser){
+            let ua = window.navigator.userAgent.toLowerCase();
+            return ua.indexOf("wxwork")!==-1;
+        }else{
+            return false;
+        }
     },
     is_feishu: function (){
-        let ua = window.navigator.userAgent.toLowerCase();
-        return ua.indexOf("lark")!==-1;
+        if (browser){
+            let ua = window.navigator.userAgent.toLowerCase();
+            return ua.indexOf("lark")!==-1;
+        }else{
+            return false;
+        }
     },
 };
 
