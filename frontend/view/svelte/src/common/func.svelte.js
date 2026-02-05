@@ -14,6 +14,7 @@ import {watch_lang_data} from "../stores/watch_lang.store.svelte";
 import {app_uid_data} from "../stores/app_uid.store.svelte";
 import FetchPOST from "./post.svelte";
 import {input_enter_data} from "../stores/input_enter.store.svelte.js";
+import QRCode from "qrcode";
 
 
 //
@@ -1120,6 +1121,38 @@ const func = {
         }else{
             console.warn("此方法只适用于浏览器:input_enter_complete");
         }
+    },
+    make_qr_base64: function (txt="", width=200, height=200){
+        // npm install qrcode
+        return new Promise(resolve => {
+            QRCode.toDataURL(txt.trim(), {
+                // 二维码大小和边距
+                width: width,           // 二维码宽度（像素）
+                height: height,          // 二维码高度（像素）
+                margin: 3,           // 二维码边距（像素）
+                // 颜色配置
+                color: {
+                    dark: '#000000',    // 暗色模块颜色（默认黑色）
+                    light: '#FFFFFF'    // 亮色模块颜色（默认白色）
+                },
+                // 纠错级别
+                errorCorrectionLevel: 'H', // L, M, Q, H
+                // 二维码版本（1-40）
+                version: 5,
+                // 掩码模式（0-7）
+                maskPattern: 2,
+                // 输出格式
+                type: 'image/png',    // 也可以是 'image/jpeg', 'image/webp'
+                quality: 0.92,        // 仅对 JPEG/WebP 有效
+                // 渲染器选项
+                rendererOpts: {
+                    quality: 1          // PNG 质量
+                }
+            })
+            .then(base64 => {
+                resolve(base64);
+            });
+        });
     },
 
     //
