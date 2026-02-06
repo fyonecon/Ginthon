@@ -357,12 +357,16 @@ const func = {
         return back;
     },
     unicode_to_string: function (unicode){
-        const _unicode = unicode.split(",");
-        let back = "";
-        for (let i=0; i<_unicode.length; i++){
-            back += String.fromCharCode(_unicode[i]);
+        try {
+            const _unicode = unicode.split(",");
+            let back = "";
+            for (let i=0; i<_unicode.length; i++){
+                back += String.fromCharCode(_unicode[i]);
+            }
+            return back;
+        }catch (e) {
+            return unicode;
         }
-        return back;
     },
     hex16_to_string: function (hex16) { // 除了不支持emoji外都支持
         return decodeURIComponent(hex16);
