@@ -358,12 +358,16 @@ const func = {
     },
     unicode_to_string: function (unicode){
         try {
-            const _unicode = unicode.split(",");
-            let back = "";
-            for (let i=0; i<_unicode.length; i++){
-                back += String.fromCharCode(_unicode[i]);
+            if (unicode.indexOf(",") !== -1){
+                const _unicode = unicode.split(",");
+                let back = "";
+                for (let i=0; i<_unicode.length; i++){
+                    back += String.fromCharCode(_unicode[i]);
+                }
+                return back;
+            }else{
+                return unicode;
             }
-            return back;
         }catch (e) {
             return unicode;
         }
@@ -373,14 +377,18 @@ const func = {
     },
     string_to_hex16: function (string){ // 字符串转16进制，任意字符串（中文、emoji）
         let hex = "";
-        for (let i = 0; i < string.length; i++) {
-            if (hex){
-                hex += "&#x"+string.charCodeAt(i).toString(16)+";";
-            }else{
-                hex = "&#x"+string.charCodeAt(i).toString(16)+";";
+        try {
+            for (let i = 0; i < string.length; i++) {
+                if (hex){
+                    hex += "&#x"+string.charCodeAt(i).toString(16)+";";
+                }else{
+                    hex = "&#x"+string.charCodeAt(i).toString(16)+";";
+                }
             }
+            return hex;
+        }catch (e) {
+            return hex;
         }
-        return hex;
     },
     string_to_json: function (string) { // 将string转化为json，注意，里面所有key的引号为双引号，否则浏览器会报错。
         let json;
@@ -1090,7 +1098,7 @@ const func = {
             return false;
         }
     },
-    watch_input_enter: function(input_object){ // 监测输入法是否已经输入完成，请将此函数放置在page_start()里面
+    watch_input_enter: function(input_object){ // 监测输入法是否已经输入完成，请将此函数放置在page_start()里面或on Mount的runtime_ok后面
         // 判断用户输入框是否已经输入完成。 1直接完成输入，2预选词输入完成，-1开始输入，0词预选状态。1和2都是输入完成，请区分具体数值。
         // 1️⃣let input_object: any; // input标签dom对象
         // 2️⃣bind:this={input_object} // 获取当前input_object对象
