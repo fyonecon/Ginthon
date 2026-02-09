@@ -20,6 +20,7 @@
     // 页面函数执行的入口，实时更新数据
     function page_start(){
         func.console_log("page_start=", route);
+        func.loading_hide(); // 避免其他页面跳转到本页面时出现loading图
         // 开始
     }
 
@@ -34,12 +35,6 @@
         func.console_log("page_hide=", route);
         // hide
     }
-
-
-    // 检测$state()值变化
-    $effect(() => {
-        //
-    });
 
 
     // 刷新页面数据
@@ -69,7 +64,7 @@
 
 </script>
 
-<div>
+<div class="page-div example-box select-none">
     <h3>{route}</h3>
     <ul class="ul-group font-text">
         <li class="li-group">
@@ -83,3 +78,9 @@
 
     </ul>
 </div>
+
+<style>
+    .example-box{
+        padding: 20px 15px;
+    }
+</style>
