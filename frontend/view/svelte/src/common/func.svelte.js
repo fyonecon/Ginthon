@@ -366,7 +366,11 @@ const func = {
                 }
                 return back;
             }else{
-                return unicode;
+                try {
+                    return String.fromCharCode(unicode);
+                }catch (e) {
+                    return unicode;
+                }
             }
         }catch (e) {
             return unicode;
@@ -1144,8 +1148,8 @@ const func = {
                 margin: 3,           // 二维码边距（像素）
                 // 颜色配置
                 color: {
-                    dark: '#000000',    // 暗色模块颜色（默认黑色）
-                    light: '#FFFFFF'    // 亮色模块颜色（默认白色）
+                    dark: '#426BE9',    // 暗色模块颜色（默认黑色）
+                    light: '#FEFEFE'    // 亮色模块颜色（默认白色）
                 },
                 // 纠错级别
                 errorCorrectionLevel: 'H', // L, M, Q, H
