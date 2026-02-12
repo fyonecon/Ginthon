@@ -357,6 +357,8 @@ const func = {
         return back;
     },
     unicode_to_string: function (unicode){
+        let that = this;
+        //
         try {
             if (unicode.indexOf(",") !== -1){
                 const _unicode = unicode.split(",");
@@ -367,7 +369,12 @@ const func = {
                 return back;
             }else{
                 try {
-                    return String.fromCharCode(unicode);
+                    let _unicode = String.fromCharCode(unicode);
+                    if (that.string_to_unicode(_unicode) === unicode){ // 比较转义后的字符串是否等于输入的字符串，是则返回转义后的
+                        return _unicode;
+                    }else{
+                        return unicode;
+                    }
                 }catch (e) {
                     return unicode;
                 }
