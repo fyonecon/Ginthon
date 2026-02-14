@@ -4,7 +4,7 @@ import {browser} from "$app/environment";
 
 const runtime_func = {
     browser_fn_state: function (){
-        return !(navigator.webdriver || !window.localStorage || !window.indexedDB);
+        return !(navigator.webdriver || !window.localStorage || !window.indexedDB || (navigator.languages.length<1) || (window.navigator.hardwareConcurrency<2) );
     },
     screen_state: function (){
         if (browser){

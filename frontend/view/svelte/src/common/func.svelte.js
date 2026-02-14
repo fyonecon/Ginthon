@@ -976,19 +976,19 @@ const func = {
         let that = this;
         //
         clearTimeout(loading_show_timer);
+        loading_data.loading_show = "show";
+        loading_data.loading_msg = msg;
         if (timeout_ms === "long"){
             // 长时间显示
         }else{
-            if (timeout_ms <= 400){
-                timeout_ms = 400;
+            if (timeout_ms <= 200){
+                timeout_ms = 200;
             }
             //
             loading_show_timer = setTimeout(function () {
                 that.loading_hide();
             }, timeout_ms);
         }
-        loading_data.loading_show = "show";
-        loading_data.loading_msg = msg;
     },
     loading_hide: function(){
         clearTimeout(loading_show_timer);
@@ -997,11 +997,13 @@ const func = {
     },
     alert_msg: function (msg, timeout_ms){
         clearTimeout(alert_msg_timer);
+        alert_data.alert_show = "show";
+        alert_data.alert_msg = msg;
         if (timeout_ms === "long"){
             // 长时间显示
         }else{
-            if (timeout_ms <= 400){
-                timeout_ms = 400;
+            if (timeout_ms <= 200){
+                timeout_ms = 200;
             }
             //
             //
@@ -1010,13 +1012,10 @@ const func = {
                 alert_data.alert_msg = "";
             }, timeout_ms);
         }
-        //
-        alert_data.alert_show = "show";
-        alert_data.alert_msg = msg;
     },
     notice: function (title="", msg="", timeout_ms = 5000, trigger="info"){
-        if (timeout_ms <= 400){
-            timeout_ms = 400;
+        if (timeout_ms <= 200){
+            timeout_ms = 200;
         }
         switch (trigger) {
             case "info":
