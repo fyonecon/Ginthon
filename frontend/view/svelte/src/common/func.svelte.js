@@ -345,6 +345,7 @@ const func = {
         return that.unicode_to_string(text);
     },
     string_to_unicode: function(string) {
+        let that = this;
         // 处理非字符串输入
         if (typeof string !== 'string') {
             string = String(string);
@@ -359,6 +360,7 @@ const func = {
         return codes.join(',');
     },
     unicode_to_string: function(unicode) {
+        let that = this;
         // 处理无效输入
         if (unicode === null || unicode === undefined) {
             return "";
@@ -398,11 +400,19 @@ const func = {
             } else {
                 // 处理单个Unicode码点
                 let code = Number(unicode);
+                let _unicode = "";
                 // 验证是否为有效Unicode码点
                 if (!isNaN(code) && code >= 0 && code <= 0x10FFFF) {
-                    return String.fromCharCode(code);
+                    _unicode = String.fromCharCode(code);
+                }else{
+                    _unicode = unicode;
                 }
-                return unicode;
+                // 比较值
+                if (that.string_to_unicode(unicode) === unicode){
+                    return _unicode;
+                }else{
+                    return unicode;
+                }
             }
         } catch (e) {
             // 任何错误都返回原字符串
