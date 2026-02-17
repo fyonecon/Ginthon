@@ -344,42 +344,68 @@ const func = {
         let that = this;
         return that.unicode_to_string(text);
     },
-    string_to_unicode: function (string){ // 字符串转unicode，任意字符串
-        let back = "";
-        for (let i=0; i<string.length; i++){
-            if (back){
-                back += ","+string.charCodeAt(i);
-            }else{
-                back = string.charCodeAt(i);
-            }
-
+    string_to_unicode: function(string) {
+        // 处理非字符串输入
+        if (typeof string !== 'string') {
+            string = String(string);
         }
-        return back;
+        if (string.length === 0) return "";
+
+        // 使用数组收集编码，然后join，效率更高
+        let codes = [];
+        for (let i = 0; i < string.length; i++) {
+            codes.push(string.charCodeAt(i));
+        }
+        return codes.join(',');
     },
-    unicode_to_string: function (unicode){
-        let that = this;
-        //
+    unicode_to_string: function(unicode) {
+        // 处理无效输入
+        if (unicode === null || unicode === undefined) {
+            return "";
+        }
+
+        // 如果是数字，直接转换
+        if (typeof unicode === 'number') {
+            return String.fromCharCode(unicode);
+        }
+
+        // 确保是字符串
+        unicode = String(unicode).trim();
+        if (unicode === "") return "";
+
         try {
-            if (unicode.indexOf(",") !== -1){
-                const _unicode = unicode.split(",");
-                let back = "";
-                for (let i=0; i<_unicode.length; i++){
-                    back += String.fromCharCode(_unicode[i]);
-                }
-                return back;
-            }else{
-                try {
-                    let _unicode = String.fromCharCode(unicode);
-                    if (that.string_to_unicode(_unicode) === unicode){ // 比较转义后的字符串是否等于输入的字符串，是则返回转义后的
-                        return _unicode;
-                    }else{
+            // 处理逗号分隔的Unicode序列
+            if (unicode.indexOf(',') !== -1) {
+                let parts = unicode.split(',');
+                let result = [];
+
+                for (let i = 0; i < parts.length; i++) {
+                    let part = parts[i].trim();
+                    // 跳过空部分
+                    if (part === "") continue;
+
+                    // 转换为数字
+                    let code = Number(part);
+                    // 验证是否为有效Unicode码点
+                    if (isNaN(code) || code < 0 || code > 0x10FFFF) {
+                        // 无效编码，返回原字符串
                         return unicode;
                     }
-                }catch (e) {
-                    return unicode;
+                    result.push(String.fromCharCode(code));
                 }
+
+                return result.join('');
+            } else {
+                // 处理单个Unicode码点
+                let code = Number(unicode);
+                // 验证是否为有效Unicode码点
+                if (!isNaN(code) && code >= 0 && code <= 0x10FFFF) {
+                    return String.fromCharCode(code);
+                }
+                return unicode;
             }
-        }catch (e) {
+        } catch (e) {
+            // 任何错误都返回原字符串
             return unicode;
         }
     },
