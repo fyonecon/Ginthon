@@ -353,7 +353,7 @@ const func = {
         if (string.length === 0) return "";
 
         // 使用数组收集编码，然后join，效率更高
-        let codes = [];
+        let codes = [""]; // 默认一个空值可以避免多次转换丢失一个值
         for (let i = 0; i < string.length; i++) {
             codes.push(string.charCodeAt(i));
         }
