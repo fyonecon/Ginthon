@@ -9,8 +9,8 @@
 
 
     // 链接携带的信息
-    const error_url = func.search_param("error_url")
     const error_msg = func.search_param("error_msg");
+    const error_url = func.search_param("error_url")
     const back_url = func.url_path(config.sys.home_route);
 
 
@@ -29,6 +29,7 @@
         func.console_log("page_start=", route);
         func.loading_hide(); // 避免其他页面跳转到本页面时出现loading图
         // 开始
+        func.title(func.get_translate("_404"));
     }
 
     // 标签处于切换显示状态
@@ -72,14 +73,15 @@
 </script>
 
 <div class="page-div _404-box select-none">
-    <div class="select-text">
+    <div class="select-none">
         <br/>
-        <h2 class="break" data-error_msg="{error_msg}">{error_msg?error_msg:"404"}</h2>
+        <p class="font-title break select-text" data-error_msg="{error_msg}">{error_msg?error_msg:"404"}</p>
         <br/>
-        <p class="break" data-error_url="{error_url}">{error_url?"Error URL: "+error_url.slice(0, 120)+" ... ":""}</p>
+        <p class="font-text break select-text" data-error_url="{error_url}">Error URL:<span style="opacity: 0.7;padding: 0 10px;">{error_url?error_url.slice(0, 120)+" ... ":""}</span></p>
         <br/>
         <br/>
-        <div class="" style="display:flex; justify-content: center; align-items: center;">
+        <br/>
+        <div class="select-none" style="display:flex; justify-content: center; align-items: center;">
             <div style="clear: both;">
                 <a class="click font-blue" href={resolve(back_url)} target="_self" title="Back Home"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="float: left; margin-right: 10px;"><g fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="m15.5 9l-3 3l3 3m-4-6l-3 3l3 3"/></g></svg>{func.get_translate("a_click_tip_back_home")}</a>
             </div>
@@ -93,6 +95,6 @@
 
 <style>
     ._404-box{
-        padding: 20px 15px;
+        padding: 10px 10px;
     }
 </style>
