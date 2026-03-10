@@ -753,7 +753,11 @@ const func = {
             if (_lang.length >= 2){
                 return _lang.toLowerCase();
             }else {
-                return navigator.language.toLowerCase();
+                if (browser){
+                    return navigator.language.toLowerCase();
+                }else{
+                    return "en";
+                }
             }
         }
         //
