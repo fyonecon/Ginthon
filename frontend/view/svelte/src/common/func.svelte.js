@@ -515,30 +515,35 @@ const func = {
             return false;
         }
     },
-    is_mobile_screen: function (){ //-1非法，0PC，1mobile
+    is_mobile_screen: function (){ // -1 非法，0 PC，1 mobile
         let width = window.screen.width;
         let height = window.screen.height;
         let max_px = 1280; // 最大 1280X900 px
-        let min_px = 280;
+        let min_px = 200;
         let rate = 40;
-        if (width < min_px || height < min_px){
-            return -1;
+        if (width < min_px || height < min_px){ // 非法
+            return 0; // -1
         }else{
-            if (Math.abs(width-height) < rate){
-                return -1;
+            if (Math.abs(width-height) < rate){ // 非法
+                return 0; // -1
             }else{
                 if (width>max_px || height>max_px){
-                    return 0;
+                    return 0; // PC
                 }else{
-                    return 1;
+                    return 1; // mobile
                 }
             }
         }
     },
-    is_mobile_pwa: function (){ // iOS/Android端pwa
+    is_pwa: function (){ // 综合判断
+        let that = this;
+        //
+        return that.is_mobile_pwa() || that.is_pc_pwa();
+    },
+    is_mobile_pwa: function (){ // iOS/Android端pwa，不同浏览器不一定
         return window.navigator?.standalone || document.referrer.includes('android-app://');
     },
-    is_pc_pwa: function (){ // win/mac端pwa
+    is_pc_pwa: function (){ // win/mac端pwa，不同浏览器不一定
         const displayModes = ['fullscreen', 'standalone', 'minimal-ui'];
         return displayModes.some(
             displayMode => window.matchMedia('(display-mode: ' + displayMode + ')').matches
@@ -1140,11 +1145,27 @@ const func = {
             return false;
         }
     },
-    is_url: function (string=""){ // http(s) ftp(s)
-        try {
-            new URL(string);
-            return true;
-        } catch (err) {
+    is_url: function (string=""){ // http(s) ftp(s) file
+        string = string.toLowerCase();
+        if (
+            string.indexOf("http:") === 0
+            || string.indexOf("https:") === 0
+            || string.indexOf("ftp:") === 0
+            || string.indexOf("ftps:") === 0
+            || string.indexOf("file:") === 0
+            // || string.indexOf("view-source:") === 0
+            || string.indexOf("mailto:") === 0
+            || string.indexOf("rtsp:") === 0
+            || string.indexOf("tel:") === 0
+            || string.indexOf("sms:") === 0
+        ){ // 严格限制协议开头
+            try {
+                new URL(string);
+                return true;
+            } catch (err) {
+                return false;
+            }
+        }else{
             return false;
         }
     },

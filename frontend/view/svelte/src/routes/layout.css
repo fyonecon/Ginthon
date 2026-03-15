@@ -6,24 +6,25 @@
 /* iconify图标教程：https://icon-sets.iconify.design/solar/ */
 /* 如果上面遇到@import引入错误，请手动运行‘ npx sv add tailwindcss ’ 来安装tailwindcss */
 
-body,
-html {
+body, html {
 	font-family: "Noto Sans Light", sans-serif;
-	letter-spacing: 1px;
+    font-size: 15px;
+    line-height: 22px; /*1.5倍的字体大小*/
+    letter-spacing: 0px;
 }
 
 /*亮暗主题切换*/
 @custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
 
 /**/
-@media only screen and (max-width: 279px) {
+@media only screen and (max-width: 259px) {
     body:after{
         width: 700px; height: 100%;
-        content:"Width >= 280 PX";
+        content:"Width >= 260 PX";
         position:fixed; top: 0;
         text-align: left;
         padding: 0 0 0 20px;
-        font-size: 24px; color: rgba(220,220,220,1); line-height: 300px;
+        font-size: 20px; color: rgba(220,220,220,1); line-height: 300px;
         background: rgba(0,0,0,0.6);
         cursor: not-allowed;
         letter-spacing: 2px;
@@ -32,70 +33,12 @@ html {
 }
 
 .app {
-	font-size: 14px;
     clear: both;
-    min-width: 520px;
 }
 
 
 .main{
     width: 100%;
-}
-
-
-.section-director {
-    position: fixed;
-    z-index: 1;
-    width: 80px;
-    height: 50px;
-    top: 0;
-    overflow-x: hidden;
-    overflow-y: hidden;
-}
-.section-nav {
-    position: fixed;
-    z-index: 0;
-    width: calc(100% - 220px - 0px);
-    min-width: 200px;
-    height: 50px;
-    top: 0;
-    overflow-x: hidden;
-    overflow-y: hidden;
-}
-.section-main{
-    position: fixed;
-    height: calc(100% - 50px);
-    top: 50px;
-    padding-bottom: 100px;
-    min-width: 300px; /*适配最小宽度为 220+300=520px */
-}
-@media screen and (max-width: 539px) {
-    .section-director {
-        left: 80px;
-    }
-    .section-nav {
-        left: 0;
-        width: calc(100%);
-    }
-    .section-main {
-        width: 100%;
-        left: 0;
-        z-index: 1;
-    }
-}
-@media screen and (min-width: 540px){
-    .section-director {
-        left: 220px;
-    }
-    .section-nav {
-        left: 220px;
-        width: calc(100% - 220px);
-    }
-    .section-main {
-        width: calc(100% - 220px);
-        left: 220px;
-        z-index: 0;
-    }
 }
 
 
@@ -107,6 +50,16 @@ html {
 .no-drag {
 	--wails-draggable: no-drag !important;
     -webkit-app-region: no-drag !important;
+}
+
+.clear{
+    clear: both;
+}
+.float-left{
+    float: left;
+}
+.float-right{
+    float: right;
 }
 
 .hide {
@@ -132,27 +85,38 @@ html {
 	background: orange;
 	outline: thick solid #FF0000;
 }
-
 ::-moz-selection {
 	color: #FCFCFC;
 	background: #CD5C5C;
 }
 
+/* 滚动区域基础样式 - 兼容主流浏览器 */
 .scroll-y-style {
-	overflow-y: auto;
-	overflow-x: hidden;
+    /* 滚动控制 */
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* 触摸行为控制 */
+    touch-action: pan-y;
+    /* iOS平滑滚动 */
+    -webkit-overflow-scrolling: touch;
+    /* Firefox滚动条样式 */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(115, 115, 115, 0.5) transparent;
+    /* 平滑滚动 */
+    scroll-behavior: smooth;
 }
-
+/* WebKit内核滚动条样式 (Chrome, Safari, Edge新版) */
 .scroll-y-style::-webkit-scrollbar {
-	width: 10px;
-	background-color: rgba(115,115,115,0);
+    width: 8px;
+    background-color: transparent;
 }
-
 .scroll-y-style::-webkit-scrollbar-thumb {
-	border-radius: 10px;
-	height: 44px;
-	background-color: rgba(115,115,115,0.5);
-	cursor: pointer;
+    border-radius: 8px;
+    background-color: rgba(115, 115, 115, 0.5);
+    min-height: 40px;
+}
+.scroll-y-style::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(115, 115, 115, 0.8);
 }
 
 .font-white{
@@ -160,6 +124,9 @@ html {
 }
 .font-black{
     color: black;
+}
+.font-gray{
+    color: rgba(160, 160, 160, 1);
 }
 .font-blue{
     color: var(--color-blue-500);
@@ -182,12 +149,14 @@ html {
 .click {
 	cursor: pointer;
     user-select: none;
+    /*移除btn原生点击高亮效果*/
+    -webkit-tap-highlight-color: transparent;
 }
 .click:hover{
-    opacity: 0.9;
+    opacity: 0.8;
 }
 .click:active {
-	opacity: 0.8;
+    opacity: 0.8;
 }
 
 .not-click{
@@ -222,48 +191,23 @@ html {
 
 .font-mini {
 	font-size: 12px;
+    line-height: 16px; /*1.3倍的字体大小*/
+    letter-spacing: 0;
 }
-
 .font-text {
-	font-size: 14px;
+	font-size: 15px;
+    line-height: 22px; /*1.5倍的字体大小*/
 }
-
 .font-title {
-	font-size: 16px;
+	font-size: 18px;
 }
-
 .font-class {
-	font-size: 20px;
+	font-size: 24px;
 }
 
 
 .border-radius {
     border-radius: 10px;
-}
-
-
-.ul-group{
-    clear: both;
-    margin-bottom: 20px;
-}
-.li-group{
-    clear: both;
-    overflow: hidden;
-    margin-bottom: 10px;
-}
-.li-group-title{
-    width: 200px;
-    padding: 10px 10px;
-    float: left;
-    opacity: 0.8;
-    line-height: 24px;
-    overflow: hidden;
-    max-height: 82px;
-}
-.li-group-content{
-    width: calc(100% - 200px);
-    padding: 10px 10px;
-    float: left;
 }
 
 .svg-icon{
@@ -278,7 +222,7 @@ html {
 
 .btn-base{
     border-radius: 20px;
-    padding: 5px 20px;
+    padding: 7px 20px;
 }
 .btn-sm{
     border-radius: 15px;
@@ -296,7 +240,6 @@ html {
     padding: 0 10px;
     outline: none;
     border: 1px solid rgba(160,160,160, 0.2);
-    opacity: 0.8;
 }
 .input-style:focus{
     outline: 2px solid var(--color-blue-500);
@@ -310,12 +253,12 @@ div[data-part="root"] { /*notice*/
     width: 280px;
     padding: 5px 10px;
     /*box-shadow: 0 0 20px rgba(160,160,160, 0.2);*/
-    border: 1px solid rgba(160,160,160, 0.5);
+    border: 1px solid rgba(160,160,160, 0.6);
     opacity: 0.8;
 }
 div[data-part="content"] { /*confirm*/
     /*box-shadow: 0 0 20px rgba(160,160,160, 0.2);*/
-    border: 1px solid rgba(160,160,160, 0.5);
+    border: 1px solid rgba(160,160,160, 0.6);
     max-width: 300px;
     margin-top: -120px;
 }
@@ -324,6 +267,7 @@ div[data-part="content"] { /*confirm*/
         max-width: 280px;
     }
 }
+
 
 /*流水字，从右向左*/
 .text-marquee {

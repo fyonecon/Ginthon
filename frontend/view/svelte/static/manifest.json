@@ -2,8 +2,9 @@
   "name": "Ginthon",
   "short_name": "Ginthon",
   "start_url": "./index.html#route=home&from=&utm_source=pwa",
+  "scope": "/index/",
   "display": "standalone",
-  "background_color": "#fefefe",
+  "background_color": "#A0A0A0",
   "description": "",
   "icons": [
     {
