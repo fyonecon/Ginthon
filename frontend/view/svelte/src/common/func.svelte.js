@@ -1221,7 +1221,7 @@ const func = {
                 // 纠错级别
                 errorCorrectionLevel: 'H', // L, M, Q, H
                 // 二维码版本（1-40）
-                version: 5,
+                version: 0,
                 // 掩码模式（0-7）
                 maskPattern: 2,
                 // 输出格式
