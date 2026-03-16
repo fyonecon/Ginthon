@@ -149,6 +149,7 @@ body, html {
 .click {
 	cursor: pointer;
     user-select: none;
+    opacity: 1;
     /*移除btn原生点击高亮效果*/
     -webkit-tap-highlight-color: transparent;
 }
@@ -156,7 +157,9 @@ body, html {
     opacity: 0.8;
 }
 .click:active {
-    opacity: 0.8;
+    opacity: 0.6;
+    transform: scale(1.04);
+    transition: transform 0.1s linear;
 }
 
 .not-click{
