@@ -226,6 +226,14 @@ const lang_dict = {
         zh: "二维码",
         en: "QRCode",
     },
+    copied: {
+        zh: "已复制",
+        en: "Copied",
+    },
+    copied_error: {
+        zh: "复制时出现错误",
+        en: "An error occurred during copying",
+    },
     input_placeholder_add_dir: {
         zh: "输入文件夹路径",
         en: "Enter folder path",
