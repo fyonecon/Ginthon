@@ -248,7 +248,7 @@
     .director-div{
         position: absolute;
         top: 0;
-        left: 4px;
+        left: 140px;
         height: 50px;
         line-height: 50px;
         width: 80px;

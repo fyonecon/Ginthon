@@ -1,5 +1,9 @@
 /*page专用公共css*/
 
+
+.app{
+    min-width: 520px;
+}
 .section-main{
     position: fixed;
     width: calc(100% -  220px);
@@ -19,6 +23,12 @@
 }
 .part-div{
     opacity: 1; /*必须为1*/
+}
+
+
+.section-nav{
+    width: calc(100% - 220px);
+    margin-left: 220px;
 }
 
 
