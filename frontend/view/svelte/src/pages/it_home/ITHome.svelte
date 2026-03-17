@@ -74,7 +74,7 @@
 
 </script>
 
-<div>
+<div class="page-div select-none it_home-box">
 
     <ul class="ul-group font-text">
         <li class="li-group">

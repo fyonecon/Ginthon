@@ -1,1 +1,48 @@
 /*page专用公共css*/
+
+.section-main{
+    position: fixed;
+    width: calc(100% -  220px);
+    height: calc(100% - 5px);
+    top: 50px;
+    z-index: 0;
+    /*left: 0;*/
+    right: 0;
+    margin-right: auto;
+    margin-left: auto;
+}
+.page-div{
+    width: 100%;
+    margin: 0 auto 115px auto;
+    opacity: 0.9;
+    padding: 0 10px;
+}
+.part-div{
+    opacity: 1; /*必须为1*/
+}
+
+
+.ul-group{
+    clear: both;
+    margin-bottom: 20px;
+}
+.li-group{
+    clear: both;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+.li-group-title{
+    width: 200px;
+    padding: 10px 0;
+    float: left;
+    opacity: 0.8;
+    line-height: 24px;
+    overflow: hidden;
+    max-height: 82px;
+}
+.li-group-content{
+    width: calc(100% - 200px);
+    padding: 10px 0;
+    float: left;
+}
+

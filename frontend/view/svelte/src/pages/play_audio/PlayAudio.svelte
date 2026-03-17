@@ -477,7 +477,7 @@
 
 </script>
 
-<div>
+<div class="page-div select-none play_audio-box">
     <!--  文件列表  -->
     <div class="list_dirs font-text border-radius">
         <!---->
@@ -663,10 +663,8 @@
 <style>
     .list_dirs{
         clear: both;
-        width: calc(100% - 20px);
+        width: calc(100%);
         border: 1px solid rgba(160,160,160, 0.3);
-        margin-left: 10px;
-        margin-right: 10px;
     }
 
 

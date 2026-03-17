@@ -31,6 +31,7 @@
 
 
     // 本页面参数
+    let route = $state(func.get_route());
     let page_display = $state("hide");
     let theme_model = $state("");
     let lang_index = $state("");
@@ -69,25 +70,16 @@
     };
 
 
-    // 监控所有$state()值变化
-    $effect(() => {
-        // console.log("layout=effect=", page.route);
-    });
-
-
-	// 路由变化之前
-	beforeNavigate(() => {
-        //
-	});
-
-
-	// 路由变化之后
-	afterNavigate(() => {
+    // 页面函数执行的入口，实时更新数据
+    function page_start(){
+        func.console_log("page_start=", route);
+        func.loading_hide(); // 避免其他页面跳转到本页面时出现loading图
+        // 开始
         // 必要运行
         def.auto_set_language_index();
         def.auto_set_theme_model();
         // 系统基础条件检测
-        if (!runtime_ok()){ // false
+        if (!runtime_ok() || !browser_ok()){ // false
             func.alert_msg(func.get_translate("runtime_error_alert"), "long");
             page_display="hide";
             return
@@ -102,20 +94,60 @@
                 def.watch_404_route(); // 检测路由变化
             }
         }
+        //
+    }
+
+    // 标签处于切换显示状态
+    function page_show(){
+        func.console_log("page_show=", route);
+        // show
+    }
+
+    // 标签处于切换隐藏状态
+    function page_hide(){
+        func.console_log("page_hide=", route);
+        // hide
+    }
+
+
+    // 监控所有$state()值变化
+    $effect(() => {
+        // console.log("layout=effect=", page.route);
+    });
+
+
+	// 路由变化之前
+	beforeNavigate(() => {
+        //
+	});
+
+
+	// 路由变化之后
+	afterNavigate(() => {
+        //
+        page_start();
 	});
 
 
     // 页面装载完成后，只运行一次
     onMount(() => {
+        //
+        let theme_event = window.matchMedia('(prefers-color-scheme: dark)');
+        theme_event.addEventListener('change', function (event){ // 监测主题变化
+            def.auto_set_theme_model();
+        });
+        //
+
+        //
         if (!runtime_ok() || !browser_ok()){return;} // 系统基础条件检测
 
         // 监测页面标签是否处于显示
         if (browser){
             document.addEventListener("visibilitychange", () => {
                 if (document.hidden) { // onHide
-                    console.log("onHide");
+                    page_show();
                 } else { // onShow
-                    console.log("onShow");
+                    page_hide();
                 }
             });
         }
@@ -128,13 +160,6 @@
         //
         func.js_watch_window_display(); // 监测窗口是否隐藏
         watch_window();
-
-        //
-        let theme_event = window.matchMedia('(prefers-color-scheme: dark)');
-        theme_event.addEventListener('change', function (event){ // 监测主题变化
-            def.auto_set_theme_model();
-        });
-        //
 
     });
 

@@ -115,7 +115,7 @@
 
 </script>
 
-<div>
+<div class="page-div select-none settings-box">
     <ul class="ul-group font-text">
         <li class="li-group">
             <div class="li-group-title break">

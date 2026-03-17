@@ -108,7 +108,7 @@
 
 </script>
 
-<div>
+<div class="page-div select-none home-box">
     <ul class="ul-group font-text">
         <li class="li-group">
             <div class="li-group-title break">
