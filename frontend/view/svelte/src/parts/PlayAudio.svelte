@@ -10,7 +10,7 @@
     // 本页面参数
     let route = $state(func.get_route());
     const player_prefix = "play_audio_";
-    let myAudio: any; // 播放对象
+    let myAudio: HTMLAudioElement | null = $state(null); // 播放对象
     let play_error_timeout = $state(0);
     let play_new_timeout = $state(0);
     let play_current_timeout = $state(0);
