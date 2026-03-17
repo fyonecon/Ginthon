@@ -7,6 +7,7 @@
     import {onMount} from "svelte";
     import {watch_lang_data} from "../../../stores/watch_lang.store.svelte";
     import {browser_ok, runtime_ok} from "../../../common/middleware.svelte";
+    import { copy } from 'svelte-copy';
 
 
     // 本页面数据
@@ -18,6 +19,7 @@
     let languages = $state(navigator.languages);
     let theme_model = $state("");
     let language_index = $state("");
+    let app_info = $state(config.app.app_name + " UI v"+config.app.app_version);
 
 
     // 本页面函数：Svelte的HTML组件onXXX=中正确调用：={()=>def.xxx()}
@@ -67,8 +69,14 @@
             <div class="li-group-title break">
                 {func.get_translate("About")}
             </div>
-            <div class="li-group-content select-text">
-                {config.app.app_name} UI v{config.app.app_version}
+            <div class="li-group-content select-text"
+                 use:copy={{
+                        text: app_info?app_info:"",
+                        onCopy: ({ text }) => {text?func.notice(func.get_translate("copied"), "", 2000):func.console_log("Copied null");},
+                        onError: ({ error }) => {func.notice(func.get_translate("copied_error"), "", 2000);console.warn(error);}
+                      }}
+            >
+                {app_info}
             </div>
         </li>
         <li class="li-group">
