@@ -255,12 +255,18 @@ div[data-part="group"] { /*notice*/
 div[data-part="root"] { /*notice*/
     width: 280px;
     padding: 5px 10px;
-    /*box-shadow: 0 0 20px rgba(160,160,160, 0.2);*/
     border: 1px solid rgba(160,160,160, 0.6);
     opacity: 0.8;
 }
+@media only screen and (max-width: 700px){
+    div[data-part="root"] { /*confirm*/
+        margin-right: auto;
+        margin-left: auto;
+        left: 0;
+        right: 0;
+    }
+}
 div[data-part="content"] { /*confirm*/
-    /*box-shadow: 0 0 20px rgba(160,160,160, 0.2);*/
     border: 1px solid rgba(160,160,160, 0.6);
     max-width: 300px;
     margin-top: -120px;
