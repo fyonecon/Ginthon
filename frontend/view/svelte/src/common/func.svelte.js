@@ -538,7 +538,7 @@ const func = {
     is_pwa: function (){ // 综合判断
         let that = this;
         //
-        return that.is_mobile_pwa() || that.is_pc_pwa();
+        return (that.is_mobile_pwa() || that.is_pc_pwa() || that.is_wails() || that.is_gthon());
     },
     is_mobile_pwa: function (){ // iOS/Android端pwa，不同浏览器不一定
         return window.navigator?.standalone || document.referrer.includes('android-app://');
@@ -1142,6 +1142,49 @@ const func = {
                 return false;
             }
         }catch (e) {
+            return false;
+        }
+    },
+    is_localhost: function (ip=""){ // ipv4、ipv6是否是本地IP
+        let hostname = ip;
+        if (browser){
+            if (!hostname){hostname = window.location.hostname;}
+            hostname = hostname.toLowerCase();
+            return hostname === 'localhost' ||
+                hostname.includes('localhost') ||
+                hostname === '127.0.0.1' ||
+                hostname === '[::1]' ||  // IPv6 localhost
+                hostname === '0.0.0.0';
+        }else{
+            return false;
+        }
+    },
+    is_local_ipv4: function (ip=""){
+        let hostname = ip;
+        if (browser){
+            if (!hostname){hostname = window.location.hostname;}
+            hostname = hostname.toLowerCase();
+            return hostname.startsWith('192.168.') ||
+                hostname.startsWith('10.') ||
+                hostname.startsWith('172.') ||
+                hostname.startsWith('169.254.') || // 链路本地
+                hostname === 'localhost' ||
+                hostname.includes('localhost') ||
+                hostname === '127.0.0.1';
+        }else{
+            return false;
+        }
+    },
+    is_local_ipv6: function (ip=""){
+        let hostname = ip;
+        if (browser){
+            if (!hostname){hostname = window.location.hostname;}
+            hostname = hostname.toLowerCase();
+            return hostname === '::1' ||
+                hostname.startsWith('fe80:') ||
+                hostname.startsWith('fc') ||
+                hostname.startsWith('fd');
+        }else{
             return false;
         }
     },
