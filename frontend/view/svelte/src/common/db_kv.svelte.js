@@ -1,7 +1,7 @@
 import Dexie from "dexie";
 
 // kv型indexDB数据库
-const kv_db_name = "dexie_kv_db";
+const kv_db_name = "View_on_Svelte_dexie_kv_db";
 let DexieKVDB = $state();
 let isInitialized = $state(false);
 /*
