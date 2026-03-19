@@ -4,6 +4,7 @@
     import func from "../common/func.svelte.js";
     import { afterNavigate, beforeNavigate } from "$app/navigation";
     import { side_tab_data } from '../stores/side_tab.store.svelte.js';
+    import {browser_ok, runtime_ok} from "../common/middleware.svelte";
 
 
     // 本页面参数
@@ -39,6 +40,9 @@
 
     // 刷新页面数据
     afterNavigate(() => {
+        if (!func.support_min_js()){return;}
+        if (!runtime_ok() || !browser_ok()){return;} // 系统基础条件检测
+        //
         route = func.get_route();
         //
         side_tab_data.tab_value = route;

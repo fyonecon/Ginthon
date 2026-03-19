@@ -5,6 +5,7 @@
     import {onMount, onDestroy} from "svelte";
     import config from "../config";
     import {play_audio_data} from "../stores/play_audio.store.svelte.js";
+    import {browser_ok, runtime_ok} from "../common/middleware.svelte";
 
 
     // 本页面参数
@@ -451,6 +452,9 @@
 
     // 检测$state()值变化
     $effect(() => {
+        if (!func.support_min_js()){return;}
+        if (!runtime_ok() || !browser_ok()){return;} // 系统基础条件检测
+        //
         if (play_audio_data.play_state){
             def.play_start();
         }else {
@@ -461,6 +465,8 @@
 
     // 刷新页面数据
     afterNavigate(() => {
+        if (!func.support_min_js()){return;}
+        if (!runtime_ok() || !browser_ok()){return;} // 系统基础条件检测
         // 展示播放按钮
         def.get_playing().then(the_playing=>{
             if (the_playing){ // 有历史

@@ -2,6 +2,7 @@
     import {afterNavigate} from "$app/navigation";
     import func from "../common/func.svelte.js";
     import {input_enter_data} from "../stores/input_enter.store.svelte";
+    import {browser_ok, runtime_ok} from "../common/middleware.svelte";
 
     // 本页面参数
     let input_value_search = $state("");
@@ -38,6 +39,8 @@
 
     // 刷新页面数据
     afterNavigate(() => {
+        if (!func.support_min_js()){return;}
+        if (!runtime_ok() || !browser_ok()){return;} // 系统基础条件检测
         // 监听输入法输入事件
         func.watch_input_enter(input_object);
     });

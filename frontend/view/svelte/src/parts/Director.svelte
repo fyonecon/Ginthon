@@ -5,6 +5,7 @@
     import config from "../config";
     import {browser} from "$app/environment";
     import {onMount} from "svelte";
+    import {browser_ok, runtime_ok} from "../common/middleware.svelte";
 
 
     // 历史记录算法 >>>>>>
@@ -219,11 +220,16 @@
 
     // 刷新页面数据
     afterNavigate(() => {
+        if (!func.support_min_js()){return;}
+        if (!runtime_ok() || !browser_ok()){return;} // 系统基础条件检测
+        //
         def.show_direction(); // 支持goto()链接带参数
     });
 
     // 页面装载完成后，只运行一次
     onMount(() => {
+        if (!func.support_min_js()){return;}
+        if (!runtime_ok() || !browser_ok()){return;} // 系统基础条件检测
         //
         def.show_direction(); // 支持goto()链接带参数
     });

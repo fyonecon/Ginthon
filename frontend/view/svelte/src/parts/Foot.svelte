@@ -2,6 +2,7 @@
     import func from "../common/func.svelte";
     import config from "../config";
     import {afterNavigate} from "$app/navigation";
+    import {browser_ok, runtime_ok} from "../common/middleware.svelte";
 
 
     // 本页面参数
@@ -15,6 +16,8 @@
 
     // 刷新页面数据
     afterNavigate(() => {
+        if (!func.support_min_js()){return;}
+        if (!runtime_ok() || !browser_ok()){return;} // 系统基础条件检测
         //
     });
 

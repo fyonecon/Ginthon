@@ -4,6 +4,7 @@
     import func from "../common/func.svelte.js";
     import { afterNavigate, beforeNavigate } from "$app/navigation";
     import config from "../config";
+    import {browser_ok, runtime_ok} from "../common/middleware.svelte";
 
 
     // 页面数据
@@ -19,6 +20,9 @@
 
     // 刷新页面数据
     afterNavigate(() => {
+        if (!func.support_min_js()){return;}
+        if (!runtime_ok() || !browser_ok()){return;} // 系统基础条件检测
+        //
         route = func.get_route();
         user_nickname = func.get_local_data(config.app.app_class + "user_nickname");
         if (!user_nickname) {

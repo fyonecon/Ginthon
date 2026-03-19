@@ -47,6 +47,7 @@
 
     // 刷新页面数据
     afterNavigate(() => {
+        if (!func.support_min_js()){return;}
         if (!runtime_ok() || !browser_ok()){return;} // 系统基础条件检测
         //
         page_start();
@@ -56,6 +57,7 @@
     // 页面装载完成后，只运行一次
     // addEventListener专用函数
     onMount(() => {
+        if (!func.support_min_js()){return;}
         if (!runtime_ok() || !browser_ok()){return;} // 系统基础条件检测
         // 监测页面标签是否处于显示
         if (browser){
