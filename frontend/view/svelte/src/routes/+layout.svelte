@@ -116,17 +116,6 @@
             return;
         }
 
-        // 确保OS版本符合满足最低要求
-        if (!func.support_min_os()){
-            func.alert_msg(func.get_translate("support_min_os_alert"), "long");
-            func.title("🔴");
-            page_display="hide";
-            setTimeout(function (){
-                func.block_all_script();
-            }, 100);
-            return;
-        }
-
         // 系统基础条件检测
         if (!runtime_ok()){ // false
             let screen_w = 0;
@@ -217,7 +206,7 @@
         }
 
         //
-        if (!func.support_min_js() || !func.support_min_os()){return;}
+        if (!func.support_min_js()){return;}
         if (!runtime_ok() || !browser_ok()){return;} // 系统基础条件检测
 
         // 监测页面标签是否处于显示

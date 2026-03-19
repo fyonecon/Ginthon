@@ -1280,7 +1280,7 @@ const func = {
             });
         });
     },
-    support_min_os: function(customUserAgent="") { // true通过，false不通过。最低支持：Android10、iOS16、iPadOS16、MacOS14、Win10、鸿蒙6、Linux(2024年3月+)
+    support_min_os: function(customUserAgent="") { // 【慎用，因为有些PC浏览器的规则并不适用】 true通过，false不通过。最低支持：Android10、iOS16、iPadOS16、MacOS14、Win10、鸿蒙6、Linux(2024年3月+)
         const ua = (customUserAgent || navigator.userAgent).toLowerCase();
 
         // 版本号转数值阶梯：支持语义化版本比较，如 "16.1.2" -> 16.0102
