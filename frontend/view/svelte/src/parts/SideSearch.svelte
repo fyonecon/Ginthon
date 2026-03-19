@@ -3,6 +3,8 @@
     import func from "../common/func.svelte.js";
     import {input_enter_data} from "../stores/input_enter.store.svelte";
     import {browser_ok, runtime_ok} from "../common/middleware.svelte";
+    import config from "../config";
+    import {browser} from "$app/environment";
 
     // 本页面参数
     let input_value_search = $state("");
@@ -11,6 +13,42 @@
 
     // 本页面函数：Svelte的HTML组件onXXX=中正确调用：={()=>def.xxx()}
     const def = {
+        input_run_search: function(){
+            let that = this;
+            // 执行回车操作
+            // that.clear_input_value();
+            let the_value = input_value_search.trim();
+            if (the_value){
+                if (the_value === config.sys.home_route_white_word){ // 必要，home页面
+                    let href = "."+config.sys.home_route+"?cache="+func.js_rand(100000, 9999999)
+                    href = href.replaceAll(".?cache=", "./?cache=");
+                    href = href.replaceAll("//", "/");
+                    that.open_url(href);
+                }
+                else if (the_value === "@reload" || the_value === "@fresh" || the_value === "@refresh"){
+                    func.fresh_page(0);
+                }
+                else if (the_value === "@404"){
+                    that.open_url("./_404");
+                }
+                else if (the_value === "@info"){
+                    that.open_url("./info");
+                }
+                else{
+                    func.notice("Enter: "+ the_value);
+                }
+            }else{
+                func.notice(func.get_translate("input_null"));
+            }
+        },
+        open_url: function(href=""){
+            func.open_url(href, "_self");
+        },
+        clear_input_value: function(){
+            setTimeout(function (){
+                input_value_search = "";
+            }, 500);
+        },
         input_enter: function(event: any){
             let that = this;
             //
@@ -18,18 +56,13 @@
                 let that = this;
                 // 处理Enter
                 if (event.key === 'Enter') {
+                    let the_value = input_value_search.trim();
                     if (input_enter_data.input_doing === 1 || input_enter_data.input_doing === 2){ // 输入法输入完成
-                        func.console_log("输入法输入完成=", input_enter_data.input_doing);
+                        console.log("输入法输入完成=", input_enter_data.input_doing, the_value);
                         input_enter_data.input_doing = -1; // init
-                        // 执行回车操作
-                        let the_value = input_value_search.trim();
-                        if (the_value){
-                            func.notice("Enter: "+ the_value);
-                        }else{
-                            func.notice(func.get_translate("input_null"));
-                        }
+                        that.input_run_search();
                     }else{ // 输入法正在输入
-                        func.console_log("输入法正在输入=", input_enter_data.input_doing);
+                        that.input_run_search();
                     }
                 }
             }

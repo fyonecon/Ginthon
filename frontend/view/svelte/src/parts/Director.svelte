@@ -254,7 +254,7 @@
     .director-div{
         position: absolute;
         top: 0;
-        left: 140px;
+        left: 220px;
         height: 50px;
         line-height: 50px;
         width: 80px;

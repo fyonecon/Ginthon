@@ -73,6 +73,10 @@ const lang_dict = {
         zh: "主题",
         en: "Themes",
     },
+    Info: {
+        zh: "查看信息",
+        en: "Info",
+    },
     //
     ITHome: {
         zh: "爬IT之家",
@@ -226,6 +230,10 @@ const lang_dict = {
         zh: "二维码",
         en: "QRCode",
     },
+    make_qr: {
+        zh: "生成二维码",
+        en: "Make QR",
+    },
     copied: {
         zh: "已复制",
         en: "Copied",
@@ -253,6 +261,18 @@ const lang_dict = {
     support_min_os_alert: {
         zh: "🔴 不支持最低操作系统要求，一般2023年之后的发布的操作系统才符合条件。",
         en: "🔴 Do not support the minimum operating systems requirements, which are typically supported by operating systems released after 2023.",
+    },
+    save: {
+        zh: "保存",
+        en: "Save",
+    },
+    textarea_placeholder: {
+        zh: "输入内容 ...",
+        en: "Input content ...",
+    },
+    text_to_qr_btn: {
+        zh: "文本转成二维码",
+        en: "Text to QR",
     },
 
     // =========

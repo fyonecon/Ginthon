@@ -5,12 +5,13 @@
     import { afterNavigate, beforeNavigate } from "$app/navigation";
     import config from "../config";
     import {browser_ok, runtime_ok} from "../common/middleware.svelte";
+    import {side_tab_data} from "../stores/side_tab.store.svelte";
 
 
     // 页面数据
     let route = $state(func.get_route());
+    let tab_active = $state("");
     let user_nickname = $state("...");
-
 
     // 本页面函数：Svelte的HTML组件onXXX=中正确调用：={()=>def.xxx()}
     const def = {
@@ -24,6 +25,15 @@
         if (!runtime_ok() || !browser_ok()){return;} // 系统基础条件检测
         //
         route = func.get_route();
+        //
+        if (route==='/settings' || route.indexOf('/settings/') === 0){
+            side_tab_data.tab_value = route;
+            side_tab_data.tab_name = func.get_translate("Settings");
+            tab_active = "side_setting-menu-a-active";
+        }else{
+            tab_active = "";
+        }
+        //
         user_nickname = func.get_local_data(config.app.app_class + "user_nickname");
         if (!user_nickname) {
             user_nickname = "("+func.get_translate("user_need_login")+")";
@@ -37,7 +47,7 @@
     <!--   -->
     <ul class="side_setting-ul select-none font-text">
         <li class="li-group-user select-none click">
-            <a class="side_setting-menu-a border-radius break {(route==='/settings' || route.indexOf('/settings/') === 0)?' side_setting-menu-a-active ':' '} click" href={resolve(func.url_path('/settings'))} >
+            <a class="side_setting-menu-a border-radius break {tab_active} click" href={resolve(func.url_path('/settings'))} >
                 <svg class="li-group-user-avatar font-text" xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 16 16"><path fill="#2A7DFF" d="M11 7c0 1.66-1.34 3-3 3S5 8.66 5 7s1.34-3 3-3s3 1.34 3 3"/><path fill="#2A7DFF" fill-rule="evenodd" d="M16 8c0 4.42-3.58 8-8 8s-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8M4 13.75C4.16 13.484 5.71 11 7.99 11c2.27 0 3.83 2.49 3.99 2.75A6.98 6.98 0 0 0 14.99 8c0-3.87-3.13-7-7-7s-7 3.13-7 7c0 2.38 1.19 4.49 3.01 5.75" clip-rule="evenodd"/></svg>
                 <div class="li-group-user-info">
                     <div class="li-group-user-info-item li-group-user-nickname font-text break-ellipsis">
