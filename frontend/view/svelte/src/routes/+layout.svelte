@@ -75,9 +75,24 @@
         func.console_log("page_start=", route);
         func.loading_hide(); // 避免其他页面跳转到本页面时出现loading图
         // 开始
-        // 必要运行
-        def.auto_set_language_index();
-        def.auto_set_theme_model();
+        route = func.get_route();
+
+        //
+        if (func.is_wails() || func.is_gthon()){ // app
+            def.auto_set_language_index();
+            def.auto_set_theme_model();
+        }else{ // web
+            // 网站翻译语言
+            let lang = func.get_lang();
+            watch_lang_data.lang_index = lang;
+            lang_index = lang;
+
+            // 网站主题
+            let mode = func.get_theme_model();
+            watch_theme_model_data.theme_model = mode;
+            theme_model = mode;
+            document.documentElement.setAttribute('data-mode', mode);
+        }
 
         // 确保项目所有js可以运行
         if (!func.support_min_js()){
@@ -180,11 +195,26 @@
     // 页面装载完成后，只运行一次
     onMount(() => {
         //
-        let theme_event = window.matchMedia('(prefers-color-scheme: dark)');
-        theme_event.addEventListener('change', function (event){ // 监测主题变化
-            def.auto_set_theme_model();
-        });
-        //
+        if (func.is_wails() || func.is_gthon()) { // app
+            let theme_event = window.matchMedia('(prefers-color-scheme: dark)');
+            theme_event.addEventListener('change', function (event){ // 监测主题变化
+                def.auto_set_theme_model();
+            });
+        } else { // web
+            // 网站翻译语言
+            let lang = func.get_lang();
+            watch_lang_data.lang_index = lang;
+            lang_index = lang;
+
+            // 监听亮暗主题
+            let theme_event = window.matchMedia('(prefers-color-scheme: dark)');
+            theme_event.addEventListener('change', function (event){ // 监测主题变化
+                let mode = func.get_theme_model();
+                watch_theme_model_data.theme_model = mode;
+                theme_model = mode;
+                document.documentElement.setAttribute('data-mode', mode);
+            });
+        }
 
         //
         if (!func.support_min_js() || !func.support_min_os()){return;}
