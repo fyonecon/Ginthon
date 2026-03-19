@@ -239,13 +239,21 @@ const lang_dict = {
         en: "Enter folder path",
     },
     runtime_error_alert: {
-        zh: "⚠️ 系统运行条件不符合，已经阻止访问内容.",
-        en: "⚠️ The system operating conditions do not meet the requirements, and access to the content has been blocked.",
+        zh: "⚠️ 请尝试“手动刷新🔁页面”或“使用人类浏览器打开页面”",
+        en: "⚠️ Please try \"manually refreshing 🔁 the page\" or \"opening the page using a human browser.\"",
     },
     runtime_cn_chat_alert: {
-        zh: "😊 请不要在「微信、QQ、钉钉、飞书、企业微信」中打开本网站，请使用外部浏览器。",
-        en: "😊 Please do not open this website within \"WeChat, QQ, DingTalk, Feishu(Lark), or Enterprise WeChat.\" Please use an external browser instead.",
-    }
+        zh: "😊 请不要在「微信、QQ、钉钉、飞书、企业微信」中打开本网站。<br/>请使用外部浏览器打开。",
+        en: "😊 Please do not open this website within \" WeChat(weixin), QQ, DingTalk(dingding), Lark(Feishu), or Enterprise WeChat.\" . <br/>Please open with an external browser.",
+    },
+    support_min_js_alert: {
+        zh: "🔴 不支持最低js运行时要求，一般2024年之后的发布的操作系统或浏览器内核才符合条件。",
+        en: "🔴 Do not support the minimum JavaScript runtime requirements, which are typically supported by operating systems or browser kernels released after 2024.",
+    },
+    support_min_os_alert: {
+        zh: "🔴 不支持最低操作系统要求，一般2023年之后的发布的操作系统才符合条件。",
+        en: "🔴 Do not support the minimum operating systems requirements, which are typically supported by operating systems released after 2023.",
+    },
 
     // =========
 //

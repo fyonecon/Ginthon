@@ -1280,6 +1280,234 @@ const func = {
             });
         });
     },
+    support_min_os: function(customUserAgent="") { // true通过，false不通过。最低支持：Android10、iOS16、iPadOS16、MacOS14、Win10、鸿蒙6、Linux(2024年3月+)
+        const ua = (customUserAgent || navigator.userAgent).toLowerCase();
+
+        // 版本号转数值阶梯：支持语义化版本比较，如 "16.1.2" -> 16.0102
+        const versionToNumeric = (versionStr) => {
+            if (!versionStr) return 0;
+            const parts = versionStr.split('.').map(Number);
+            return (parts[0] || 0) +
+                ((parts[1] || 0) / 100) +
+                ((parts[2] || 0) / 10000);
+        };
+
+        // 版本比较（带浮点数精度容差）
+        const versionGte = (current, required) => current >= required - 0.0001;
+
+        // 最低版本要求（数值化）
+        const MIN_VERSIONS = {
+            android: versionToNumeric('10'),
+            ios: versionToNumeric('16'),
+            ipados: versionToNumeric('16'),
+            macos: versionToNumeric('14'),
+            windows: versionToNumeric('10'),
+            harmonyos: versionToNumeric('6'),
+            linux: versionToNumeric('2024.3')  // 2024年3月
+        };
+
+        // Linux发行版版本到发布日期的完整映射
+        const DISTRO_RELEASE_DATES = {
+            // Ubuntu
+            ubuntu: {
+                '20.04': 2020.04, '20.10': 2020.10,
+                '21.04': 2021.04, '21.10': 2021.10,
+                '22.04': 2022.04, '22.10': 2022.10,
+                '23.04': 2023.04, '23.10': 2023.10,
+                '24.04': 2024.04, '24.10': 2024.10,
+                '25.04': 2025.04
+            },
+            // Debian
+            debian: {
+                '10': 2019.07, '10.0': 2019.07, 'buster': 2019.07,
+                '11': 2021.08, '11.0': 2021.08, 'bullseye': 2021.08,
+                '12': 2023.06, '12.0': 2023.06, 'bookworm': 2023.06,
+                '13': 2025.00, '13.0': 2025.00, 'trixie': 2025.00
+            },
+            // Fedora
+            fedora: {
+                '37': 2022.11, '38': 2023.04, '39': 2023.11,
+                '40': 2024.04, '41': 2024.10, '42': 2025.04
+            },
+            // RHEL/CentOS
+            rhel: {
+                '8.6': 2022.05, '8.7': 2022.11, '8.8': 2023.05, '8.9': 2023.11,
+                '9.0': 2022.05, '9.1': 2022.11, '9.2': 2023.05, '9.3': 2023.11, '9.4': 2024.05,
+                '9.5': 2024.11, '10.0': 2025.00
+            },
+            // openSUSE
+            suse: {
+                '15.4': 2022.06, '15.5': 2023.06, '15.6': 2024.06,
+                'tumbleweed': 999.0  // 滚动发行版
+            },
+            // Alpine
+            alpine: {
+                '3.16': 2022.05, '3.17': 2022.11, '3.18': 2023.05,
+                '3.19': 2023.12, '3.20': 2024.05, '3.21': 2024.12
+            },
+            // 滚动发行版
+            arch: { 'default': 999.0 },
+            gentoo: { 'default': 999.0 }
+        };
+
+        // Linux发行版检测规则
+        const LINUX_DISTRO_RULES = [
+            { name: 'ubuntu', pattern: /ubuntu[\/\s]([\d.]+)/i },
+            { name: 'debian', pattern: /debian[\/\s]([\d]+|bookworm|bullseye|trixie|buster)/i },
+            { name: 'fedora', pattern: /fedora[\/\s]([\d]+)/i },
+            { name: 'rhel', pattern: /(?:rhel|centos|red hat)[\/\s]?(?:linux[\/\s])?([\d.]+)/i },
+            { name: 'suse', pattern: /(?:suse|opensuse)[\/\s]?(?:leap[\/\s])?([\d.]+|tumbleweed)/i },
+            { name: 'alpine', pattern: /alpine[\/\s]([\d.]+)/i },
+            { name: 'arch', pattern: /arch/i },
+            { name: 'gentoo', pattern: /gentoo/i }
+        ];
+
+        // Linux内核版本 → 发布日期映射
+        const KERNEL_RELEASE_DATES = {
+            '6.2': 2023.02, '6.3': 2023.04, '6.4': 2023.06, '6.5': 2023.08,
+            '6.6': 2023.10, '6.7': 2024.01, '6.8': 2024.03, '6.9': 2024.05,
+            '6.10': 2024.07, '6.11': 2024.09, '6.12': 2024.11,
+            '6.13': 2025.01, '6.14': 2025.03
+        };
+
+        // 内核版本转发布日期
+        const kernelToReleaseDate = (kernelVer) => {
+            if (!kernelVer) return 0;
+            const majorMinor = kernelVer.match(/(\d+\.\d+)/)?.[1];
+            if (!majorMinor) return 0;
+
+            // 精确匹配
+            if (KERNEL_RELEASE_DATES[majorMinor]) return KERNEL_RELEASE_DATES[majorMinor];
+
+            // 估算
+            const [major, minor] = majorMinor.split('.').map(Number);
+            if (major === 6) return 2022 + (minor * 0.2);
+            if (major === 5) return 2019 + (minor * 0.3);
+            return 0;
+        };
+
+        // 获取发行版的发布日期
+        const getDistroReleaseDate = (distroName, versionStr) => {
+            const distroMap = DISTRO_RELEASE_DATES[distroName];
+            if (!distroMap) return 0;
+
+            // 直接匹配版本
+            if (distroMap[versionStr]) return distroMap[versionStr];
+
+            // 尝试匹配主版本号
+            const majorVersion = versionStr.split('.')[0];
+            if (distroMap[majorVersion]) return distroMap[majorVersion];
+
+            // 尝试匹配默认值
+            if (distroMap['default']) return distroMap['default'];
+
+            return 0;
+        };
+
+        // --- Windows检测 ---
+        const winMatch = ua.match(/windows nt ([\d.]+)/);
+        if (winMatch) {
+            const winVer = versionToNumeric(winMatch[1]);
+            if (versionGte(winVer, MIN_VERSIONS.windows)) return true;
+        }
+
+        // --- macOS检测 ---
+        const macMatch = ua.match(/mac os x ([\d_]+)/) || ua.match(/macintosh; .*? os ([\d_]+)/);
+        if (macMatch) {
+            const macVer = versionToNumeric(macMatch[1].replace(/_/g, '.'));
+            if (versionGte(macVer, MIN_VERSIONS.macos)) return true;
+        }
+
+        // --- iOS/iPadOS检测 ---
+        const iosMatch = ua.match(/iphone os ([\d_]+)/) || ua.match(/ipad; cpu os ([\d_]+)/);
+        if (iosMatch) {
+            const iosVer = versionToNumeric(iosMatch[1].replace(/_/g, '.'));
+            const minVer = ua.includes('ipad') ? MIN_VERSIONS.ipados : MIN_VERSIONS.ios;
+            if (versionGte(iosVer, minVer)) return true;
+        }
+
+        // --- Android检测 ---
+        const androidMatch = ua.match(/android ([\d.]+)/);
+        if (androidMatch && versionGte(versionToNumeric(androidMatch[1]), MIN_VERSIONS.android)) return true;
+
+        // --- 鸿蒙检测 ---
+        const harmonyMatch = ua.match(/harmony(?:os)?[\s\/]?([\d.]+)/) || ua.match(/hongmeng[\s\/]?([\d.]+)/);
+        if (harmonyMatch && versionGte(versionToNumeric(harmonyMatch[1]), MIN_VERSIONS.harmonyos)) return true;
+
+        // --- Linux检测 ---
+        if (ua.includes('linux') && !ua.includes('android')) {
+            // 提取内核版本
+            const kernelMatch = ua.match(/linux ([\d.]+)/) || ua.match(/kernel ([\d.]+)/);
+            const kernelVer = kernelMatch?.[1];
+            const kernelDate = kernelToReleaseDate(kernelVer);
+
+            // 检测发行版并获取发布日期
+            let maxReleaseDate = 0;
+            let detectedDistro = null;
+
+            for (const rule of LINUX_DISTRO_RULES) {
+                const match = ua.match(rule.pattern);
+                if (match) {
+                    detectedDistro = rule.name;
+                    const versionStr = match[1] || '';
+                    const releaseDate = getDistroReleaseDate(rule.name, versionStr);
+                    maxReleaseDate = Math.max(maxReleaseDate, releaseDate);
+                }
+            }
+
+            // 判断条件：发行版发布日期 >= 2024.3 或 内核发布日期 >= 2024.3
+            if (maxReleaseDate > 0 && versionGte(maxReleaseDate, MIN_VERSIONS.linux)) return true;
+            if (kernelDate > 0 && versionGte(kernelDate, MIN_VERSIONS.linux)) return true;
+
+            // 通用内核版本检查（6.8+）
+            if (kernelVer) {
+                const [major, minor] = kernelVer.split('.').map(Number);
+                if (major > 6 || (major === 6 && minor >= 8)) return true;
+            }
+
+            return false;
+        }
+
+        return false;
+    },
+    support_min_js: function (){ // 最低js支持到ES2022
+        try {
+            eval(`
+                class Test {
+                    #private = 1;
+                    static { this.test = 2; }
+                }
+            `);
+            return true;
+        } catch {
+            return false;
+        }
+    },
+    block_all_script: function (){ // 禁用所有js脚本或禁止继续添加js脚本
+        // 禁用所有脚本
+        Object.defineProperty(document, 'scripts', {
+            get: () => []
+        });
+
+        // 阻止新脚本添加
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach(mutation => {
+                mutation.addedNodes.forEach(node => {
+                    if (node.nodeName === 'SCRIPT') {
+                        node.remove();
+                    }
+                });
+            });
+        });
+
+        observer.observe(document.documentElement, {
+            childList: true,
+            subtree: true
+        });
+
+        // 停止执行
+        throw new Error('脚本已被拦截');
+    },
 
     //
 }
