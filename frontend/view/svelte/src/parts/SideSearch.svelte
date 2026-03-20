@@ -84,7 +84,7 @@
 <section class="section-side_search select-none bg-neutral-200 dark:bg-neutral-800">
     <div class="side-search font-text">
         <label class="label">
-            <input class="side-search-input input-style w-full border-radius font-text select-text" type="text" maxlength="2000" placeholder="{func.get_translate('input_placeholder_search')}"
+            <input class="side-search-input input-style w-full border-radius font-text select-text" type="search" maxlength="2000" placeholder="{func.get_translate('input_placeholder_search')}"
                    bind:value={input_value_search}
                    onkeydown={(event)=>def.input_enter(event)}
                    onmouseenter={(e) => e.currentTarget.focus()}
