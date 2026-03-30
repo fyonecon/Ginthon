@@ -49,7 +49,7 @@
         },
         auto_set_language_index: function(){ // 自动设置语言
             const lang_key = config.app.app_class+"language_index";
-            func.js_call_py_or_go("get_data", {data_key:lang_key}).then(res=>{
+            func.js_call_py_or_go("get_data", {data_key:lang_key}).then((res: any)=>{
                 let lang = res.content.data?res.content.data:func.get_lang();
                 watch_lang_data.lang_index = lang;
                 lang_index = lang; // 监测本地语言
@@ -57,7 +57,7 @@
         },
         auto_set_theme_model: function () { // 自动切换主题
             const theme_model_key = config.app.app_class+"theme_model";
-            func.js_call_py_or_go("get_data", {data_key:theme_model_key}).then(res=>{
+            func.js_call_py_or_go("get_data", {data_key:theme_model_key}).then((res: any)=>{
                 let mode=res.content.data;
                 if (!mode) {
                     mode = func.get_theme_model();
@@ -232,8 +232,8 @@
     });
 
 
-    //
-    onDestroy(() => {
+    // 处理页面切换或关闭时的事件，比如定时器
+    onDestroy(()=>{
         //
     });
 

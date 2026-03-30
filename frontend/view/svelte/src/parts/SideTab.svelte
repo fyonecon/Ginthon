@@ -47,11 +47,14 @@
         order_tab_data_array: function (tab_data_array: any[]){ // // 根据order大小，从小到大排序，格式 [{order:1}, {order:4}, {order:2}]
             return [...tab_data_array].sort((a, b) => a.order - b.order);
         },
-        get_route_info: function(_route="") {  // 将路由转化为翻译的键
+        get_route_info: function(_route="") {  // 将路由转化为翻译的键，显示数据在Nav上
             let that = this;
             //
             for (let i=0; i<tab_data.length; i++){
                 if (_route === tab_data[i].route){
+                    //
+                    func.title(tab_data[i].title);
+                    //
                     side_tab_data.tab_value = _route;
                     side_tab_data.tab_name = tab_data[i].title;
                     break;
@@ -82,7 +85,7 @@
         <!---->
         {#each tab_data as item}
             <li class="side_tab-menu-li">
-                <a class="side_tab-menu-a border-radius break {(route === item.route)?'side_tab-menu-a-active':''} click" href={resolve(func.url_path(item.href))} >
+                <a class="side_tab-menu-a border-radius break {(route === item.route)?'side_tab-menu-a-active':''} click" href={func.url_path(item.href)} >
                     {@html item.icon.replace('<svg ', '<svg class="svg-icon font-blue" ')}
                     {@html item.title}
                 </a>
@@ -124,11 +127,12 @@
         clear: both;
     }
     .side_tab-menu-a-active{
-        background: rgba(160,160,160, 0.3) !important;
+        background: rgba(42,126,255, 0.4) !important;
         /*color: var(--color-blue-400);*/
     }
     .side_tab-menu-a:hover{
         background: rgba(160,160,160, 0.2);
+        opacity: 1 !important;
     }
 
 </style>

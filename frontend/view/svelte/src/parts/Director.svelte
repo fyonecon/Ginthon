@@ -30,7 +30,7 @@
                 // console.log("空链接");
             }
         },
-        set_direction_history: function(now_director_dict) {  // 设置访问历史
+        set_direction_history: function(now_director_dict: any) {  // 设置访问历史
             let that = this;
             // 回到主页删除历史记录
             if (config.sys.home_route === route){
@@ -54,9 +54,10 @@
                     function only_route_name(){ // 路由去重
                         return new Promise(resolve2 => {
                             for (let i = 0; i < the_direction_urls_array.length; i++) {
-                                let the_href = the_direction_urls_array[i].href;
-                                let the_route = the_direction_urls_array[i].route;
-                                let the_params = the_direction_urls_array[i].params;
+                                let info: any = the_direction_urls_array[i];
+                                let the_href = info.href;
+                                let the_route = info.route;
+                                let the_params = info.params;
                                 // 去重
                                 if (now_href === the_href) { // 已存在路由历史，不再继续添加
                                     resolve2(the_direction_urls_array);
@@ -76,11 +77,12 @@
                         });
                     }
                     //
-                    only_route_name().then(_the_direction_urls_array=>{ // 删除路由的子链接
+                    only_route_name().then((_the_direction_urls_array:any)=>{ // 删除路由的子链接
                         for (let i = 0; i < _the_direction_urls_array.length; i++) {
-                            let the_href = _the_direction_urls_array[i].href;
-                            let the_route = _the_direction_urls_array[i].route;
-                            let the_params = _the_direction_urls_array[i].params;
+                            let info: any = _the_direction_urls_array[i];
+                            let the_href =info.href;
+                            let the_route = info.route;
+                            let the_params = info.params;
                             // 删除路由子链接
                             if (now_route === the_route && now_params.length===0 && the_params.length>0){ // 跳过
                                 // console.log("1=", i, [now_route, the_route, now_params.length, the_params.length]);
@@ -100,7 +102,7 @@
                 }
             });
         },
-        get_direction_history: function(now_director_dict) {  // 在历史记录中找到上一页、下一页
+        get_direction_history: function(now_director_dict: any) {  // 在历史记录中找到上一页、下一页
             let that = this;
             //
             let the_before_director_dict = {};
@@ -164,16 +166,17 @@
                 time: time,
             };
             //
-            that.set_direction_history(director_dict).then(direction_history=>{
+            that.set_direction_history(director_dict).then((direction_history:any)=>{
                 func.console_log("set_direction_history=", direction_history);
                 //
                 let get_direction = that.get_direction_history(director_dict);
                 //
                 try {
-                    if (get_direction.before_director.route) {
-                        let the_before_href = get_direction.before_director.href;
-                        let the_before_route = get_direction.before_director.route;
-                        let the_before_params = get_direction.before_director.params;
+                    let info: any = get_direction.before_director;
+                    if (info.route) {
+                        let the_before_href = info.href;
+                        let the_before_route = info.route;
+                        let the_before_params = info.params;
                         before_href = func.unicode_to_string(the_before_href);
                     }
                 }catch(err){
@@ -181,10 +184,11 @@
                 }
                 //
                 try {
-                    if (get_direction.next_director.route) {
-                        let the_next_href = get_direction.next_director.href;
-                        let the_next_route = get_direction.next_director.route;
-                        let the_next_params = get_direction.next_director.params;
+                    let info: any = get_direction.next_director;
+                    if (info.route) {
+                        let the_next_href = info.href;
+                        let the_next_route = info.route;
+                        let the_next_params = info.params;
                         next_href = func.unicode_to_string(the_next_href);
                     }
                 }catch(err){

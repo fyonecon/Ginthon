@@ -26,8 +26,8 @@
 
     // 本页面函数：Svelte的HTML组件onXXX=中正确调用：={()=>def.xxx()}
     const def = {
-        ping_url: function(url: string) {
-            return new Promise((resolve) => {
+        ping_url: function(url: string): Promise<string> {
+            return new Promise<string>((resolve) => {
                 func.ping(url).then(back => {
                     console.log(url, back);
                     if (back.state === 1){

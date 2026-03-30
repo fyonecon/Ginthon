@@ -4,15 +4,16 @@
     import config from "../../config";
     import { afterNavigate} from "$app/navigation";
     import { Dialog, Portal } from '@skeletonlabs/skeleton-svelte';
-    import {onMount} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import {watch_lang_data} from "../../stores/watch_lang.store.svelte";
     import {watch_theme_model_data} from "../../stores/watch_theme_model.store.svelte";
     import {browser_ok, runtime_ok} from "../../common/middleware.svelte";
+    import {side_tab_data} from "../../stores/side_tab.store.svelte";
+    import dialog_animate_class from "../../common/dialog_animate";
 
 
     // 本页面数据
     let route = $state(func.get_route());
-    const animation = 'transition transition-discrete opacity-0 translate-y-[100px] starting:data-[state=open]:opacity-0 starting:data-[state=open]:translate-y-[100px] data-[state=open]:opacity-100 data-[state=open]:translate-y-0';
     let language_index: unknown = $state(""); // 语言选中
     const theme_model_key = config.app.app_class+"theme_model";
     const lang_key = config.app.app_class+"language_index";
@@ -27,7 +28,7 @@
             //
             return new Promise(_resolve => {
                 if (lang.length >= 2) {
-                    func.js_call_py_or_go("set_data", {data_key:lang_key, data_value:lang, data_timeout_s:10*365*24*3600}).then(res=>{
+                    func.js_call_py_or_go("set_data", {data_key:lang_key, data_value:lang, data_timeout_s:10*365*24*3600}).then((res: any)=>{
                         watch_lang_data.lang_index = res.content.data;
                         _resolve(true);
                     });
@@ -36,7 +37,7 @@
                 }
             }).then(_state=>{
                 return new Promise(resolve=>{
-                    func.js_call_py_or_go("get_data", {data_key:lang_key}).then(res=>{
+                    func.js_call_py_or_go("get_data", {data_key:lang_key}).then((res: any)=>{
                         language_index = res.content.data;
                         watch_lang_data.lang_index = res.content.data;
                         func.open_url_no_cache("./?reload=lang");
@@ -45,24 +46,24 @@
                 });
             });
         },
-        choose_theme_model: function (mode){ // 选择主题
+        choose_theme_model: function (mode: string){ // 选择主题
             let that = this;
             //
             theme_model = mode;
             if (!mode){ // 系统默认
-                func.js_call_py_or_go("set_data", {data_key:theme_model_key, data_value:"", data_timeout_s:10*365*24*3600}).then(res=>{
+                func.js_call_py_or_go("set_data", {data_key:theme_model_key, data_value:"", data_timeout_s:10*365*24*3600}).then((res: any)=>{
                     let data=res.content.data;
                 });
                 document.documentElement.setAttribute('data-mode', func.get_theme_model());
             }else{ // 手动设置
-                func.js_call_py_or_go("set_data", {data_key:theme_model_key, data_value:mode, data_timeout_s:10*365*24*3600}).then(res=>{
+                func.js_call_py_or_go("set_data", {data_key:theme_model_key, data_value:mode, data_timeout_s:10*365*24*3600}).then((res: any)=>{
                     let data=res.content.data;
                 });
                 document.documentElement.setAttribute('data-mode', mode);
             }
         },
         default_theme_model: function(){
-            func.js_call_py_or_go("del_data", {data_key:theme_model_key,}).then(res=>{
+            func.js_call_py_or_go("del_data", {data_key:theme_model_key,}).then((res: any)=>{
                 let mode=res.content.data;
                 theme_model = "";
                 watch_theme_model_data.theme_model = "";
@@ -70,7 +71,7 @@
             });
         },
         default_language: function(){
-            func.js_call_py_or_go("del_data", {data_key:lang_key,}).then(res=>{
+            func.js_call_py_or_go("del_data", {data_key:lang_key,}).then((res: any)=>{
                 let lang=res.content.data;
                 language_index = "";
                 watch_lang_data.lang_index = "";
@@ -83,11 +84,15 @@
     // 页面函数执行的入口，实时更新数据
     function page_start(){
         console.log("page_start()=", route);
+        //
+        func.title(func.get_translate("Settings"));
+        side_tab_data.tab_value = route;
+        side_tab_data.tab_name = func.get_translate("Settings");
         // 开始
-        func.js_call_py_or_go("get_data", {data_key:lang_key}).then(res=>{
+        func.js_call_py_or_go("get_data", {data_key:lang_key}).then((res: any)=>{
             language_index = res.content.data;
         }); // 更新语言选中
-        func.js_call_py_or_go("get_data", {data_key:theme_model_key}).then(res=>{
+        func.js_call_py_or_go("get_data", {data_key:theme_model_key}).then((res: any)=>{
             theme_model = res.content.data;
         }); // 更新主题模式
     }
@@ -115,6 +120,11 @@
         //
     });
 
+    // 处理页面切换或关闭时的事件，比如定时器
+    onDestroy(()=>{
+        //
+    });
+
 
 </script>
 
@@ -131,7 +141,7 @@
                 </div>
                 <div>
                     <a title="See Detail" class="font-blue click" href={resolve(func.url_path('/settings/about'))} >
-                        {func.get_translate("a_click_tip_see_detail")} - v{app_version}
+                        {func.get_translate("a_click_tip_see_detail")} - UI v{app_version}
                     </a>
                 </div>
             </div>
@@ -155,7 +165,7 @@
                     <Portal>
                         <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80 select-none" />
                         <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text select-none">
-                            <Dialog.Content class="card w-full max-w-xs p-4 space-y-4 shadow-xl {animation} px-[10px] py-[10px] border-radius bg-neutral-100 dark:bg-neutral-800">
+                            <Dialog.Content class="card w-full max-w-xs p-4 space-y-4 shadow-xl {dialog_animate_class} px-[10px] py-[10px] border-radius bg-neutral-100 dark:bg-neutral-800">
                                 <header class="flex justify-between items-center pywebview-drag-region can-drag">
                                     <Dialog.Title class="font-text font-bold">⚠️</Dialog.Title>
                                 </header>
@@ -179,7 +189,7 @@
                     <Portal>
                         <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80 select-none" />
                         <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text select-none">
-                            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {animation}  px-[10px] py-[10px] border-radius">
+                            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {dialog_animate_class}  px-[10px] py-[10px] border-radius">
                                 <header class="flex justify-between items-center pywebview-drag-region can-drag">
                                     <Dialog.Title class="font-text font-bold">⚠️</Dialog.Title>
                                 </header>
@@ -203,7 +213,7 @@
                     <Portal>
                         <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80 select-none" />
                         <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text select-none">
-                            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {animation}  px-[10px] py-[10px] border-radius">
+                            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {dialog_animate_class}  px-[10px] py-[10px] border-radius">
                                 <header class="flex justify-between items-center pywebview-drag-region can-drag">
                                     <Dialog.Title class="font-text font-bold">⚠️</Dialog.Title>
                                 </header>
@@ -227,7 +237,7 @@
                     <Portal>
                         <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80 select-none" />
                         <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text select-none">
-                            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {animation}  px-[10px] py-[10px] border-radius">
+                            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {dialog_animate_class}  px-[10px] py-[10px] border-radius">
                                 <header class="flex justify-between items-center pywebview-drag-region can-drag">
                                     <Dialog.Title class="font-text font-bold">⚠️</Dialog.Title>
                                 </header>
@@ -251,7 +261,7 @@
                     <Portal>
                         <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80 select-none" />
                         <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text select-none">
-                            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {animation}  px-[10px] py-[10px] border-radius">
+                            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {dialog_animate_class}  px-[10px] py-[10px] border-radius">
                                 <header class="flex justify-between items-center pywebview-drag-region can-drag">
                                     <Dialog.Title class="font-text font-bold">⚠️</Dialog.Title>
                                 </header>
@@ -275,7 +285,7 @@
                     <Portal>
                         <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80 select-none" />
                         <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text select-none">
-                            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {animation}  px-[10px] py-[10px] border-radius">
+                            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {dialog_animate_class}  px-[10px] py-[10px] border-radius">
                                 <header class="flex justify-between items-center pywebview-drag-region can-drag">
                                     <Dialog.Title class="font-text font-bold">⚠️</Dialog.Title>
                                 </header>
@@ -299,7 +309,7 @@
                     <Portal>
                         <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80 select-none" />
                         <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text select-none">
-                            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {animation}  px-[10px] py-[10px] border-radius">
+                            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {dialog_animate_class}  px-[10px] py-[10px] border-radius">
                                 <header class="flex justify-between items-center pywebview-drag-region can-drag">
                                     <Dialog.Title class="font-text font-bold">⚠️</Dialog.Title>
                                 </header>
@@ -323,7 +333,7 @@
                     <Portal>
                         <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80 select-none" />
                         <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text select-none">
-                            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {animation}  px-[10px] py-[10px] border-radius">
+                            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {dialog_animate_class}  px-[10px] py-[10px] border-radius">
                                 <header class="flex justify-between items-center pywebview-drag-region can-drag">
                                     <Dialog.Title class="font-text font-bold">⚠️</Dialog.Title>
                                 </header>
@@ -347,7 +357,7 @@
                     <Portal>
                         <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80 select-none" />
                         <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text select-none">
-                            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {animation}  px-[10px] py-[10px] border-radius">
+                            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {dialog_animate_class}  px-[10px] py-[10px] border-radius">
                                 <header class="flex justify-between items-center pywebview-drag-region can-drag">
                                     <Dialog.Title class="font-text font-bold">⚠️</Dialog.Title>
                                 </header>

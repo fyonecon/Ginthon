@@ -9,13 +9,13 @@
     import {play_audio_data} from "../../stores/play_audio.store.svelte";
     import {browser_ok, runtime_ok} from "../../common/middleware.svelte";
     import {input_enter_data} from "../../stores/input_enter.store.svelte";
+    import dialog_animate_class from "../../common/dialog_animate";
 
     // 本页面参数
     let route = $state(func.get_route());
     const player_prefix = "play_audio_";
     let play_list_max_len = $state(1000); // 播放列表最大长度
 
-    const animation = 'transition transition-discrete opacity-0 translate-y-[100px] starting:data-[state=open]:opacity-0 starting:data-[state=open]:translate-y-[100px] data-[state=open]:opacity-100 data-[state=open]:translate-y-0';
     const icon_dir = '<svg class="svg-icon font-blue" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="currentColor" d="M4 20q-.825 0-1.412-.587T2 18V6q0-.825.588-1.412T4 4h5.175q.4 0 .763.15t.637.425L12 6h8q.825 0 1.413.588T22 8v10q0 .825-.587 1.413T20 20z"/></svg>';
     const icon_audio = '<svg class="svg-icon font-blue" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="currentColor" d="M10.75 18.692q.816 0 1.379-.563q.563-.564.563-1.379v-3.98h2.731v-1.54h-3.5v4.087q-.236-.257-.53-.383q-.293-.126-.643-.126q-.815 0-1.379.563q-.563.564-.563 1.379t.563 1.379q.564.563 1.379.563M6.616 21q-.691 0-1.153-.462T5 19.385V4.615q0-.69.463-1.152T6.616 3H14.5L19 7.5v11.885q0 .69-.462 1.153T17.384 21zM14 8h4l-4-4z"/></svg>';
     const icon_video = '<svg class="svg-icon font-blue" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="currentColor" d="M22.525 7.149a1 1 0 0 0-.972-.044L19 8.382V8c0-1.654-1.346-3-3-3H5C3.346 5 2 6.346 2 8v8c0 1.654 1.346 3 3 3h11c1.654 0 3-1.346 3-3v-.382l2.553 1.276a.99.99 0 0 0 .972-.043c.295-.183.475-.504.475-.851V8c0-.347-.18-.668-.475-.851M7 13.5a1.5 1.5 0 1 1-.001-2.999A1.5 1.5 0 0 1 7 13.5"/></svg>';
@@ -25,7 +25,7 @@
     let update_play_list_dialog_is_open = $state(false);
     let input_value_add_dir = $state("");
     let input_value_find = $state("");
-    let list_dirs: string[] = $state([]);
+    let list_dirs: { name: string; size?: string; create_time?: string }[] = $state([]);
     let list_files: string[] = $state([]);
     let view_path = $state("");
     let now_root_path = $state("");
@@ -33,7 +33,7 @@
     let show_play_all_btn = $state("hide");
     let show_set_local_dir_btn = $state("show");
     let now_audio_files: object[] = $state([]); // 当前文件白名单
-    let input_value_find_list_dirs: string[] = $state([]);
+    let input_value_find_list_dirs: { name: string; size?: string; create_time?: string }[] = $state([]);
     let input_value_find_list_files: string[] = $state([]);
     let show_dir_remove_btn = $state("hide");
     let remove_local_dir_dialog_is_open = $state(false);
@@ -90,7 +90,7 @@
                 func.notice(res.msg);
             });
         },
-        has_audio_file: function(files_array:string[] = []){
+        has_audio_file: function(files_array: { name: string; token?: string }[] = []){
             let that = this;
             //
             show_play_all_btn = "hide";
@@ -138,7 +138,7 @@
             };
             return new Promise(resolve => {
                 console.log("Update Play List");
-                FetchPOST(api_url, body_dict).then(res=>{
+                FetchPOST(api_url, body_dict).then((res: any)=>{
                     func.loading_hide();
                     //
                     if (res.state === 1){
@@ -172,7 +172,7 @@
                 func.js_call_py_or_go("get_data", {
                     lang: func.get_lang(),
                     data_key:play_audio_list_dir_key
-                }).then(res=>{
+                }).then((res: any)=>{
                     // console.log("get_data=", res);
                     if (res.state === 1){
                         play_audio_list_dir = res.content.data;
@@ -201,7 +201,7 @@
             func.js_call_py_or_go("get_data", {
                 lang: func.get_lang(),
                 data_key:play_audio_list_dir_key
-            }).then(res=>{
+            }).then((res: any)=>{
                 if (res.state === 1){
                     play_audio_list_dir = res.content.data;
                 }else{
@@ -229,7 +229,7 @@
                     }
                     //
                     if (new_value){ // 更新新数据
-                        func.js_call_py_or_go("set_data", data_dict).then(res2=>{
+                        func.js_call_py_or_go("set_data", data_dict).then((res2: any)=>{
                             func.notice(res2.msg);
                             if (res2.state === 1){
                                 that.close_dialog();
@@ -241,7 +241,7 @@
                             }
                         });
                     }else{ // 删除数据
-                        func.js_call_py_or_go("del_data", data_dict).then(res2=>{
+                        func.js_call_py_or_go("del_data", data_dict).then((res2: any)=>{
                             func.notice(res2.msg);
                             if (res2.state === 1){
                                 that.close_dialog();
@@ -271,7 +271,7 @@
             func.js_call_py_or_go("get_data", {
                 lang: func.get_lang(),
                 data_key:play_audio_list_dir_key
-            }).then(res=>{
+            }).then((res: any)=>{
                 // console.log("get_data=", res);
                 if (res.state === 1){
                     play_audio_list_dir = res.content.data;
@@ -294,7 +294,7 @@
                         data_value: new_value,
                         data_timeout_s: 3600*24*356*20,
                     }
-                    func.js_call_py_or_go("set_data", data_dict).then(res2=>{
+                    func.js_call_py_or_go("set_data", data_dict).then((res2: any)=>{
                         func.notice(res2.msg);
                         if (res2.state === 1){
                             that.close_dialog();
@@ -315,7 +315,7 @@
         //
         get_playing: function(){ // 获取当前播放
             return new Promise(resolve => {
-                func.js_call_py_or_go("get_data", {data_key:player_prefix + "playing"}).then(res=>{
+                func.js_call_py_or_go("get_data", {data_key:player_prefix + "playing"}).then((res: any)=>{
                     let the_playing = res.content.data;
                     resolve(the_playing?JSON.parse(decodeURIComponent(the_playing)):null);
                 });
@@ -323,7 +323,7 @@
         },
         set_playing: function(the_playing = {}){ // 新增或更新当前播放
             return new Promise(resolve => {
-                func.js_call_py_or_go("set_data", {data_key:player_prefix + "playing", data_value:encodeURIComponent(JSON.stringify(the_playing)), data_timeout_s:180*24*3600 }).then(res=>{
+                func.js_call_py_or_go("set_data", {data_key:player_prefix + "playing", data_value:encodeURIComponent(JSON.stringify(the_playing)), data_timeout_s:180*24*3600 }).then((res: any)=>{
                     let the_playing = res.content.data;
                     resolve(the_playing?JSON.parse(decodeURIComponent(the_playing)):null);
                 });
@@ -331,7 +331,7 @@
         },
         get_list: function(){ // 获取列表，最大1000长度
             return new Promise(resolve => {
-                func.js_call_py_or_go("get_data", {data_key:player_prefix + "list" }).then(res=>{
+                func.js_call_py_or_go("get_data", {data_key:player_prefix + "list" }).then((res: any)=>{
                     let list = res.content.data;
                     resolve((list.length>0)?JSON.parse(decodeURIComponent(list)).slice(0, play_list_max_len):null);
                 });
@@ -346,7 +346,7 @@
                 list = list_array;
             }
             return new Promise(resolve => {
-                func.js_call_py_or_go("set_data", {data_key:player_prefix + "list", data_value:encodeURIComponent(list), data_timeout_s:2*365*24*3600 }).then(res=>{
+                func.js_call_py_or_go("set_data", {data_key:player_prefix + "list", data_value:encodeURIComponent(list), data_timeout_s:2*365*24*3600 }).then((res: any)=>{
                     let the_playing = res.content.data;
                     resolve(the_playing?JSON.parse(decodeURIComponent(the_playing)):null);
                 });
@@ -597,9 +597,9 @@
         <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80 select-none"/>
         <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text select-none">
             <Dialog.Content
-                    class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {animation}  px-[10px] py-[10px] border-radius">
+                    class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {dialog_animate_class}  px-[10px] py-[10px] border-radius">
                 <header class="flex justify-between items-center pywebview-drag-region can-drag">
-                    <Dialog.Title class="font-title font-bold">⚠️</Dialog.Title>
+                    <Dialog.Title class="font-text font-bold">⚠️</Dialog.Title>
                 </header>
                 <Dialog.Description class="font-text select-text">
                     <div class="font-text" style="margin-top: 10px; margin-bottom: 20px;opacity: 0.8;">
@@ -611,9 +611,9 @@
                     </label>
                 </Dialog.Description>
                 <footer class="flex justify-center gap-10 select-none  px-[10px] py-[10px]">
-                    <button title="Cancel" class="btn btn-base preset-tonal font-title"
+                    <button title="Cancel" class="btn btn-base preset-tonal font-text"
                             onclick={()=>def.close_dialog()}>{func.get_translate("btn_cancel")}</button>
-                    <button title="Save" type="button" class="btn btn-base preset-filled-primary-500 font-title"
+                    <button title="Save" type="button" class="btn btn-base preset-filled-primary-500 font-text"
                             onclick={()=>def.set_local_dir()}>{func.get_translate("btn_save")}</button>
                 </footer>
             </Dialog.Content>
@@ -626,16 +626,16 @@
     <Portal>
         <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80 select-none" />
         <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text select-none">
-            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {animation}  px-[10px] py-[10px] border-radius">
+            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {dialog_animate_class}  px-[10px] py-[10px] border-radius">
                 <header class="flex justify-between items-center pywebview-drag-region can-drag">
-                    <Dialog.Title class="font-title font-bold">⚠️</Dialog.Title>
+                    <Dialog.Title class="font-text font-bold">⚠️</Dialog.Title>
                 </header>
                 <Dialog.Description class="font-text select-text">
                     {func.get_translate('play_update_play_list')}
                 </Dialog.Description>
                 <footer class="flex justify-center gap-10 select-none  px-[10px] py-[10px]">
-                    <button title="Cancel" class="btn btn-base preset-tonal font-title" onclick={()=>def.close_dialog()}>{func.get_translate("btn_cancel")}</button>
-                    <button title="Update" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>def.play_new_list(now_audio_files)}>{func.get_translate("btn_update")}</button>
+                    <button title="Cancel" class="btn btn-base preset-tonal font-text" onclick={()=>def.close_dialog()}>{func.get_translate("btn_cancel")}</button>
+                    <button title="Update" type="button" class="btn btn-base preset-filled-primary-500 font-text" onclick={()=>def.play_new_list(now_audio_files)}>{func.get_translate("btn_update")}</button>
                 </footer>
             </Dialog.Content>
         </Dialog.Positioner>
@@ -647,16 +647,16 @@
     <Portal>
         <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/80  select-none" />
         <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center font-text select-none">
-            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {animation}  px-[10px] py-[10px] border-radius">
+            <Dialog.Content class="card bg-neutral-100 dark:bg-neutral-800 w-full max-w-xs p-4 space-y-4 shadow-xl {dialog_animate_class}  px-[10px] py-[10px] border-radius">
                 <header class="flex justify-between items-center pywebview-drag-region can-drag">
-                    <Dialog.Title class="font-title font-bold">⚠️</Dialog.Title>
+                    <Dialog.Title class="font-text font-bold">⚠️</Dialog.Title>
                 </header>
                 <Dialog.Description class="font-text select-text">
                     {@html func.get_translate('remove_help_1') +":<br/>"+ func.filepath_to_filename(remove_local_dir_the_dir)}
                 </Dialog.Description>
                 <footer class="flex justify-center gap-10 select-none  px-[10px] py-[10px]">
-                    <button title="Cancel" class="btn btn-base preset-tonal font-title" onclick={()=>def.close_dialog()}>{func.get_translate("btn_cancel")}</button>
-                    <button title="Update" type="button" class="btn btn-base preset-filled-primary-500 font-title" onclick={()=>def.remove_local_dir(remove_local_dir_the_dir)}>{func.get_translate("remove")}</button>
+                    <button title="Cancel" class="btn btn-base preset-tonal font-text" onclick={()=>def.close_dialog()}>{func.get_translate("btn_cancel")}</button>
+                    <button title="Update" type="button" class="btn btn-base preset-filled-primary-500 font-text" onclick={()=>def.remove_local_dir(remove_local_dir_the_dir)}>{func.get_translate("remove")}</button>
                 </footer>
             </Dialog.Content>
         </Dialog.Positioner>

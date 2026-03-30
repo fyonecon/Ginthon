@@ -2,8 +2,9 @@
     import { resolve } from '$app/paths';
     import func from "../../common/func.svelte";
     import {afterNavigate} from "$app/navigation";
-    import {onMount} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import {browser_ok, runtime_ok} from "../../common/middleware.svelte";
+    import {side_tab_data} from "../../stores/side_tab.store.svelte";
 
 
     // 本页面参数
@@ -20,8 +21,8 @@
 
     // 本页面函数：Svelte的HTML组件onXXX=中正确调用：={()=>def.xxx()}
     const def = {
-        ping_url: function(url: string) {
-            return new Promise((resolve) => {
+        ping_url: function(url: string): Promise<string> {
+            return new Promise<string>((resolve) => {
                 func.ping(url).then(back => {
                     console.log(url, back);
                     if (back.state === 1){
@@ -44,25 +45,25 @@
             ping_host = loading_img;
             ping_hosts = loading_img;
             //
-            that.ping_url("https://www.google.com").then(msg => {
+            that.ping_url("https://www.google.com").then((msg: string) => {
                 ping_google = msg;
             });
-            that.ping_url("https://www.bing.com").then(msg => {
+            that.ping_url("https://www.bing.com").then((msg: string) => {
                 ping_bing = msg;
             });
-            that.ping_url("https://www.youtube.com").then(msg => {
+            that.ping_url("https://www.youtube.com").then((msg: string) => {
                 ping_youtube = msg;
             });
-            that.ping_url("https://www.ithome.com").then(msg => {
+            that.ping_url("https://www.ithome.com").then((msg: string) => {
                 ping_ithome = msg;
             });
-            that.ping_url("https://www.github.com").then(msg => {
+            that.ping_url("https://www.github.com").then((msg: string) => {
                 ping_github = msg;
             });
-            that.ping_url("http://"+func.get_host()).then(msg => {
+            that.ping_url("http://"+func.get_host()).then((msg: string) => {
                 ping_host = msg;
             });
-            that.ping_url("https://"+func.get_host()).then(msg => {
+            that.ping_url("https://"+func.get_host()).then((msg: string) => {
                 ping_hosts = msg;
             });
         },
@@ -83,6 +84,10 @@
     function page_start(){
         console.log("page_start()=", route);
         // 开始
+        func.title(func.get_translate("Home"));
+        side_tab_data.tab_value = route;
+        side_tab_data.tab_name = func.get_translate("Home");
+        //
     }
 
 
@@ -105,6 +110,11 @@
     onMount(() => {
         if (!func.support_min_js()){return;}
         if (!runtime_ok() || !browser_ok()){return;} // 系统基础条件检测
+        //
+    });
+
+    // 处理页面切换或关闭时的事件，比如定时器
+    onDestroy(()=>{
         //
     });
 

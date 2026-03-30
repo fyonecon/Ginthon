@@ -25,7 +25,13 @@
     let play_songs_animation = $state("");
 
     // 用于存储事件监听器引用，便于清理
-    let eventListeners = {
+    let eventListeners: {
+        canplaythrough: ((event: Event) => void) | null,
+        loadeddata: (() => void) | null,
+        timeupdate: ((e: Event) => void) | null,
+        ended: (() => void) | null,
+        error: (() => void) | null
+    } = {
         canplaythrough: null,
         loadeddata: null,
         timeupdate: null,
@@ -50,7 +56,7 @@
             }
             // 从本地读取当前音乐
             let href = "";
-            that.get_playing().then(the_playing=>{
+            that.get_playing().then((the_playing: any)=>{
                 if (!the_playing){
                     console.warn("无播放资料（请先 def.fetch_play_list() ）：", the_playing);
                     that.set_playing({}).then(list=>{});
@@ -77,18 +83,22 @@
                     navigator.mediaSession.playbackState = 'playing';
                 }
                 // 从中断的地方继续
-                myAudio.src = href;
-                myAudio.autoplay = false;
-                myAudio.loop = false;
-                myAudio.volume = 1; // 音量(0, 1]
-                myAudio.currentTime = parseFloat(that.get_current_time()); // 从中断的地方继续播放
+                if (myAudio) {
+                    myAudio.src = href;
+                    myAudio.autoplay = false;
+                    myAudio.loop = false;
+                    myAudio.volume = 1; // 音量(0, 1]
+                    myAudio.currentTime = parseFloat(that.get_current_time()); // 从中断的地方继续播放
+                }
                 //
                 if (!player_init_state){
                     that.player_init();
                 }
-                myAudio.play().catch(err => {
-                    console.warn("播放失败:", err);
-                });
+                if (myAudio) {
+                    myAudio.play().catch(err => {
+                        console.warn("播放失败:", err);
+                    });
+                }
                 //
                 // 设置操作处理器 - 包括上一曲、下一曲
                 try {
@@ -157,7 +167,7 @@
                 console.log("Play Start");
                 //
                 // 清理旧的timeupdate监听器
-                if (eventListeners.timeupdate) {
+                if (eventListeners.timeupdate && myAudio) {
                     myAudio.removeEventListener('timeupdate', eventListeners.timeupdate);
                 }
                 // eventListeners.timeupdate = function (e){
@@ -168,7 +178,7 @@
                 // myAudio.addEventListener('timeupdate', eventListeners.timeupdate);
                 play_current_timeout = setInterval(function(){
                     try {
-                        let current = myAudio.currentTime; // s
+                        let current = myAudio ? myAudio.currentTime : 0; // s
                         that.set_current_time(current+"");
                     }catch (e) {}
                 }, 100); // 最佳范围 [50，150]
@@ -187,10 +197,12 @@
             };
 
             // 添加事件监听器
-            myAudio.addEventListener('canplaythrough', eventListeners.canplaythrough);
-            myAudio.addEventListener("loadeddata", eventListeners.loadeddata);
-            myAudio.addEventListener("ended", eventListeners.ended);
-            myAudio.onerror = eventListeners.error;
+            if (myAudio) {
+                myAudio.addEventListener('canplaythrough', eventListeners.canplaythrough);
+                myAudio.addEventListener("loadeddata", eventListeners.loadeddata);
+                myAudio.addEventListener("ended", eventListeners.ended);
+                myAudio.onerror = eventListeners.error;
+            }
         },
 
         // 清理事件监听器
@@ -237,22 +249,26 @@
         play_stop: function(){ // 暂停播放
             let that = this;
             //
-            that.get_playing().then(the_playing=>{
+            that.get_playing().then((the_playing:any)=>{
                 that.play_clear_timer();
                 player_show_play = "show";
                 player_show_stop = "hide";
                 song_info_filename =  the_playing.filename;
                 //
                 that.is_playing().then(state=>{
-                    let current = myAudio.currentTime;
+                    let current = myAudio ? myAudio.currentTime : 0;
                     if (!current){
                         //跳过
                     }else{
                         if (state){
-                            that.set_current_time(myAudio.currentTime+"");
+                            if (myAudio) {
+                                that.set_current_time(myAudio.currentTime+"");
+                            }
                         }
                     }
-                    myAudio.pause();
+                    if (myAudio) {
+                        myAudio.pause();
+                    }
                     // 渲染系统音乐通知栏
 
                     navigator.mediaSession.metadata = new MediaMetadata({
@@ -276,16 +292,17 @@
             // 渲染系统音乐通知栏
             navigator.mediaSession.playbackState = 'playing';
             //
-            that.get_playing().then(the_playing=>{
+            that.get_playing().then((the_playing: any)=>{
                 that.get_list().then(list=>{
                     if (the_playing && list){
                         let the_href = the_playing.href;
                         function calc_playing() {
                             return new Promise(resolve => {
                                 for (let i=0; i<list.length; i++){
-                                    let _the_href = list[i].href;
-                                    let _the_filename = list[i].filename;
-                                    let _the_cover = list[i].cover;
+                                    let info: any = list[i];
+                                    let _the_href = info.href;
+                                    let _the_filename = info.filename;
+                                    let _the_cover = info.cover;
                                     // 存在
                                     if (the_href === _the_href){
                                         if (i+1 === list.length){ // 当前是最后一个，
@@ -318,8 +335,8 @@
             that.set_current_time("0");
             navigator.mediaSession.playbackState = 'playing';
             //
-            that.get_playing().then(the_playing=>{
-                that.get_list().then(list=>{
+            that.get_playing().then((the_playing: any)=>{
+                that.get_list().then((list: any[])=>{
                     if (the_playing && list){
                         let the_href = the_playing.href;
                         function calc_playing() {
@@ -358,11 +375,11 @@
         is_playing: function(){ // 是否在播放
             let that = this;
             //
-            let start_time = that.get_current_time()*1;
+            let start_time = Number(that.get_current_time());
             let end_time = 0;
             return new Promise(resolve => {
                 setTimeout(function () {
-                    end_time = that.get_current_time()*1;
+                    end_time = Number(that.get_current_time());
                     resolve(end_time != start_time);
                 }, 200);
             });
@@ -374,23 +391,27 @@
             if (volume < 0 || volume > 1){
                 volume = 1;
             }
-            myAudio.volume = volume;
+            if (myAudio) {
+                myAudio.volume = volume;
+            }
         },
         set_playing_loop: function(loop = false){ // 是否循环单个
             let that = this;
             //
-            myAudio.loop = loop;
+            if (myAudio) {
+                myAudio.loop = loop;
+            }
         },
         get_playing_percent: function(){ // 获取当前播放进度
             let that = this;
             //
-            let duration = myAudio.duration; // s
-            let current = myAudio.currentTime; // s
+            let duration = myAudio ? myAudio.duration : 0; // s
+            let current = myAudio ? myAudio.currentTime : 0; // s
             return Math.floor((current/duration)*100)/100;
         },
-        get_playing: function(): object{ // 获取当前播放
+        get_playing: function(): Promise<any> { // 获取当前播放
             return new Promise(resolve => {
-                func.js_call_py_or_go("get_data", {data_key:player_prefix + "playing"}).then(res=>{
+                func.js_call_py_or_go("get_data", {data_key:player_prefix + "playing"}).then((res:any)=>{
                     let the_playing = res.content.data;
                     resolve(the_playing?JSON.parse(decodeURIComponent(the_playing)):null);
                 });
@@ -398,7 +419,7 @@
         },
         set_playing: function(the_playing = {}){ // 新增或更新当前播放
             return new Promise(resolve => {
-                func.js_call_py_or_go("set_data", {data_key:player_prefix + "playing", data_value:encodeURIComponent(JSON.stringify(the_playing)), data_timeout_s:180*24*3600 }).then(res=>{
+                func.js_call_py_or_go("set_data", {data_key:player_prefix + "playing", data_value:encodeURIComponent(JSON.stringify(the_playing)), data_timeout_s:180*24*3600 }).then((res:any)=>{
                     let the_playing = res.content.data;
                     resolve(the_playing?JSON.parse(decodeURIComponent(the_playing)):null);
                 });
@@ -406,7 +427,7 @@
         },
         get_list: function(): Promise<object[]>{ // 获取列表，最大1000长度
             return new Promise(resolve => {
-                func.js_call_py_or_go("get_data", {data_key:player_prefix + "list" }).then(res=>{
+                func.js_call_py_or_go("get_data", {data_key:player_prefix + "list" }).then((res:any)=>{
                     let list = res.content.data;
                     resolve((list.length>0)?JSON.parse(decodeURIComponent(list)).slice(0, play_list_max_len):null);
                 });
@@ -421,7 +442,7 @@
                 list = list_array;
             }
             return new Promise(resolve => {
-                func.js_call_py_or_go("set_data", {data_key:player_prefix + "list", data_value:encodeURIComponent(list), data_timeout_s:2*365*24*3600 }).then(res=>{
+                func.js_call_py_or_go("set_data", {data_key:player_prefix + "list", data_value:encodeURIComponent(list), data_timeout_s:2*365*24*3600 }).then((res:any)=>{
                     let the_playing = res.content.data;
                     resolve(the_playing?JSON.parse(decodeURIComponent(the_playing)):null);
                 });
@@ -468,7 +489,7 @@
         if (!func.support_min_js()){return;}
         if (!runtime_ok() || !browser_ok()){return;} // 系统基础条件检测
         // 展示播放按钮
-        def.get_playing().then(the_playing=>{
+        def.get_playing().then((the_playing: any)=>{
             if (the_playing){ // 有历史
                 player_show_control = "show";
                 song_info_filename =  the_playing.filename;

@@ -3,10 +3,11 @@
     import { resolve } from '$app/paths';
     import func from "../../common/func.svelte.js";
     import {afterNavigate} from "$app/navigation";
-    import {onMount} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import {browser_ok, runtime_ok} from "../../common/middleware.svelte";
     import {browser} from "$app/environment";
     import config from "../../config";
+    import {side_tab_data} from "../../stores/side_tab.store.svelte";
 
 
     // 本页面参数
@@ -34,6 +35,9 @@
     function page_start(){
         func.console_log("page_start=", route);
         // 开始
+        // func.title(func.get_translate("Index"));
+        // side_tab_data.tab_value = route;
+        // side_tab_data.tab_name = func.get_translate("Index");
         // 兼容老View框架的路由
         if (href.indexOf("route=home") != -1){
             let array = href.split("route=home");
@@ -117,6 +121,10 @@
         }
     });
 
+    // 处理页面切换或关闭时的事件，比如定时器
+    onDestroy(()=>{
+        //
+    });
 
 </script>
 

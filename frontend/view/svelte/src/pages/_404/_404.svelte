@@ -3,9 +3,10 @@
     import func from "../../common/func.svelte.js";
     import config from "../../config";
     import {afterNavigate} from "$app/navigation";
-    import {onMount} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import {browser_ok, runtime_ok} from "../../common/middleware.svelte";
     import {browser} from "$app/environment";
+    import {side_tab_data} from "../../stores/side_tab.store.svelte";
 
 
     // 链接携带的信息
@@ -30,6 +31,9 @@
         func.loading_hide(); // 避免其他页面跳转到本页面时出现loading图
         // 开始
         func.title(func.get_translate("_404"));
+        side_tab_data.tab_value = route;
+        side_tab_data.tab_name = func.get_translate("_404");
+        //
     }
 
     // 标签处于切换显示状态
@@ -71,6 +75,11 @@
         }
     });
 
+    // 处理页面切换或关闭时的事件，比如定时器
+    onDestroy(()=>{
+        //
+    });
+
 
 </script>
 
@@ -85,7 +94,7 @@
         <br/>
         <div class="select-none" style="display:flex; justify-content: center; align-items: center;">
             <div style="clear: both;">
-                <a class="click font-blue" href={resolve(back_url)} target="_self" title="Back Home"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="float: left; margin-right: 10px;"><g fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="m15.5 9l-3 3l3 3m-4-6l-3 3l3 3"/></g></svg>{func.get_translate("a_click_tip_back_home")}</a>
+                <a class="click font-blue" href={back_url} target="_self" title="Back Home"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="float: left; margin-right: 10px;"><g fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="m15.5 9l-3 3l3 3m-4-6l-3 3l3 3"/></g></svg>{func.get_translate("a_click_tip_back_home")}</a>
             </div>
         </div>
         <br/>

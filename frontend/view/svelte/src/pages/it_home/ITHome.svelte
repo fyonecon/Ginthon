@@ -28,7 +28,7 @@
                 app_token: _app_token,
                 app_class: config.app.app_class
             };
-            FetchPOST(_api_url, body_dict).then(result=>{
+            FetchPOST(_api_url, body_dict).then((result:any)=>{
                 let state = result.state;
                 let msg = result.msg;
                 if (state === 1){
