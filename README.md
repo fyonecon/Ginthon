@@ -16,9 +16,9 @@ Ginthon基于pywebview、flask等。无PyQT。ApacheV2 License。
 
 Python版基座请戳：https://github.com/fyonecon/Ginthon 。
 
-Golang版基座请戳：https://github.com/fyonecon/Waigo 。
+Golang版基座请戳：https://github.com/fyonecon/Waigo （推荐）。
 
-Go和PY都是以“尽量返回默认值来代替‘抛出Error’”+“尽量复用函数”+“尽量不使用继承”为原则。
+Go和PY都是以“尽量返回默认值来代替‘抛出Error’”+“尽量复用函数”+“尽量不使用继承”+“减少不必要的外部import”为原则。
 
 两个语言基座的根本区别就是反编译效果，Go比PY好很多。
 
