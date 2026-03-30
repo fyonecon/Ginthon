@@ -167,7 +167,6 @@ Ginthon-Main
 │   │   ├── run_tray.py 启动状态栏托盘
 │   │   └── run_services.py 其它主页服务
 │   ├── common 公共函数、封装的kit
-│   │   ├── func.py 公共函数
 │   │   ├── kits 公共函数的Kit
 │   │   │   ├── _7z.py 7Z解压
 │   │   │   ├── FILETYPE_DICT.py 各种文件对照表
@@ -179,7 +178,9 @@ Ginthon-Main
 │   │   │   ├── txt_data.py 简单的文件型数据库
 │   │   │   ├── watch_pid.py
 │   │   │   └── watch_processes.py
-│   │   └── translate.py 翻译对照表
+│   │   ├── func.py 公共函数
+│   │   ├── request_data.go 公用处理Flask Input请求参数函数
+│   │   └── translate.py 多语言翻译对照表
 │   └── config.py 系统配置信息
 │   ├── routes 自定义的路由
 │   │   └── ...py 
