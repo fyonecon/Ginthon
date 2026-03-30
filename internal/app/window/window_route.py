@@ -7,7 +7,7 @@ from internal.app.window.controller.js_call_py import list_js_call_py
 from internal.app.window.controller.tray_events import tray_events
 from internal.app.window.window_view import view_js_must_data, view_index
 from internal.common.app_auth import rand_id, rand_token
-from internal.bootstrap.flask_middleware import flask_middleware_html, flask_middleware_api, flask_middleware_file
+from internal.services.flask_middleware import flask_middleware_html, flask_middleware_api, flask_middleware_file
 from internal.common.func import func
 from internal.common.kits.main_dirpath import main_dirpath
 from internal.common.request_data import request_data
@@ -15,7 +15,7 @@ from internal.config import get_config
 
 
 # window专用路由
-def window_route(_WINDOW, FLASK):
+def route_window(_WINDOW, FLASK):
 
     # 适配svelte、vue文件结构的html静态文件系统
     # http://127.0.0.1:9750/view

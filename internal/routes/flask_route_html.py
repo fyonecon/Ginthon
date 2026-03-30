@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import send_file, request
-from internal.bootstrap.flask_middleware import flask_middleware_html
+from internal.services.flask_middleware import flask_middleware_html
 
 
 # 自定义路由，html模板

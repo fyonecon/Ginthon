@@ -35,11 +35,11 @@ def check_min_sys_version():
         return min_win_version()
     elif _sys == "mac":
         def min_mac_version():
-            min_mac = 12
+            min_mac = 14
             try:
                 mac_version = platform.mac_ver()[0]
                 if mac_version:
-                    version_parts = mac_version.split('.') # 解析版本号，如 "12.6.1"
+                    version_parts = mac_version.split('.') # 解析版本号，如 "14.6.1"
                     major_version = int(version_parts[0]) # 获取主要版本号
                     if major_version >= min_mac:
                         return True
@@ -52,7 +52,7 @@ def check_min_sys_version():
                 return False
         return min_mac_version()
     else:
-        print("当前仅支持Window10+、macOS12+。")
+        print("当前仅支持Window10+、macOS14+。")
         return False
 
 # 检查端口是否被占用，true已占用
@@ -121,5 +121,5 @@ def run_check_sys():
         pass
 
     #
-    print(msg, [str(cpu_count) + " Cores", str(total_ram) + " GB", _python_version, flask_port_txt], str(now_time))
+    print(msg, [str(cpu_count) + " Cores", str(total_ram) + " GB", _python_version, flask_port_txt], str(now_time), [cpu_count, total_ram, _python_version, sys_state, time_state])
     return state

@@ -46,7 +46,7 @@ class ssl_127:
         cert.get_subject().CN = host  # 使用 localhost、127.0.0.1、0.0.0.0等本地IP
         cert.set_serial_number(1000)
         cert.gmtime_adj_notBefore(0)
-        cert.gmtime_adj_notAfter(9 * 365 * 24 * 60 * 60)  # 9年有效期
+        cert.gmtime_adj_notAfter(11 * 365 * 24 * 60 * 60)  # 11年有效期
         cert.set_issuer(cert.get_subject())
         cert.set_pubkey(k)
         cert.sign(k, 'sha256')

@@ -7,7 +7,7 @@ from flask import send_file, request
 from internal.app.flask.app_token import check_app_token
 from internal.app.flask.controller.play_audio import get_play_audio_list
 from internal.app.flask.controller.spider_ithome import read_spider_it_home
-from internal.bootstrap.flask_middleware import flask_middleware_api
+from internal.services.flask_middleware import flask_middleware_api
 from internal.common.func import func
 
 

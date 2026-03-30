@@ -50,7 +50,9 @@ const func = {
         }
     },
     url_path: function(pathname){ // URL的path路径前缀，适配后端服务器输出规则。默认""，推荐"."。pathname开头/ 。
-        return ""+pathname;
+        let new_path = config.sys.base_route+pathname;
+        new_path = new_path.replaceAll("//", "/");
+        return new_path;
     },
     redirect_pathname: function (data_dict){ // 重定向到新路由。相当于301永久重定向。 url_pathname开头/
         let that = this;

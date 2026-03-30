@@ -2,7 +2,7 @@
 from flask import send_file, request
 
 from internal.app.flask.app_token import check_app_token
-from internal.bootstrap.flask_middleware import flask_middleware_file
+from internal.services.flask_middleware import flask_middleware_file
 from internal.common.func import func
 from internal.common.request_data import request_data
 

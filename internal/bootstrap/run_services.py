@@ -2,7 +2,7 @@
 
 import threading
 
-from internal.app.services.services_for_time_interval import services_for_time_interval
+from internal.services.services_for_time_interval import services_for_time_interval
 from internal.common.func import func
 
 #

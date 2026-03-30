@@ -8,7 +8,7 @@ const config = {
     },
     sys:{
         backend: "py", // go、py
-        base_route: "/view", // 此值请同样svelte.config.js中paths的base：""、"/view"、'/view_static'，结尾无/
+        base_route: "./", // 此值请同样svelte.config.js中paths的base：""、"./"、"/view"、'/view_static'，结尾无/
         home_route: "/home", // 主页默认页的路由：空""、"/purehome"
         home_route_white_word: "@home", // 默认刷新时打开的页面，与search里面“@白名单”匹配：空"@"、"@purehome"
     },
