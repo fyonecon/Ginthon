@@ -5,11 +5,11 @@
 GLOBAL_CONFIG_DICT = {
     "app": {
         "app_name": "Ginthon",
-        "app_version": "1.9.0",  # 1.0.0
-        "app_class": "ginthon_window_",
+        "app_class": "ginthon_window_", # 必须为string，且必须唯一，推荐使用英文
+        "app_rights":  "Datathink.Top ApacheV2",
+        "app_version": "1.9.0",  # 版本格式 1.0.0
         "author": "fyonecon",
         "github": "https://github.com/fyonecon/Ginthon",
-        "docs": "http://datathink.top/#route=ginthon&ap=",
     },
     "sys": {
         "app_state_start_time": 20260301010101, # 最早时间 YmdHis
@@ -59,6 +59,8 @@ GLOBAL_CONFIG_DICT = {
         "db_pwd": "",
     },
 }
+
+# =========================================================
 
 # 读取配置信息
 def get_config(group="", key=""):

@@ -26,7 +26,7 @@ def init_sys(cmd_model):
     #
     check_sys_state = run_check_sys()
     if check_sys_state:
-        func.print_log("=== " + CONFIG["app"]["app_name"] + " => ", "v" + CONFIG["app"]["app_version"], CONFIG["app"]["author"], CONFIG["app"]["docs"] + "init_sys")
+        func.print_log("=== " + CONFIG["app"]["app_name"] + " => ", "v" + CONFIG["app"]["app_version"], CONFIG["app"]["author"])
         # 设置一个临时的运行标记id
         running_id_filename = CONFIG["sys"]["running_id_filename"]
         txt_data.remove(running_id_filename)
