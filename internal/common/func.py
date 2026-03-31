@@ -134,6 +134,9 @@ class func:
             os.mkdir(_data_dirpath)
             pass
         # 创建子文件夹
+        if len(dirpath) >= 50:
+            dirpath = "_md5_" + func.md5(dirpath)
+            pass
         full_path = _data_dirpath + "/" + dirpath
         if not func.has_dir(full_path):  # 不存在
             os.mkdir(full_path)
