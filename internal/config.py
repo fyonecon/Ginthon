@@ -9,7 +9,7 @@ GLOBAL_CONFIG_DICT = {
         "app_rights":  "Datathink.Top ApacheV2",
         "app_version": "1.9.0",  # 版本格式 1.0.0
         "author": "fyonecon",
-        "github": "https://github.com/fyonecon/Ginthon",
+        "github": "github.com/fyonecon/Ginthon",
     },
     "sys": {
         "app_state_start_time": 20260301010101, # 最早时间 YmdHis
