@@ -82,8 +82,8 @@ def run_check_sys():
         func.create_data_dir_level_1(name)
         pass
 
-    # 至少物理双核
-    cpu_count = psutil.cpu_count(logical=False)
+    # 至少vCPU
+    cpu_count = psutil.cpu_count(logical=True)
 
     # 至少1GB RAM
     ram = psutil.virtual_memory()
@@ -112,7 +112,7 @@ def run_check_sys():
         pass
 
     # 校验可用状态
-    state = cpu_count >= CONFIG["check"]["min_cpu_cores"] and total_ram >= CONFIG["check"]["min_ram"] and sys.version_info >= CONFIG["check"]["min_python_version"] and (not flask_port_state) and sys_state and time_state
+    state = cpu_count >= CONFIG["check"]["min_vcpu_cores"] and total_ram >= CONFIG["check"]["min_ram"] and sys.version_info >= CONFIG["check"]["min_python_version"] and (not flask_port_state) and sys_state and time_state
     if state:
         msg = "### 系统基础状态 => "
         pass

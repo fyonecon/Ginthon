@@ -24,7 +24,7 @@ GLOBAL_CONFIG_DICT = {
         "debug": False, # True False ，显示终端日志
     },
     "check": { # check_sys
-        "min_cpu_cores": 2,  # 物理核心数
+        "min_vcpu_cores": 2,  # vCPU
         "min_ram": 1,  # GB
         "min_python_version": (3, 14),  # 默认最低(3, 14)，即3.12.0
     },
