@@ -27,6 +27,9 @@ Thumbs.db
 .pdf
 .log
 .cache
+.map
+.db
+.lcl
 Ginthon
 Ginthon.exe
 Tray
