@@ -112,17 +112,31 @@
             // console.log([now_route_index, next_index, href])
             func.open_url(href);
         },
+        is_ok_browser: function (){
+            const ua = navigator.userAgent.toLowerCase();
+            //
+            // const isDesktop = (func.is_mobile_screen() === 0);
+            const isFirefox = /firefox/i.test(ua) || /fx/i.test(ua);
+            const isSamsung = /samsung/i.test(ua);
+            const isBrave = function (){
+                let value = "";
+                //
+                if (value === ""){try {value = navigator.Brave.isBrave;}catch (e) {}}
+                if (value === ""){try {value = navigator.isBrave;}catch (e) {}}
+                if (value === ""){try {value = window.braveEthereum;}catch (e) {}}
+                //
+                return (value !== "" && value !== undefined) || /brave/i.test(ua);
+            };
+            //
+            return isFirefox || isSamsung || isBrave();
+        },
         show_glass_div: function (){ // 是否隐藏tab区域
             let that = this;
             //
-            if (that.route_in_tab_data(route)){
+            if (that.is_ok_browser() && that.route_in_tab_data(route)){
                 glass_div_display = "show";
-            }else{ // hide
-                if (route === "/purehome"){ // 检查该路由是否设置过隐藏属性
-                    glass_div_display = (func.get_local_data(config.app.app_class+"home_tab_show")==="show")?"show":"hide";
-                }else{
-                    glass_div_display = "hide";
-                }
+            }else{
+                glass_div_display = "hide";
             }
         },
         show_qr_div: function (){
