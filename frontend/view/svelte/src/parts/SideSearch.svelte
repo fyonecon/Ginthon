@@ -2,7 +2,7 @@
     import {afterNavigate} from "$app/navigation";
     import func from "../common/func.svelte.js";
     import {input_enter_data} from "../stores/input_enter.store.svelte";
-    import {browser_ok, runtime_ok} from "../common/middleware.svelte";
+    import {browser_ok, runtime_ok} from "../services/middleware.svelte";
     import config from "../config";
     import {browser} from "$app/environment";
 

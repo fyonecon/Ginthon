@@ -2,7 +2,7 @@
     import config from "../config";
     import {afterNavigate} from "$app/navigation";
     import func from "../common/func.svelte";
-    import {browser_ok, runtime_ok} from "../common/middleware.svelte";
+    import {browser_ok, runtime_ok} from "../services/middleware.svelte";
 
 
     // 本页面参数

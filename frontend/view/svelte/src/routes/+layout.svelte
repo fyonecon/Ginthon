@@ -22,7 +22,7 @@
     import SideTab from '../parts/SideTab.svelte';
     import Nav from '../parts/Nav.svelte';
     import Foot from '../parts/Foot.svelte';
-    import {browser_ok, runtime_ok} from "../common/middleware.svelte";
+    import {browser_ok, runtime_ok} from "../services/middleware.svelte";
     import {browser} from "$app/environment";
 
 

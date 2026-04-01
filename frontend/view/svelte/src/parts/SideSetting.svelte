@@ -4,7 +4,7 @@
     import func from "../common/func.svelte.js";
     import { afterNavigate, beforeNavigate } from "$app/navigation";
     import config from "../config";
-    import {browser_ok, runtime_ok} from "../common/middleware.svelte";
+    import {browser_ok, runtime_ok} from "../services/middleware.svelte";
     import {side_tab_data} from "../stores/side_tab.store.svelte";
 
 

@@ -1472,18 +1472,67 @@ const func = {
 
         return false;
     },
-    support_min_js: function (){ // 最低js支持到ES2022
-        try {
-            eval(`
-                class Test {
-                    #private = 1;
-                    static { this.test = 2; }
+    support_min_js: function (){ // 最低js支持到ES2024，Chrome124+，Firefox128+，iOS17.4+，nodeJS22+，Bun1.1+
+        const support_es2024 = function (){
+            try { // es2024
+                return !!(
+                    // 1. Object.groupBy (最常用的新特性)
+                    Object.groupBy &&
+                    // 2. Promise.withResolvers (改变 Promise 写法的特性)
+                    Promise.withResolvers &&
+                    // 3. ArrayBuffer.prototype.resize (内存管理增强)
+                    ArrayBuffer.prototype.resize &&
+                    // 4. 正则表达式 v 标记 (Unicode 增强)
+                    new RegExp('', 'v') &&
+                    // 5. Atomics.waitAsync (多线程同步增强)
+                    typeof Atomics !== 'undefined' && Atomics.waitAsync
+                );
+            } catch (e) {
+                return false;
+            }
+        };
+        //
+        if (!support_es2024()){
+            const support_es2022 = function (){
+                try { // es2022
+                    eval(`
+                    class Test {
+                        #private = 1;
+                        static { this.test = 2; }
+                    }
+                `);
+                    return true;
+                } catch {
+                    return false;
                 }
-            `);
-            return true;
-        } catch {
-            return false;
+            };
+            const support_es2023 = function (){
+                try { // es2023
+                    return !!(
+                        Array.prototype.toSorted &&
+                        Array.prototype.toReversed &&
+                        Array.prototype.with &&
+                        Array.prototype.findLast &&
+                        // ES2023 还允许使用 Symbol 作为 WeakMap 的 key
+                        (typeof WeakMap !== 'undefined' && (() => {
+                            try {
+                                const wm = new WeakMap();
+                                wm.set(Symbol('test'), 1);
+                                return true;
+                            } catch (e) {
+                                return false;
+                            }
+                        })())
+                    );
+                } catch (e) {
+                    return false;
+                }
+            };
+            //
+            console.warn("Support JS Info：", ["ES2022", support_es2022()], ["ES2023", support_es2023()], ["ES2024", support_es2024()]);
         }
+        //
+        return support_es2024();
     },
     block_all_script: function (){ // 禁用所有js脚本或禁止继续添加js脚本
         // 禁用所有脚本

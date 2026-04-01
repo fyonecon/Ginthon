@@ -5,7 +5,7 @@
     import config from "../config";
     import {browser} from "$app/environment";
     import {onMount} from "svelte";
-    import {browser_ok, runtime_ok} from "../common/middleware.svelte";
+    import {browser_ok, runtime_ok} from "../services/middleware.svelte";
 
 
     // 历史记录算法 >>>>>>

@@ -5,7 +5,7 @@
     import {onMount, onDestroy} from "svelte";
     import config from "../config";
     import {play_audio_data} from "../stores/play_audio.store.svelte.js";
-    import {browser_ok, runtime_ok} from "../common/middleware.svelte";
+    import {browser_ok, runtime_ok} from "../services/middleware.svelte";
 
 
     // 本页面参数
