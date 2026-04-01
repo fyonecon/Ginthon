@@ -1472,7 +1472,33 @@ const func = {
 
         return false;
     },
-    support_min_js: function (){ // 最低js支持到ES2024，Chrome124+，Firefox128+，iOS17.4+，nodeJS22+，Bun1.1+
+    support_min_js: function (){ // 最低js支持到ES202x
+        // ES2023，Chrome110+，Firefox110+，iOS16.4+，nodeJS20+，Bun0.6+
+        // ES2024，Chrome124+，Firefox128+，iOS17.4+，nodeJS22+，Bun1.1+
+        let that = this;
+        //
+        const support_es2023 = function (){
+            try { // es2023
+                return !!(
+                    Array.prototype.toSorted &&
+                    Array.prototype.toReversed &&
+                    Array.prototype.with &&
+                    Array.prototype.findLast &&
+                    // ES2023 还允许使用 Symbol 作为 WeakMap 的 key
+                    (typeof WeakMap !== 'undefined' && (() => {
+                        try {
+                            const wm = new WeakMap();
+                            wm.set(Symbol('test'), 1);
+                            return true;
+                        } catch (e) {
+                            return false;
+                        }
+                    })())
+                );
+            } catch (e) {
+                return false;
+            }
+        };
         const support_es2024 = function (){
             try { // es2024
                 return !!(
@@ -1492,47 +1518,15 @@ const func = {
             }
         };
         //
-        if (!support_es2024()){
-            const support_es2022 = function (){
-                try { // es2022
-                    eval(`
-                    class Test {
-                        #private = 1;
-                        static { this.test = 2; }
-                    }
-                `);
-                    return true;
-                } catch {
-                    return false;
-                }
-            };
-            const support_es2023 = function (){
-                try { // es2023
-                    return !!(
-                        Array.prototype.toSorted &&
-                        Array.prototype.toReversed &&
-                        Array.prototype.with &&
-                        Array.prototype.findLast &&
-                        // ES2023 还允许使用 Symbol 作为 WeakMap 的 key
-                        (typeof WeakMap !== 'undefined' && (() => {
-                            try {
-                                const wm = new WeakMap();
-                                wm.set(Symbol('test'), 1);
-                                return true;
-                            } catch (e) {
-                                return false;
-                            }
-                        })())
-                    );
-                } catch (e) {
-                    return false;
-                }
-            };
-            //
-            console.warn("Support JS Info：", ["ES2022", support_es2022()], ["ES2023", support_es2023()], ["ES2024", support_es2024()]);
+        if (!support_es2024() && !support_es2023){
+            console.error("support_min_js=", ["es2023", support_es2023()], ["es2024", support_es2024()]);
         }
         //
-        return support_es2024();
+        if (that.is_gthon() || that.is_wails()){
+            return support_es2024();
+        }else{
+            return support_es2023();
+        }
     },
     block_all_script: function (){ // 禁用所有js脚本或禁止继续添加js脚本
         // 禁用所有脚本
