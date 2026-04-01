@@ -1473,8 +1473,9 @@ const func = {
         return false;
     },
     support_min_js: function (){ // 最低js支持到ES202x
-        // ES2023，Chrome110+，Firefox110+，iOS16.4+，nodeJS20+，Bun0.6+
-        // ES2024，Chrome124+，Firefox128+，iOS17.4+，nodeJS22+，Bun1.1+
+        // 大致最低支持范围:
+        // ES2023，Chrome110+，Firefox115+，iOS16.4+，Android14+，MacOS14+，Win10 2023 Update+，nodeJS20+，Bun0.6+
+        // ES2024，Chrome124+，Firefox128+，iOS17.4+，Android16+，MacOS14+，Win10 2024 Update+，nodeJS22+，Bun1.1+
         let that = this;
         //
         const support_es2023 = function (){
