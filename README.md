@@ -139,6 +139,7 @@ Ginthon-Main
 │           │   └── pages 页面具体实现
 │           │   └── parts 公用Svelte组件
 │           │   └── stores 绑定数据管理
+│           │   └── services 内置服务
 │           │   └── routes 路由、layout、公共参数验证
 │           ├── config.js 配置文件
 │           └── static 静态文件
