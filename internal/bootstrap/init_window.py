@@ -71,7 +71,7 @@ def join_events(_window):
 # 创建临时窗口获得浏览器UA
 def make_ua(txt = ""):
     os_info = {
-        'Windows': 'Windows NT 10.0; Win64; '+func.get_machine(),
+        'Windows': 'Windows NT 10.0; '+func.get_machine(),
         'Darwin': 'Macintosh; '+func.get_machine()+' Mac OS X 15.0',
         'Linux': 'X11; Linux '+func.get_machine()
     }.get(platform.system(), '')
@@ -80,7 +80,7 @@ def make_ua(txt = ""):
     webkit_version = '604.1'
 
     # 浏览器版本（使用当前稳定的 Chrome 版本）
-    chrome_version = '143.0.0.0'
+    chrome_version = '147.0.0.0'
 
     # 构建标准 WebKit UA
     webkit_ua = (
