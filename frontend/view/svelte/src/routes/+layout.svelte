@@ -18,7 +18,6 @@
     import {watch_window} from "../watch_window.js";
     import {watch_lang_data} from "../stores/watch_lang.store.svelte";
     import config from "../config";
-    import {app_uid_data} from "../stores/app_uid.store.svelte";
     import SideTab from '../parts/SideTab.svelte';
     import Nav from '../parts/Nav.svelte';
     import Foot from '../parts/Foot.svelte';
@@ -150,13 +149,13 @@
     }
 
     // 标签处于切换显示状态
-    function page_show(){
+    function page_show(e: any){
         func.console_log("page_show=", route);
         // show
     }
 
     // 标签处于切换隐藏状态
-    function page_hide(){
+    function page_hide(e: any){
         func.console_log("page_hide=", route);
         // hide
     }
@@ -183,6 +182,9 @@
 
     // 页面装载完成后，只运行一次
     onMount(() => {
+        // 设置app_uid
+        func.get_app_uid().then(_app_uid => {});
+
         //
         if (func.is_wails() || func.is_gthon()) { // app
             let theme_event = window.matchMedia('(prefers-color-scheme: dark)');
@@ -211,19 +213,14 @@
 
         // 监测页面标签是否处于显示
         if (browser){
-            document.addEventListener("visibilitychange", () => {
+            document.addEventListener("visibilitychange", (e) => {
                 if (document.hidden) { // onHide
-                    page_show();
+                    page_show(e);
                 } else { // onShow
-                    page_hide();
+                    page_hide(e);
                 }
             });
         }
-
-        //
-        func.get_app_uid().then(_app_uid=>{ // 设置app_uid
-            app_uid_data.app_uid = _app_uid;
-        });
 
         //
         func.js_watch_window_display(); // 监测窗口是否隐藏

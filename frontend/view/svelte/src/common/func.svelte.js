@@ -15,6 +15,7 @@ import {app_uid_data} from "../stores/app_uid.store.svelte";
 import FetchPOST from "./post.svelte";
 import {input_enter_data} from "../stores/input_enter.store.svelte.js";
 import QRCode from "qrcode";
+import {resolve} from "$app/paths";
 
 
 //
@@ -287,6 +288,10 @@ const func = {
         let ua = window.navigator.userAgent.toLowerCase();
         return ua.indexOf("lark")!==-1;
     },
+    is_alipay: function (){
+        let ua = window.navigator.userAgent.toLowerCase();
+        return ua.indexOf("ali")!==-1 || ua.indexOf("qianniu")!==-1 || ua.indexOf("taobao")!==-1;
+    },
     make_uid: function (app_class=""){
         let that = this;
         let rand = that.js_rand(10000000000, 999999999999);
@@ -510,46 +515,201 @@ const func = {
             let ext = filename.substring(filename.lastIndexOf("."));
             ext = ext.toLowerCase();
             let white_ext = [
-                ".gif", ".png", ".jpg", ".jpeg", ".webp", ".ico", ".jpg2", ".tiff", ".tif", ".bmp", ".svg",
+                ".gif", ".png", ".jpg", ".jpeg", ".webp", ".ico", ".jpg2", ".tiff", ".tif", ".bmp", ".svg", ".icns",
             ];
             return white_ext.includes(ext);
         }catch (e) {
             return false;
         }
     },
-    is_mobile_screen: function (){ // -1 非法，0 PC，1 mobile
-        let width = window.screen.width;
-        let height = window.screen.height;
-        let max_px = 1280; // 最大 1280X900 px
-        let min_px = 200;
-        let rate = 40;
-        if (width < min_px || height < min_px){ // 非法
-            return 0; // -1
-        }else{
-            if (Math.abs(width-height) < rate){ // 非法
-                return 0; // -1
+    is_txt: function(filename){ // 是文档
+        try {
+            let ext = filename.substring(filename.lastIndexOf("."));
+            ext = ext.toLowerCase();
+            let white_ext = [
+                ".txt", ".md", ".log", ".py", ".js", ".ts", ".go", ".json", ".yml", ".toml", ".env", ".gitignore",
+                ".css", ".html", ".htm", ".xml", ".tsx", ".conf", ".php", ".swift", ".dart", ".sh", ".plist", ".lcl",
+                ".rs", ".java", ".c", ".h", ".kt", ".kts", ".jmod", ".mod", ".zig", ".zon",
+                ".bash_profile", ".zshrc", ".spec",
+            ];
+            return white_ext.includes(ext);
+        }catch (e) {
+            return false;
+        }
+    },
+    is_archive: function(filename){ // 是压缩包
+        try {
+            let ext = filename.substring(filename.lastIndexOf("."));
+            ext = ext.toLowerCase();
+            let white_ext = [
+                ".zip", ".7z", ".rar", ".exe", ".apk", ".xapk", ".dmg", ".deb", ".app", ".gz",  ".iso",
+                ".jar", ".war", ".gzip", ".bzip2", ".msi", ".msu", ".img", ".cab", ".ear",
+                ".class", ".so", ".pyc", ".a", ".rlib", ".hpk", ".ipa",
+            ];
+            return white_ext.includes(ext);
+        }catch (e) {
+            return false;
+        }
+    },
+    is_desktop_screen: function(){ // 是桌面像素比。从13英寸触摸ipad pro开始算，以上像素都是Desktop。1280无触摸以上都是Desktop
+        if (browser){
+            const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            let width = window.screen.width;
+            let height = window.screen.height;
+            //
+            let max_px = 2752; // 最大: [2752，++) px
+            let min_px = 1280; // [1280, ++)
+            if (isTouch) {
+                return (width>=max_px || height>=max_px); // 有触摸+宽高>=2752
             }else{
-                if (width>max_px || height>max_px){
-                    return 0; // PC
+                return (!isTouch) && (width>=min_px || height>=min_px); // 无触摸+宽高>=1280
+            }
+        }else {
+            return false;
+        }
+    },
+    is_mobile_screen: function (){ // 是手机像素比。必须有触摸。
+        if (browser){
+            const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            let width = window.screen.width;
+            let height = window.screen.height;
+            //
+            let max_px = 2752; // 最大: (200, 2752) px
+            let min_px = 200;
+            let rate = 40;
+            if (width < min_px || height < min_px){ // 非法
+                return false;
+            }else{
+                if (Math.abs(width-height) < rate){ // 不能是正方形
+                    return false;
                 }else{
-                    return 1; // mobile
+                    return (width < max_px && height < max_px) && isTouch; // 有触摸+最大像素限制
                 }
             }
+        }else{
+            return false;
         }
+    },
+    is_desktop: function(){ // 金标准综合判断
+        let that = this;
+        return that.is_desktop_screen() && (that.is_mac() || that.is_win() || that.is_linux());
+    },
+    is_mobile: function(){ // 金标准综合判断
+        let that = this;
+        return that.is_mobile_screen() && (that.is_ios() || that.is_android());
     },
     is_pwa: function (){ // 综合判断
         let that = this;
         //
-        return (that.is_mobile_pwa() || that.is_pc_pwa() || that.is_wails() || that.is_gthon());
+        const is_mobile_pwa = function (){ // iOS/Android端pwa，不同浏览器不一定
+            return window.navigator?.standalone || document.referrer.includes('android-app://');
+        };
+        const is_desktop_pwa = function (){ // win/mac端pwa，不同浏览器不一定
+            const displayModes = ['fullscreen', 'standalone', 'minimal-ui'];
+            return displayModes.some(
+                displayMode => window.matchMedia('(display-mode: ' + displayMode + ')').matches
+            );
+        };
+        return (is_mobile_pwa() || is_desktop_pwa() || that.is_wails() || that.is_gthon());
     },
-    is_mobile_pwa: function (){ // iOS/Android端pwa，不同浏览器不一定
-        return window.navigator?.standalone || document.referrer.includes('android-app://');
+    is_ios: function () {
+        const ua = navigator.userAgent.toLowerCase();
+        return (/iphone/i.test(ua)) || (/ipad/i.test(ua)) || (/ipod/i.test(ua));
+    } ,
+    is_android: function (){
+        const ua = navigator.userAgent.toLowerCase();
+        return ( (/android/i).test(ua) ) || ( (/hm/i).test(ua) || (/harmony/i).test(ua) );
     },
-    is_pc_pwa: function (){ // win/mac端pwa，不同浏览器不一定
-        const displayModes = ['fullscreen', 'standalone', 'minimal-ui'];
-        return displayModes.some(
-            displayMode => window.matchMedia('(display-mode: ' + displayMode + ')').matches
-        );
+    is_mac: function (){
+        let that = this;
+        const ua = navigator.userAgent.toLowerCase();
+        return ( (/macintosh/i.test(ua)) || (/mac os x/i.test(ua)) ) && !that.is_ios();
+    },
+    is_win: function (){
+        const ua = navigator.userAgent.toLowerCase();
+        return (/windows/i).test(ua);
+    },
+    is_linux: function (){
+        let that = this;
+        const ua = navigator.userAgent.toLowerCase();
+        return (/linux/i).test(ua) && !that.is_android;
+    },
+    is_firefox: function (){
+        const ua = navigator.userAgent.toLowerCase();
+        return (/firefox/i.test(ua)) || (/fx/i.test(ua));
+    },
+    is_samsung: function (){
+        const ua = navigator.userAgent.toLowerCase();
+        return (/samsung/i.test(ua));
+    },
+    is_edge: function (){ // 不包含老Edge
+        const ua = navigator.userAgent.toLowerCase();
+        return (/edg/i.test(ua)) && !(/edge/i.test(ua)) && !(/edga/i.test(ua));
+    },
+    is_chrome: function (){ // 仅是Chrome本尊
+        let that = this;
+        const ua = navigator.userAgent.toLowerCase();
+        //
+        // const isFirefox = (/firefox/i.test(ua)) || (/fx/i.test(ua));
+        const isChrome = (/chrome/i.test(ua)) || (/ch/i.test(ua));
+        const isEdge = (/edg/i.test(ua)) || (/bing/i.test(ua)); // 包含老Edge
+        const isBrave = (/brave/i.test(ua));
+        const isYandex = (/ya/i.test(ua));
+        const isOpera = (/opera/i.test(ua)) || (/opr/i.test(ua)) || (/opt/i.test(ua));
+        const isSamsung = (/samsung/i.test(ua));
+        const isDuckDuckGo = (/duckDuckGo/i.test(ua)) || (/ddg/i.test(ua));
+        const isMeta = (/facebook/i.test(ua)) || (/ins/i.test(ua)) || (/meta/i.test(ua));
+        // 盲
+        const isAI = (/ai/i.test(ua));
+        const isBuild = (/build/i.test(ua)) || (/com/i.test(ua)) || (/cn/i.test(ua)) || (/dev/i.test(ua));
+        // 国内
+        const isQQ = (/qq/i.test(ua)) || (/qqbrowser/i.test(ua));
+        const isUC = (/uc/i.test(ua));
+        const isSogou = (/sogou/i.test(ua));
+        const isVivaldi = (/vivaldi/i.test(ua));
+        const isQuark = (/quark/i.test(ua));
+        const isBaidu = (/baidu/i.test(ua));
+        const isMaxthon = (/maxthon/i.test(ua));
+        const is360 = (/360/i.test(ua));
+        const isLiebao = (/lb/i.test(ua));
+        const isMeituan = (/meituan/i.test(ua)) || (/mt/i.test(ua));
+        const isDouyin = (/douyin/i.test(ua)) || (/tiktok/i.test(ua)) || (/byte/i.test(ua)) || (/aweme/i.test(ua)) || (/news/i.test(ua)) || (/toutiao/i.test(ua));
+        //
+        return isChrome && !(that.is_wails() || that.is_gthon() || isEdge || isBrave || isBrave || isYandex || isOpera || isSamsung || isDuckDuckGo || isMeta || isAI || isBuild || isQQ || isUC || isSogou || isVivaldi || isQuark || isQuark || isBaidu || isMaxthon || is360 || isLiebao || isMeituan || isDouyin);
+    },
+    is_safari: function (){ // 仅是Safari本尊
+        let that = this;
+        const ua = navigator.userAgent.toLowerCase();
+        //
+        const isAppleWebKit = /applewebKit/i.test(ua);
+        // 排除其他浏览器
+        // 国际
+        const isFirefox = (/firefox/i.test(ua)) || (/fx/i.test(ua));
+        const isChrome = (/chrome/i.test(ua)) || (/ch/i.test(ua));
+        const isEdge = (/edg/i.test(ua)) || (/bing/i.test(ua)); // 包含老Edge
+        const isBrave = (/brave/i.test(ua));
+        const isYandex = (/ya/i.test(ua));
+        const isOpera = (/opera/i.test(ua)) || (/opr/i.test(ua)) || (/opt/i.test(ua));
+        const isSamsung = (/samsung/i.test(ua));
+        const isDuckDuckGo = (/duckDuckGo/i.test(ua)) || (/ddg/i.test(ua));
+        const isMeta = (/facebook/i.test(ua)) || (/ins/i.test(ua)) || (/meta/i.test(ua));
+        // 盲
+        const isAI = (/ai/i.test(ua));
+        const isBuild = (/build/i.test(ua)) || (/com/i.test(ua)) || (/cn/i.test(ua)) || (/dev/i.test(ua));
+        // 国内
+        const isQQ = (/qq/i.test(ua)) || (/qqbrowser/i.test(ua));
+        const isUC = (/uc/i.test(ua));
+        const isSogou = (/sogou/i.test(ua));
+        const isVivaldi = (/vivaldi/i.test(ua));
+        const isQuark = (/quark/i.test(ua));
+        const isBaidu = (/baidu/i.test(ua));
+        const isMaxthon = (/maxthon/i.test(ua));
+        const is360 = (/360/i.test(ua));
+        const isLiebao = (/lb/i.test(ua));
+        const isMeituan = (/meituan/i.test(ua)) || (/mt/i.test(ua));
+        const isDouyin = (/douyin/i.test(ua)) || (/tiktok/i.test(ua)) || (/byte/i.test(ua)) || (/aweme/i.test(ua)) || (/news/i.test(ua)) || (/toutiao/i.test(ua));
+        //
+        return isAppleWebKit && (that.is_ios() || that.is_mac()) && !(that.is_android() || that.is_win() || that.is_linux()) && !(that.is_wails() || that.is_gthon() || isFirefox || isChrome || isEdge  || isBrave || isBrave || isYandex || isOpera || isSamsung || isDuckDuckGo || isMeta || isAI || isBuild || isQQ || isUC || isSogou || isVivaldi || isQuark || isQuark || isBaidu || isMaxthon || is360 || isLiebao || isMeituan || isDouyin);
     },
     html_to_plain_text: function (html) { // string类型的html转换成text
         let that = this;
@@ -888,20 +1048,53 @@ const func = {
         let that = this;
         //
         let app_uid_key = config.app.app_class+"app_uid";
+        let app_start_time_key = config.app.app_class+"app_start_time";
+        //
         return new Promise(resolve => {
-            func.js_call_py_or_go("get_data", {data_key:app_uid_key}).then(res=>{
-                let _app_uid=res.content.data;
-                if (_app_uid){
-                    app_uid_data.app_uid = _app_uid;
-                    resolve(_app_uid);
-                }else{
+            if (that.is_gthon() || that.is_wails()){
+                func.js_call_py_or_go("get_data", {data_key:app_uid_key}).then(res=>{
+                    let _app_uid=res.content.data;
+                    if (_app_uid){
+                        app_uid_data.app_uid = _app_uid;
+                        //
+                        func.js_call_py_or_go("get_data", {data_key:app_start_time_key}).then(res=>{
+                            let start_time=res.content.data;
+                            if (!start_time){
+                                start_time = func.string_to_unicode(func.get_time_date("YmdHiW"));
+                                func.js_call_py_or_go("set_data", {data_key:app_start_time_key, data_value:start_time, data_timeout_s:20*365*24*3600}).then(res=>{
+                                    resolve(_app_uid);
+                                });
+                            }else{
+                                resolve(_app_uid);
+                            }
+                        });
+                    }else{
+                        _app_uid = that.md5(that.make_uid(config.app.app_class));
+                        func.js_call_py_or_go("set_data", {data_key:app_uid_key, data_value:_app_uid, data_timeout_s:20*365*24*3600}).then(res=>{
+                            app_uid_data.app_uid = _app_uid;
+                            //
+                            let start_time = func.get_time_date("YmdHiW");
+                            start_time = func.string_to_unicode(start_time);
+                            func.js_call_py_or_go("set_data", {data_key:app_start_time_key, data_value:start_time, data_timeout_s:20*365*24*3600}).then(res=>{
+                                resolve(_app_uid);
+                            });
+                        });
+                    }
+                });
+            }else{ // web或其它
+                let _app_uid = func.get_local_data(app_uid_key);
+                let _app_start_time = func.get_local_data(app_start_time_key);
+                if (!_app_uid || !_app_start_time){
                     _app_uid = that.md5(that.make_uid(config.app.app_class));
-                    func.js_call_py_or_go("set_data", {data_key:app_uid_key, data_value:_app_uid, data_timeout_s:10*365*24*3600}).then(res=>{
-                        app_uid_data.app_uid = res.content.data;
-                        resolve(res.content.data);
-                    });
+                    func.set_local_data(app_uid_key, _app_uid);
+                    //
+                    let start_time = func.get_time_date("YmdHiW");
+                    start_time = func.string_to_unicode(start_time);
+                    func.set_local_data(app_start_time_key, start_time);
                 }
-            });
+                app_uid_data.app_uid = _app_uid;
+                resolve(_app_uid);
+            }
         });
     },
     ping: function (url) {

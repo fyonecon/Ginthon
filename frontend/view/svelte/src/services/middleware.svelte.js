@@ -61,6 +61,14 @@ const browser_func = {
             return false;
         }
     },
+    is_alipay: function (){
+        if (browser){
+            let ua = window.navigator.userAgent.toLowerCase();
+            return ua.indexOf("ali")!==-1;
+        }else{
+            return false;
+        }
+    },
 };
 
 /**
@@ -76,5 +84,5 @@ export const runtime_ok = function (){
  * @returns {boolean} 返回固定格式
  */
 export const browser_ok = function (){
-    return !(browser_func.is_weixin() || browser_func.is_work_weixin() || browser_func.is_qq() || browser_func.is_feishu() || browser_func.is_dingding());
+    return !(browser_func.is_weixin() || browser_func.is_work_weixin() || browser_func.is_qq() || browser_func.is_feishu() || browser_func.is_dingding() || browser_func.is_weixin() || browser_func.is_alipay());
 }

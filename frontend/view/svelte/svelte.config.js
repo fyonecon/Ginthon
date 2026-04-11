@@ -21,6 +21,13 @@ const config = {
             base: '/view', // 根据你的部署路径设置，''、'/view'、'/view_static'，此值请同样 config.js--sys--base_route 里面设置
             assets: '', // 根据你的部署路径设置。CDN如：'http(s)://127.0.0.1:9750/view/svelte/dist'，结尾无/
         },
+        // 防止资源文件过期失效
+		version: {
+			// 每次部署时更改这个值（或使用 git rev-parse HEAD）
+			name: Date.now().toString(),
+			// 当检测到版本更新时，在后台静默刷新
+			pollInterval: 600*1000 // ms 每 10 分钟检查一次
+		}
 	}
 };
 

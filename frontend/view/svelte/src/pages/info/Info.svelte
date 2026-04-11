@@ -23,11 +23,12 @@
     let test_db_data = $state("...");
     let test_index_html_api = $state("...");
     let test_index_html_info: object[]  = $state([]);
+    let app_uid = $state("");
 
     // 本页面函数：Svelte的HTML组件onXXX=中正确调用：={()=>def.xxx()}
     const def = {
-        ping_url: function(url: string): Promise<string> {
-            return new Promise<string>((resolve) => {
+        ping_url: function(url: string) {
+            return new Promise((resolve) => {
                 func.ping(url).then(back => {
                     console.log(url, back);
                     if (back.state === 1){
@@ -110,7 +111,9 @@
                 let index = 0;
                 for (let [key, value] of headers) {
                     // console.log(`${key}: ${value}`);
-                    if (index < 5){ // 不需要展示全部
+                    let max_info = 5;
+                    if (func.is_gthon() || func.is_wails()){max_info = 20;}
+                    if (index < max_info){ // 不需要展示全部
                         test_index_html_info.push({
                             key: key,
                             value: value,
@@ -119,6 +122,51 @@
                     ++index;
                 }
             });
+        },
+         test_screen: function() {
+             // 辅助函数：获取近似DPI (基于标准CSS英寸 2.54cm)
+             function getDPI() {
+                 // 创建一个临时元素，测量其物理尺寸对应的像素数
+                 const div = document.createElement('div');
+                 div.style.width = '1in'; // CSS中的1英寸
+                 div.style.height = '1in';
+                 div.style.position = 'absolute';
+                 div.style.top = '-100%';
+                 document.body.appendChild(div);
+                 const pxPerInch = div.offsetWidth; // 在屏幕上1英寸实际占用的CSS像素数
+                 document.body.removeChild(div);
+                 return pxPerInch;
+             }
+
+            // 1. 获取屏幕的物理像素尺寸（分辨率）
+            const widthPx = screen.width;
+            const heightPx = screen.height;
+            const diagonalPx = Math.sqrt(widthPx * widthPx + heightPx * heightPx);
+
+            // 更精确的物理尺寸获取（利用screen的availWidth或modern计算方法）
+            // 这里采用标准方法：获取DPI
+            const dpi = getDPI();
+            const physicalDiagonalInches = diagonalPx / dpi;
+
+            // 3. 计算像素密度 (PPI)
+            const ppi = diagonalPx / physicalDiagonalInches;
+
+            // 输出详细信息供调试
+            // console.log({
+            //     '物理分辨率': `${widthPx} x ${heightPx}`,
+            //     '对角线像素': diagonalPx.toFixed(0),
+            //     '估算物理英寸': physicalDiagonalInches.toFixed(1) + ' 英寸',
+            //     '像素密度PPI': ppi.toFixed(0),
+            // });
+
+            return {
+                'inch': physicalDiagonalInches.toFixed(1),
+                'ppi': ppi.toFixed(0),
+                "screen.width": window.screen.width,
+                "screen.height": window.screen.height,
+                "screen.availWidth": window.screen.availWidth,
+                "screen.availHeight": window.screen.availHeight,
+            };
         },
     };
 
@@ -130,6 +178,9 @@
         // 开始
         func.title(func.get_translate("Info"));
         def.test_index_html();
+        func.get_app_uid().then(_app_uid=>{
+            app_uid = _app_uid;
+        });
     }
 
     // 标签处于切换显示状态
@@ -163,9 +214,9 @@
         if (browser){
             document.addEventListener("visibilitychange", () => {
                 if (document.hidden) { // onHide
-                    page_show();
-                } else { // onShow
                     page_hide();
+                } else { // onShow
+                    page_show();
                 }
             });
         }
@@ -237,6 +288,12 @@
         </div>
         <div class="info-div-content">
             <div class="info-div-content-li break select-text">
+                <span class="info-div-content-li-title ">“ES、OS、Web内核”支持情况 (仅GUI)：</span>
+                <br>
+                <span class="info-div-content-li-res">{@html "Android10+、iOS/iPad16.4+、macOS14+、HM6+、Windows10(2023 Update+)、Linux(202406 update+)、Chrome110+、Firefox115+、nodeJS20+，Bun0.6+"}</span>
+                <div class="clear"></div>
+            </div>
+            <div class="info-div-content-li break select-text">
                 <span class="info-div-content-li-title ">UserAgent ：</span>
                 <br>
                 <span class="info-div-content-li-res">{@html window.navigator.userAgent}</span>
@@ -255,32 +312,19 @@
                 <div class="clear"></div>
             </div>
             <div class="info-div-content-li break select-text">
-                <span class="info-div-content-li-title ">设备CPU数(逻辑核) ：</span>
+                <span class="info-div-content-li-title ">vCPU (个) ：</span>
                 <br>
                 <span class="info-div-content-li-res">{@html window.navigator.hardwareConcurrency || "-不支持-"}</span>
                 <div class="clear"></div>
             </div>
             <div class="info-div-content-li break select-text">
-                <span class="info-div-content-li-title ">设备内存(GB) ：</span>
+                <span class="info-div-content-li-title ">RAM (GB) ：</span>
                 <br>
                 <span class="info-div-content-li-res">{@html window.navigator.deviceMemory || "-不支持-"}</span>
                 <div class="clear"></div>
             </div>
             <div class="info-div-content-li break select-text">
-                <span class="info-div-content-li-title ">Screen尺度参数 ：</span>
-                <br>
-                <span class="info-div-content-li-res">
-                    {@html
-                        "screen.width=" + window.screen.width+
-                        "<br/>screen.height=" + window.screen.height+
-                        "<br/>screen.availWidth=" + window.screen.availWidth+
-                        "<br/>screen.availHeight=" + window.screen.availHeight
-                    }
-                </span>
-                <div class="clear"></div>
-            </div>
-            <div class="info-div-content-li break select-text">
-                <span class="info-div-content-li-title ">Pages尺度参数 ：</span>
+                <span class="info-div-content-li-title ">实际页面尺寸 ：</span>
                 <br>
                 <span class="info-div-content-li-res">{@html
                     "window.innerWidth=" + window.innerWidth +
@@ -289,17 +333,42 @@
                 </span>
                 <div class="clear"></div>
             </div>
+            <div class="info-div-content-li break select-text">
+                <span class="info-div-content-li-title ">测算屏幕尺寸和PPI ：</span>
+                <br>
+                <span class="info-div-content-li-res">{@html
+                    JSON.stringify(def.test_screen())
+                }
+                </span>
+                <div class="clear"></div>
+            </div>
 
             <div class="info-div-content-li break select-text">
-                <span class="info-div-content-li-title ">是否处于PWA(Mobile、PC) ：</span>
+                <span class="info-div-content-li-title ">PWA状态：</span>
                 <br>
-                <span class="info-div-content-li-res">{@html [func.is_mobile_pwa(), func.is_pc_pwa()]}</span>
+                <span class="info-div-content-li-res">{@html [func.is_pwa()]}</span>
                 <div class="clear"></div>
             </div>
             <div class="info-div-content-li break select-text">
-                <span class="info-div-content-li-title ">IsMobileScreen ：</span>
+                <span class="info-div-content-li-title ">屏幕所属 ：</span>
                 <br>
-                <span class="info-div-content-li-res">{@html func.is_mobile_screen()}</span>
+                <span class="info-div-content-li-res">{@html JSON.stringify({
+                    "Mobile": func.is_mobile_screen(),
+                    "Desktop": func.is_desktop_screen(),
+                })}</span>
+                <div class="clear"></div>
+            </div>
+            <div class="info-div-content-li break select-text">
+                <span class="info-div-content-li-title ">系统所属 ：</span>
+                <br>
+                <span class="info-div-content-li-res">{@html JSON.stringify({
+                    "iOS & iPad": func.is_ios(),
+                    "Android & HM": func.is_android(),
+                    "macOS": func.is_mac(),
+                    "Windows": func.is_win(),
+                    "Linux": func.is_linux(),
+                    "Safari Browser": func.is_safari(),
+                })}</span>
                 <div class="clear"></div>
             </div>
             <div class="info-div-content-li break select-text">
@@ -323,13 +392,13 @@
             <div class="info-div-content-li break select-text">
                 <span class="info-div-content-li-title ">appVersion ：</span>
                 <br>
-                <span class="info-div-content-li-res">{@html "v"+config.app.app_version}</span>
+                <span class="info-div-content-li-res">{@html "UI v"+config.app.app_version}</span>
                 <div class="clear"></div>
             </div>
             <div class="info-div-content-li break select-text">
                 <span class="info-div-content-li-title ">appUID ：</span>
                 <br>
-                <span class="info-div-content-li-res">{@html "-"}</span>
+                <span class="info-div-content-li-res">{@html app_uid?app_uid:"-"}</span>
                 <div class="clear"></div>
             </div>
             <div class="info-div-content-li break select-text">

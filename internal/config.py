@@ -7,7 +7,7 @@ GLOBAL_CONFIG_DICT = {
         "app_name": "Ginthon",
         "app_class": "ginthon_window_", # 必须为string，且必须唯一，推荐使用英文
         "app_rights":  "Datathink.Top ApacheV2",
-        "app_version": "1.9.0",  # 版本格式 1.0.0
+        "app_version": "1.9.2",  # 版本格式 1.0.0
         "author": "fyonecon",
         "github": "github.com/fyonecon/Ginthon",
     },

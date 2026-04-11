@@ -1,7 +1,7 @@
 <script>
     import func from "../common/func.svelte.js";
     import {afterNavigate} from "$app/navigation";
-    import {browser_ok, runtime_ok} from "../common/middleware.svelte.js";
+    import {browser_ok, runtime_ok} from "../services/middleware.svelte.js";
     import config from "../config.js";
     import {browser} from "$app/environment";
     import {onMount} from "svelte";
@@ -112,28 +112,17 @@
             // console.log([now_route_index, next_index, href])
             func.open_url(href);
         },
-        is_ok_browser: function (){
-            const ua = navigator.userAgent.toLowerCase();
-            //
-            // const isDesktop = (func.is_mobile_screen() === 0);
-            const isFirefox = /firefox/i.test(ua) || /fx/i.test(ua);
-            const isSamsung = /samsung/i.test(ua);
-            const isBrave = function (){
-                let value = "";
-                //
-                if (value === ""){try {value = navigator.Brave.isBrave;}catch (e) {}}
-                if (value === ""){try {value = navigator.isBrave;}catch (e) {}}
-                if (value === ""){try {value = window.braveEthereum;}catch (e) {}}
-                //
-                return (value !== "" && value !== undefined) || /brave/i.test(ua);
-            };
-            //
-            return isFirefox || isSamsung || isBrave();
+        is_show_tab: function (){
+            if (browser){
+                return (func.is_firefox() || func.is_wails() || func.is_gthon());
+            }else{
+                return false;
+            }
         },
         show_glass_div: function (){ // 是否隐藏tab区域
             let that = this;
             //
-            if (that.is_ok_browser() && that.route_in_tab_data(route)){
+            if (that.is_show_tab() && that.route_in_tab_data(route)){
                 glass_div_display = "show";
             }else{
                 glass_div_display = "hide";
@@ -233,7 +222,7 @@
         def.calc_tab_div_width();
         def.show_glass_div();
         def.show_qr_div();
-        if (func.is_pc_pwa() || func.is_mobile_pwa()){
+        if (func.is_pwa()){
             tab_bottom = 20;
         }else{
             tab_bottom = 10;
