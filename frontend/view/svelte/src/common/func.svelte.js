@@ -642,9 +642,9 @@ const func = {
         const ua = navigator.userAgent.toLowerCase();
         return (/samsung/i.test(ua));
     },
-    is_edge: function (){ // 不包含老Edge
+    is_edge: function (){
         const ua = navigator.userAgent.toLowerCase();
-        return (/edg/i.test(ua)) && !(/edge/i.test(ua)) && !(/edga/i.test(ua));
+        return (/edg/i.test(ua));
     },
     is_chrome: function (){ // 仅是Chrome本尊
         let that = this;

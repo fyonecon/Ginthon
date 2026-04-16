@@ -7,6 +7,8 @@ Ginthon基于pywebview、flask等。无PyQT。ApacheV2 License。
 
 前端默认Svelte5。
 
+全静态，可挂载其它语言程序编写的二进制子程序。
+
 代码目前只在Git^hu^b上发布（防^爬说明20251116）。
 
 开源地址：https://github.com/fyonecon/Ginthon 。
