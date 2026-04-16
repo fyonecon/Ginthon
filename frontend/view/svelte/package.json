@@ -23,7 +23,7 @@
 		"svelte": "5.53.5",
 		"svelte-check": "^4.3.4",
 		"svelte-copy": "^2.0.0",
-		"tailwindcss": "^4.1.17",
+        "tailwindcss": "^4.2.2",
 		"typescript": "^5.9.3",
 		"vite": "8.0.5"
 	},
