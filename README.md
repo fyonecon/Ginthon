@@ -7,7 +7,7 @@ Ginthon 基于 pywebview、flask 等。无 PyQT。ApacheV2 License。
 
 GUI 前端默认 Svelte5，运行于 Webview2、Webkit、WebKitGTK 中。
 
-打包安装包体积在 55MB 左右，RAM 占用 120MB 左右。
+打包安装包体积在 55MB 左右，RAM 占用 170MB 左右。
 
 全静态，可挂载其它语言程序编写的二进制子程序。
 
