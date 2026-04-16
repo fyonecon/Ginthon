@@ -32,6 +32,9 @@ GLOBAL_CONFIG_DICT = {
         "white_hosts": [
             "http://127.0.0.1",
             "https://127.0.0.1",
+            # 其它Host。如果需要对外暴露自定义域名，请使用Nginx反向代理127。
+			"http://api.datathink.top",
+			"https://api.datathink.top",
         ], #白名单域名或IP，格式：协议+IPv4+port、协议+域名
         "port": 9750,  # 服务端口 9750（前端端口使用了 9770 ，请勿重复）
         "ssl": True, # True False。开启flask自签https证书，view_url请开启https。pywebview与flask ssl一起开启或关闭。
