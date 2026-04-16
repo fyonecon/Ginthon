@@ -215,9 +215,9 @@
         if (browser){
             document.addEventListener("visibilitychange", (e) => {
                 if (document.hidden) { // onHide
-                    page_show(e);
-                } else { // onShow
                     page_hide(e);
+                } else { // onShow
+                    page_show(e);
                 }
             });
         }
