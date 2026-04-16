@@ -17,15 +17,15 @@
 		"@skeletonlabs/skeleton-svelte": "^4.8.0",
 		"@sveltejs/adapter-auto": "^7.0.0",
 		"@sveltejs/adapter-static": "^3.0.10",
-		"@sveltejs/kit": "2.53.3",
-		"@sveltejs/vite-plugin-svelte": "^6.2.1",
+		"@sveltejs/kit": "^2.57.1",
+		"@sveltejs/vite-plugin-svelte": "^7.0.0",
 		"@tailwindcss/vite": "^4.1.17",
 		"svelte": "5.53.5",
 		"svelte-check": "^4.3.4",
 		"svelte-copy": "^2.0.0",
 		"tailwindcss": "^4.1.17",
 		"typescript": "^5.9.3",
-		"vite": "^7.2.2"
+		"vite": "8.0.5"
 	},
 	"dependencies": {
 		"dexie": "^4.2.1",
