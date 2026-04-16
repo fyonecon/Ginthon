@@ -1,6 +1,6 @@
 {
   "steps":{
-    "step_01": "pyinstaller --clean tray.spec",
+    "step_01": "pyinstaller --clean gthon_tray.spec",
     "step_02": "python ./internal/bootstrap/tray_move.py",
     "step_0": "cd ./frontend/view/svelte",
     "step_2": "npm install",
@@ -8,7 +8,7 @@
     "step_4": "cd ../../../",
     "step_5": "pip install -r requirements.txt",
     "step_6": "pip freeze > requirements.txt",
-    "step_7": "pyinstaller --clean window.spec",
+    "step_7": "pyinstaller --clean gthon_window.spec",
     "step_8": "python --version"
   },
   "custom_commands": {

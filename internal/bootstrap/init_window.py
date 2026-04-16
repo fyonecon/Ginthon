@@ -111,6 +111,16 @@ def init_window(cmd_model):
         pywebveiw_url = _view_url
         pass
 
+    # 是否开启webkit console面板
+    webview_debug = True
+    if cmd_model == "build":
+        webview_debug = False
+        pass
+    else:
+        webview_debug = CONFIG["pywebview"]["debug"]
+        pass
+
+
     # 忽略pywebveiw自签ssl警告（mac）
     ssl_state = CONFIG["flask"]["ssl"]
     if ssl_state:
@@ -152,7 +162,7 @@ def init_window(cmd_model):
     _window.events.closed += on_closed
 
     # 启动视窗
-    webview.start(func=join_events, args=_window, ssl=CONFIG["pywebview"]["ssl"], debug=CONFIG["pywebview"]["debug"], user_agent=make_ua("gthon"+"/v"+CONFIG["app"]["app_version"]+"/"+cmd_model))
+    webview.start(func=join_events, args=_window, ssl=CONFIG["pywebview"]["ssl"], debug=webview_debug, user_agent=make_ua("gthon"+"/v"+CONFIG["app"]["app_version"]+"/"+cmd_model))
 
     # 主动杀掉join_events服务进程
     try:

@@ -23,7 +23,7 @@ frontend_files = [
 datas.extend(frontend_files)
 
 a = Analysis(
-    ['window.py'],
+    ['gthon_window.py'],
     pathex=[],  # 可以为空，PyInstaller 会自动处理
     binaries=[],
     datas=datas,
