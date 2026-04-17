@@ -172,7 +172,7 @@ Ginthon-Main
 ```
 
 ### 运行效果：
-![运行效果](./frontend/show.png)
+![运行效果](./docs/show.png)
 
 ---
 
@@ -237,6 +237,10 @@ Ginthon-Main
 >（https://download.jetbrains.com/python/pycharm-community-2025.2.4.dmg ）
 > 
 >（https://download.jetbrains.com/python/pycharm-community-2025.2.4-aarch64.dmg ）
+
+---
+
+其它原理请戳 ./docs/README-Docs.md 文档。
 
 ---
 
