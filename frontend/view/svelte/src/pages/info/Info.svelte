@@ -75,7 +75,10 @@
         },
         see_ip_detail: function(){
             let see = "https://ip.im";
-            let href = "./search?word="+encodeURIComponent(func.string_to_unicode(see))+"&engine=bing&url_timeout="+func.url_timeout_encode("search", 0.5*60*60)+"&ap=info";
+            // 自动判断路由深度
+            let path_num = (route.split("/").length - 1); if (path_num <= 1){path_num = 1;}
+            let path_fix = "./" + "../".repeat(path_num - 1);
+            let href = path_fix+"search?word="+encodeURIComponent(func.string_to_unicode(see))+"&engine=bing&url_timeout="+func.url_timeout_encode("search", 0.5*60*60)+"&ap=info";
             if (browser){
                 if (func.is_wails() || func.is_gthon()){
                     func.open_url_with_default_browser(href);
