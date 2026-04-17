@@ -9,6 +9,7 @@
     <title>{func.get_translate("Info")}</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
+    <link rel="icon" type="image/png" href="./launcher.png" />
 </svelte:head>
 
 <section class="section-main scroll-y-style">
