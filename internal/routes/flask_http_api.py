@@ -5,14 +5,14 @@ import os
 from flask import send_file, request
 
 from internal.app.flask.app_token import check_app_token
-from internal.app.flask.controller.play_audio import get_play_audio_list
-from internal.app.flask.controller.spider_ithome import read_spider_it_home
+from internal.app.flask.http_controller.play_audio import get_play_audio_list
+from internal.app.flask.http_controller.spider_ithome import read_spider_it_home
 from internal.services.flask_middleware import flask_middleware_api
 from internal.common.func import func
 
 
 # 自定义路由，接口专用
-def flask_route_api(_WINDOW, FLASK):
+def flask_http_api(_WINDOW, FLASK):
 
     # http://127.0.0.1:9750/api/spider/ithome
     @FLASK.route("/api/spider/ithome", methods=["GET", "POST", "OPTIONS"])  # 路由名

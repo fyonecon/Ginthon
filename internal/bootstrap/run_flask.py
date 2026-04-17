@@ -3,15 +3,15 @@
 from flask import Flask, jsonify, send_file
 from flask import request
 
-from internal.routes.flask_route_api import flask_route_api
-from internal.routes.flask_route_file import flask_route_file
-from internal.routes.flask_route_html import flask_route_html
-from internal.routes.flask_route_must import route_must
+from internal.routes.flask_http_api import flask_http_api
+from internal.routes.flask_http_file import flask_http_file
+from internal.routes.flask_http_html import flask_http_html
+from internal.routes.flask_must import route_must
 from internal.app.window.window_route import route_window
 from internal.common.func import func
-from internal.common.kits.main_dirpath import main_dirpath
 from internal.common.kits.ssl_127 import ssl_127
 from internal.common.request_data import request_data
+from internal.routes.flask_ws import flask_ws
 
 #
 CONFIG = {}
@@ -52,10 +52,12 @@ def run_flask(window, webview_pid, config):
     route_must(window, FLASK)
     # window必要路由
     route_window(window, FLASK)
+
     # 注册自定义路由
-    flask_route_html(window, FLASK)
-    flask_route_api(window, FLASK)
-    flask_route_file(window, FLASK)
+    flask_http_html(window, FLASK)
+    flask_http_api(window, FLASK)
+    flask_http_file(window, FLASK)
+    flask_ws(window, FLASK)
 
     # 启动Flask
     no_ssl_host = "0.0.0.0" # 0.0.0.0

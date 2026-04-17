@@ -8,7 +8,7 @@ from internal.common.request_data import request_data
 
 
 # 自定义路由，文件专用
-def flask_route_file(_WINDOW, FLASK):
+def flask_http_file(_WINDOW, FLASK):
 
     # 适配音乐播放及访问本地文件
     # http://127.0.0.1:9750/dir/play_audio/xxx
