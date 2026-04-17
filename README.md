@@ -1,7 +1,9 @@
 
-## Ginthon是用Python+Web写的“视图窗口+稳定服务”的桌面端（Win、Mac、Linux）多功能程序基座。
+## Ginthon是用Python+Web写的“视图窗口+稳定服务”的桌面端（Win、Mac、Linux）多功能程序基座。项目结构清晰，功能划分合理，适合大项目，开箱即用但是有一定上手门槛。
 ```
-代码习惯基于 Golang（无复杂继承和类）。
+代码习惯无复杂继承和类。
+
+ApacheV2 License。
 
 Ginthon 基于 pywebview、flask 等。无 PyQT。ApacheV2 License。
 
