@@ -1,5 +1,5 @@
 
-## Ginthon是用Python+Web写的“视图窗口+稳定服务”的桌面端（Win、Mac、Linux）多功能程序基建。
+## Ginthon是用Python+Web写的“视图窗口+稳定服务”的桌面端（Win、Mac、Linux）多功能程序基座。
 ```
 代码习惯基于 Golang（无复杂继承和类）。
 
