@@ -71,15 +71,15 @@ exe = EXE(
 # Mac：创建 .app bundle
 app = BUNDLE(
     exe,
-    name='Ginthon.app',  # .app 的名称
+    name='GinthonDemo.app',  # .app 的名称
     icon='./frontend/icons.icns', # mac必须.icns
-    bundle_identifier='top.datathink.ginthon',  # 可选：bundle identifier
+    bundle_identifier='top.datathink.GinthonDemo',  # 可选：bundle identifier
 #    entitlements_file='./frontend/entitlements.plist',  # 提前申请一些权限
     info_plist={
         'CFBundlePackageType': 'APPL',
-        'CFBundleName': 'Ginthon',
-        'CFBundleDisplayName': 'Ginthon',
-        'CFBundleIdentifier': 'top.datathink.ginthon',
+        'CFBundleName': 'GinthonDemo',
+        'CFBundleDisplayName': 'GinthonDemo',
+        'CFBundleIdentifier': 'top.datathink.GinthonDemo',
         'CFBundleShortVersionString': '1.4.0',      # 显示版本
         'CFBundleVersion': '1.4.x',                     # 构建版本(日期、版本号、其它数字)
         'CFBundleDevelopmentRegion': 'zh-CN',       # 开发地区
