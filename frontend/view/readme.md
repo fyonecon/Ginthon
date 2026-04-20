@@ -86,9 +86,7 @@ export default config;
 在Ginthon/internal/config.py中设置静态文件参数：
 ```
 "pywebview": { # window
-    "view_url": "http://127.0.0.1:port", # 视图网址（协议+网址+端口+路径，如：http://127.0.0.1 ）
-    "view_class": "svelte", # 视图使用的模板（影响flask服务器加载页面）。 "vue"、"svelte"、单页填""
-    "view_file_html": "view/dist", # pnpm run build后的dist目录。 "view/dist"、单页应用""。结尾无/。
+    "view_url": "http://127.0.0.1:port/view", # 视图网址（协议+网址+端口+路径，如：http://127.0.0.1:9750/view ）
 },
 ```
 
@@ -112,7 +110,7 @@ server: {
 }
 ```
 
-项目所在文件夹：/frontend/view/vue/
+项目所在文件夹：/frontend/view/
 ```
 npm install
 
@@ -134,8 +132,7 @@ npm run build
 在Ginthon/internal/config.py中设置静态文件参数：
 ```
 "pywebview": { # window
-    "view_url": "http://127.0.0.1:port", # 视图网址（协议+网址+端口+路径，如：http://127.0.0.1 ）
-    "view_class": "vue", # 视图使用的模板（影响flask服务器加载页面）。 "vue"、"svelte"、单页填""
+    "view_url": "http://127.0.0.1:port/view", # 视图网址（协议+网址+端口+路径，如：http://127.0.0.1:9750/view ）
     "view_file_html": "view/dist", # pnpm run build后的dist目录。 "view/dist"、单页应用""。结尾无/。
 },
 ```
@@ -145,13 +142,20 @@ npm run build
 # 单页应用
 将单页应用的首页index.html文件放置在：
 ```
-/frontend/view/
+/frontend/view/dist/
 ```
-单页应用的其它静态资源放置在：
+其它供外部暴露的Web静态资源放置在：
 
-（访问静态资源：http://127.0.0.1:9750/file/xxx ）
+（访问静态资源：http://127.0.0.1:9750/html/xxx ）
 ```
-/frontend/file/
+/flaskassets/html/
+```
+
+其它供外部暴露文件资源放置在：
+
+（访问静态资源：http://127.0.0.1:9750/files/xxx ）
+```
+/flaskassets/files/
 ```
 
 =================================
