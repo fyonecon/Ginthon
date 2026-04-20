@@ -18,10 +18,10 @@ def tray_open(window, webview_pid, config):
     # 兼容处理
     plt = func.get_platform()
     if plt == "mac" or plt == "linux":
-        file = "Tray"  # 源文件路径
+        file = "GinthonTray"  # 源文件路径
         pass
     else:
-        file = "Tray.exe"  # 源文件路径
+        file = "GinthonTray.exe"  # 源文件路径
         pass
     # 命令行运行
     file_path = main_dirpath.virtual_dirpath("frontend") + "/tray/" + file

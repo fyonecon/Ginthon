@@ -10,7 +10,7 @@ from internal.common.request_data import request_data
 # 请求宽进严出、中间件验证参数
 def route_must(window, FLASK):
 
-    # index http://127.0.0.1:9750/
+    # index https://127.0.0.1:9750/
     @FLASK.route("/", methods=["GET", "POST", "OPTIONS"]) # 路由名
     def index(filename="virtual.html"): # 触发函数（函数名尽量和路由名一致）
         # route验证参数
@@ -92,6 +92,7 @@ def route_must(window, FLASK):
             return func.back_404_data_file("非法操作:white_file"), reg_code
         # ico图标
 
+
     # 图标
     @FLASK.route("/icon.png", methods=["GET", "POST", "OPTIONS"])
     def index_ico_png():  # filename可以包含路径
@@ -167,12 +168,14 @@ def route_must(window, FLASK):
     # 404
     @FLASK.errorhandler(404)
     def error_404(error):
+        # print("error_404：" + str(error))
         return func.back_404_data(), 404
 
 
     # 500
     @FLASK.errorhandler(500)
     def error_500(error):
+        # print("error_500：" + str(error))
         return func.back_500_data(), 500
 
     pass

@@ -610,7 +610,7 @@ const func = {
                 displayMode => window.matchMedia('(display-mode: ' + displayMode + ')').matches
             );
         };
-        return (is_mobile_pwa() || is_desktop_pwa() || that.is_wails() || that.is_gthon());
+        return (is_mobile_pwa() || is_desktop_pwa() || that.is_waigo() || that.is_ginthon());
     },
     is_ios: function () {
         const ua = navigator.userAgent.toLowerCase();
@@ -675,7 +675,7 @@ const func = {
         const isMeituan = (/meituan/i.test(ua)) || (/mt/i.test(ua));
         const isDouyin = (/douyin/i.test(ua)) || (/tiktok/i.test(ua)) || (/byte/i.test(ua)) || (/aweme/i.test(ua)) || (/news/i.test(ua)) || (/toutiao/i.test(ua));
         //
-        return isChrome && !(that.is_wails() || that.is_gthon() || isEdge || isBrave || isBrave || isYandex || isOpera || isSamsung || isDuckDuckGo || isMeta || isAI || isBuild || isQQ || isUC || isSogou || isVivaldi || isQuark || isQuark || isBaidu || isMaxthon || is360 || isLiebao || isMeituan || isDouyin);
+        return isChrome && !(that.is_waigo() || that.is_ginthon() || isEdge || isBrave || isBrave || isYandex || isOpera || isSamsung || isDuckDuckGo || isMeta || isAI || isBuild || isQQ || isUC || isSogou || isVivaldi || isQuark || isQuark || isBaidu || isMaxthon || is360 || isLiebao || isMeituan || isDouyin);
     },
     is_safari: function (){ // 仅是Safari本尊
         let that = this;
@@ -709,7 +709,7 @@ const func = {
         const isMeituan = (/meituan/i.test(ua)) || (/mt/i.test(ua));
         const isDouyin = (/douyin/i.test(ua)) || (/tiktok/i.test(ua)) || (/byte/i.test(ua)) || (/aweme/i.test(ua)) || (/news/i.test(ua)) || (/toutiao/i.test(ua));
         //
-        return isAppleWebKit && (that.is_ios() || that.is_mac()) && !(that.is_android() || that.is_win() || that.is_linux()) && !(that.is_wails() || that.is_gthon() || isFirefox || isChrome || isEdge  || isBrave || isBrave || isYandex || isOpera || isSamsung || isDuckDuckGo || isMeta || isAI || isBuild || isQQ || isUC || isSogou || isVivaldi || isQuark || isQuark || isBaidu || isMaxthon || is360 || isLiebao || isMeituan || isDouyin);
+        return isAppleWebKit && (that.is_ios() || that.is_mac()) && !(that.is_android() || that.is_win() || that.is_linux()) && !(that.is_waigo() || that.is_ginthon() || isFirefox || isChrome || isEdge  || isBrave || isBrave || isYandex || isOpera || isSamsung || isDuckDuckGo || isMeta || isAI || isBuild || isQQ || isUC || isSogou || isVivaldi || isQuark || isQuark || isBaidu || isMaxthon || is360 || isLiebao || isMeituan || isDouyin);
     },
     html_to_plain_text: function (html) { // string类型的html转换成text
         let that = this;
@@ -860,7 +860,7 @@ const func = {
 
         });
     },
-    is_wails: function (){ // 是否是wails环境
+    is_waigo: function (){ // 是否是 waigo（wails）环境
         let that = this;
         //
         let agent = that.get_agent().toLowerCase();
@@ -870,12 +870,12 @@ const func = {
             return false;
         }
     },
-    is_gthon: function (){ // 是否是gthon环境
+    is_ginthon: function (){ // 是否是ginthon环境
         let that = this;
         //
         let agent = that.get_agent().toLowerCase();
         if(browser){
-            return agent.indexOf("gthon") !== -1 ;
+            return agent.indexOf("ginthon") !== -1 ;
         }else {
             return false;
         }
@@ -1020,7 +1020,7 @@ const func = {
         let that = this;
         //
         let target = "_blank";
-        if (that.is_gthon() || that.is_wails()){
+        if (that.is_ginthon() || that.is_waigo()){
             that.js_call_py_or_go("open_url_with_default_browser", {
                 lang: that.get_lang(),
                 url: url,
@@ -1051,7 +1051,7 @@ const func = {
         let app_start_time_key = config.app.app_class+"app_start_time";
         //
         return new Promise(resolve => {
-            if (that.is_gthon() || that.is_wails()){
+            if (that.is_ginthon() || that.is_waigo()){
                 func.js_call_py_or_go("get_data", {data_key:app_uid_key}).then(res=>{
                     let _app_uid=res.content.data;
                     if (_app_uid){
@@ -1716,7 +1716,7 @@ const func = {
             console.error("support_min_js=", ["es2023", support_es2023()], ["es2024", support_es2024()]);
         }
         //
-        if (that.is_gthon() || that.is_wails()){
+        if (that.is_ginthon() || that.is_waigo()){
             return support_es2024();
         }else{
             return support_es2023();

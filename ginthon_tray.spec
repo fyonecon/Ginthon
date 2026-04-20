@@ -10,13 +10,12 @@ frontend_files = [
     # 单独添加文件
     ('frontend/favicon.ico', 'frontend'),
     ('frontend/icon.png', 'frontend'),
-    ('frontend/icon.ico', 'frontend'),
 ]
 
 datas.extend(frontend_files)
 
 a = Analysis(
-    ['gthon_tray.py'],
+    ['ginthon_tray.py'],
     pathex=[],  # 可以为空，PyInstaller 会自动处理
     binaries=[],
     datas=datas,
@@ -42,7 +41,7 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name='Tray', # 文件名或应用名
+    name='GinthonTray', # 文件名或应用名
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,

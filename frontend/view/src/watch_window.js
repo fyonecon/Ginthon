@@ -8,7 +8,7 @@ import config from "./config"
 // 配合window底层，需要初始化runtime才能得到的参数
 export function watch_window(){
 //
-    if (func.is_gthon()) {
+    if (func.is_ginthon()) {
         try {
             // 展示主窗口
             func.js_call_py_or_go("window_show", {
@@ -19,7 +19,7 @@ export function watch_window(){
         } catch(e) {
             console.error("不能导入gthon-UI相关文件");
         }
-    } else if (func.is_wails()) {
+    } else if (func.is_waigo()) {
         // 等同于 func.js_call_py_or_go(key="", data_dict={})
         // AppServicesForWindow.JSCallGo("make_window_token", {}).then(res=>{
         //     console.log("[AppServicesForWindow-JSCallGo]", res);
@@ -60,6 +60,6 @@ export function watch_window(){
         //     });
         // });
     } else {
-        console.warn("Runtime：", "请指明Web运行的浏览器环境，否则数据不能初始化，只能使用简易Web功能。", func.is_gthon(), func.is_wails(), func.get_agent(), func.get_href());
+        console.warn("Runtime：", "请指明Web运行的浏览器环境，否则数据不能初始化，只能使用简易Web功能。", func.is_ginthon(), func.is_waigo(), func.get_agent(), func.get_href());
     }
 }

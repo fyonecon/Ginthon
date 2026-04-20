@@ -19,7 +19,7 @@ const config = {
         // 添加路径重写配置
         paths: {
             base: '/view', // 根据你的部署路径设置，''、'/view'、'/view_static'，此值请同样 config.js--sys--base_route 里面设置
-            assets: '', // 根据你的部署路径设置。CDN如：'http(s)://127.0.0.1:9750/view/svelte/dist'，结尾无/
+            assets: '', // 根据你的部署路径设置。CDN如：'http(s)://127.0.0.1:9750/view/dist'，结尾无/
         },
         // 防止资源文件过期失效
 		version: {

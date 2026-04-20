@@ -24,22 +24,6 @@ WEBVIEW_PID = None
 SERVICES_PID = None
 FLASK_PID = None
 
-
-# 视窗view_url
-def get_view_url(view_class=""):
-    if view_class == "vue" or view_class == "svelte":
-        # svelte dist 或 vue dist
-        view_url = CONFIG["pywebview"]["view_url"]
-        return view_url
-    else:
-        # 单页HTML
-        view_url = CONFIG["pywebview"]["view_url"]
-        _rand_id = rand_id.make(CONFIG)
-        _view_auth = view_auth.make(CONFIG)
-        view_url = view_url + "/view/" + _rand_id + "?" + "view_auth=" + _view_auth + "&version=" + CONFIG["app"]["app_version"] + "&ap=" + CONFIG["app"][ "app_name"]
-        return view_url
-
-
 # 注册服务
 def join_events(_window):
     global SERVICES_PID
@@ -78,7 +62,6 @@ def make_ua(txt = ""):
 
     # WebKit 核心版本
     webkit_version = '604.1'
-
     # 浏览器版本（使用当前稳定的 Chrome 版本）
     chrome_version = '147.0.0.0'
 
@@ -101,7 +84,7 @@ def init_window(cmd_model):
     #
     CONFIG = get_config("", "")
     #
-    _view_url = get_view_url(CONFIG["pywebview"]["view_class"]) # 生产环境url：vue、svelte、""
+    _view_url = CONFIG["pywebview"]["view_url"] # 正式环境url
     _dev_url = CONFIG["pywebview"]["dev_url"] # 开发环境url
     if cmd_model == "dev":
         pywebveiw_url = _dev_url
@@ -162,7 +145,7 @@ def init_window(cmd_model):
     _window.events.closed += on_closed
 
     # 启动视窗
-    webview.start(func=join_events, args=_window, ssl=CONFIG["pywebview"]["ssl"], debug=webview_debug, user_agent=make_ua("gthon"+"/v"+CONFIG["app"]["app_version"]+"/"+cmd_model))
+    webview.start(func=join_events, args=_window, ssl=CONFIG["pywebview"]["ssl"], debug=webview_debug, user_agent=make_ua("ginthon"+"/v"+CONFIG["app"]["app_version"]+"/"+cmd_model))
 
     # 主动杀掉join_events服务进程
     try:

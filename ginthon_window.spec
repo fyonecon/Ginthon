@@ -10,20 +10,18 @@ frontend_files = [
     # 单独添加文件
     ('frontend/favicon.ico', 'frontend'),
     ('frontend/icon.png', 'frontend'),
-    ('frontend/view/index.html', 'frontend/view'),
-    # 添加 /tray/ 和 /view/ 文件夹中的全部文件
+    # 添加 /tray/ 和 /view/ 文件夹中的全部文件（整个文件夹）
     ('frontend/tray/', 'frontend/tray'), # 状态拉托盘
-    #('frontend/view/', 'frontend/view'), # 单页应用
-    #('frontend/view/vue/dist/', 'frontend/view/vue/dist'), # VUE
-    ('frontend/view/svelte/dist/', 'frontend/view/svelte/dist'), # Svelte
-    # 添加整个文件夹
-    #('frontend/file/', 'frontend/file'),
+    ('frontend/view/dist/', 'frontend/view/dist'), # Svelte、Vue、单页应用静态文件
+    # 其它文件，添加整个文件夹
+    ('flaskassets/files/', 'flaskassets/files'), # 其它可网络访问的文件
+    ('flaskassets/html/', 'flaskassets/html'), # 可暴露的web静态文件
 ]
 
 datas.extend(frontend_files)
 
 a = Analysis(
-    ['gthon_window.py'],
+    ['ginthon_window.py'],
     pathex=[],  # 可以为空，PyInstaller 会自动处理
     binaries=[],
     datas=datas,
@@ -52,7 +50,7 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name='Ginthon', # 文件名或应用名
+    name='GinthonDemo', # 文件名或应用名
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,

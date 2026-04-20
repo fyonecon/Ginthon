@@ -8,10 +8,10 @@ def tray_file_move():
     # 兼容处理
     plt = func.get_platform()
     if plt == "mac" or plt == "linux":
-        file = "./dist/Tray"  # 源文件路径
+        file = "./dist/GinthonTray"  # 源文件路径
         pass
     else:
-        file = "./dist/Tray.exe"  # 源文件路径
+        file = "./dist/GinthonTray.exe"  # 源文件路径
         pass
     # 目标文件夹路径
     new_dir = "./frontend/tray/"

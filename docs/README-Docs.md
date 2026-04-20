@@ -1,30 +1,30 @@
 ### 【手动】开发环境逐步运行项目：
 1. 开发环境运行视图UI：
-> cd ./frontend/view/svelte
+> cd ./frontend/view
 > 
 > npx sv add tailwindcss
 > 
 > npm run dev
 
 2. 开发环境直接运行状态栏托盘：
-> python gthon_tray.py
+> python ginthon_tray.py
 
 3. 开发环境运行软件（加载 localhost npm 动态文件）：
-> python gthon_window.py --cmd dev
+> python ginthon_window.py --cmd dev
 
 4. 开发环境运行软件（加载 127.0.0.1 dist 静态文件）：
-> python gthon_window.py --cmd build
+> python ginthon_window.py --cmd build
 
 (注意，直接运行“python window.py” == “python window.py --cmd build”，window.py加载的是svelte的dist静态文件，使用127.0.0.1域名。而“python window.py --cmd dev”加载的是svelte的“pnpm run dev”本地localhost网页。)
 
 ### 【手动】打包程序为程序安装包：
 1. 生成视图UI dist静态文件：
-> cd ./frontend/view/svelte
+> cd ./frontend/view
 > 
 > npm run build
 
 2. 打包成桌面安装包：
-> pyinstaller --clean gthon_window.spec
+> pyinstaller --clean ginthon_window.spec
 > 
 
 ### 其它：打包成安装程序（win、mac、linux）：

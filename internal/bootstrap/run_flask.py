@@ -6,8 +6,8 @@ from flask import request
 from internal.routes.flask_http_api import flask_http_api
 from internal.routes.flask_http_file import flask_http_file
 from internal.routes.flask_http_html import flask_http_html
-from internal.routes.flask_must import route_must
-from internal.app.window.window_route import route_window
+from internal.routes.route_must import route_must
+from internal.routes.route_window import route_window
 from internal.common.func import func
 from internal.common.kits.ssl_127 import ssl_127
 from internal.common.request_data import request_data

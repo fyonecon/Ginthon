@@ -27,7 +27,7 @@ server: {
 }
 ```
 
-项目所在文件夹：/frontend/view/svelte/
+项目所在文件夹：/frontend/view/
 ```
 npm install
 
@@ -42,7 +42,7 @@ https://svelte.dev/docs/kit/adapters
 ```
 npm i -D @sveltejs/adapter-static
 ```
-在/frontend/view/svelte/svelte.config.js添加如下内容:
+在/frontend/view/svelte.config.js添加如下内容:
 ```
 //import adapter from '@sveltejs/adapter-auto';
 import adapter from '@sveltejs/adapter-static';
@@ -65,7 +65,7 @@ const config = {
 		// 添加路径重写配置
         paths: {
             base: '', // 根据你的部署路径设置
-            assets: '' // 根据你的部署路径设置。CDN如：'http://127.0.0.1:9750/view/svelte/dist'，，结尾无/
+            assets: '' // 根据你的部署路径设置。CDN如：'http://127.0.0.1:9750/view/dist'，，结尾无/
         },
 	}
 };
@@ -80,7 +80,7 @@ export default config;
 
 最终生成的静态网站目录：
 ```
-/frontend/view/svelte/dist/
+/frontend/view/dist/
 ```
 
 在Ginthon/internal/config.py中设置静态文件参数：
@@ -88,7 +88,7 @@ export default config;
 "pywebview": { # window
     "view_url": "http://127.0.0.1:port", # 视图网址（协议+网址+端口+路径，如：http://127.0.0.1 ）
     "view_class": "svelte", # 视图使用的模板（影响flask服务器加载页面）。 "vue"、"svelte"、单页填""
-    "view_file_html": "view/svelte/dist", # pnpm run build后的dist目录。 "view/vue/dist"、"view/svelte/dist"、单页应用""。结尾无/。
+    "view_file_html": "view/dist", # pnpm run build后的dist目录。 "view/dist"、单页应用""。结尾无/。
 },
 ```
 
@@ -128,7 +128,7 @@ npm run build
 
 最终生成的静态网站目录：
 ```
-/frontend/view/vue/dist/
+/frontend/view/dist/
 ```
 
 在Ginthon/internal/config.py中设置静态文件参数：
@@ -136,7 +136,7 @@ npm run build
 "pywebview": { # window
     "view_url": "http://127.0.0.1:port", # 视图网址（协议+网址+端口+路径，如：http://127.0.0.1 ）
     "view_class": "vue", # 视图使用的模板（影响flask服务器加载页面）。 "vue"、"svelte"、单页填""
-    "view_file_html": "view/vue/dist", # pnpm run build后的dist目录。 "view/vue/dist"、"view/svelte/dist"、单页应用""。结尾无/。
+    "view_file_html": "view/dist", # pnpm run build后的dist目录。 "view/dist"、单页应用""。结尾无/。
 },
 ```
 

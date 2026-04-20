@@ -1,14 +1,14 @@
 {
   "steps":{
-    "step_01": "pyinstaller --clean gthon_tray.spec",
+    "step_01": "pyinstaller --clean ginthon_tray.spec",
     "step_02": "python ./internal/bootstrap/tray_move.py",
-    "step_0": "cd ./frontend/view/svelte",
+    "step_0": "cd ./frontend/view",
     "step_2": "npm install",
     "step_3": "npm run dev",
-    "step_4": "cd ../../../",
+    "step_4": "cd ../../",
     "step_5": "pip install -r requirements.txt",
     "step_6": "pip freeze > requirements.txt",
-    "step_7": "python gthon_window.py --cmd dev"
+    "step_7": "python ginthon_window.py --cmd dev"
   },
   "health_checks": {
     "step_3": {
