@@ -4,8 +4,8 @@
 # 获取get_config(group="", key="")
 GLOBAL_CONFIG_DICT = {
     "app": {
-        "app_name": "Ginthon",
-        "app_class": "ginthon_window_", # 必须为string，且必须唯一，推荐使用英文
+        "app_name": "GinthonDemo",
+        "app_class": "GinthonDemo_", # 必须为string，且必须唯一，推荐使用英文
         "app_rights":  "Datathink.Top ApacheV2",
         "app_version": "1.9.5",  # 版本格式 1.0.0
         "author": "fyonecon",
@@ -14,8 +14,8 @@ GLOBAL_CONFIG_DICT = {
     "sys": {
         "app_state_start_time": 20260301010101, # 最早时间 YmdHis
         "app_state_end_time": 20360301010101, #  截止时间，一个版本：10年。（这是软件及扩展更新的要求）
-        "cache_path_name": "top.datathink.Ginthon", # 缓存主目录名，默认 top.datathink.Ginthon ，结尾无/
-        "data_path_name": "top.datathink.Ginthon", # 数据持久化主目录名，默认 top.datathink.Ginthon，结尾无/
+        "cache_path_name": "top.datathink.GinthonDemo", # 缓存主目录名，默认 top.datathink.GinthonDemo ，结尾无/
+        "data_path_name": "top.datathink.GinthonDemo", # 数据持久化主目录名，默认 top.datathink.GinthonDemo，结尾无/
         "data_path_names_array": [ # 系统数据持久化一级目录
             "running", "local_database", "flask_ssl", "user",  # 必要目录
             # 其它
