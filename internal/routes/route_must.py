@@ -30,7 +30,7 @@ def route_must(window, FLASK):
             <html>
             <head>
             <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-            <link rel="apple-touch-icon" href="/icon.png">
+            <link rel="apple-touch-icon" href="/appicon.png">
             <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
             <title>HTML is OK</title>
             <style>
@@ -94,13 +94,13 @@ def route_must(window, FLASK):
 
 
     # 图标
-    @FLASK.route("/icon.png", methods=["GET", "POST", "OPTIONS"])
+    @FLASK.route("/appicon.png", methods=["GET", "POST", "OPTIONS"])
     def index_ico_png():  # filename可以包含路径
         route_data = {
             "way": "file",
             "methods": ["GET", "POST", "OPTIONS"],
         }
-        filename = "icon.png"
+        filename = "appicon.png"
         file_ext = func.get_file_ext(filename)
         mimetype = func.get_file_ext_mimetype(file_ext)
         file_path = main_dirpath.virtual_dirpath("frontend") + "/" + filename

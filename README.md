@@ -121,6 +121,10 @@ Ginthon-Main
 │       ├── config.js 配置文件
 │       ├── readme.md 🔥前端操作记录与教程
 │       └── static 静态文件
+│   ├── appicon.png 应用Dock拦的icon
+│   ├── favicon.ico 网页默认icon
+│   ├── appicon.ico 网页默认icon
+│   ├── appicon.icns Mac应用图标
 ├── internal 后段时间或py核心代码
 │   ├── app 自定义的App功能
 │   │   ├── flask Web控制器目录

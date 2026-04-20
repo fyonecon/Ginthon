@@ -9,7 +9,8 @@ datas = []
 frontend_files = [
     # 单独添加文件
     ('frontend/favicon.ico', 'frontend'),
-    ('frontend/icon.png', 'frontend'),
+    ('frontend/appicon.ico', 'frontend'),
+    ('frontend/appicon.png', 'frontend'),
     # 添加 /tray/ 和 /view/ 文件夹中的全部文件（整个文件夹）
     ('frontend/tray/', 'frontend/tray'), # 状态拉托盘
     ('frontend/view/dist/', 'frontend/view/dist'), # Svelte、Vue、单页应用静态文件
@@ -61,7 +62,7 @@ exe = EXE(
     target_arch=None,
     #codesign_identity=None,
     #entitlements_file=None,
-    icon='./frontend/icon.ico', # win必须.ico，此处适配win、Linux
+    icon='./frontend/appicon.ico', # win必须.ico，此处适配win、Linux
     console=False,
     disable_windowed_traceback=False,
 )
@@ -70,7 +71,7 @@ exe = EXE(
 app = BUNDLE(
     exe,
     name='GinthonDemo.app',  # .app 的名称
-    icon='./frontend/icons.icns', # mac必须.icns
+    icon='./frontend/appicon.icns', # mac必须.icns
     bundle_identifier='top.datathink.GinthonDemo',  # 可选：bundle identifier
 #    entitlements_file='./frontend/entitlements.plist',  # 提前申请一些权限
     info_plist={
