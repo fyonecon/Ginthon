@@ -20,9 +20,11 @@ GUI 前端默认 Svelte5，运行于 Webview2、Webkit、WebKitGTK 中。
 
 ### 老一辈艺术家提醒：
 
-Python版基座请戳：https://github.com/fyonecon/Ginthon 。
+Python版基座请戳：https://github.com/fyonecon/Ginthon （Open Code）。
 
-Golang版基座请戳：https://github.com/fyonecon/Waigo 。
+Golang版基座请戳：https://github.com/fyonecon/Waigo （Closed Enterprise）。
+
+Go和Py的基座代码都是“功能对齐+UI复用”的。
 
 Go和Py都是以“尽量‘返回默认值’代替‘抛出Error’”+“尽量复用函数”+“尽量不使用继承”+“减少不必要的外部import”为原则。
 
