@@ -20,7 +20,7 @@ GUI 前端默认 Svelte5，运行于 Webview2、Webkit、WebKitGTK 中。
 
 ### 老一辈艺术家提醒：
 
-Python版基座请戳：https://github.com/fyonecon/Ginthon （Open Code，Apache V2 协议开源）。
+Python版基座请戳：https://github.com/fyonecon/Ginthon （Open Code，ApacheV2 协议开源）。
 
 Golang版基座请戳：https://github.com/fyonecon/Waigo （Closed Enterprise，商业闭源）。
 
