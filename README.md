@@ -190,17 +190,20 @@ Ginthon-Main
 
 ### Python教程：
 
-> Python3：https://www.runoob.com/python3/python-queue.html
+> · Python3：https://www.runoob.com/python3/python-queue.html
 >
-> Flask：https://flask.palletsprojects.com/en/stable/installation/#install-flask
->
-> PyWebview：https://pywebview.idepy.com/guide/usage.html
->
-> Skeleton UI：https://www.skeleton.dev/docs/svelte/guides/mode
+> · Flask：https://flask.palletsprojects.com/en/stable/installation/#install-flask
 > 
-> Tailwind CSS：https://www.tailwindcss.cn/docs/installation
+> 为什么选择Flask不选择FastAPI：
+> 1️⃣FastAPI无法挂载在“__ name __”上，导致Mac上与PyWebview主程二选一；2️⃣FastAPI无完善Error全局自动捕捉；3️⃣FastAPI挂载SSL Context方式很Low。
+>
+> · PyWebview：https://pywebview.idepy.com/guide/usage.html
+>
+> · Skeleton UI：https://www.skeleton.dev/docs/svelte/guides/mode
 > 
-> Iconify SVG：https://icon-sets.iconify.design/
+> · Tailwind CSS：https://www.tailwindcss.cn/docs/installation
+> 
+> · Iconify SVG：https://icon-sets.iconify.design/
 
 ### Mac安装Homebrew国内源
 #### 苹果电脑安装脚本（选择清华大学镜像）：
