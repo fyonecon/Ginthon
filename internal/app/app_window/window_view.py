@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from internal.app.flask.app_token import make_app_token
+from internal.app.app_flask.app_token import make_app_token
 from internal.common.app_auth import rand_id
 from internal.common.func import func
 from internal.common.kits.main_dirpath import main_dirpath

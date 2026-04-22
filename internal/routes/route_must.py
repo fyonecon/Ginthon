@@ -26,7 +26,7 @@ def route_must(window, FLASK):
             pass
 
         # 返回的数据
-        html_data = '''
+        back_data = '''
             <html>
             <head>
             <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
@@ -64,8 +64,9 @@ def route_must(window, FLASK):
             </head>
             <body><p id="info" class="break select-none">YES</p><p>test='''+_test+'''</p><script>function show_info() {let info = [window.location.host, !!window.localStorage, !!window.indexedDB, navigator.webdriver, navigator.languages, window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light", "✅", window.navigator.userAgent]; document.getElementById("info").innerHTML = info; console.log(info);}show_info();</script></body></html>
         '''
+
         # 用中间件验证参数
-        response_data, reg_code = flask_middleware_html(request, route_data, html_data, filename)
+        response_data, reg_code = flask_middleware_html(_request=request, _back_data=back_data, _filename=filename)
         if reg_code == 200:
             return response_data, reg_code
         else:
@@ -75,16 +76,13 @@ def route_must(window, FLASK):
     # 图标
     @FLASK.route("/favicon.ico", methods=["GET", "POST", "OPTIONS"])
     def index_ico():  # filename可以包含路径
-        route_data = {
-            "way": "file",
-            "methods": ["GET", "POST", "OPTIONS"],
-        }
         filename = "favicon.ico"
         file_ext = func.get_file_ext(filename)
         mimetype = func.get_file_ext_mimetype(file_ext)
         file_path = main_dirpath.virtual_dirpath("frontend") + "/" + filename
+
         # 用中间件验证参数
-        response_data, reg_code = flask_middleware_file(request, route_data, "", filename)
+        response_data, reg_code = flask_middleware_file(_request=request, _back_data="", _filename=filename)
         if reg_code == 200:
             return send_file(file_path, as_attachment=False, mimetype=mimetype, max_age=12 * 60,
                              download_name=filename), reg_code
@@ -96,16 +94,13 @@ def route_must(window, FLASK):
     # 图标
     @FLASK.route("/appicon.png", methods=["GET", "POST", "OPTIONS"])
     def index_ico_png():  # filename可以包含路径
-        route_data = {
-            "way": "file",
-            "methods": ["GET", "POST", "OPTIONS"],
-        }
         filename = "appicon.png"
         file_ext = func.get_file_ext(filename)
         mimetype = func.get_file_ext_mimetype(file_ext)
         file_path = main_dirpath.virtual_dirpath("frontend") + "/" + filename
+
         # 用中间件验证参数
-        response_data, reg_code = flask_middleware_file(request, route_data, "", filename)
+        response_data, reg_code = flask_middleware_file(_request=request, _back_data="", _filename=filename)
         if reg_code == 200:
             return send_file(file_path, as_attachment=False, mimetype=mimetype, max_age=12 * 60,
                              download_name=filename), reg_code
@@ -115,13 +110,6 @@ def route_must(window, FLASK):
 
 
     # api http://127.0.0.1:9750/api
-    #     # GET
-    #     response = requests.get(url=url, timeout=12, headers=headers, params=data)
-    #     print("response=", response.status_code, response.url, response.json())
-    #
-    #     # POST
-    #     response = requests.post(url=url, timeout=12, headers=headers, json=data)
-    #     print("response=", response.status_code, response.json())
     @FLASK.route("/api/", methods=["GET", "POST", "OPTIONS"])  # 路由名
     @FLASK.route("/api", methods=["GET", "POST", "OPTIONS"])  # 路由名
     def api():  # 触发函数（函数名尽量和路由名一致）
@@ -157,8 +145,7 @@ def route_must(window, FLASK):
         }
 
         # 用中间件验证参数
-        response_data, reg_code = flask_middleware_api(request, route_data, back_data, "")
-
+        response_data, reg_code = flask_middleware_api(_request=request, _back_data=back_data)
         if reg_code == 200:
             return response_data, reg_code
         else:

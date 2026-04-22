@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import platform
-import warnings
 
 import webview
 import psutil
@@ -14,8 +13,7 @@ from internal.bootstrap.run_flask import run_flask
 from internal.bootstrap.run_tray import run_tray
 from internal.config import get_config
 from internal.common.func import func
-from internal.common.app_auth import view_auth, rand_id
-from internal.app.window.controller.on_events import on_closed,on_closing,on_shown,on_loaded,on_minimized,on_maximized,on_restored,on_resized,on_moved,on_before_load,on_before_show,on_initialized
+from internal.app.app_window.controller.on_events import on_closed,on_closing,on_shown,on_loaded,on_minimized,on_maximized,on_restored,on_resized,on_moved,on_before_load,on_before_show,on_initialized
 
 #
 CONFIG = {}
@@ -25,16 +23,16 @@ SERVICES_PID = None
 FLASK_PID = None
 
 # 注册服务
-def join_events(_window):
+def join_events(_window, _cmd_model):
     global SERVICES_PID
     global FLASK_PID
 
     print("### Join ", "Process")
 
     # 创建线程
-    t1 = threading.Thread(target=run_flask, daemon=True, args=(_window, WEBVIEW_PID, CONFIG))
-    t2 = threading.Thread(target=run_services, daemon=True, args=(_window, WEBVIEW_PID, CONFIG))
-    t3 = threading.Thread(target=run_tray, daemon=True, args=(_window, WEBVIEW_PID, CONFIG))
+    t1 = threading.Thread(target=run_flask, daemon=True, args=(_window, WEBVIEW_PID, CONFIG, _cmd_model))
+    t2 = threading.Thread(target=run_services, daemon=True, args=(_window, WEBVIEW_PID, CONFIG, _cmd_model))
+    t3 = threading.Thread(target=run_tray, daemon=True, args=(_window, WEBVIEW_PID, CONFIG, _cmd_model))
 
     # 启动线程
     t1.start()
@@ -145,7 +143,7 @@ def init_window(cmd_model):
     _window.events.closed += on_closed
 
     # 启动视窗
-    webview.start(func=join_events, args=_window, ssl=CONFIG["pywebview"]["ssl"], debug=webview_debug, user_agent=make_ua("ginthon"+"/v"+CONFIG["app"]["app_version"]+"/"+cmd_model))
+    webview.start(func=join_events, args=(_window, cmd_model), ssl=CONFIG["pywebview"]["ssl"], debug=webview_debug, user_agent=make_ua("ginthon"+"/v"+CONFIG["app"]["app_version"]+"/"+cmd_model))
 
     # 主动杀掉join_events服务进程
     try:

@@ -2,9 +2,9 @@
 
 from flask import send_file, request, redirect
 
-from internal.app.window.controller.js_call_py import list_js_call_py
-from internal.app.window.controller.tray_events import tray_events
-from internal.app.window.window_view import view_js_must_data
+from internal.app.app_window.controller.js_call_py import list_js_call_py
+from internal.app.app_window.controller.tray_events import tray_events
+from internal.app.app_window.window_view import view_js_must_data
 from internal.common.app_auth import rand_id, rand_token
 from internal.services.flask_middleware import flask_middleware_html, flask_middleware_api, flask_middleware_file
 from internal.common.func import func
@@ -22,10 +22,6 @@ def route_window(_WINDOW, FLASK):
         return redirect('/view/home')
     @FLASK.route("/view/<path:filename>", methods=["GET", "POST", "OPTIONS"], endpoint="view_dist")
     def view_dist(filename=""):
-        route_data = {
-            "way": "file",
-            "methods": ["GET", "POST", "OPTIONS"],
-        }
         #
         if len(filename) == 0:
             filename = "index.html"
@@ -40,7 +36,8 @@ def route_window(_WINDOW, FLASK):
         file_path = main_dirpath.virtual_dirpath("frontend") + "/view/dist/" + filename  # 限定根目录
         #
         if func.has_file(file_path):
-            response_data, reg_code = flask_middleware_file(request, route_data, "", filename)
+            # 用中间件验证参数
+            response_data, reg_code = flask_middleware_file(_request=request, _back_data="", _filename=filename)
             if reg_code == 200:
                 # 使用返回文件的方式返回html模板或文件
                 return send_file(file_path, as_attachment=False, mimetype=mimetype, max_age=12 * 60, download_name=filename), reg_code
@@ -55,10 +52,6 @@ def route_window(_WINDOW, FLASK):
     @FLASK.route("/html", methods=["GET", "POST", "OPTIONS"])
     @FLASK.route("/html/<path:filename>", methods=["GET", "POST", "OPTIONS"], endpoint="html")
     def html(filename=""):
-        route_data = {
-            "way": "file",
-            "methods": ["GET", "POST", "OPTIONS"],
-        }
         #
         if len(filename) == 0:
             filename = "index.html"
@@ -74,7 +67,8 @@ def route_window(_WINDOW, FLASK):
         file_path = main_dirpath.virtual_dirpath("flaskassets") + "/html/" + filename  # 限定根目录
         #
         if func.has_file(file_path):
-            response_data, reg_code = flask_middleware_file(request, route_data, "", filename)
+            # 用中间件验证参数
+            response_data, reg_code = flask_middleware_file(_request=request, _back_data="", _filename=filename)
             if reg_code == 200:
                 # 使用返回文件的方式返回html模板或文件
                 return send_file(file_path, as_attachment=False, mimetype=mimetype, max_age=12 * 60,
@@ -90,10 +84,6 @@ def route_window(_WINDOW, FLASK):
     @FLASK.route("/files", methods=["GET", "POST", "OPTIONS"])
     @FLASK.route("/files/<path:filename>", methods=["GET", "POST", "OPTIONS"])
     def file(filename):
-        route_data = {
-            "way": "file",
-            "methods": ["GET", "POST", "OPTIONS"],
-        }
         # 还原真实文件
         file_ext = func.get_file_ext(filename)
         if len(file_ext) >= 1:  # 有文件
@@ -101,7 +91,8 @@ def route_window(_WINDOW, FLASK):
             file_path = main_dirpath.virtual_dirpath("flaskassets") + "/files/" + filename  # 限定根目录
             #
             if func.has_file(file_path):
-                response_data, reg_code = flask_middleware_file(request, route_data, "", filename)
+                # 用中间件验证参数
+                response_data, reg_code = flask_middleware_file(_request=request, _back_data="", _filename=filename)
                 if reg_code == 200:
                     # 使用返回文件的方式返回html模板或文件
                     return send_file(file_path, as_attachment=False, mimetype=mimetype, max_age=12 * 60,
@@ -118,12 +109,10 @@ def route_window(_WINDOW, FLASK):
     # view_js必要参数
     @FLASK.route("/js_must_data.js", methods=["GET", "POST", "OPTIONS"])
     def js_must_data(filename="js_must_data.js"):
-        route_data = {
-            "way": "file",
-            "methods": ["GET", "POST", "OPTIONS"],
-        }
-        js_data = view_js_must_data()
-        response_data, reg_code = flask_middleware_file(request, route_data, js_data, filename)
+        back_data = view_js_must_data()
+
+        # 用中间件验证参数
+        response_data, reg_code = flask_middleware_file(_request=request, _back_data=back_data, _filename=filename)
         if reg_code == 200:
             return response_data, reg_code
         else:
@@ -134,11 +123,6 @@ def route_window(_WINDOW, FLASK):
     # js_call_py http://127.0.0.1:9750/api/js_call_py/xxx
     @FLASK.route("/api/js_call_py/<js_call_py_auth>", methods=["GET", "POST", "OPTIONS"])  # 路由名
     def js_call_py(js_call_py_auth):
-        #
-        route_data = {
-            "way": "json",
-            "methods": ["POST", "OPTIONS"],
-        }
         # 处理接收的数据
         data = request.get_json()
         if not data:
@@ -177,7 +161,9 @@ def route_window(_WINDOW, FLASK):
                 "content": data,
             }
             pass
-        response_data, reg_code = flask_middleware_api(request, route_data, back_data, "")
+
+        # 用中间件验证参数
+        response_data, reg_code = flask_middleware_api(_request=request, _back_data=back_data)
         if reg_code == 200:
             return response_data, reg_code
         else:
@@ -225,7 +211,9 @@ def route_window(_WINDOW, FLASK):
                 "app_class": _app_class,
             }
         }
-        response_data, reg_code = flask_middleware_api(request, route_data, back_data, "")
+
+        # 用中间件验证参数
+        response_data, reg_code = flask_middleware_api(_request=request, _back_data=back_data)
         if reg_code == 200:
             return response_data, reg_code
         else:

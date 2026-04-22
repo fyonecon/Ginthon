@@ -10,7 +10,7 @@ CONFIG = {}
 
 # 调用命令行打开二进制文件
 # 仅在build的文件中使用
-def tray_open(window, webview_pid, config):
+def tray_open(window, webview_pid, config, cmd_model):
     #
     global CONFIG
     CONFIG = config

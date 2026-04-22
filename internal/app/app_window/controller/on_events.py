@@ -3,7 +3,7 @@
 import sys
 from time import sleep
 
-from internal.app.window.controller.py_run_js import list_py_run_js
+from internal.app.app_window.controller.py_run_js import list_py_run_js
 from internal.common.func import func
 
 def on_initialized():

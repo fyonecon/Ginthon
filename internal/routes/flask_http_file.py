@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import send_file, request
 
-from internal.app.flask.app_token import check_app_token
+from internal.app.app_flask.app_token import check_app_token
 from internal.services.flask_middleware import flask_middleware_file
 from internal.common.func import func
 from internal.common.request_data import request_data
@@ -14,10 +14,6 @@ def flask_http_file(_WINDOW, FLASK):
     # http://127.0.0.1:9750/dir/play_audio/xxx
     @FLASK.route("/dir/play_audio/<path:filepath>", methods=["GET", "POST", "OPTIONS"], endpoint="play_audio")
     def play_audio(filepath):
-        route_data = {
-            "way": "file",
-            "methods": ["GET", "POST", "OPTIONS"],
-        }
         #
         file_token = request_data.input(request, "file_token")
         # 还原真实文件
@@ -39,7 +35,7 @@ def flask_http_file(_WINDOW, FLASK):
                 file_path = filepath  # 限定根目录
                 #
                 if func.has_file(file_path):
-                    response_data, reg_code = flask_middleware_file(request, route_data, "", filename)
+                    response_data, reg_code = flask_middleware_file(_request=request, _back_data="", _filename=filename)
                     if reg_code == 200:
                         # 使用返回文件的方式返回html模板或文件
                         return send_file(file_path, as_attachment=False, mimetype=mimetype, max_age=12 * 60, download_name=filename), reg_code

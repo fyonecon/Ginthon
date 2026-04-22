@@ -4,7 +4,7 @@ import threading
 import webbrowser
 import webview
 
-from internal.app.window.controller.display_state import display_state
+from internal.app.app_window.controller.display_state import display_state
 from internal.common.func import func
 from internal.common.kits.local_database import local_database
 from internal.common.kits.main_dirpath import main_dirpath

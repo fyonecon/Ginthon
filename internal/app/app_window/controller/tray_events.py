@@ -2,7 +2,7 @@
 
 import os
 
-from internal.app.window.controller.display_state import display_state
+from internal.app.app_window.controller.display_state import display_state
 from internal.common.func import func
 from internal.common.kits.watch_processes import watch_processes
 

@@ -9,7 +9,7 @@ from internal.common.func import func
 CONFIG = {}
 
 # 启动服务
-def run_services(window, webview_pid, config):
+def run_services(window, webview_pid, config, cmd_model):
     print("### 后台服务 => ", func.get_date("%Y-%m-%d %H:%M:%S"))
 
     # 读取配置信息

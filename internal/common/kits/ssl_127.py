@@ -41,7 +41,7 @@ class ssl_127:
         cert.get_subject().C = "CN"
         cert.get_subject().ST = "Piking"
         cert.get_subject().L = "Piking"
-        cert.get_subject().O = "Gthon Open Source"
+        cert.get_subject().O = "Ginthon Open Code"
         cert.get_subject().emailAddress = "https://github.com/fyonecon/Ginthon"
         cert.get_subject().CN = host  # 使用 localhost、127.0.0.1、0.0.0.0等本地IP
         cert.set_serial_number(1000)

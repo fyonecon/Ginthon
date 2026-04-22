@@ -10,15 +10,14 @@ from internal.routes.route_must import route_must
 from internal.routes.route_window import route_window
 from internal.common.func import func
 from internal.common.kits.ssl_127 import ssl_127
-from internal.common.request_data import request_data
-from internal.routes.flask_ws import flask_ws
+from internal.routes.flask_ws_api import flask_ws_api
 
 #
 CONFIG = {}
 
 
 # 启动Flask服务
-def run_flask(window, webview_pid, config):
+def run_flask(window, webview_pid, config, cmd_model):
     # 读取配置信息
     global CONFIG
     CONFIG = config
@@ -57,7 +56,7 @@ def run_flask(window, webview_pid, config):
     flask_http_html(window, FLASK)
     flask_http_api(window, FLASK)
     flask_http_file(window, FLASK)
-    flask_ws(window, FLASK)
+    flask_ws_api(window, FLASK)
 
     # 启动Flask
     no_ssl_host = "0.0.0.0" # 0.0.0.0
