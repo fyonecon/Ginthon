@@ -37,8 +37,8 @@ a = Analysis(
     excludes=[],
     win_no_prefer_redirects=False,
     win_private_assemblies=False,
-    cipher=block_cipher,
-    noarchive=False,
+    #cipher=block_cipher,
+    noarchive=True,
 )
 
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
@@ -62,7 +62,7 @@ exe = EXE(
     target_arch=None,
     #codesign_identity=None,
     #entitlements_file=None,
-    icon='./frontend/appicon.ico', # win必须.ico，此处适配win、Linux
+    icon='frontend/appicon.ico', # win必须.ico，此处适配win、Linux
     console=False,
     disable_windowed_traceback=False,
 )
@@ -71,19 +71,19 @@ exe = EXE(
 app = BUNDLE(
     exe,
     name='GinthonDemo.app',  # .app 的名称
-    icon='./frontend/appicon.icns', # mac必须.icns
+    icon='frontend/icons.icns', # mac必须.icns
     bundle_identifier='top.datathink.GinthonDemo',  # 可选：bundle identifier
-#    entitlements_file='./frontend/entitlements.plist',  # 提前申请一些权限
+#    entitlements_file='frontend/entitlements.plist',  # 提前申请一些权限
     info_plist={
         'CFBundlePackageType': 'APPL',
         'CFBundleName': 'GinthonDemo',
         'CFBundleDisplayName': 'GinthonDemo',
         'CFBundleIdentifier': 'top.datathink.GinthonDemo',
-        'CFBundleShortVersionString': '1.4.0',      # 显示版本
-        'CFBundleVersion': '1.4.x',                     # 构建版本(日期、版本号、其它数字)
+        'CFBundleShortVersionString': '1.9.0',      # 显示版本
+        'CFBundleVersion': '1.9.x',                     # 构建版本(日期、版本号、其它数字)
         'CFBundleDevelopmentRegion': 'zh-CN',       # 开发地区
         'NSHumanReadableCopyright': '© Datathink.Top',
-        'LSMinimumSystemVersion': '12.0',        # 最低系统要求
+        'LSMinimumSystemVersion': '14.0',        # 最低系统要求
         'NSHighResolutionCapable': 'True',          # 支持 Retina。'True'
         'LSUIElement': "1",                       # 是否显示Dock图标。 "1"不显示，"1"显示
 #        'NSSupportsAutomaticTermination': False,

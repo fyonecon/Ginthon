@@ -19,7 +19,7 @@ def init_sys(cmd_model):
         "frontend_dirpath": main_dirpath.virtual_dirpath("frontend"),
         "cache_dirpath": func.get_local_cache_path(),
         "data_dirpath": func.get_local_data_path(""),
-        "frontend-launcher.png": func.has_file(main_dirpath.virtual_dirpath("frontend")+"/"+"icon.png"),
+        "frontend/appicon.png": func.has_file(main_dirpath.virtual_dirpath("frontend")+"/"+"appicon.png"),
     })
     #
     CONFIG = get_config("", "")
