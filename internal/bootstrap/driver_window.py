@@ -6,8 +6,6 @@ import psutil
 import os
 import threading
 
-# from objc._objc import ObjCPointerWarning
-
 from internal.bootstrap.driver_services import run_services
 from internal.bootstrap.driver_flask import run_flask
 from internal.bootstrap.driver_tray import run_tray
@@ -53,9 +51,9 @@ def join_events(_window, _cmd_model):
 # 创建临时窗口获得浏览器UA
 def make_ua(txt = ""):
     os_info = {
-        'Windows': 'Windows NT 10.0; '+func.get_machine(),
-        'Darwin': 'Macintosh; '+func.get_machine()+' Mac OS X 15.0',
-        'Linux': 'X11; Linux '+func.get_machine()
+        'Windows': 'Windows NT 10.0; '+func.get_platform(),
+        'Darwin': 'Macintosh; '+func.get_platform()+' Mac OS X 15.0',
+        'Linux': 'X11; Linux '+func.get_platform()
     }.get(platform.system(), '')
 
     # WebKit 核心版本
@@ -73,7 +71,7 @@ def make_ua(txt = ""):
 
 
 # 视窗（pywebview必须运行在主线程上）
-def init_window(cmd_model):
+def init_window(_cmd_model):
     global CONFIG
     global WINDOW
     global WEBVIEW_PID
@@ -84,28 +82,31 @@ def init_window(cmd_model):
     #
     _view_url = CONFIG["pywebview"]["view_url"] # 正式环境url
     _dev_url = CONFIG["pywebview"]["dev_url"] # 开发环境url
-    if cmd_model == "dev":
+    if _cmd_model == "dev":
         pywebveiw_url = _dev_url
         pass
     else:
-        cmd_model = "build"
+        _cmd_model = "build"
         pywebveiw_url = _view_url
         pass
 
     # 是否开启webkit console面板
     webview_debug = True
-    if cmd_model == "build":
+    if _cmd_model == "build":
         webview_debug = False
         pass
     else:
         webview_debug = CONFIG["pywebview"]["debug"]
         pass
 
-
     # 忽略pywebveiw自签ssl警告（mac）
     ssl_state = CONFIG["flask"]["ssl"]
     if ssl_state:
-        # warnings.filterwarnings("ignore", category=ObjCPointerWarning) # mac
+        if func.get_os() == "mac":
+            import warnings
+            from objc._objc import ObjCPointerWarning
+            warnings.filterwarnings("ignore", category=ObjCPointerWarning) # mac
+            pass
         pass
 
     # 创建视窗
@@ -143,7 +144,7 @@ def init_window(cmd_model):
     _window.events.closed += on_closed
 
     # 启动视窗
-    webview.start(func=join_events, args=(_window, cmd_model), ssl=CONFIG["pywebview"]["ssl"], debug=webview_debug, user_agent=make_ua("ginthon"+"/v"+CONFIG["app"]["app_version"]+"/"+cmd_model))
+    webview.start(func=join_events, args=(_window, _cmd_model), ssl=CONFIG["pywebview"]["ssl"], debug=webview_debug, user_agent=make_ua("ginthon"+"/v"+CONFIG["app"]["app_version"]+"/"+_cmd_model))
 
     # 主动杀掉join_events服务进程
     try:

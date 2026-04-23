@@ -13,14 +13,14 @@ class notice:
         if data_dict is None:
             data_dict = {
                 "group": get_config("app", "app_class"),  # 分组或ID
-                "icon": main_dirpath.virtual_dirpath("frontend") + "/icon.png",  # 图标 .png、.ico
+                "icon": main_dirpath.virtual_dirpath("frontend") + "/appicon.png",  # 图标 .png、.ico
                 "open_url": "",  # 要打开的网址
                 "app_path": "",  # 要打开的app的绝对地址
                 "timeout_s": "5",  # 通知显示的时间, s
             }
             pass
         #
-        plt = func.get_platform()
+        plt = func.get_os()
         func.print_log("send_notice=2=", title, msg, data_dict, plt)
         #
         if plt == "mac":

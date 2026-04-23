@@ -19,7 +19,7 @@ def flask_http_file(_WINDOW, FLASK):
         # 还原真实文件
         filepath = func.url_decode(filepath)
         filepath = func.converted_path(filepath)
-        if func.get_platform() == "mac":  # 解决目录无前缀
+        if func.get_os() == "mac":  # 解决目录无前缀
             filepath = "/" + filepath
             filepath = filepath.replace("//", "/")
             pass

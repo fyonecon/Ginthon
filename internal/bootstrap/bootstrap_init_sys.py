@@ -14,15 +14,19 @@ from internal.common.func import func
 
 # 程序主入口
 def init_sys(cmd_model):
-    # 获取前端资源路径
-    print("### 核对重要目录 => ", {
-        "frontend_dirpath": main_dirpath.virtual_dirpath("frontend"),
-        "cache_dirpath": func.get_local_cache_path(),
-        "data_dirpath": func.get_local_data_path(""),
-        "frontend/appicon.png": func.has_file(main_dirpath.virtual_dirpath("frontend")+"/"+"appicon.png"),
-    })
+    if cmd_model == "dev":
+        # 获取前端资源路径
+        print("### 核对重要目录 => ", {
+            # "frontend_dirpath": main_dirpath.virtual_dirpath("frontend"),
+            "cache_dirpath": func.get_local_cache_path(),
+            "data_dirpath": func.get_local_data_path(""),
+            "frontend/appicon.png": func.has_file(main_dirpath.virtual_dirpath("frontend")+"/"+"appicon.png"),
+        })
+        pass
+
     #
     CONFIG = get_config("", "")
+
     #
     check_sys_state = run_check_sys()
     if check_sys_state:
@@ -37,7 +41,7 @@ def init_sys(cmd_model):
     else:
         notice.send("⚠️", "Can't open the software.")
         sleep(1)
-        print("XXX Operation-SYS is Low：", check_sys_state, "last CPU " + str(CONFIG["check"]["min_cvpu_cores"]) + " Cores, last RAM " + str(CONFIG["check"]["min_ram"]) + " GB, last Python " + str(CONFIG["check"]["min_python_version"]) + ", Flask-Port " + str(CONFIG["flask"]["port"]) + " .")
+        print("XXX Operation-SYS is Low：", check_sys_state, "last CPU " + str(CONFIG["check"]["min_vcpu_cores"]) + " Cores, last RAM " + str(CONFIG["check"]["min_ram"]) + " GB, last Python " + str(CONFIG["check"]["min_python_version"]) + ", Flask-Port " + str(CONFIG["flask"]["port"]) + " .")
         # alert
         exit(403) # 出现错误就直接关闭程序
     return

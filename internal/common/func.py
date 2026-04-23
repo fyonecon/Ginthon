@@ -159,7 +159,7 @@ class func:
 
     # 获取系统类型: win mac linux
     @staticmethod
-    def get_platform():
+    def get_os():
         # 判断具体系统类型
         if sys.platform.startswith('win'):
             return "win"
@@ -174,7 +174,7 @@ class func:
 
     # 获取平台是x86还是arm的cpu
     @staticmethod
-    def get_machine():
+    def get_platform():
         machine = platform.machine()
         if machine == 'arm64' or machine == 'ARM64':
             return "ARM64"
@@ -210,7 +210,7 @@ class func:
     # 获取当前平台存储程序缓存的路径，结尾无/
     @staticmethod
     def cache_path():
-        p = func.get_platform()
+        p = func.get_os()
         home = Path.home()
         if p == "win":
             localappdata = os.environ.get("LOCALAPPDATA", home / 'AppData' / 'Roaming')
@@ -228,7 +228,7 @@ class func:
     # 获取当前平台存储程序数据持久化的路径，结尾无/
     @staticmethod
     def data_path():
-        p = func.get_platform()
+        p = func.get_os()
         home = Path.home()
         if p == "win":
             localappdata = os.environ.get("LOCALAPPDATA", home / 'AppData' / 'Local')
@@ -426,7 +426,7 @@ class func:
             <html style="background-color: rgba(115,115,115,0.2);">
             <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" /><title>500</title></head>
             <body style="background-color: transparent;">
-                <h4>500</h4>
+                <h4>data 500</h4>
             </body>
             </html>
         """
@@ -438,7 +438,7 @@ class func:
             <html style="background-color: rgba(115,115,115,0.2);">
             <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" /><title>404</title></head>
             <body style="background-color: transparent;">
-                <h4>404</h4>
+                <h4>data 404</h4>
             </body>
             </html>
         """

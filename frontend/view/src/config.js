@@ -4,11 +4,11 @@ const config = {
     app: {
         app_name: "GinthonDemo",
         app_class: "GinthonDemo_sv_", // GinthonDemo_sv_ 、WaigoDemo_sv_
-        app_version: "1.9.6", // 1.0.0
+        app_version: "1.9.7", // 1.0.0
     },
     sys:{
         backend: "py", // go、py
-        base_route: "./", // 此值请同样svelte.config.js中paths的base：""、"./"、"/view"、'/view_static'，结尾无/
+        base_route: "", // 此值请同样svelte.config.js中paths的base：""、"/view"，结尾无/
         home_route: "/home", // 主页默认页的路由：空""、"/purehome"
         home_route_white_word: "@home", // 默认刷新时打开的页面，与search里面“@白名单”匹配：空"@"、"@purehome"
     },

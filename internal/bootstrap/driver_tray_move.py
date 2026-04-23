@@ -6,7 +6,7 @@ from internal.common.func import func
 # 移动tray文件
 def tray_file_move():
     # 兼容处理
-    plt = func.get_platform()
+    plt = func.get_os()
     if plt == "mac" or plt == "linux":
         file = "./dist/GinthonTray"  # 源文件路径
         pass

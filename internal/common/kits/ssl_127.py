@@ -72,7 +72,7 @@ class ssl_127:
         else:
             # 老证书是否过期
             ssl_timeout = ssl_127.signed_cert_timeout(40, ssl_cert, ssl_key)
-            print("ssl_timeout=", ssl_timeout)
+            # print("ssl_timeout=", ssl_timeout)
             if not ssl_timeout:  # 可用
                 cert = ssl_cert
                 key = ssl_key

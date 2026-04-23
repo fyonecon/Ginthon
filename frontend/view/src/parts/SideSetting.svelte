@@ -26,13 +26,18 @@
         //
         route = func.get_route();
         //
-        if (route==='/settings' || route.indexOf('/settings/') === 0){
-            side_tab_data.tab_value = route;
-            side_tab_data.tab_name = func.get_translate("Settings");
-            tab_active = "side_setting-menu-a-active";
+        if (route){
+            if (route==='/settings' || route.indexOf('/settings/') === 0){
+                side_tab_data.tab_value = route;
+                side_tab_data.tab_name = func.get_translate("Settings");
+                tab_active = "side_setting-menu-a-active";
+            }else{
+                tab_active = "";
+            }
         }else{
             tab_active = "";
         }
+
         //
         user_nickname = func.get_local_data(config.app.app_class + "user_nickname");
         if (!user_nickname) {

@@ -12,8 +12,8 @@ GLOBAL_CONFIG_DICT = {
         "github": "github.com/fyonecon/Ginthon",
     },
     "sys": {
-        "app_state_start_time": 20260301010101, # 最早时间 YmdHis
-        "app_state_end_time": 20360301010101, #  截止时间，一个版本：10年。（这是软件及扩展更新的要求）
+        "app_state_start_time": 20260422010101, # 最早时间 YmdHis
+        "app_state_end_time": 20360422010101, #  截止时间，一个版本：10年。（这是软件及扩展更新的要求）
         "cache_path_name": "top.datathink.GinthonDemo", # 缓存主目录名，默认 top.datathink.GinthonDemo ，结尾无/
         "data_path_name": "top.datathink.GinthonDemo", # 数据持久化主目录名，默认 top.datathink.GinthonDemo，结尾无/
         "data_path_names_array": [ # 系统数据持久化一级目录
@@ -41,8 +41,8 @@ GLOBAL_CONFIG_DICT = {
         "debug": False,  # True False
     },
     "pywebview": { # window
-        "view_url": "https://127.0.0.1:9750/view", # 生产环境：视图网址（协议+网址+端口+路径，如：http(s)://127.0.0.1:port/view ）
-        "dev_url": "http://localhost:9770/view", # 开发环境：页面地址。http://localhost:9770、 http://localhost:9770/view  (此端口可在vite.config.js里面改)
+        "view_url": "https://127.0.0.1:9750", # 生产环境：视图网址（协议+网址+端口+路径，如：http://localhost:9770、 http://localhost:9770/view ）
+        "dev_url": "http://localhost:9770", # 开发环境：页面地址。http://localhost:9770、 http://localhost:9770/view  (此端口可在vite.config.js里面改)
         "api_host": "https://127.0.0.1:9750", # api主网址（协议+网址+端口+路径，如：http(s)://127.0.0.1:port ）
         "secret_key": "2025nian11yue21rizhouwu22dian23", # 密钥, len>=16
         "ssl": True,  # True False。pywebview与flask ssl一起开启或关闭。

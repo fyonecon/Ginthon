@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 
 from flask import Flask, jsonify, send_file
 from flask import request
@@ -21,6 +22,7 @@ def run_flask(window, webview_pid, config, cmd_model):
     # 读取配置信息
     global CONFIG
     CONFIG = config
+
     #
     ssl_state = CONFIG["flask"]["ssl"]
     if ssl_state:
@@ -30,8 +32,13 @@ def run_flask(window, webview_pid, config, cmd_model):
         s = ""
         pass
     func.print_log("### Flask => ", "http"+s+"://127.0.0.1" + ":" + str(CONFIG["flask"]["port"])+"/api")
+
     #
     FLASK = Flask(__name__)
+
+    # 关闭 werkzeug 的访问日志
+    log = logging.getLogger('werkzeug')
+    log.setLevel(logging.WARNING)  # 只显示 WARNING 级别及以上的日志
 
     # 装饰器
     @FLASK.before_request

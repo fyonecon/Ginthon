@@ -16,7 +16,7 @@ def tray_open(window, webview_pid, config, cmd_model):
     CONFIG = config
 
     # 兼容处理
-    plt = func.get_platform()
+    plt = func.get_os()
     if plt == "mac" or plt == "linux":
         file = "GinthonTray"  # 源文件路径
         pass

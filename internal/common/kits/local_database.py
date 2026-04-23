@@ -51,7 +51,7 @@ class local_database:
     def get_data(data_key: str):
         filename = CONFIG["app"]["app_class"] + "local_" + func.md5(data_key + code_salt) + ".lcl"
         the_file = local_path + filename
-        print("[local_database.get_data]=", data_key, the_file, func.has_file(the_file))
+        # print("[local_database.get_data]=", data_key, the_file, func.has_file(the_file))
         #
         if func.has_file(the_file):
             _key = ""

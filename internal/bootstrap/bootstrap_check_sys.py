@@ -13,7 +13,7 @@ CONFIG = {}
 
 # 检查最小系统版本
 def check_min_sys_version():
-    _sys = func.get_platform()
+    _sys = func.get_os()
     if _sys == "win":
         def min_win_version():
             min_win = 10

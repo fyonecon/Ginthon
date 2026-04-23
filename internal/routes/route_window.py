@@ -15,14 +15,10 @@ from internal.config import get_config
 # window专用路由
 def route_window(_WINDOW, FLASK):
 
-    # 适配svelte、vue文件结构的html静态文件系统。https://127.0.0.1:9750/view
-    @FLASK.route("/view", methods=["GET", "POST", "OPTIONS"])
-    @FLASK.route("/view/", methods=["GET", "POST", "OPTIONS"])
-    def redirect_view():
-        return redirect('/view/home')
-    @FLASK.route("/view/<path:filename>", methods=["GET", "POST", "OPTIONS"], endpoint="view_dist")
+    # 适配svelte、vue文件结构的html静态文件系统。https://127.0.0.1:9750
+    @FLASK.route("/", methods=["GET", "POST", "OPTIONS"])
+    @FLASK.route("/<path:filename>", methods=["GET", "POST", "OPTIONS"], endpoint="view_dist")
     def view_dist(filename=""):
-        #
         if len(filename) == 0:
             filename = "index.html"
             pass
@@ -50,6 +46,7 @@ def route_window(_WINDOW, FLASK):
 
     # 提供可暴露在外的web静态文件访问。https://127.0.0.1:9750/html
     @FLASK.route("/html", methods=["GET", "POST", "OPTIONS"])
+    @FLASK.route("/html/", methods=["GET", "POST", "OPTIONS"])
     @FLASK.route("/html/<path:filename>", methods=["GET", "POST", "OPTIONS"], endpoint="html")
     def html(filename=""):
         #
@@ -82,6 +79,7 @@ def route_window(_WINDOW, FLASK):
 
     # 其它可网络访问的文件。https://127.0.0.1:9750/files/test.txt
     @FLASK.route("/files", methods=["GET", "POST", "OPTIONS"])
+    @FLASK.route("/files/", methods=["GET", "POST", "OPTIONS"])
     @FLASK.route("/files/<path:filename>", methods=["GET", "POST", "OPTIONS"])
     def file(filename):
         # 还原真实文件

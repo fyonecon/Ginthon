@@ -10,67 +10,61 @@ from internal.common.request_data import request_data
 # 请求宽进严出、中间件验证参数
 def route_must(window, FLASK):
 
-    # index https://127.0.0.1:9750/
-    @FLASK.route("/", methods=["GET", "POST", "OPTIONS"]) # 路由名
-    def index(filename="virtual.html"): # 触发函数（函数名尽量和路由名一致）
-        # route验证参数
-        route_data = {
-            "way": "html", # 当前接口请求的数据请求的类型：html、json、file
-            "methods": ["GET", "POST", "OPTIONS"], # 可接受的请求方法：["GET", "POST", "OPTIONS"]
-        }
-
-        # 接口接收的数据
-        _test = request_data.input(request, "test")
-        if _test is None:
-            _test = "Null"
-            pass
-
-        # 返回的数据
-        back_data = '''
-            <html>
-            <head>
-            <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-            <link rel="apple-touch-icon" href="/appicon.png">
-            <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-            <title>HTML is OK</title>
-            <style>
-                html {
-                    background-color: rgba(115,115,115,0.4);
-                }
-                body {
-                    background-color: transparent;
-                    padding: 0 0;
-                    margin: 10px 10px;
-                }
-                .hide{
-                    display: none !important;
-                }
-                .click{
-                    cursor: pointer;
-                }
-                .click:active{
-                    opacity: 0.6;
-                }
-                .select-none{
-                    -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;
-                    user-select: none;
-                }
-                .break{
-                    overflow: hidden;
-                    word-wrap: break-word;
-                    overflow-wrap: break-word;
-                }
-            </style>
-            </head>
-            <body><p id="info" class="break select-none">YES</p><p>test='''+_test+'''</p><script>function show_info() {let info = [window.location.host, !!window.localStorage, !!window.indexedDB, navigator.webdriver, navigator.languages, window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light", "✅", window.navigator.userAgent]; document.getElementById("info").innerHTML = info; console.log(info);}show_info();</script></body></html>
-        '''
-
-        # 用中间件验证参数
-        response_data, reg_code = flask_middleware_html(_request=request, _back_data=back_data, _filename=filename)
-        if reg_code == 200:
-            return response_data, reg_code
-        else:
-            return func.back_404_data_html("非法操作:index"), reg_code
+    # # index https://127.0.0.1:9750/
+    # @FLASK.route("/", methods=["GET", "POST", "OPTIONS"]) # 路由名
+    # def index(filename="virtual.html"): # 触发函数（函数名尽量和路由名一致）
+    #     # 接口接收的数据
+    #     _test = request_data.input(request, "test")
+    #     if _test is None:
+    #         _test = "Null"
+    #         pass
+    # 
+    #     # 返回的数据
+    #     back_data = '''
+    #         <html>
+    #         <head>
+    #         <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    #         <link rel="apple-touch-icon" href="/appicon.png">
+    #         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    #         <title>HTML is OK</title>
+    #         <style>
+    #             html {
+    #                 background-color: rgba(115,115,115,0.4);
+    #             }
+    #             body {
+    #                 background-color: transparent;
+    #                 padding: 0 0;
+    #                 margin: 10px 10px;
+    #             }
+    #             .hide{
+    #                 display: none !important;
+    #             }
+    #             .click{
+    #                 cursor: pointer;
+    #             }
+    #             .click:active{
+    #                 opacity: 0.6;
+    #             }
+    #             .select-none{
+    #                 -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;
+    #                 user-select: none;
+    #             }
+    #             .break{
+    #                 overflow: hidden;
+    #                 word-wrap: break-word;
+    #                 overflow-wrap: break-word;
+    #             }
+    #         </style>
+    #         </head>
+    #         <body><p id="info" class="break select-none">YES</p><p>test='''+_test+'''</p><script>function show_info() {let info = [window.location.host, !!window.localStorage, !!window.indexedDB, navigator.webdriver, navigator.languages, window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light", "✅", window.navigator.userAgent]; document.getElementById("info").innerHTML = info; console.log(info);}show_info();</script></body></html>
+    #     '''
+    # 
+    #     # 用中间件验证参数
+    #     response_data, reg_code = flask_middleware_html(_request=request, _back_data=back_data, _filename=filename)
+    #     if reg_code == 200:
+    #         return response_data, reg_code
+    #     else:
+    #         return func.back_404_data_html("非法操作:index"), reg_code
 
 
     # 图标
@@ -113,12 +107,6 @@ def route_must(window, FLASK):
     @FLASK.route("/api/", methods=["GET", "POST", "OPTIONS"])  # 路由名
     @FLASK.route("/api", methods=["GET", "POST", "OPTIONS"])  # 路由名
     def api():  # 触发函数（函数名尽量和路由名一致）
-        # route验证参数
-        route_data = {
-            "way": "api", # 当前接口请求的数据请求的类型：html、api、file
-            "methods": ["GET", "POST", "OPTIONS"], # 可接受的请求方法：["GET", "POST", "OPTIONS"]
-        }
-
         # 接口接收的数据
         test = request_data.input(request, "test")
 
@@ -155,7 +143,7 @@ def route_must(window, FLASK):
     # 404
     @FLASK.errorhandler(404)
     def error_404(error):
-        # print("error_404：" + str(error))
+        print("error_404：" + str(error))
         return func.back_404_data(), 404
 
 
