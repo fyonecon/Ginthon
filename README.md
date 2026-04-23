@@ -117,10 +117,15 @@ Ginthon-Main
 │       │   └── common 公共函数
 │       │   └── pages 页面具体实现
 │       │   └── parts 公用Svelte组件
-│       │   └── stores 绑定数据管理
+│       │   └── stores 公用Svelte绑定数据管理
 │       │   └── services 内置服务
 │       │   └── routes 路由、layout、公共参数验证
-│       ├── config.js 配置文件
+│       │   ├── app.html
+│       │   ├── config.js 配置文件
+│       │   └── watch_window.js 与后端Py交互必要参数
+│       ├── readme.md 🔥前端操作记录与教程
+│       ├── svelte.config.js
+│       ├── vite.config.js
 │       ├── readme.md 🔥前端操作记录与教程
 │       └── static 静态文件
 │   ├── appicon.png 应用Dock拦的icon
@@ -129,9 +134,9 @@ Ginthon-Main
 │   ├── icons.icns Mac应用图标
 ├── internal 后段时间或py核心代码
 │   ├── app 自定义的App功能
-│   │   ├── flask Web控制器目录
-│   │   ├── tray 状态栏托盘
-│   │   └── window 窗口服务目录
+│   │   ├── app_flask Web控制器目录
+│   │   ├── app_tray 状态栏托盘
+│   │   └── app_window 窗口服务目录
 │   │       ├── controller
 │   │       │   ├── do_events.py 操作窗口事件
 │   │       │   ├── js_call_py.py js调用py对照表
@@ -141,13 +146,13 @@ Ginthon-Main
 │   │       ├── window_route.py 窗口必要页面相关路由
 │   │       └── window_view.py 窗口页面html代码
 │   ├── bootstrap 框架加载核心
-│   │   ├── app_auth.py 认证与密钥相关
-│   │   ├── init_sys.py 检查系统及硬件
-│   │   ├── init_window.py 窗口服务
-│   │   ├── run_check_sys.py
-│   │   ├── run_flask.py Web服务
-│   │   ├── run_tray.py 启动状态栏托盘
-│   │   └── run_services.py 其它主页服务
+│   │   ├── bootstrap_check_sys.py 检查系统及硬件
+│   │   ├── bootstrap_init_sys.py 检查系统及硬件
+│   │   ├── driver_window.py 窗口服务
+│   │   ├── driver_flask.py Web及接口服务
+│   │   ├── driver_tray.py 启动状态栏托盘
+│   │   ├── driver_tray_move.py 编译期间对“状态栏托盘软件包”移动到目标文件夹
+│   │   └── driver_services.py 其它主页服务
 │   ├── common 公共函数、封装的kit
 │   │   ├── kits 公共函数的Kit
 │   │   │   ├── _7z.py 7Z解压
@@ -160,27 +165,33 @@ Ginthon-Main
 │   │   │   ├── txt_data.py 简单的文件型数据库
 │   │   │   ├── watch_pid.py
 │   │   │   └── watch_processes.py
+│   │   ├── app_auth.py 生成和校验Token
 │   │   ├── func.py 公共函数
 │   │   ├── request_data.go 公用处理Flask Input请求参数函数
 │   │   └── translate.py 多语言翻译对照表
-│   └── config.py 系统配置信息
 │   ├── routes 自定义的路由
-│   │   └── ...py 
+│   │   ├── route_must.py Flask必要路由
+│   │   ├── route_window.py 视图必要路由（访问页面、文件）
+│   │   ├── flask_http_api.py
+│   │   ├── flask_http_html.py
+│   │   ├── flask_http_file.py
+│   │   └── flask_ws_api.py
 │   ├── services 服务
 │   │   ├── flask_middleware.py Web检测中间件
 │   │   └── services_for_time_interval.py 定时器
+│   └── config.py 后端Py配置信息
 ├── LICENSE
 ├── README.md 项目说明
-├── requirements-win.txt Win下的依赖
 ├── requirements.txt 默认依赖
 ├── build.json 打包程序的配置文件
 ├── build.py 打包程序一键运行
 ├── dev.json 开发环境运行的配置文件
 ├── dev.py 开发环境一键运行
 ├── ginthon_tray.py 状态栏托盘入口
-├── ginthon_tray.spec PYinstaller的SPEC打包文件参数
+├── ginthon_tray.spec Pyinstaller的SPEC打包文件参数
 ├── ginthon_window.py 视窗主程序入口
-└── ginthon_window.spec PYinstaller的SPEC打包文件参数
+└── ginthon_window.spec Pyinstaller的SPEC打包文件参数
+
 ```
 
 ### 运行效果：
