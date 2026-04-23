@@ -8,9 +8,9 @@ import threading
 
 # from objc._objc import ObjCPointerWarning
 
-from internal.bootstrap.run_services import run_services
-from internal.bootstrap.run_flask import run_flask
-from internal.bootstrap.run_tray import run_tray
+from internal.bootstrap.driver_services import run_services
+from internal.bootstrap.driver_flask import run_flask
+from internal.bootstrap.driver_tray import run_tray
 from internal.config import get_config
 from internal.common.func import func
 from internal.app.app_window.controller.on_events import on_closed,on_closing,on_shown,on_loaded,on_minimized,on_maximized,on_restored,on_resized,on_moved,on_before_load,on_before_show,on_initialized

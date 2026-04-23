@@ -126,7 +126,7 @@ Ginthon-Main
 │   ├── appicon.png 应用Dock拦的icon
 │   ├── favicon.ico 网页默认icon
 │   ├── appicon.ico 网页默认icon
-│   ├── appicon.icns Mac应用图标
+│   ├── icons.icns Mac应用图标
 ├── internal 后段时间或py核心代码
 │   ├── app 自定义的App功能
 │   │   ├── flask Web控制器目录

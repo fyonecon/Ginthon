@@ -5,8 +5,8 @@ from internal.common.kits.main_dirpath import main_dirpath
 from internal.common.kits.notice import notice
 from internal.common.kits.txt_data import txt_data
 from internal.config import get_config
-from internal.bootstrap.run_check_sys import run_check_sys
-from internal.bootstrap.init_window import init_window
+from internal.bootstrap.bootstrap_check_sys import run_check_sys
+from internal.bootstrap.driver_window import init_window
 from internal.common.func import func
 
 

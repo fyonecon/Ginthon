@@ -11,7 +11,7 @@ import urllib3
 from PIL import Image
 import io
 
-from internal.bootstrap.run_check_sys import check_port_occupied
+from internal.bootstrap.bootstrap_check_sys import check_port_occupied
 from internal.common.app_auth import rand_token, view_auth
 from internal.common.func import func
 from internal.common.kits.ICON import ICON_Binary

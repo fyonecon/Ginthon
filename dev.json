@@ -1,7 +1,7 @@
 {
   "steps":{
     "step_01": "pyinstaller --clean ginthon_tray.spec",
-    "step_02": "python ./internal/bootstrap/tray_move.py",
+    "step_02": "python internal/bootstrap/driver_tray_move.py",
     "step_0": "cd ./frontend/view",
     "step_2": "npm install",
     "step_3": "npm run dev",
