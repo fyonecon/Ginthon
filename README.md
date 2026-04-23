@@ -123,11 +123,9 @@ Ginthon-Main
 │       │   ├── app.html
 │       │   ├── config.js 配置文件
 │       │   └── watch_window.js 与后端Py交互必要参数
-│       ├── readme.md 🔥前端操作记录与教程
 │       ├── svelte.config.js
 │       ├── vite.config.js
-│       ├── readme.md 🔥前端操作记录与教程
-│       └── static 静态文件
+│       └── static 放静态文件（根目录./即可访问）
 │   ├── appicon.png 应用Dock拦的icon
 │   ├── favicon.ico 网页默认icon
 │   ├── appicon.ico 网页默认icon
