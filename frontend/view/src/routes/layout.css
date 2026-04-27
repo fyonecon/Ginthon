@@ -82,12 +82,12 @@ body, html {
 
 ::selection {
 	color: #FCFCFC;
-	background: #C2185B;
+	background: #FF8C00;
 	/*outline: thick solid #FF0000;*/
 }
 ::-moz-selection {
 	color: #FCFCFC;
-	background: #C2185B;
+	background: #FF8C00;
 }
 
 /* 滚动区域基础样式 - 兼容主流浏览器 */
