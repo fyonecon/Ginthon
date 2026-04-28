@@ -1747,6 +1747,16 @@ const func = {
         // 停止执行
         throw new Error('脚本已被拦截');
     },
+    set_theme_color: function (hex_color = "#FFFACD"){ // 设置浏览器状态栏颜色
+        let metaTag = document.querySelector('meta[name="theme-color"]');
+        if (!metaTag) {
+            metaTag = document.createElement('meta');
+            metaTag.name = 'theme-color';
+            document.head.appendChild(metaTag);
+        }
+        // 设置颜色
+        metaTag.setAttribute('content', hex_color);
+    },
 
     //
 }

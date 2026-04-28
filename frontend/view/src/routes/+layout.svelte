@@ -58,14 +58,22 @@
             const theme_model_key = config.app.app_class+"theme_model";
             func.js_call_py_or_go("get_data", {data_key:theme_model_key}).then((res: any)=>{
                 let mode=res.content.data;
-                if (!mode) {
-                    mode = func.get_theme_model();
-                }
+                if (!mode) {mode = func.get_theme_model();}
                 watch_theme_model_data.theme_model = mode;
                 theme_model = mode;
                 document.documentElement.setAttribute('data-mode', mode);
             });
-        }
+        },
+        auto_set_theme_color: function(){ // bg-neutral-100 dark:bg-neutral-900
+            let mode = func.get_theme_model();
+            if (mode==="light") { // light
+                func.set_theme_color("#FCFCFC");
+            }else{ // dark
+                func.set_theme_color("#171717");
+            }
+        },
+        //
+
     };
 
 
@@ -75,23 +83,6 @@
         func.loading_hide(); // 避免其他页面跳转到本页面时出现loading图
         // 开始
         route = func.get_route();
-
-        //
-        if (func.is_waigo() || func.is_ginthon()){ // app
-            def.auto_set_language_index();
-            def.auto_set_theme_model();
-        }else{ // web
-            // 网站翻译语言
-            let lang = func.get_lang();
-            watch_lang_data.lang_index = lang;
-            lang_index = lang;
-
-            // 网站主题
-            let mode = func.get_theme_model();
-            watch_theme_model_data.theme_model = mode;
-            theme_model = mode;
-            document.documentElement.setAttribute('data-mode', mode);
-        }
 
         // 确保项目所有js可以运行
         if (!func.support_min_js()){
@@ -185,11 +176,16 @@
         // 设置app_uid
         func.get_app_uid().then(_app_uid => {});
 
-        //
+        // 设置语言和主题
         if (func.is_waigo() || func.is_ginthon()) { // app
+            def.auto_set_language_index();
+            def.auto_set_theme_model();
+            def.auto_set_theme_color();
+            //
             let theme_event = window.matchMedia('(prefers-color-scheme: dark)');
             theme_event.addEventListener('change', function (event){ // 监测主题变化
                 def.auto_set_theme_model();
+                def.auto_set_theme_color();
             });
         } else { // web
             // 网站翻译语言
@@ -198,8 +194,17 @@
             lang_index = lang;
 
             // 监听亮暗主题
+            def.auto_set_theme_color();
+            //
+            let mode = func.get_theme_model();
+            watch_theme_model_data.theme_model = mode;
+            theme_model = mode;
+            document.documentElement.setAttribute('data-mode', mode);
+            //
             let theme_event = window.matchMedia('(prefers-color-scheme: dark)');
             theme_event.addEventListener('change', function (event){ // 监测主题变化
+                def.auto_set_theme_color();
+                //
                 let mode = func.get_theme_model();
                 watch_theme_model_data.theme_model = mode;
                 theme_model = mode;
