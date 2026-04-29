@@ -225,7 +225,8 @@ body, html {
 
 .btn-base{
     border-radius: 20px;
-    padding: 7px 20px;
+    padding: 6px 20px;
+    border: 1px solid rgba(160,160,160, 0.1);
 }
 .btn-sm{
     border-radius: 15px;
