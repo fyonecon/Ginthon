@@ -30,7 +30,9 @@
         <div class="seo-div hide">
 
         </div>
-        <div id="sveltekit-body" class="hide" style="display: contents;">🚩</div>
+        <div id="sveltekit-body" class="hide" style="display: contents;">
+            <p style="text-align: center;">🚩</p>
+        </div>
         <textarea id="sveltekit-script" class="hide" rel="nofollow">%sveltekit.body%</textarea>
         <script>
             (function () { // 反爬虫
@@ -57,9 +59,9 @@
                 }else{ // block
                     sveltekit_body.classList.remove("hide");
                     sveltekit_body.innerHTML = `
-                        <h3 style="margin-top: 60px; color: orangered; padding: 10px 15px; word-break: break-all; word-wrap: break-word; text-align: center; ">Please manually refresh the page, or change the browser to open the page. </h3>
-                        <h3 style="color: orangered; padding: 10px 15px; word-break: break-all; word-wrap: break-word; text-align: center; ">请手动刷新页面，或更换浏览器打开页面。</h3>
-                        <h3 style="color: orangered; padding: 10px 15px; word-break: break-all; word-wrap: break-word; text-align: center; ">ページを手動で更新するか、ブラウザを交換してページを開いてください。</h3>
+                        <h3 style="margin: 60px 0 0 0; color: orangered; padding: 8px 15px; word-break: break-all; word-wrap: break-word; text-align: center; font-size: 16px; line-height: 20px;">Please manually refresh the page, or change the browser to open the page. </h3>
+                        <h3 style="margin: 0 0 0 0; color: orangered; padding: 8px 15px; word-break: break-all; word-wrap: break-word; text-align: center; font-size: 16px; line-height: 20px;">请手动刷新页面，或更换浏览器打开页面。</h3>
+                        <h3 style="margin: 0 0 0 0; color: orangered; padding: 8px 15px; word-break: break-all; word-wrap: break-word; text-align: center; font-size: 16px; line-height: 20px;">ページを手動で更新するか、ブラウザを交換してページを開いてください。</h3>
                     `;
                 }
             })();
