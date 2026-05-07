@@ -137,7 +137,7 @@
             </div>
             <div class="li-group-content">
                 <div style="margin-bottom: 5px;">
-                    <img src="./launcher.png" style="height: 50px; width: 50px;" alt="Logo">
+                    <img src="./appicon.png" style="height: 50px; width: 50px;" alt="Logo">
                 </div>
                 <div>
                     <a title="See Detail" class="font-blue click" href={resolve(func.url_path('/settings/about'))} >
