@@ -84,9 +84,9 @@
                     func.open_url_with_default_browser(href);
                 }else{
                     if (func.is_mobile_screen()){
-                        window.open(href, "_self");
+                        func.open_url(href, "_self");
                     }else{
-                        window.open(href, "_blank");
+                        func.open_url(href, "_blank");
                     }
                 }
             }else{

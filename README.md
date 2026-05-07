@@ -268,4 +268,17 @@ Ginthon-Main
 
 ---
 
+### 针对Mac中.app文件打开时显示“软件已损坏”问题
+```
+1.1 在Mac的终端输入命令行：sudo spctl --master-disable
+1.2 然后输入你的Mac锁屏密码，回车确认。
+1.3 打开设置----隐私与安全----安全----勾选“任何来源”。
+2. 安装xxx.app软件到Mac的应用文件夹里。
+3.1 在Mac终端输入命令行：sudo xattr -r -d com.apple.quarantine /Applications/xxx.app
+3.2 然后输入你的Mac锁屏密码，回车确认。
+4. OK了。
+```
+
+---
+
 # start 2025-11-15
