@@ -11,6 +11,7 @@ frontend_files = [
     ('frontend/favicon.ico', 'frontend'),
     ('frontend/appicon.ico', 'frontend'),
     ('frontend/appicon.png', 'frontend'),
+    ('frontend/icons.icns', 'frontend'),
     # 添加 /tray/ 和 /view/ 文件夹中的全部文件（整个文件夹）
     ('frontend/tray/', 'frontend/tray'), # 状态拉托盘
     ('frontend/view/dist/', 'frontend/view/dist'), # Svelte、Vue、单页应用静态文件

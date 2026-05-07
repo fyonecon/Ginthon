@@ -11,6 +11,7 @@ frontend_files = [
     ('frontend/favicon.ico', 'frontend'),
     ('frontend/appicon.ico', 'frontend'),
     ('frontend/appicon.png', 'frontend'),
+    ('frontend/icons.icns', 'frontend'),
 ]
 
 datas.extend(frontend_files)
