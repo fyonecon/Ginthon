@@ -11,7 +11,7 @@
     <title>{func.get_translate("_404")}</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
-    <link rel="icon" type="image/png" href="./launcher.png" />
+    <link rel="icon" type="image/png" href="./appicon.png" />
 </svelte:head>
 
 <section class="section-main center scroll-y-style">

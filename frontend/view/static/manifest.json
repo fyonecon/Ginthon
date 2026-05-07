@@ -8,7 +8,7 @@
   "description": "",
   "icons": [
     {
-      "src": "./launcher.png",
+      "src": "./appicon.png",
       "type": "image/png",
       "sizes": "192x192"
     }
