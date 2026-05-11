@@ -638,6 +638,12 @@ const func = {
         const ua = navigator.userAgent.toLowerCase();
         return (/firefox/i.test(ua)) || (/fx/i.test(ua));
     },
+    is_brave: function (){
+        const ua = navigator.userAgent.toLowerCase();
+        let brave_api = false;
+        try { brave_api = (navigator.brave && typeof navigator.brave.isBrave === 'function'); }catch(e){}
+        return ( /brave/i.test(ua) || brave_api );
+    },
     is_samsung: function (){
         const ua = navigator.userAgent.toLowerCase();
         return (/samsung/i.test(ua));

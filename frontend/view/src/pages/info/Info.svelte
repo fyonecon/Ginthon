@@ -290,12 +290,6 @@
             <span class="font-text">浏览器信息</span>
         </div>
         <div class="info-div-content">
-            <div class="info-div-content-li break select-text hide">
-                <span class="info-div-content-li-title ">“ES、OS、Web内核”支持情况 (仅GUI)：</span>
-                <br>
-                <span class="info-div-content-li-res">{@html "Android10+、iOS/iPad16.4+、macOS14+、HM6+、Windows10(2023 Update+)、Linux(202406 update+)、Chrome110+、Firefox115+、nodeJS20+，Bun0.6+"}</span>
-                <div class="clear"></div>
-            </div>
             <div class="info-div-content-li break select-text">
                 <span class="info-div-content-li-title ">UserAgent ：</span>
                 <br>
@@ -383,7 +377,7 @@
             <div class="info-div-content-li break select-text">
                 <span class="info-div-content-li-title ">当前地址的Refer ：</span>
                 <br>
-                <span class="info-div-content-li-res">{@html document.referrer.slice(0, 120)+ " ..."}</span>
+                <span class="info-div-content-li-res">{@html document.referrer.slice(0, 120)+ "-空-"}</span>
                 <div class="clear"></div>
             </div>
             <div class="info-div-content-li break select-text">
@@ -401,13 +395,13 @@
             <div class="info-div-content-li break select-text">
                 <span class="info-div-content-li-title ">appUID ：</span>
                 <br>
-                <span class="info-div-content-li-res">{@html app_uid?app_uid:"-"}</span>
+                <span class="info-div-content-li-res">{@html app_uid?app_uid:"-空-"}</span>
                 <div class="clear"></div>
             </div>
             <div class="info-div-content-li break select-text">
                 <span class="info-div-content-li-title ">Date ：</span>
                 <br>
-                <span class="info-div-content-li-res">{@html func.get_time_date("Y/m/d")}</span>
+                <span class="info-div-content-li-res">{@html func.get_time_date("Y/m/d H")}</span>
                 <div class="clear"></div>
             </div>
         </div>
