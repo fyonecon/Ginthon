@@ -427,13 +427,12 @@
             let that = this;
             // 处理Enter
             if (event.key === 'Enter') {
-                if (input_enter_data.input_doing === 1 || input_enter_data.input_doing === 2){ // 输入法输入完成
-                    func.console_log("输入法输入完成=", input_enter_data.input_doing);
-                    input_enter_data.input_doing = -1; // init
-                    // 执行回车操作
+                if (input_enter_data.input_doing === 12){ // 字母数字输入完成
                     that.input_find();
-                }else{ // 输入法正在输入
-                    func.console_log("输入法正在输入=", input_enter_data.input_doing);
+                } else if (input_enter_data.input_doing === 22){ // 汉字预选词输入完成
+                    that.input_find();
+                } else {
+                    console.log("=3=状态不完整=", input_enter_data.input_doing);
                 }
             }
         },

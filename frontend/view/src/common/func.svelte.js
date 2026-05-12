@@ -1434,7 +1434,7 @@ const func = {
         }
     },
     watch_input_enter: function(input_object){ // 监测输入法是否已经输入完成，请将此函数放置在page_start()里面或on Mount的runtime_ok后面
-        // 判断用户输入框是否已经输入完成。 1直接完成输入，2预选词输入完成，-1开始输入，0词预选状态。1和2都是输入完成，请区分具体数值。
+        // 判断用户输入框是否已经输入完成。 默认10。10字母数字输入开始，12字母数字输入完成；20汉字开始输入，21汉字预选词状态，22汉字输入完成。请区分具体数值。
         // 1️⃣let input_object: any; // input标签dom对象
         // 2️⃣bind:this={input_object} // 获取当前input_object对象
         // 3️⃣func.watch_input_enter(input_object); // 监听输入法输入事件
@@ -1442,26 +1442,28 @@ const func = {
         if (browser){
             //
             input_object.addEventListener('compositionstart',function(e){
-                input_enter_data.input_doing = -1;
+                input_enter_data.input_doing = 20;
                 // console.log("compositionstart=", input_enter_data.input_doing);
             },false);
             input_object.addEventListener('input',function(e){
-                if (input_enter_data.input_doing === -1){ // 词预选状态
-                    input_enter_data.input_doing = 0;
-                } else if (input_enter_data.input_doing === 1 || input_enter_data.input_doing === 2) { // 直接输入状态，顺便初始化input_doing
-                    input_enter_data.input_doing = 1;
-                } else {
-                    input_enter_data.input_doing = 0;
+                // 处理字母数字预选词
+                if (input_enter_data.input_doing === 10){ // 字母输入完成
+                    input_enter_data.input_doing = 12;
                 }
+                // 处理汉字预选词
+                if (input_enter_data.input_doing === 20){ // 正在输入汉字预选词
+                    input_enter_data.input_doing = 21;
+                }
+                // 状态初始化（只针对有预选词的标记）
+                if (input_enter_data.input_doing === 22){
+                    input_enter_data.input_doing = 10;
+                }
+                //
                 // console.log("input=", input_enter_data.input_doing);
             },false);
-            input_object.addEventListener('compositionend',function(e){
-                if (input_enter_data.input_doing === 0){ // 预选词已确定时触发
-                    input_enter_data.input_doing = 2;
-                }else if (input_enter_data.input_doing === 1) { // 输入完成时触发
-                    input_enter_data.input_doing = 1;
-                }else {
-                    input_enter_data.input_doing = 0;
+            input_object.addEventListener('compositionend',function(e) {
+                if (input_enter_data.input_doing === 21){ // 汉字输入完成
+                    input_enter_data.input_doing = 22;
                 }
                 // console.log("compositionend=", input_enter_data.input_doing);
             },false);

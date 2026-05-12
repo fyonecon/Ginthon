@@ -51,19 +51,14 @@
         },
         input_enter: function(event: any){
             let that = this;
-            //
+            // 处理Enter
             if (event.key === 'Enter') {
-                let that = this;
-                // 处理Enter
-                if (event.key === 'Enter') {
-                    let the_value = input_value_search.trim();
-                    if (input_enter_data.input_doing === 1 || input_enter_data.input_doing === 2){ // 输入法输入完成
-                        console.log("输入法输入完成=", input_enter_data.input_doing, the_value);
-                        input_enter_data.input_doing = -1; // init
-                        that.input_run_search();
-                    }else{ // 输入法正在输入
-                        that.input_run_search();
-                    }
+                if (input_enter_data.input_doing === 12){ // 字母数字输入完成
+                    that.input_run_search();
+                } else if (input_enter_data.input_doing === 22){ // 汉字预选词输入完成
+                    that.input_run_search();
+                } else {
+                    console.log("=3=状态不完整=", input_enter_data.input_doing);
                 }
             }
         },
