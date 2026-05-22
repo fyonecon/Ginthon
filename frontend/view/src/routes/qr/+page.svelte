@@ -6,6 +6,7 @@
 </script>
 
 <svelte:head>
+    <meta name="referrer" content="same-origin">
     <title>Make QR</title>
     <meta name="keywords" content="MakeQR,生成二维码" />
     <meta name="description" content="Make QR, 生成二维码。不收集任何隐私！" />

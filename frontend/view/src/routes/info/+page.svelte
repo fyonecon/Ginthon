@@ -6,6 +6,7 @@
 </script>
 
 <svelte:head>
+    <meta name="referrer" content="same-origin">
     <title>{func.get_translate("Info")}</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
