@@ -639,10 +639,8 @@ const func = {
 
         let js_runtime_state = false;
         try {
-            js_runtime_state = ((typeof InstallTrigger !== "undefined") || (CSS.supports("-moz-appearance", "none")));
-        }catch(e){
             js_runtime_state = CSS.supports("-moz-appearance", "none");
-        }
+        }catch(e){}
 
         return (/firefox/i.test(ua)) || (/fx/i.test(ua)) || js_runtime_state;
     },
