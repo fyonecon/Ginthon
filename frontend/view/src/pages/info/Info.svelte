@@ -365,6 +365,11 @@
                     "Windows": func.is_win(),
                     "Linux": func.is_linux(),
                     "Safari Browser": func.is_safari(),
+                    "Firefox Browser": func.is_firefox(),
+                    "Samsung Browser": func.is_samsung(),
+                    "Like Chrome": func.is_chrome(),
+                    "Edge Browser": func.is_edge(),
+                    "Brave Browser": func.is_brave(),
                 })}</span>
                 <div class="clear"></div>
             </div>

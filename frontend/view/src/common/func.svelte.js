@@ -636,13 +636,21 @@ const func = {
     },
     is_firefox: function (){
         const ua = navigator.userAgent.toLowerCase();
-        return (/firefox/i.test(ua)) || (/fx/i.test(ua));
+
+        let js_runtime_state = false;
+        try {
+            js_runtime_state = ((typeof InstallTrigger !== "undefined") || (CSS.supports("-moz-appearance", "none")));
+        }catch(e){
+            js_runtime_state = CSS.supports("-moz-appearance", "none");
+        }
+
+        return (/firefox/i.test(ua)) || (/fx/i.test(ua)) || js_runtime_state;
     },
     is_brave: function (){
         const ua = navigator.userAgent.toLowerCase();
-        let brave_api = false;
-        try { brave_api = (navigator.brave && typeof navigator.brave.isBrave === 'function'); }catch(e){}
-        return ( /brave/i.test(ua) || brave_api );
+        let js_runtime_state = false;
+        try { js_runtime_state = (navigator.brave || typeof navigator.brave.isBrave === 'function'); }catch(e){}
+        return ( /brave/i.test(ua) || js_runtime_state );
     },
     is_samsung: function (){
         const ua = navigator.userAgent.toLowerCase();
@@ -715,7 +723,16 @@ const func = {
         const isMeituan = (/meituan/i.test(ua)) || (/mt/i.test(ua));
         const isDouyin = (/douyin/i.test(ua)) || (/tiktok/i.test(ua)) || (/byte/i.test(ua)) || (/aweme/i.test(ua)) || (/news/i.test(ua)) || (/toutiao/i.test(ua));
         //
-        return isAppleWebKit && (that.is_ios() || that.is_mac()) && !(that.is_android() || that.is_win() || that.is_linux()) && !(that.is_waigo() || that.is_ginthon() || isFirefox || isChrome || isEdge  || isBrave || isBrave || isYandex || isOpera || isSamsung || isDuckDuckGo || isMeta || isAI || isBuild || isQQ || isUC || isSogou || isVivaldi || isQuark || isQuark || isBaidu || isMaxthon || is360 || isLiebao || isMeituan || isDouyin);
+        const agent_state = isAppleWebKit && (that.is_ios() || that.is_mac()) && !(that.is_android() || that.is_win() || that.is_linux()) && !(that.is_waigo() || that.is_ginthon() || isFirefox || isChrome || isEdge  || isBrave || isBrave || isYandex || isOpera || isSamsung || isDuckDuckGo || isMeta || isAI || isBuild || isQQ || isUC || isSogou || isVivaldi || isQuark || isQuark || isBaidu || isMaxthon || is360 || isLiebao || isMeituan || isDouyin);
+        //
+        let js_runtime_state = false;
+        try {
+            js_runtime_state = ((typeof safari !== "undefined") || (CSS.supports("font", "-apple-system-body")));
+        }catch(e){
+            js_runtime_state = CSS.supports("font", "-apple-system-body");
+        }
+
+        return agent_state || js_runtime_state;
     },
     html_to_plain_text: function (html) { // string类型的html转换成text
         let that = this;
