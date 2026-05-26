@@ -242,7 +242,7 @@
 
 </script>
 
-<div class="app {page_display} select-none" data-theme_model="{theme_model}" data-language_index="{lang_index}">
+<div class="app {page_display} select-none bg-white dark:bg-surface-950" data-theme_model="{theme_model}" data-language_index="{lang_index}">
     <!-- 内容 -->
     <SideLogo />
     <SideSearch />
