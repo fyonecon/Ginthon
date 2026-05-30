@@ -746,14 +746,34 @@ def run_task_cmd(config_json):
     runner.run()
 
 
+# 必要的环境检测
+def check_sys_state():
+    # 环境检测
+    encoding = sys.getdefaultencoding()
+    if encoding.lower() != "utf-8":
+        print(f"你的操作系统系统默认编码不是 UTF-8 ", encoding)
+        return False
+    else:
+        return True
+
+
 # 开发环境已经运行程序
 # 按dev.json步骤执行，除了“step_3”标号步骤，其它步骤会阻塞。
 if __name__ == "__main__":
-    # 直接运行
-    if len(sys.argv) > 1:
-        config_file = sys.argv[1]
+
+
+
+    if check_sys_state():
+        # 直接运行
+        if len(sys.argv) > 1:
+            config_file = sys.argv[1]
+        else:
+            config_file = "dev.json"
+        #
+        run_task_cmd(config_file)
+        pass
     else:
-        config_file = "dev.json"
-    #
-    run_task_cmd(config_file)
+        print(f"系统检测不通过！")
+        pass
+
     pass
