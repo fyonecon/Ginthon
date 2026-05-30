@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
+# pip3 install pycryptodome 如果还不能识别，就要在 全局安装 而不是只在 .venv 中安装
+
 import base64
-from Crypto.Cipher import AES # pip3 install pycryptodome
+from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 
 # 辅助函数
