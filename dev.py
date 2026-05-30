@@ -751,7 +751,7 @@ def check_sys_state():
     # 环境检测
     encoding = sys.getdefaultencoding()
     if encoding.lower() != "utf-8":
-        print(f"你的操作系统系统默认编码不是 UTF-8 ", encoding)
+        print(f"你的操作系统系统默认编码不是UTF-8", encoding)
         return False
     else:
         return True
@@ -760,8 +760,6 @@ def check_sys_state():
 # 开发环境已经运行程序
 # 按dev.json步骤执行，除了“step_3”标号步骤，其它步骤会阻塞。
 if __name__ == "__main__":
-
-
 
     if check_sys_state():
         # 直接运行
