@@ -10,6 +10,7 @@ node_modules/
 .task/
 Ginthon.app/
 dist/
+__pycache__/
 
 # OS
 .DS_Store
