@@ -472,6 +472,12 @@ def run_task_cmd(config_json):
 # 生成应用安装包
 # 按build.json步骤执行，会阻塞。
 if __name__ == "__main__":
+    # 将项目根目录添加到 Python 路径
+    project_root = os.path.dirname(os.path.abspath(__file__))
+    if project_root not in sys.path:
+        sys.path.insert(0, project_root)
+        pass
+
     #
     run_task_cmd("build.json")
     pass

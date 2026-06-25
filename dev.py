@@ -761,6 +761,12 @@ def check_sys_state():
 # 按dev.json步骤执行，除了“step_3”标号步骤，其它步骤会阻塞。
 if __name__ == "__main__":
 
+    # 将项目根目录添加到 Python 路径
+    project_root = os.path.dirname(os.path.abspath(__file__))
+    if project_root not in sys.path:
+        sys.path.insert(0, project_root)
+        pass
+
     if check_sys_state():
         # 直接运行
         if len(sys.argv) > 1:
