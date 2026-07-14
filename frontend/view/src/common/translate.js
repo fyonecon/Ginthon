@@ -3,7 +3,7 @@ const lang_dict = {
     test: { // 示例
         zh: "测试", // 简体中文（包含繁体）
         en: "Test", // 英文
-        jp: "", // 日语
+        ja: "", // 日语
         fr: "", // 法语
         de: "", // 德语
         ru: "", // 俄语或乌克兰语
@@ -14,7 +14,7 @@ const lang_dict = {
     _null: { // 必须
         zh: " -空- ",
         en: " -Empty- ",
-        jp: " -Null- ",
+        ja: " -Null- ",
         fr: " -Null- ",
         de: " -Null- ",
         ru: " -Null- ",
@@ -124,7 +124,7 @@ const lang_dict = {
     confirm_change_language_tip: {
         zh: "切换语言 ？（页面将会刷新.）",
         en: "Change language ？（The page will refresh.）",
-        jp: "言語を切り替えますか？（ページが更新されます.）",
+        ja: "言語を切り替えますか？（ページが更新されます.）",
         fr: "Changer de langue? (la page sera actualisée.)",
         de: "Sprache wechseln?  (Die Seite wird aktualisiert.)",
         ru: "Переключить язык? (Страница будет обновлена.)",

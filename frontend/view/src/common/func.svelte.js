@@ -722,15 +722,8 @@ const func = {
         const isDouyin = (/douyin/i.test(ua)) || (/tiktok/i.test(ua)) || (/byte/i.test(ua)) || (/aweme/i.test(ua)) || (/news/i.test(ua)) || (/toutiao/i.test(ua));
         //
         const agent_state = isAppleWebKit && (that.is_ios() || that.is_mac()) && !(that.is_android() || that.is_win() || that.is_linux()) && !(that.is_waigo() || that.is_ginthon() || isFirefox || isChrome || isEdge  || isBrave || isBrave || isYandex || isOpera || isSamsung || isDuckDuckGo || isMeta || isAI || isBuild || isQQ || isUC || isSogou || isVivaldi || isQuark || isQuark || isBaidu || isMaxthon || is360 || isLiebao || isMeituan || isDouyin);
-        //
-        let js_runtime_state = false;
-        try {
-            js_runtime_state = ((typeof safari !== "undefined") || (CSS.supports("font", "-apple-system-body")));
-        }catch(e){
-            js_runtime_state = CSS.supports("font", "-apple-system-body");
-        }
 
-        return agent_state || js_runtime_state;
+        return agent_state;
     },
     html_to_plain_text: function (html) { // string类型的html转换成text
         let that = this;
@@ -911,8 +904,8 @@ const func = {
             else if (_language.indexOf("en") >= 0){ // 英文
                 return "en";
             }
-            else if (_language.indexOf("jp") >= 0){ // 日文
-                return "jp";
+            else if (_language.indexOf("ja") >= 0){ // 日文
+                return "ja";
             }
             else if (_language.indexOf("fr") >= 0){ // 法语
                 return "fr";
@@ -1004,7 +997,7 @@ const func = {
                     try {
                         goto(url, { // 仅能打开同域链接
                             replaceState: false, // false新增历史记录，true清除历史记录
-                            invalidateAll: false, // true强制重新加载
+                            invalidateAll: true, // true强制重新加载
                             noScroll: true // true回到滚动位置
                         }).then(r => {
                             //
@@ -1036,7 +1029,7 @@ const func = {
                     try {
                         goto(url, { // 仅能打开同域链接
                             replaceState: true, // false新增历史记录，true清除历史记录
-                            invalidateAll: false, // true强制重新加载
+                            invalidateAll: true, // true强制重新加载
                             noScroll: true // true回到滚动位置
                         }).then(r => {
                             //
@@ -1814,6 +1807,14 @@ const func = {
         // 设置颜色
         metaTag.setAttribute('content', hex_color);
     },
+    in_iframe: function (){ // 处在iframe环境中
+        if (browser){
+            return (window !== window.top);
+        }else{
+            return false;
+        }
+    }
+
 
     //
 }
