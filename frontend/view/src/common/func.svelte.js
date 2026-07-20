@@ -663,13 +663,13 @@ const func = {
         const ua = navigator.userAgent.toLowerCase();
         //
         // const isFirefox = (/firefox/i.test(ua)) || (/fx/i.test(ua));
-        const isChrome = (/chrome/i.test(ua)) || (/ch/i.test(ua));
+        const isChrome = (/chrome/i.test(ua)) || (/cr/i.test(ua));
         const isEdge = (/edg/i.test(ua)) || (/bing/i.test(ua)); // 包含老Edge
         const isBrave = (/brave/i.test(ua));
         const isYandex = (/ya/i.test(ua));
         const isOpera = (/opera/i.test(ua)) || (/opr/i.test(ua)) || (/opt/i.test(ua));
         const isSamsung = (/samsung/i.test(ua));
-        const isDuckDuckGo = (/duckDuckGo/i.test(ua)) || (/ddg/i.test(ua));
+        const isDuckDuckGo = (/duckduckgo/i.test(ua)) || (/ddg/i.test(ua));
         const isMeta = (/facebook/i.test(ua)) || (/ins/i.test(ua)) || (/meta/i.test(ua));
         // 盲
         const isAI = (/ai/i.test(ua));
@@ -686,8 +686,17 @@ const func = {
         const isLiebao = (/lb/i.test(ua));
         const isMeituan = (/meituan/i.test(ua)) || (/mt/i.test(ua));
         const isDouyin = (/douyin/i.test(ua)) || (/tiktok/i.test(ua)) || (/byte/i.test(ua)) || (/aweme/i.test(ua)) || (/news/i.test(ua)) || (/toutiao/i.test(ua));
+        // 手机
+        const isXiaomi = (/xiaomi/i.test(ua)) || (/miui/i.test(ua)) || (/redmi/i.test(ua));
+        const isVivo = (/vivo/i.test(ua));
+        const isOppo = (/oppo/i.test(ua));
+        const isHuawei = (/huawei/i.test(ua)) || (/harmony/i.test(ua)) || (/arkweb/i.test(ua));
+        const isWeixin = (/micromessenger/i.test(ua)) || (/wxwork/i.test(ua));
+        const isDingding = (/dingtalk/i.test(ua));
+        const isFeishu = (/lark/i.test(ua));
+        const isAlipay = (/ali/i.test(ua));
         //
-        return isChrome && !(that.is_waigo() || that.is_ginthon() || isEdge || isBrave || isBrave || isYandex || isOpera || isSamsung || isDuckDuckGo || isMeta || isAI || isBuild || isQQ || isUC || isSogou || isVivaldi || isQuark || isQuark || isBaidu || isMaxthon || is360 || isLiebao || isMeituan || isDouyin);
+        return isChrome && !(that.is_waigo() || that.is_ginthon() || isEdge || isBrave || isBrave || isYandex || isOpera || isSamsung || isDuckDuckGo || isMeta || isAI || isBuild || isQQ || isUC || isSogou || isVivaldi || isQuark || isQuark || isBaidu || isMaxthon || is360 || isLiebao || isMeituan || isDouyin || isXiaomi || isVivo || isOppo || isHuawei || isWeixin || isDingding || isFeishu || isAlipay );
     },
     is_safari: function (){ // 仅是Safari本尊
         let that = this;
@@ -697,13 +706,13 @@ const func = {
         // 排除其他浏览器
         // 国际
         const isFirefox = (/firefox/i.test(ua)) || (/fx/i.test(ua));
-        const isChrome = (/chrome/i.test(ua)) || (/ch/i.test(ua));
+        const isChrome = (/chrome/i.test(ua)) || (/cr/i.test(ua));
         const isEdge = (/edg/i.test(ua)) || (/bing/i.test(ua)); // 包含老Edge
         const isBrave = (/brave/i.test(ua));
         const isYandex = (/ya/i.test(ua));
         const isOpera = (/opera/i.test(ua)) || (/opr/i.test(ua)) || (/opt/i.test(ua));
         const isSamsung = (/samsung/i.test(ua));
-        const isDuckDuckGo = (/duckDuckGo/i.test(ua)) || (/ddg/i.test(ua));
+        const isDuckDuckGo = (/duckduckgo/i.test(ua)) || (/ddg/i.test(ua));
         const isMeta = (/facebook/i.test(ua)) || (/ins/i.test(ua)) || (/meta/i.test(ua));
         // 盲
         const isAI = (/ai/i.test(ua));
@@ -720,8 +729,17 @@ const func = {
         const isLiebao = (/lb/i.test(ua));
         const isMeituan = (/meituan/i.test(ua)) || (/mt/i.test(ua));
         const isDouyin = (/douyin/i.test(ua)) || (/tiktok/i.test(ua)) || (/byte/i.test(ua)) || (/aweme/i.test(ua)) || (/news/i.test(ua)) || (/toutiao/i.test(ua));
+        // 手机
+        const isXiaomi = (/xiaomi/i.test(ua)) || (/miui/i.test(ua)) || (/redmi/i.test(ua));
+        const isVivo = (/vivo/i.test(ua));
+        const isOppo = (/oppo/i.test(ua));
+        const isHuawei = (/huawei/i.test(ua)) || (/harmony/i.test(ua)) || (/arkweb/i.test(ua));
+        const isWeixin = (/micromessenger/i.test(ua)) || (/wxwork/i.test(ua));
+        const isDingding = (/dingtalk/i.test(ua));
+        const isFeishu = (/lark/i.test(ua));
+        const isAlipay = (/ali/i.test(ua));
         //
-        const agent_state = isAppleWebKit && (that.is_ios() || that.is_mac()) && !(that.is_android() || that.is_win() || that.is_linux()) && !(that.is_waigo() || that.is_ginthon() || isFirefox || isChrome || isEdge  || isBrave || isBrave || isYandex || isOpera || isSamsung || isDuckDuckGo || isMeta || isAI || isBuild || isQQ || isUC || isSogou || isVivaldi || isQuark || isQuark || isBaidu || isMaxthon || is360 || isLiebao || isMeituan || isDouyin);
+        const agent_state = isAppleWebKit && (that.is_ios() || that.is_mac()) && !(that.is_android() || that.is_win() || that.is_linux()) && !(that.is_waigo() || that.is_ginthon() || isFirefox || isChrome || isEdge  || isBrave || isBrave || isYandex || isOpera || isSamsung || isDuckDuckGo || isMeta || isAI || isBuild || isQQ || isUC || isSogou || isVivaldi || isQuark || isQuark || isBaidu || isMaxthon || is360 || isLiebao || isMeituan || isDouyin|| isXiaomi || isVivo || isOppo || isHuawei || isWeixin || isDingding || isFeishu || isAlipay );
 
         return agent_state;
     },
