@@ -690,13 +690,14 @@ const func = {
         const isXiaomi = (/xiaomi/i.test(ua)) || (/miui/i.test(ua)) || (/redmi/i.test(ua));
         const isVivo = (/vivo/i.test(ua));
         const isOppo = (/oppo/i.test(ua));
+        const isHonar = (/honor/i.test(ua)) || (/hios/i.test(ua)) || (/magicui/i.test(ua));
         const isHuawei = (/huawei/i.test(ua)) || (/harmony/i.test(ua)) || (/arkweb/i.test(ua));
         const isWeixin = (/micromessenger/i.test(ua)) || (/wxwork/i.test(ua));
         const isDingding = (/dingtalk/i.test(ua));
         const isFeishu = (/lark/i.test(ua));
         const isAlipay = (/ali/i.test(ua));
         //
-        return isChrome && !(that.is_waigo() || that.is_ginthon() || isEdge || isBrave || isBrave || isYandex || isOpera || isSamsung || isDuckDuckGo || isMeta || isAI || isBuild || isQQ || isUC || isSogou || isVivaldi || isQuark || isQuark || isBaidu || isMaxthon || is360 || isLiebao || isMeituan || isDouyin || isXiaomi || isVivo || isOppo || isHuawei || isWeixin || isDingding || isFeishu || isAlipay );
+        return isChrome && !(that.is_waigo() || that.is_ginthon() || isEdge || isBrave || isBrave || isYandex || isOpera || isSamsung || isDuckDuckGo || isMeta || isAI || isBuild || isQQ || isUC || isSogou || isVivaldi || isQuark || isQuark || isBaidu || isMaxthon || is360 || isLiebao || isMeituan || isDouyin || isXiaomi || isVivo || isOppo || isHonar || isHuawei || isWeixin || isDingding || isFeishu || isAlipay );
     },
     is_safari: function (){ // 仅是Safari本尊
         let that = this;
@@ -733,13 +734,14 @@ const func = {
         const isXiaomi = (/xiaomi/i.test(ua)) || (/miui/i.test(ua)) || (/redmi/i.test(ua));
         const isVivo = (/vivo/i.test(ua));
         const isOppo = (/oppo/i.test(ua));
+        const isHonar = (/honor/i.test(ua)) || (/hios/i.test(ua)) || (/magicui/i.test(ua));
         const isHuawei = (/huawei/i.test(ua)) || (/harmony/i.test(ua)) || (/arkweb/i.test(ua));
         const isWeixin = (/micromessenger/i.test(ua)) || (/wxwork/i.test(ua));
         const isDingding = (/dingtalk/i.test(ua));
         const isFeishu = (/lark/i.test(ua));
         const isAlipay = (/ali/i.test(ua));
         //
-        const agent_state = isAppleWebKit && (that.is_ios() || that.is_mac()) && !(that.is_android() || that.is_win() || that.is_linux()) && !(that.is_waigo() || that.is_ginthon() || isFirefox || isChrome || isEdge  || isBrave || isBrave || isYandex || isOpera || isSamsung || isDuckDuckGo || isMeta || isAI || isBuild || isQQ || isUC || isSogou || isVivaldi || isQuark || isQuark || isBaidu || isMaxthon || is360 || isLiebao || isMeituan || isDouyin|| isXiaomi || isVivo || isOppo || isHuawei || isWeixin || isDingding || isFeishu || isAlipay );
+        const agent_state = isAppleWebKit && (that.is_ios() || that.is_mac()) && !(that.is_android() || that.is_win() || that.is_linux()) && !(that.is_waigo() || that.is_ginthon() || isFirefox || isChrome || isEdge  || isBrave || isBrave || isYandex || isOpera || isSamsung || isDuckDuckGo || isMeta || isAI || isBuild || isQQ || isUC || isSogou || isVivaldi || isQuark || isQuark || isBaidu || isMaxthon || is360 || isLiebao || isMeituan || isDouyin|| isXiaomi || isVivo || isOppo || isHonar || isHuawei || isWeixin || isDingding || isFeishu || isAlipay );
 
         return agent_state;
     },
@@ -1024,9 +1026,9 @@ const func = {
                         window.location.href = url;
                     }
                 } else if (target === "_replace"){ // _replace
-                    window.location.replace(url);
+                    window.location.replace(url); // 需要使用noreferrer时请使用：<meta name="referrer" content="no-referrer">
                 } else if (target === "_blank") {  // _blank
-                    window.open(url, target); // 注意：只有Safari当使用js跳转时会出现拦截，因此在Safari中请使用_self避免此问题，你需要在你跳转的地方使用：if(func.is_safari()){func.open_url(href, "_self");}else{func.open_url(href, "_blank");} 。此处不再做过度的设计和判断。
+                    window.open(url, target, "noopener,noreferrer"); // 注意：只有Safari当使用js跳转时会出现拦截，因此在Safari中请使用_self避免此问题，你需要在你跳转的地方使用：if(func.is_safari()){func.open_url(href, "_self");}else{func.open_url(href, "_blank");} 。此处不再做过度的设计和判断。
                     //
                     // let open_state = window.open(url, target);
                     // if (!open_state) { // _self 如果浏览器拦截了“用新窗口打开链接”，则降级为在当前页面窗口打开链接.
@@ -1378,7 +1380,7 @@ const func = {
         let that = this;
         //
         let href = root_route+"_404?error_msg="+encodeURIComponent(error_msg)+"&error_url=" + encodeURIComponent(error_url);
-        that.open_url(href, "_self");
+        that.open_url(href, "_replace");
     },
     url_timeout_encode: function (route, timeout){ // 生成url的时间戳标记， timeout=s
         let that = this;
