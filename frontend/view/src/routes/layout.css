@@ -7,7 +7,7 @@
 /* 如果上面遇到@import引入错误，请手动运行‘ npx sv add tailwindcss ’ 来安装tailwindcss */
 
 body, html {
-	font-family: "Noto Sans Light", sans-serif;
+	font-family: "Noto Sans SC", Roboto, "PingFang SC", "Arial", sans-serif;
     font-size: 15px;
     line-height: 22px; /*1.5倍的字体大小*/
     letter-spacing: 0px;
@@ -270,7 +270,7 @@ div[data-part="root"] { /*notice*/
 div[data-part="content"] { /*confirm*/
     border: 1px solid rgba(160,160,160, 0.6);
     max-width: 300px;
-    margin-top: -150px;
+    margin-top: -140px;
 }
 @media only screen and (max-width: 400px){
     div[data-part="content"] { /*confirm*/
